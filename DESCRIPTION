@@ -1,0 +1,42 @@
+Type: Package
+Package: UnalR
+Title: Una implementación de funciones de uso interno
+Version: 0.0.0.9000
+Date: 2021-02-28
+Authors@R: c(
+  person("Jeison", "Alarcón", email = "jmalarconbe@unal.edu.co", role = c("aut", "cre", "ctr"),
+         comment = c(ORCID = "0000-0002-1517-7840", GITHUB = "<https://github.com/JeisonAlarcon>")),
+  person("Alberto", "Rodríguez", email = "albrodriguezr@unal.edu.co", role = c("aut", "rev")),
+  person("Departamento Nacional de Planeación Y Estadística", "Universidad Nacional de Colombia",
+         email = "estadistica_nal@unal.edu.co", role = c("cph", "fnd"))
+  )
+Description: Una herramienta rápida y consistente para la disposición de microdatos
+    y la visualización de las cifras y estadísticas oficiales de la Universidad
+    Nacional de Colombia <https://unal.edu.co>. Contiene una biblioteca de
+    funciones gráficas, tanto estáticas como interactivas, que ofrece numerosos
+    tipos de gráficos con una sintaxis altamente configurable y simple. Entre estos
+    encontramos la visualización de tablas HTML, series, gráficos de barras y
+    circulares, mapas, etc. Todo lo anterior apoyado en bibliotecas de JavaScript.
+License: GPL (>= 3)
+URL: https://unal.edu.co, http://estadisticas.unal.edu.co/home/
+BugReports: https://github.com/estadisticaun
+Depends: 
+    R (>= 3.5)
+Imports: 
+    DT,
+    highcharter,
+    plotly,
+    dygraphs,
+    dplyr,
+    tidyr,
+    magrittr,
+    xts, zoo,
+    htmltools,
+    RColorBrewer,
+    grDevices,
+    utils,
+    methods
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1

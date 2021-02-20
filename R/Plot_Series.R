@@ -40,7 +40,7 @@
 #'     créditos debajo del título principal.
 #'   * `ply.LegendPosition`: Lista que específica la posición y orientación de la
 #'     legenda. Los valores por defecto la ubican centrada verticalmente a la
-#'     izquierda del plot, es decir, `c(x = 1, y = 0.5, orientation = "v")`.
+#'     derecha del plot, es decir, `c(x = 1, y = 0.5, orientation = "v")`.
 #'   * `ply.Interaction`: Cadena de caracteres que determina el modo de las
 #'     interacciones de desplazamiento. Los valores permitidos son "x unified"
 #'     (valor predeterminado), "y unified", "closest", "x", "y" y FALSE.
@@ -64,16 +64,16 @@
 #' a la clase "highchart", "plotly" o "dygraphs".
 #'
 #' @examples
-#' col <- c("#29ABE2", # AZUL CLARO  | Amazonía
-#'          "#8CC63F", # VERDE       | Bogotá
+#' col <- c("#29ABE2", # AZUL CLARO  | Amazonia
+#'          "#8CC63F", # VERDE       | Bogota
 #'          "#CC241D", # ROJO        | Caribe
 #'          "#FF3673", # MORADO CLARO| De la paz
 #'          "#0071BC", # AZUL VIVO   | Manizales
-#'          "#F15A24", # NARANJA     | Medellín
-#'          "#FBB03B", # AMARILLO    | Orinoquía
+#'          "#F15A24", # NARANJA     | Medellin
+#'          "#FBB03B", # AMARILLO    | Orinoquia
 #'          "#93278F", # MORADO      | Palmira
 #'          "#8A381A") # GRIS        | Tumaco
-#' Msj <- "Distribuci\u00f3n de estudiantes admitidos (desde el 2009-I al 2020-I) por sede."
+#' Msj <- "Distribuci\u00f3n de estudiantes admitidos (desde el 2009-I al 2020-II) por sede."
 #' Plot.Series(datos     = Consolidado,
 #'             categoria = "SEDE_NOMBRE_ADM",
 #'             colores   = col,
@@ -98,7 +98,7 @@
 #'             titulo    = "EVOLUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR SEDE",
 #'             labelY    = "N\u00famero de graduados (k: miles)",
 #'             libreria  = "dygraphs",
-#'             estilo    = list(dyg.LegendWidth = 770, dyg.Resaltar = TRUE)
+#'             estilo    = list(dyg.LegendWidth = 810, dyg.Resaltar = TRUE)
 #'             )
 #'
 #' @export
@@ -108,7 +108,6 @@
 #' @import dygraphs
 #' @import dplyr
 #' @importFrom tidyr pivot_wider pivot_longer
-#' @importFrom magrittr %>%
 #' @importFrom xts xts
 #' @importFrom zoo as.Date as.yearmon
 #' @importFrom methods missingArg

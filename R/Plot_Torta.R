@@ -76,7 +76,6 @@
 #' @import highcharter
 #' @import plotly
 #' @import dplyr
-#' @importFrom magrittr %>%
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
 Plot.Torta <- function(datos, categoria, ano, periodo, colores, titulo = "", addPeriodo = TRUE,

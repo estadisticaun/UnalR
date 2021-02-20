@@ -25,7 +25,7 @@
 #' @param colorHead Cadena de caracteres que indica el color de fondo de la cabecera
 #'   de la tabla. Puede indicar el color con el nombre (`"red"`), código hexadecimal
 #'   (`"#FF0000"`) o RGB (`rgb(1, 0, 0)`). El valor por defecto es "blanco" (`"#FFFFFF"`).
-#' @param colorear Si es `TRUE` indica si desea poner color a la tabla de forma
+#' @param colorear Si es `TRUE` indica que desea poner color a la tabla de forma
 #'   automática, aplicando color a la fuente del periodo y añadiendo un color de
 #'   fondo para los años (*de acuerdo con una paleta predefinida*). El valor por
 #'   defecto es `FALSE`.
@@ -50,7 +50,7 @@
 #' Tabla(datos = Consolidado, categoria = "SEDE_NOMBRE_ADM",
 #'       encabezado = "TOTAL DE ESTUDIANTES POR SEDE DE GRADUACI\u00d3N",
 #'       titulo  = "ESTUDIANTES GRADUADOS POR SEDE",
-#'       leyenda = "Distribuci\u00f3n de estudiantes admitidos (desde el 2009-I al 2020-I) por sede.",
+#'       leyenda = "Distribuci\u00f3n de estudiantes admitidos (desde el 2009-I al 2020-II) por sede.",
 #'       colorHead = "#8CC63F",
 #'       estilo    = list(PaletaYear = Colorido, PaletaSemestre = c("#7E1BC3", "#C31576"))
 #'       )
@@ -61,7 +61,6 @@
 #' @import dplyr
 #' @importFrom htmltools withTags tag
 #' @importFrom tidyr pivot_wider
-#' @importFrom magrittr %>%
 #' @importFrom methods missingArg
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices colorRampPalette

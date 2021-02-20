@@ -4,11 +4,9 @@ Title: Una implementación de funciones de uso interno
 Version: 0.0.0.9000
 Date: 2021-02-28
 Authors@R: c(
-  person("Jeison", "Alarcón", email = "jmalarconbe@unal.edu.co", role = c("aut", "cre", "ctr"),
-         comment = c(ORCID = "0000-0002-1517-7840", GITHUB = "<https://github.com/JeisonAlarcon>")),
+  person("Jeison", "Alarcón", email = "jmalarconbe@unal.edu.co", role = c("aut", "cre", "ctr"), comment = c(ORCID = "0000-0002-1517-7840")),
   person("Alberto", "Rodríguez", email = "albrodriguezr@unal.edu.co", role = c("aut", "rev")),
-  person("Departamento Nacional de Planeación Y Estadística", "Universidad Nacional de Colombia",
-         email = "estadistica_nal@unal.edu.co", role = c("cph", "fnd"))
+  person("Dirección Nacional de Planeación y Estadística", "Universidad Nacional de Colombia", email = "estadistica_nal@unal.edu.co", role = c("cph", "fnd"))
   )
 Description: Una herramienta rápida y consistente para la disposición de microdatos
     y la visualización de las cifras y estadísticas oficiales de la Universidad
@@ -23,17 +21,26 @@ BugReports: https://github.com/estadisticaun
 Depends: 
     R (>= 3.5)
 Imports: 
-    DT,
-    highcharter,
-    plotly,
-    dygraphs,
-    dplyr,
-    tidyr,
+    DT (>= 0.17),
+    highcharter (>= 0.8.2),
+    plotly (>= 4.9.3),
+    dygraphs (>= 1.1.1.6),
+    leaflet (>= 2.0.4.1),
+    leaflet.extras (>= 1.0.0),
+    dplyr (>= 1.0.4),
+    tidyr (>= 1.1.2),
     magrittr,
-    xts, zoo,
+    scales,
+    xts,
+    zoo,
+    stringr,
     htmltools,
-    RColorBrewer,
+    htmlwidgets,
+    webshot,
+    png,
+    grid,
     grDevices,
+    RColorBrewer,
     utils,
     methods
 Encoding: UTF-8

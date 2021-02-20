@@ -45,7 +45,7 @@ forma horizontal y eliminado al máximo el espacio entre éstas.}
 de la tabla. Puede indicar el color con el nombre (\code{"red"}), código hexadecimal
 (\code{"#FF0000"}) o RGB (\code{rgb(1, 0, 0)}). El valor por defecto es "blanco" (\code{"#FFFFFF"}).}
 
-\item{colorear}{Si es \code{TRUE} indica si desea poner color a la tabla de forma
+\item{colorear}{Si es \code{TRUE} indica que desea poner color a la tabla de forma
 automática, aplicando color a la fuente del periodo y añadiendo un color de
 fondo para los años (\emph{de acuerdo con una paleta predefinida}). El valor por
 defecto es \code{FALSE}.}
@@ -80,7 +80,7 @@ Colorido <- c("#F9CA00", "#AEF133", "#19C89B", "#FF7F50", "#D99588", "#FF4C94",
 Tabla(datos = Consolidado, categoria = "SEDE_NOMBRE_ADM",
       encabezado = "TOTAL DE ESTUDIANTES POR SEDE DE GRADUACI\u00d3N",
       titulo  = "ESTUDIANTES GRADUADOS POR SEDE",
-      leyenda = "Distribuci\u00f3n de estudiantes admitidos (desde el 2009-I al 2020-I) por sede.",
+      leyenda = "Distribuci\u00f3n de estudiantes admitidos (desde el 2009-I al 2020-II) por sede.",
       colorHead = "#8CC63F",
       estilo    = list(PaletaYear = Colorido, PaletaSemestre = c("#7E1BC3", "#C31576"))
       )

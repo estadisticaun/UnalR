@@ -2,6 +2,8 @@
 # de Colombia (en su versión del año 2020) fue extraída del DANE mediante el siguiente enlace:
 # https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/descarga-mgn-marco-geoestadistico-nacional/
 library(tidyverse)
+library(usethis)
+library(readxl)
 library(sf)
 library(sp)
 library(rmapshaper)
@@ -60,4 +62,4 @@ if (file.exists("data-raw/DIVIPOLA_2021.xls")) {
     filter(Tipo_Centro == "CABECERA MUNICIPAL")
 } else { print("En la carpeta de datos sin procesar (data-raw) no existe el archivo 'DIVIPOLA_2021.xls'") }
 
-use_data(Depto_Final, Mpio_Final, DIVIPOLA, Cabeceras, internal = TRUE, overwrite = TRUE, compress = "xz")
+use_data(Depto_Final, Mpio_Final, Cabeceras, internal = TRUE, overwrite = TRUE, compress = "xz")

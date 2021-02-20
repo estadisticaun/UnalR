@@ -9,5 +9,8 @@ citEntry(
   url      = "https://github.com/estadisticaun/UnalR",
   note     = "http://estadisticas.unal.edu.co/home/, https://unal.edu.co",
   organization = "Universidad Nacional de Colombia",
-  textVersion  = "Jeison Alarcón and Alberto Rodríguez (2021). UnalR: Una implementación de funciones de uso interno. http://estadisticas.unal.edu.co/home/"
+  textVersion  = paste("Jeison Alarcón and Alberto Rodríguez (2021).",
+                       "UnalR: Una implementación de funciones de uso interno.",
+                       "R package version 0.0.0.9000.",
+                       "URL http://estadisticas.unal.edu.co/home/")
 )

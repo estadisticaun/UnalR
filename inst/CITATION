@@ -2,7 +2,7 @@ citHeader("To cite UnalR in publications use:")
 
 citEntry(
   entry    = "Manual",
-  title    = "UnalR: Una implementación de funciones de uso interno",
+  title    = "{UnalR}: Una implementación de funciones de uso interno",
   author   = "Jeison Alarcón and Alberto Rodríguez",
   address  = "Carrera 45 N 26-85 - Edificio Uriel Gutiérrez. Bogotá D.C.,  Colombia",
   year     = "2021",

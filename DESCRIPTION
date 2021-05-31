@@ -33,6 +33,8 @@ Imports:
     scales,
     xts,
     zoo,
+    sf,
+    sp,
     stringr,
     htmltools,
     htmlwidgets,

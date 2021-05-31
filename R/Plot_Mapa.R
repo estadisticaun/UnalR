@@ -133,7 +133,7 @@
 #'           colores = list(Deptos = c("#6812F2", "#5769F6", "#F6ED0D", "#EE6115", "#EC2525"),
 #'                          Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E"))
 #'           )
-#'
+#' \dontrun{
 #' if (require("UnalData") && require("dplyr") && require("magrittr")) {
 #'   UnalData::SaberPro %>%
 #'     select(Code_Dept     = COD_DEP_NAC,
@@ -163,7 +163,7 @@
 #'               showSedes     = FALSE
 #'               )
 #' }
-#'
+#' }
 #' @export
 #'
 #' @import leaflet
@@ -172,7 +172,10 @@
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_to_title
 #' @importFrom htmltools HTML
+#' @importFrom stats median sd var
 #' @importFrom methods missingArg
+#' @importFrom sp coordinates
+#' @importFrom sf st_point_on_surface st_as_sf
 Plot.Mapa <- function(depto, mpio, estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "Min", "Max"),
                       variable = NA, tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"), titulo, naTo0 = TRUE,
                       centroideMapa = "CUNDINAMARCA", zoomMapa = 6, baldosas, cortes, colores, showSedes = TRUE,
@@ -317,11 +320,11 @@ Plot.Mapa <- function(depto, mpio, estadistico = c("Conteo", "Promedio", "Median
 
     Comodin <- "%g"
   } else {
-    Poly_Dept_ShowStatistic <- Polygons_Depto@data$Statistic %>% replace(., is.na(.), "Sin Información")
-    Poly_Dept_ShowN         <- Polygons_Depto@data$n %>% replace(., is.na(.), "Sin Información")
+    Poly_Dept_ShowStatistic <- Polygons_Depto@data$Statistic %>% replace(., is.na(.), "Sin Informaci\u00f3n")
+    Poly_Dept_ShowN         <- Polygons_Depto@data$n %>% replace(., is.na(.), "Sin Informaci\u00f3n")
 
-    Poly_Mpio_ShowStatistic <- Polygons_Mpio@data$Statistic %>% replace(., is.na(.), "Sin Información")
-    Poly_Mpio_ShowN         <- Polygons_Mpio@data$n %>% replace(., is.na(.), "Sin Información")
+    Poly_Mpio_ShowStatistic <- Polygons_Mpio@data$Statistic %>% replace(., is.na(.), "Sin Informaci\u00f3n")
+    Poly_Mpio_ShowN         <- Polygons_Mpio@data$n %>% replace(., is.na(.), "Sin Informaci\u00f3n")
 
     Comodin <- "%s"
   }

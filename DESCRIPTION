@@ -29,6 +29,8 @@ Imports:
     leaflet.extras (>= 1.0.0),
     dplyr (>= 1.0.4),
     tidyr (>= 1.1.2),
+    forcats (>= 0.5.1),
+    rlang (>= 0.4.11),
     magrittr,
     scales,
     xts,

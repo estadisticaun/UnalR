@@ -119,7 +119,7 @@ Plot.Series <- function(datos, categoria, colores, titulo = "", labelX = "Period
   if(missingArg(datos) || missingArg(categoria)) {
     stop("\u00a1Por favor introduzca un conjunto de datos y una categor\u00eda dentro de la columna 'Variable'!", call. = FALSE)
   }
-  categoria <- toupper(categoria)
+  # categoria <- toupper(categoria)
   if (!(categoria %in% datos$Variable)) {
     stop("\u00a1Por favor introduzca una categor\u00eda que se encuentra dentro de la columna 'Variable'!", call. = FALSE)
   }
@@ -172,17 +172,17 @@ Plot.Series <- function(datos, categoria, colores, titulo = "", labelX = "Period
     Spanish.Highcharter()
     if(!(missingArg(estilo) || is.null(estilo$hc.Tema))) {
       ThemeHC <- switch(estilo$hc.Tema,
-                        "1" = hc_theme_538(),
-                        "2" = hc_theme_alone(),
-                        "3" = hc_theme_economist(),
-                        "4" = hc_theme_ffx(),
-                        "5" = hc_theme_flat(),
-                        "6" = hc_theme_ggplot2(),
-                        "7" = hc_theme_google(),
-                        "8" = hc_theme_monokai(),
-                        "9" = hc_theme_darkunica(),
-                        "10" = hc_theme_gridlight()
-      )
+                        "1"  = hc_theme_ffx(),
+                        "2"  = hc_theme_google(),
+                        "3"  = hc_theme_538(),
+                        "4"  = hc_theme_ggplot2(),
+                        "5"  = hc_theme_economist(),
+                        "6"  = hc_theme_sandsignika(),
+                        "7"  = hc_theme_ft(),
+                        "8"  = hc_theme_superheroes(),
+                        "9"  = hc_theme_flatdark(),
+                        "10" = hc_theme_flat()
+                        )
     } else { ThemeHC <- hc_theme_flat() }
     BoxInfo <- ifelse(!(missingArg(estilo) || is.null(estilo$hc.BoxInfo)), estilo$hc.BoxInfo, TRUE)
 
@@ -227,8 +227,8 @@ Plot.Series <- function(datos, categoria, colores, titulo = "", labelX = "Period
                  backgroundColor = hex_to_rgba("#BAAEAE", 0.7),
                  borderColor = "#6D6666", borderWidth = 5, useHTML = TRUE) %>%
       hc_add_theme(ThemeHC)
-
-    if (!missingArg(estilo) && estilo$hc.Slider==TRUE) {
+    
+    if (!missingArg(estilo) && "hc.Slider"%in%names(estilo) && estilo$hc.Slider) {
       PlotSeries <- PlotSeries %>%
         hc_navigator(height = 15, margin = 5, maskFill = "rgba(255,16,46,0.6)",
                      enabled = TRUE, series = list(color     = "#999999",

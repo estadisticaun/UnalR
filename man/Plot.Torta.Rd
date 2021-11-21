@@ -11,6 +11,7 @@ Plot.Torta(
   periodo,
   colores,
   titulo = "",
+  label = "",
   addPeriodo = TRUE,
   libreria = c("highcharter", "plotly"),
   estilo = NULL
@@ -19,34 +20,40 @@ Plot.Torta(
 \arguments{
 \item{datos}{Un data frame.}
 
-\item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
+\item{categoria}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 
 \item{ano}{Valor numérico que indica el año de interés para realizar el gráfico.
-Si solo se introduce el año, pero no el período, se calculará independiente del
-semestre (\emph{tomando ambos}).}
+Si solo se introduce el año, pero no el período, se calculará independiente
+del semestre (\emph{tomando ambos}).}
 
 \item{periodo}{Valor numérico que indica el período o semestre de interés para
-realizar el gráfico. Si solo se introduce el período, pero no el año, se calculará
-en base a todos los años disponibles en \code{datos}.}
+realizar el gráfico. Si solo se introduce el período, pero no el año, se
+calculará en base a todos los años disponibles en \code{datos}.}
 
 \item{colores}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 
 \item{titulo}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 
-\item{addPeriodo}{Si es \code{TRUE} (valor predeterminado ssi se introduce los argumentos
-\code{ano} y \code{periodo} simultáneamente) concatenará al título introducido una cadena
-de caracteres indicando entre paréntesis el "año-periodo" insertado.}
+\item{label}{Cadena de caracteres indicando la etiqueta a la que hace referencia
+el plot. Por defecto se emplea el rótulo "Número de ".}
 
-\item{libreria}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{addPeriodo}{Si es \code{TRUE} (\emph{valor predeterminado ssi se introduce los
+argumentos \code{ano} y \code{periodo} simultáneamente}) concatenará al título introducido
+una cadena de caracteres indicando entre paréntesis el "año-periodo" insertado.}
+
+\item{libreria}{Cadena de caracteres que indica el paquete con el cual se realizará
+el plot. Los valores permitidos son \code{"highcharter"} (\emph{valor predeterminado})
+y \code{"plotly"}. Los valores se emparejarán parcialmente.}
 
 \item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
-de acuerdo con la librería específica para graficar la torta y cuyo objetivo es
-personalizar pequeños detalles de ésta.
+de acuerdo con la librería específica para graficar la torta y cuyo objetivo
+es personalizar pequeños detalles de ésta.
 \itemize{
-\item \code{LegendTitle}, \code{hc.Tema}, \code{hc.Credits} y \code{ply.Credits}: Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}
-\item \code{ply.Leyenda}: Por defecto la gráfica muestra la legenda fuera del grafico de
-pie, si se introduce la cadena de texto "inside" se resumirá toda la información
-dentro del pie.
+\item \code{LegendTitle}, \code{hc.Tema}, \code{hc.Credits} y \code{ply.Credits}: Igual uso que en
+\code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{ply.Legend}: Por defecto la gráfica muestra la leyenda fuera del gráfico
+de pie, si se introduce la cadena de texto "inside" se resumirá toda la
+información dentro del pie.
 }}
 }
 \value{
@@ -55,10 +62,10 @@ retornado será un "htmlwidget" y dependiendo de la librería usada pertenecerá
 adicionalmente a la clase "highchart" o "plotly".
 }
 \description{
-Esta función permite mostrar de forma interactiva una descripción compacta y general
-de una variable con sus respectivas categorías. Dicho diagrama se puede representar
-usando dos diferentes librerías que son \code{Highcharter} y \code{Plotly}, las cuales usan
-internamente \code{JavaScript}.
+Esta función permite mostrar de forma interactiva una descripción compacta y
+general de una variable con sus respectivas categorías. Dicho diagrama se puede
+representar usando dos diferentes librerías que son \code{Highcharter} y \code{Plotly},
+las cuales usan internamente \code{JavaScript}.
 }
 \details{
 Al usar el paquete \code{Highcharter} y usar las opciones de descarga, el nombre del
@@ -72,31 +79,36 @@ bueno para juzgar medidas lineales y malo para juzgar áreas relativas. Un gráf
 de barras o un gráfico de puntos es una forma preferible de mostrar este tipo de datos.
 }
 \examples{
-ano <- 2020; semestre <- 2
 col <- c("#F15A24", "#8CC63F")
-Msj <- "Distribuci\u00f3n de estudiantes admitidos en el segundo periodo acad\u00e9mico del 2020."
-Plot.Torta(datos      = Consolidado,
-           categoria  = "TIPO_NIVEL",
-           ano        = ano,
-           periodo    = semestre,
-           colores    = col,
-           titulo     = "DISTRIBUCI\u00d3N DE GRADUADOS POR MODALIDAD DE FORMACI\u00d3N",
-           addPeriodo = TRUE,
-           libreria   = "highcharter",
-           estilo     = list(LegendTitle = "\u00c9sta es una descripci\u00f3n para la leyenda:",
-                             hc.Tema = 4, hc.Credits = Msj)
-           )
-Plot.Torta(datos      = Consolidado,
-           categoria  = "TIPO_NIVEL",
-           ano        = ano,
-           periodo    = semestre,
-           colores    = col,
-           titulo     = "DISTRIBUCI\u00d3N DE GRADUADOS POR MODALIDAD DE FORMACI\u00d3N",
-           addPeriodo = FALSE,
-           libreria   = "plotly",
-           estilo     = list(ply.Leyenda = "inside",
-                             ply.Credits = list(x = 0.62, y = 1.1,
-                                                text = paste0("<b>", Msj, "</b>")))
-           )
+Msj <- "Distribuci\u00f3n de estudiantes gradados en el primer periodo acad\u00e9mico del 2021."
+Txt <- "DISTRIBUCI\u00d3N DE GRADUADOS POR MODALIDAD DE FORMACI\u00d3N"
+Plot.Torta(
+  datos     = ejConsolidadoGrad,
+  categoria = "TIPO_NIVEL",
+  ano       = 2021,
+  periodo   = 1,
+  colores   = col,
+  titulo    = Txt,
+  label     = "Graduados",
+  libreria  = "highcharter",
+  estilo    = list(
+    LegendTitle = "\u00c9sta es una descripci\u00f3n para la leyenda:",
+    hc.Tema = 7, hc.Credits = Msj
+  )
+)
+
+Msj <- "Distribuci\u00f3n hist\u00f3rica de estudiantes gradados (desde el 2009-I al 2021-I)."
+Plot.Torta(
+  datos     = ejConsolidadoGrad,
+  categoria = "TIPO_NIVEL",
+  colores   = col,
+  titulo    = Txt,
+  libreria  = "plotly",
+  estilo    = list(
+    ply.Legend = "inside", ply.Credits = list(
+      x = 0.66, y = 1.1, text = paste0("<b>", Msj, "</b>")
+    )
+  )
+)
 
 }

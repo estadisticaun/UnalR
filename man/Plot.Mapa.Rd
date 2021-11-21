@@ -8,11 +8,13 @@ el paquete \code{Leaflet}}
 Plot.Mapa(
   depto,
   mpio,
-  estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "Min", "Max"),
+  estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min",
+    "Max"),
   variable = NA,
   tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"),
   titulo,
   naTo0 = TRUE,
+  colNA = "#EEEEEE",
   centroideMapa = "CUNDINAMARCA",
   zoomMapa = 6,
   baldosas,
@@ -29,46 +31,51 @@ Plot.Mapa(
 }
 \arguments{
 \item{depto}{Vector numérico que contiene los códigos de los departamentos, de
-acuerdo con la codificación de la División Político Administrativa de Colombia
+acuerdo con la codificación de la División Político-Administrativa de Colombia
 (\emph{DIVIPOLA}) dispuesta por el \code{DANE}.}
 
-\item{mpio}{Vector numérico que contiene los códigos de los municipios, de acuerdo
-con la codificación de la División Político Administrativa de Colombia (\emph{DIVIPOLA})
-dispuesta por el \code{DANE}.}
+\item{mpio}{Vector numérico que contiene los códigos de los municipios, de
+acuerdo con la codificación de la División Político-Administrativa de Colombia
+(\emph{DIVIPOLA}) dispuesta por el \code{DANE}.}
 
-\item{estadistico}{Cadena de caracteres que indica el estadístico a graficar en
-el mapa. Los valores permitidos son "Conteo" (valor predeterminado), "Promedio",
-"Mediana", "Varianza", "SD", "Min" y "Max". Para el caso en que la estadística
-a calcular sea el conteo no es necesario (\emph{no se usará}) especificar dicho vector.}
+\item{estadistico}{Cadena de caracteres que indica el estadístico a graficar
+en el mapa. Los valores permitidos son "Conteo" (\emph{valor predeterminado}),
+"Promedio", "Mediana", "Varianza", "SD", "CV", "Min" y "Max".}
 
 \item{variable}{Vector numérico cuya función es servir como variable auxiliar
-con la cual se calculará el estadístico previamente seleccionado.}
+con la cual se calculará el estadístico previamente seleccionado. Para el
+caso en que la estadística a calcular sea el conteo no es necesario
+(\emph{no se usará}) especificar dicho vector.}
 
-\item{tipo}{Cadena de caracteres que indica el tipo de mapa a graficar. Los valores
-permitidos son "Deptos", "SiNoMpios", "Mpios" y "DeptoMpio" (valor predeterminado).
-Se emparejará parcialmente.}
+\item{tipo}{Cadena de caracteres que indica el tipo de mapa a graficar. Los
+valores permitidos son "Deptos", "SiNoMpios", "Mpios" y "DeptoMpio"
+(\emph{valor predeterminado}). Se emparejará parcialmente.}
 
-\item{titulo}{Cadena de caracteres indicando la segregación que presenta el mapa
-y el periodo al que hace referencia éste, separados por un espacio, por ejemplo,
-"Admitidos 2021-I".}
+\item{titulo}{Cadena de caracteres indicando la segregación que presenta el
+mapa y el periodo al que hace referencia éste, separados por un espacio, por
+ejemplo, "Admitidos 2021-I".}
 
-\item{naTo0}{Si es \code{TRUE} (valor predeterminado) los valores introducidos como
-\code{NA} (\emph{not available}) se cambiarán por el valor de 0. Ajústelo a \code{FALSE} para
-que no se realice tal cambio y mostrar en la caja de información la leyenda
-"Sin Información".}
+\item{naTo0}{Si es \code{TRUE} (\emph{valor predeterminado}) los valores introducidos
+como \code{NA} (\emph{not available}) se cambiarán por el valor de 0. Ajústelo a \code{FALSE}
+para que no se realice tal cambio y mostrar en la caja de información la
+leyenda "Sin Información".}
+
+\item{colNA}{Cadena de caracteres indicando el color que tendrá la categoría
+\code{NA} (\emph{si esta se presenta}). El valor por defecto es un gris muy claro.}
 
 \item{centroideMapa}{Cadena de caracteres indicando el departamento que servirá
 de centroide al momento de graficar el mapa. El valor por defecto es "CUNDINAMARCA".
 Se emparejará parcialmente.}
 
-\item{zoomMapa}{Valor numérico que indica el nivel de zoom del mapa (usado por
-la función \link[leaflet:map-methods]{setView()}). El valor por defecto es 6, entre
+\item{zoomMapa}{Valor numérico que indica el nivel de zoom del mapa (\emph{usado por
+la función} \link[leaflet:map-methods]{setView()}). El valor por defecto es 6, entre
 mayor sea su valor más zoom se aplicará al mapa.}
 
 \item{baldosas}{Vector de caracteres indicando los mapas base con los que se
-realizará el mapa, sean los popularizados por Google Maps o por terceros. Los
-valores aceptados son los admitidos por la función \link[leaflet:addProviderTiles]{addProviderTiles()},
-asimismo los valores por defecto son \code{c("CartoDB.Positron", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")},
+realizará el mapa, sean los popularizados por Google Maps o por terceros.
+Los valores aceptados son los admitidos por la función
+\link[leaflet:addProviderTiles]{addProviderTiles()}, así mismo los valores por
+defecto son \code{c("CartoDB.Positron", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")},
 algunos otros valores pueden ser:
 \itemize{
 \item "Stamen.Toner"
@@ -86,50 +93,51 @@ algunos otros valores pueden ser:
 
 La lista completa la puede consultar \href{http://leaflet-extras.github.io/leaflet-providers/preview/index.html}{aquí}}
 
-\item{cortes}{Vector numérico indicando los cortes con los cuales se crearán los
-intervalos. No aplica para el tipo de mapa "SiNoMpios", pues este es binario.
-Para el tipo de mapa "DeptoMpio" se debe pasar una lista de la siguiente manera
-\code{list(Deptos = c(), Mpios = c())}, pues requiere dos cortes, uno para departamentos
-y otro para municipios.}
+\item{cortes}{Vector numérico indicando los cortes con los cuales se crearán
+los intervalos. No aplica para el tipo de mapa "SiNoMpios", pues este es
+binario. Para el tipo de mapa "DeptoMpio" se debe pasar una lista de la
+siguiente manera \code{list(Deptos = c(), Mpios = c())}, pues requiere dos cortes,
+uno para departamentos y otro para municipios.}
 
 \item{colores}{Vector de caracteres indicando los colores para cada uno de los
-intervalos con los que cuenta el mapa. Si no se introduce algún vector se usará
-una paleta predetermina dependiendo del tipo de mapa.}
+intervalos con los que cuenta el mapa. Si no se introduce algún vector se
+usará una paleta predeterminada dependiendo del tipo de mapa.}
 
-\item{showSedes}{Si es \code{TRUE} (valor predeterminado) en el control de capas
-(usado en la función \link[leaflet:addLayersControl]{addLayersControl()}) aparecerá
-el grupo destinado a mostrar o no la ubicación de las distintas sedes de la
-Universidad Nacional de Colombia. Ajústelo a \code{FALSE} para que en el control de
-capas no aparezca dicha opción.}
+\item{showSedes}{Si es \code{TRUE} (\emph{valor predeterminado}) en el control de capas
+(\emph{usado en la función} \link[leaflet:addLayersControl]{addLayersControl()})
+aparecerá el grupo destinado a mostrar o no la ubicación de las distintas
+sedes de la Universidad Nacional de Colombia. Ajústelo a \code{FALSE} para que en
+el control de capas no aparezca dicha opción.}
 
-\item{colSedes}{Vector de caracteres (\emph{de longitud 9}) indicando los colores del
-icono de ubicación de las distintas sedes de la Universidad Nacional de Colombia.
-Los colores permitidos son los que acepta la función \link[leaflet:makeAwesomeIcon]{makeAwesomeIcon()},
-es decir, "red", "darkred", "lightred", "orange", "beige", "green", "darkgreen",
-"lightgreen", "blue", "darkblue", "lightblue", "purple", "darkpurple", "pink",
-"cadetblue", "white", "gray", "lightgray", "black".}
+\item{colSedes}{Vector de caracteres (\emph{de longitud 9}) indicando los colores
+del icono de ubicación de las distintas sedes de la Universidad Nacional de
+Colombia. Los colores permitidos son los que acepta la función
+\link[leaflet:makeAwesomeIcon]{makeAwesomeIcon()}, es decir, "red", "darkred",
+"lightred", "orange", "beige", "green", "darkgreen", "lightgreen", "blue",
+"darkblue", "lightblue", "purple", "darkpurple", "pink", "cadetblue", "white",
+"gray", "lightgray", "black".}
 
 \item{opacidad}{Un número entre \eqn{[0, 1]} que indica la opacidad de las capas.}
 
-\item{colBorde}{Cadena de caracteres indicando el color del borde de los polígonos
-al momento de pasar el cursos sobre él.}
+\item{colBorde}{Cadena de caracteres indicando el color del borde de los
+polígonos al momento de pasar el cursor sobre él.}
 
-\item{compacto}{Si es \code{TRUE} (valor predeterminado) el control de capas se
-representará como un icono que se expande cuando se coloca el cursor sobre él.
-Ajústelo a \code{FALSE} para que el control de capas siempre aparezca en su estado
-expandido.}
+\item{compacto}{Si es \code{TRUE} (\emph{valor predeterminado}) el control de capas se
+representará como un icono que se expande cuando se coloca el cursor sobre
+él. Ajústelo a \code{FALSE} para que el control de capas siempre aparezca en su
+estado expandido.}
 
 \item{textSize}{Valor numérico que indica el tamaño del texto de las etiquetas
 de los municipios. El valor para los departamentos será \eqn{+2px}.}
 
-\item{limpio}{Si es \code{FALSE} (valor predeterminado) se mostrará el MiniMapa, la
-barra de escala y los botones para ver en pantalla completa, retornar zoom y
-localización. Ajústelo a \code{TRUE} si desea omitir dichas herramientas adicionales
+\item{limpio}{Si es \code{FALSE} (\emph{valor predeterminado}) se mostrará el MiniMapa,
+la barra de escala y los botones para ver en pantalla completa, retornar zoom
+y localización. Ajústelo a \code{TRUE} si desea omitir dichas herramientas adicionales
 al mapa.}
 }
 \value{
-Retorna el mapa (objeto widget de HTML) creado mediante \code{Leaflet}, el cual pertenece
-a la clase "leaflet" y "htmlwidget".
+Retorna el mapa (\emph{objeto widget de HTML}) creado mediante \code{Leaflet}, el cual
+pertenece a la clase "leaflet" y "htmlwidget".
 }
 \description{
 Esta función está planeada para facilitar la creación de mapas interactivos
@@ -148,67 +156,84 @@ En los argumentos no se acepta la entrada de objetos espaciales o polígonos.
 }
 \examples{
 if (require("dplyr")) {
-  Graduados <- Graduados \%>\%
-    select(Code_Dept    = COD_DEP_NAC,
-           Code_Mun     = COD_CIU_NAC,
-           Departamento = DEP_NAC,
-           Municipio    = CIU_NAC,
-           Longitud     = LON_CIU_NAC,
-           Latitud      = LAT_CIU_NAC)
+  df <- ejGraduados \%>\%
+    filter(YEAR == 2021) \%>\%
+    select(
+      Code_Dept    = COD_DEP_NAC,
+      Code_Mun     = COD_CIU_NAC,
+      Departamento = DEP_NAC,
+      Municipio    = CIU_NAC,
+      Longitud     = LON_CIU_NAC,
+      Latitud      = LAT_CIU_NAC
+    )
 }
 
-Plot.Mapa(depto    = Graduados$Code_Dept,
-          mpio     = Graduados$Code_Mun,
-          tipo     = "SiNoMpios",
-          titulo   = "Graduados 2020-II",
-          baldosas = c("Esri.WorldPhysical", "Esri.DeLorme", "Esri.WorldShadedRelief", "Esri.WorldTerrain",
-                       "Stamen.Toner", "Stamen.TonerLite", "Stamen.TonerLines", "Esri.OceanBasemap"),
-          colores  = c("#FF0071", "#00BCB5"),
-          colSedes = rep("green", 9),
-          opacidad = 0.4,
-          compacto = FALSE,
-          textSize = 16,
-          limpio   = TRUE
-          )
+Plot.Mapa(
+  depto    = df$Code_Dept,
+  mpio     = df$Code_Mun,
+  tipo     = "SiNoMpios",
+  titulo   = "Graduados 2021-I",
+  baldosas = c(
+    "Esri.WorldPhysical", "Esri.DeLorme", "Esri.WorldShadedRelief", "Esri.WorldTerrain",
+    "Stamen.Toner", "Stamen.TonerLite", "Stamen.TonerLines", "Esri.OceanBasemap"
+  ),
+  colores  = c("#10F235", "#00BCB5"),
+  colSedes = rep("green", 9),
+  opacidad = 0.6,
+  colBorde = "#FF4D00",
+  compacto = FALSE,
+  textSize = 16,
+  limpio   = TRUE
+)
 
-Plot.Mapa(depto   = Graduados$Code_Dept,
-          mpio    = Graduados$Code_Mun,
-          tipo    = "DeptoMpio",
-          titulo  = "Graduados 2020-II",
-          cortes  = list(Deptos = c(0, 10, 20, 50, 500, Inf),
-                         Mpios  = c(0, 1, 5, 10, 100, Inf)),
-          colores = list(Deptos = c("#6812F2", "#5769F6", "#F6ED0D", "#EE6115", "#EC2525"),
-                         Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E"))
-          )
-\dontrun{
-if (require("UnalData") && require("dplyr") && require("magrittr")) {
-  UnalData::SaberPro \%>\%
-    select(Code_Dept     = COD_DEP_NAC,
-           Code_Mun      = COD_CIU_NAC,
-           Edad          = EDAD_MOD,
-           PBM           = PBM_ORIG,
-           ScoreGlobal   = PUNTAJE_GLOBAL,
-           ScoreCompCiud = PUNT_COMP_CIUD,
-           ScoreComuEscr = PUNT_COMU_ESCR,
-           ScoreIngles   = PUNT_INGLES,
-           ScoreLectCrit = PUNT_LECT_CRIT,
-           ScoreRazCuant = PUNT_RAZO_CUANT
-           ) \%$\%
-    Plot.Mapa(depto         = Code_Dept,
-              mpio          = Code_Mun,
-              estadistico   = "Promedio",
-              variable      = ScoreGlobal,
-              tipo          = "DeptoMpio",
-              titulo        = "P.Global 2020-2",
-              naTo0         = FALSE,
-              centroideMapa = "ANTIOQUIA",
-              zoomMapa      = 8,
-              cortes        = list(Deptos = c(0, 155, 170, 180, 185, Inf),
-                                   Mpios  = c(0, 50, 178, 200, 250, Inf)),
-              colores       = list(Deptos = c("#6812F2", "#5769F6", "#F6ED0D", "#EE6115", "#EC2525"),
-                                   Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")),
-              showSedes     = FALSE
-              )
+Plot.Mapa(
+  depto   = df$Code_Dept,
+  mpio    = df$Code_Mun,
+  tipo    = "DeptoMpio",
+  titulo  = "Graduados 2020-II",
+  cortes  = list(
+    Deptos = c(0, 10, 20, 50, 500, Inf), Mpios = c(0, 1, 5, 10, 100, Inf)
+  ),
+  colores = list(
+    Deptos = c("#6812F2", "#5769F6", "#F6ED0D", "#EE6115", "#EC2525"),
+    Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")
+  )
+)
+
+if (require("dplyr") && require("magrittr")) {
+  ejSaberPro2020 \%>\%
+    select(
+      Code_Dept = COD_DEP_NAC,
+      Code_Mun  = COD_CIU_NAC,
+      Edad      = EDAD_MOD,
+      PBM       = PBM_ORIG,
+      ScoreGlobal   = PUNTAJE_GLOBAL,
+      ScoreCompCiud = PUNT_COMP_CIUD,
+      ScoreComuEscr = PUNT_COMU_ESCR,
+      ScoreIngles   = PUNT_INGLES,
+      ScoreLectCrit = PUNT_LECT_CRIT,
+      ScoreRazCuant = PUNT_RAZO_CUANT
+    ) \%$\%
+    Plot.Mapa(
+      depto         = Code_Dept,
+      mpio          = Code_Mun,
+      estadistico   = "Mediana",
+      variable      = ScoreGlobal,
+      tipo          = "DeptoMpio",
+      titulo        = "P.Global 2020",
+      naTo0         = FALSE,
+      colNA         = "#472985",
+      centroideMapa = "ANTIOQUIA",
+      zoomMapa      = 8,
+      cortes        = list(
+        Deptos = c(0, 155, 170, 180, 185, Inf), Mpios = c(0, 50, 178, 200, 250, Inf)
+      ),
+      colores       = list(
+        Deptos = c("#FF7D5A", "#FDBD7D", "#E5DF73", "#63D2A8", "#0055A1"),
+        Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")
+      ),
+      showSedes     = FALSE
+    )
 }
-}
+
 }

@@ -6,9 +6,9 @@
 #' internamente los paquetes `webshot`, `htmlwidgets`, `png` y `grid` para poder
 #' llevar a cabo su propósito.
 #'
-#' @param HTML_Widget Widget HTML a ser mostrado de forma estática.
-#' @param Height Altura de la imagen estática a retornar.
-#' @param PrimeraVez Si es `FALSE` (valor predeterminado) no se instalará `PhantomJS`.
+#' @param widgetHTML Widget `HTML` a ser mostrado de forma estática.
+#' @param height Altura de la imagen estática a retornar.
+#' @param primeraVez Si es `FALSE` (*valor predeterminado*) no se instalará `PhantomJS`.
 #'   Éste es necesario instalarlo una única vez, por lo cual si es la primera vez
 #'   que corre la función deberá indicar el argumento con el valor `TRUE`, después
 #'   de esto omita este argumento y deje su valor por defecto.
@@ -17,40 +17,54 @@
 #'
 #' @details
 #' No es necesario especificar el número del factor de zoom. El factor de zoom por
-#' defecto es 5, el cual dará como resultado cinco veces más de píxeles vertical y
-#' horizontalmente. Este valor fue seleccionado debido a que es el óptimo, un valor
-#' mayor ocasiona un tiempo de ejecución excesivamente alto y poca ganancia en cuanto
-#' a calidad, con un valor menor se tiene una pérdida considerable de calidad.
+#' defecto es 5, el cual dará como resultado cinco veces más de píxeles vertical
+#' y horizontalmente. Este valor fue seleccionado debido a que es el óptimo, un
+#' valor mayor ocasiona un tiempo de ejecución excesivamente alto y poca ganancia
+#' en cuanto a calidad, con un valor menor se tiene una pérdida considerable de
+#' calidad.
 #'
-#' Si se especifican tanto el ancho como el alto, es probable que la imagen se distorsione.
-#' Por lo tanto, el único argumento variable será la altura de la imagen, dejando el
-#' ancho como un argumento adaptativo dependiendo del ancho disponible.
+#' Si se especifican tanto el ancho como el alto, es probable que la imagen se
+#' distorsione. Por lo tanto, el único argumento variable será la altura de la
+#' imagen, dejando el ancho como un argumento adaptativo dependiendo del ancho
+#' disponible.
 #'
 #' El tiempo de espera antes de tomar una captura de pantalla, en segundos, es de
-#' \eqn{1s}. Este valor debido a que se necesita un retraso mayor para que los grafico
-#' generados por `Highcharter` se muestren correctamente.
+#' \eqn{1s}. Este valor es debido a que se necesita un retraso mayor para que los
+#' gráficos generados por `Highcharter` se muestren correctamente.
 #'
 #' @return
 #' Una imagen estática.
 #'
 #' @examples
 #' \dontrun{
-#' col <- c("#29ABE2", "#8CC63F", "#CC241D",
-#'          "#FF3673", "#0071BC", "#F15A24",
-#'          "#FBB03B", "#93278F", "#8A381A")
-#' A <- Plot.Series(datos = Consolidado, categoria = "SEDE_NOMBRE_ADM", colores = col)
-#' StaticPlot(A)
+#' misColores <- c(
+#'   "#29ABE2", # AZUL CLARO  | Amazonia
+#'   "#8CC63F", # VERDE       | Bogota
+#'   "#CC241D", # ROJO        | Caribe
+#'   "#0071BC", # AZUL VIVO   | Manizales
+#'   "#F15A24", # NARANJA     | Medellin
+#'   "#FBB03B", # AMARILLO    | Orinoquia
+#'   "#93278F", # MORADO      | Palmira
+#'   "#8A381A"  # GRIS        | Tumaco
+#' )
+#' figure <- Plot.Series(
+#'   datos     = ejConsolidadoGrad,
+#'   categoria = "SEDE_NOMBRE_ADM",
+#'   colores   = misColores,
+#'   libreria  = "highcharter"
+#' )
+#' StaticPlot(figure, primeraVez = TRUE)
 #'
-#' ano <- 2020; semestre <- 2
-#' col <- c("#116BEE", "#E62272")
-#' B <- Plot.Torta(datos     = Consolidado,
-#'                 categoria = "SEXO",
-#'                 ano       = ano,
-#'                 periodo   = semestre,
-#'                 colores   = col,
-#'                 titulo    = "DISTRIBUCI\u00d3N DE GRADUADOS POR SEXO",
-#'                 libreria  = "highcharter")
-#' StaticPlot(B)
+#' figure2 <- Plot.Torta(
+#'   datos     = ejConsolidadoGrad,
+#'   categoria = "SEXO",
+#'   ano       = 2021,
+#'   periodo   = 1,
+#'   colores   = c("#116BEE", "#E62272"),
+#'   titulo    = "DISTRIBUCI\u00d3N DE GRADUADOS POR SEXO",
+#'   libreria  = "highcharter"
+#' )
+#' StaticPlot(figure2)
 #' }
 #'
 #' @export
@@ -59,16 +73,17 @@
 #' @importFrom webshot webshot
 #' @importFrom png readPNG
 #' @importFrom grid grid.raster
-StaticPlot <- function(HTML_Widget, Height = 500, PrimeraVez = FALSE, ...) {
+StaticPlot <- function(widgetHTML, height = 500, primeraVez = FALSE, ...) {
 
   # https://stackoverflow.com/questions/57581268/embed-plotly-into-pdf-rmarkdown
-  if (PrimeraVez) { webshot::install_phantomjs() }
+  if (primeraVez) { webshot::install_phantomjs() }
 
-  htmlwidgets::saveWidget(widget = HTML_Widget, file = "Temp_Plot.html")
-  webshot::webshot(url = "Temp_Plot.html", file = "Temp_Plot.png", delay = 1, zoom = 5, vheight = Height, ...)
+  htmlwidgets::saveWidget(widget = widgetHTML, file = "Temp_Plot.html")
+  webshot::webshot(url = "Temp_Plot.html", file = "Temp_Plot.png", delay = 1, zoom = 5, vheight = height, ...)
 
   StaticImage <- png::readPNG(source = "Temp_Plot.png")
-  file.remove("Temp_Plot.html"); file.remove("Temp_Plot.png")
+  file.remove("Temp_Plot.html")
+  file.remove("Temp_Plot.png")
 
   return(grid::grid.raster(StaticImage))
 }

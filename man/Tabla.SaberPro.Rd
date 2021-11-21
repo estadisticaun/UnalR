@@ -2,8 +2,8 @@
 % Please edit documentation in R/Tabla_SaberPro.R
 \name{Tabla.SaberPro}
 \alias{Tabla.SaberPro}
-\title{Cree fácilmente un widget para visualizar los resultados del Saber Pro en tablas
-HTML usando el paquete \code{DT}}
+\title{Cree fácilmente un widget para visualizar los resultados de la prueba Saber Pro
+en tablas HTML usando el paquete \code{DT}.}
 \usage{
 Tabla.SaberPro(
   datos,
@@ -21,13 +21,13 @@ Tabla.SaberPro(
 \arguments{
 \item{datos}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
 
-\item{variable}{Análogo al parámetro \code{categoria} de la función \code{\link[=Tabla]{Tabla()}}}
+\item{variable}{Análogo al argumento \code{categoria} de la función \code{\link[=Tabla]{Tabla()}}}
 
 \item{encabezado}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
 
-\item{leyenda}{Igual uso que en \code{\link[=Tabla]{Tabla()}} con la excepción de que, si no se introduce
-ningún valor, el valor por defecto será una nota explicando a que hace referencia
-los valores y columnas de la tabla.}
+\item{leyenda}{Igual uso que en \code{\link[=Tabla]{Tabla()}} con la excepción de que, si no se
+introduce ningún valor, el valor por defecto será una nota explicando a qué
+hace referencia los valores y columnas de la tabla.}
 
 \item{tituloPdf}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
 
@@ -41,9 +41,9 @@ los valores y columnas de la tabla.}
 
 \item{estilo}{Una lista compuesta por dos parámetros:
 \itemize{
-\item \code{PaletaYear}: Vector de caracteres que específica los colores de fondo para
+\item \code{PaletaYear}: Vector de caracteres que especifica los colores de fondo para
 los años.
-\item \code{PaletaCategoria}: Vector de caracteres que específica los colores de fuente
+\item \code{PaletaCategoria}: Vector de caracteres que especifica los colores de fuente
 para las distintas categorías de la \code{variable}.
 }}
 }
@@ -51,39 +51,47 @@ para las distintas categorías de la \code{variable}.
 Retorna la tabla creada mediante \code{DT} la cual pertenece a la clase "datatables" y "htmlwidget".
 }
 \description{
-Esta función está diseñada para facilitar la creación de tablas para informes y
-publicaciones produciendo un widget HTML para visualizar un data frame utilizando
+Esta función está diseñada para facilitar la creación de tablas para informes
+y publicaciones produciendo un widget HTML para visualizar un data frame utilizando
 el paquete \code{DT}. La forma en que esta función maneja las cosas por usted significa
-que a menudo no tiene que preocuparse por los pequeños detalles para obtener un
-resultado impresionante y listo para usar.
+que a menudo no tiene que preocuparse por los pequeños detalles para obtener
+un resultado impresionante y listo para usar.
 }
 \details{
-Esta función se basa enteramente del paquete \code{DT}, el cual proporciona una interfaz
-para \code{R} a la biblioteca \code{DataTables} de \code{JavaScript}. Los data frames de \code{R} se
-pueden mostrar como tablas en páginas HTML, proporcionando opciones de filtrado,
-paginación, clasificación y muchas otras características en las tablas.
+Esta función se basa enteramente del paquete \code{DT}, el cual proporciona una
+interfaz para \code{R} a la biblioteca \code{DataTables} de \code{JavaScript}. Los data frames
+de \code{R} se pueden mostrar como tablas en páginas HTML, proporcionando opciones
+de filtrado, paginación, clasificación y muchas otras características en las
+tablas.
 }
 \examples{
 if (require("dplyr")) {
-  VariosYears <- SaberPro \%>\% mutate(YEAR = replace(YEAR, YEAR==2019, 2020)) \%>\% bind_rows(SaberPro)
+  VariosYears <- ejConsolidadoSaberPro2019 \%>\%
+    mutate(YEAR = replace(YEAR, YEAR==2019, 2020)) \%>\%
+    bind_rows(ejConsolidadoSaberPro2019)
 }
 Msj <- "\u00c9sta es una descripci\u00f3n de la tabla diferente al valor por default."
-Tabla.SaberPro(datos      = VariosYears,
-               variable   =  "SEXO",
-               encabezado = "PUNTAJES POR SEXO",
-               leyenda    = Msj,
-               colorHead  = "#FF5B5B",
-               estilo     = list(PaletaYear = c("#F9CA00", "#F68118"),
-                                 PaletaCategoria = c("#2458C5", "#F0006D", "#42C501"))
-               )
-Tabla.SaberPro(datos      = VariosYears,
-               variable   =  "SEDE",
-               encabezado = "PUNTAJES POR SEDE",
-               leyenda    = Msj,
-               colorHead  = "#F9CA00",
-               estilo     = list(PaletaYear = c("#AEF133", "#19EE9F"),
-                                 PaletaCategoria = c("#DD1C1A", "#FF6700", "#7E10DE",
-                                                     "#0096F2", "#42C501"))
-               )
+Tabla.SaberPro(
+  datos      = VariosYears,
+  variable   = "SEXO",
+  encabezado = "PUNTAJES POR SEXO",
+  leyenda    = Msj,
+  colorHead  = "#FF5B5B",
+  estilo     = list(
+    PaletaYear = c("#F9CA00", "#F68118"),
+    PaletaCategoria = c("#2458C5", "#F0006D", "#42C501")
+  )
+)
+Tabla.SaberPro(
+  datos      = VariosYears,
+  variable   = "SEDE",
+  encabezado = "PUNTAJES POR SEDE",
+  leyenda    = Msj,
+  colorHead  = "#F9CA00",
+  estilo     = list(
+    PaletaYear = c("#AEF133", "#19EE9F"),
+    PaletaCategoria = c("#DD1C1A", "#FF6700", "#7E10DE","#0096F2", "#42C501")
+  )
+)
 
 }

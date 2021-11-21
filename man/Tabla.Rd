@@ -22,12 +22,13 @@ Tabla(
 
 \item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
-\item{encabezado}{Cadena de caracteres que describe los distintos niveles de la
-variable \code{categoria}.}
+\item{encabezado}{Cadena de caracteres que describe los distintos niveles de
+la variable \code{categoria}.}
 
-\item{leyenda}{Cadena de caracteres que describe información adicional de la tabla,
-ésta se sitúa en la parte inferior de la tabla de manera centrada, dicho texto
-se visualizará en todas las opciones de descarga. Su valor por defecto es \code{NULL}.}
+\item{leyenda}{Cadena de caracteres que describe información adicional de la
+tabla, ésta se sitúa en la parte inferior de la tabla de manera centrada,
+dicho texto se visualizará en todas las opciones de descarga. Su valor por
+defecto es \code{NULL}.}
 
 \item{tituloPdf}{Cadena de caracteres que proporciona un título a la tabla al
 momento de generar el \code{.pdf} como al darle al botón de imprimir. Su valor por
@@ -37,9 +38,9 @@ defecto es el introducido en el argumento \code{encabezado}.}
 el título y la tabla. Se visualizará tanto al generar el \code{.pdf} como al darle
 al botón de imprimir.}
 
-\item{ajustarNiveles}{Si es \code{TRUE} (valor predeterminado) se buscará optimizar
+\item{ajustarNiveles}{Si es \code{TRUE} (\emph{valor predeterminado}) se buscará optimizar
 el espacio entre las columnas, colocando todos los nombres de las columnas de
-forma horizontal y eliminado al máximo el espacio entre éstas.}
+forma horizontal y eliminando al máximo el espacio entre éstas.}
 
 \item{colorHead}{Cadena de caracteres que indica el color de fondo de la cabecera
 de la tabla. Puede indicar el color con el nombre (\code{"red"}), código hexadecimal
@@ -50,39 +51,41 @@ automática, aplicando color a la fuente del periodo y añadiendo un color de
 fondo para los años (\emph{de acuerdo con una paleta predefinida}). El valor por
 defecto es \code{FALSE}.}
 
-\item{estilo}{Una lista compuesta por dos parámetros:
+\item{estilo}{Una lista compuesta por dos parámetros.
 \itemize{
-\item \code{PaletaYear}: Vector de caracteres que específica los colores de fondo para
+\item \code{PaletaYear}: Vector de caracteres que especifica los colores de fondo para
 los años.
-\item \code{PaletaSemestre}: Vector de caracteres que específica los colores de fuente
+\item \code{PaletaSemestre}: Vector de caracteres que especifica los colores de fuente
 para los periodos (\emph{semestres}).
 }}
 }
 \value{
-Retorna la tabla creada mediante \code{DT} la cual pertenece a la clase "datatables" y "htmlwidget".
+Retorna la tabla creada mediante \code{DT} la cual pertenece a la clase "datatables"
+y "htmlwidget".
 }
 \description{
-Esta función está diseñada para facilitar la creación de tablas para informes y
-publicaciones produciendo un widget HTML para visualizar un data frame utilizando
+Esta función está diseñada para facilitar la creación de tablas para informes
+y publicaciones produciendo un widget HTML para visualizar un data frame utilizando
 el paquete \code{DT}. La forma en que esta función maneja las cosas por usted significa
-que a menudo no tiene que preocuparse por los pequeños detalles para obtener un
-resultado impresionante y listo para usar.
+que a menudo no tiene que preocuparse por los pequeños detalles para obtener
+un resultado impresionante y listo para usar.
 }
 \details{
 Esta función se basa enteramente del paquete \code{DT}, el cual proporciona una interfaz
-para \code{R} a la biblioteca \code{DataTables} de \code{JavaScript}. Los data frames de \code{R} se
-pueden mostrar como tablas en páginas HTML, proporcionando opciones de filtrado,
+para \code{R} a la biblioteca \code{DataTables} de \code{JavaScript}. Los data frames de \code{R}
+se pueden mostrar como tablas en páginas HTML, proporcionando opciones de filtrado,
 paginación, clasificación y muchas otras características en las tablas.
 }
 \examples{
-Colorido <- c("#F9CA00", "#AEF133", "#19C89B", "#FF7F50", "#D99588", "#FF4C94",
-              "#19EE9F", "#9F61F6", "#F24467", "#F68118", "#F9CA00", "#AEF133")
-Tabla(datos = Consolidado, categoria = "SEDE_NOMBRE_ADM",
-      encabezado = "TOTAL DE ESTUDIANTES POR SEDE DE GRADUACI\u00d3N",
-      titulo  = "ESTUDIANTES GRADUADOS POR SEDE",
-      leyenda = "Distribuci\u00f3n de estudiantes admitidos (desde el 2009-I al 2020-II) por sede.",
-      colorHead = "#8CC63F",
-      estilo    = list(PaletaYear = Colorido, PaletaSemestre = c("#7E1BC3", "#C31576"))
-      )
+misColores <- rainbow(length(unique(ejConsolidadoGrad$YEAR)), alpha = 0.5, rev = TRUE)
+Tabla(
+  datos      = ejConsolidadoGrad,
+  categoria  = "SEDE_NOMBRE_ADM",
+  encabezado = "TOTAL DE ESTUDIANTES POR SEDE DE GRADUACI\u00d3N",
+  leyenda    = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
+  tituloPdf  = "ESTUDIANTES GRADUADOS POR SEDE",
+  colorHead  = "#8CC63F",
+  estilo     = list(PaletaYear = misColores, PaletaSemestre = c("#EB0095", "#9D45FD"))
+)
 
 }

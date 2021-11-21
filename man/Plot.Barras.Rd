@@ -2,46 +2,47 @@
 % Please edit documentation in R/Plot_Barras.R
 \name{Plot.Barras}
 \alias{Plot.Barras}
-\title{Cree un gráfico de barras que muestra la información en columnas horizontales o
-verticales y para variables nominales u ordinales con dos diferentes paquetes}
+\title{Cree un gráfico de barras que muestra la información en columnas horizontales
+o verticales y para variables nominales u ordinales con dos diferentes paquetes}
 \usage{
 Plot.Barras(
   datos,
   categoria,
   ano,
   periodo,
+  freqRelativa = FALSE,
   vertical = TRUE,
   ordinal = FALSE,
   colores,
-  libreria = c("highcharter", "plotly"),
   titulo = "",
   labelEje = "Número de Graduados",
   addPeriodo = TRUE,
   textInfo = labelEje,
+  libreria = c("highcharter", "plotly"),
   estilo = NULL
 )
 }
 \arguments{
 \item{datos}{Un data frame.}
 
-\item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
+\item{categoria}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 
 \item{ano}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
 
 \item{periodo}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
 
-\item{vertical}{Si es \code{TRUE} (valor predeterminado) indicará que la orientación
+\item{freqRelativa}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+
+\item{vertical}{Si es \code{TRUE} (\emph{valor predeterminado}) indicará que la orientación
 del gráfico será vertical.}
 
 \item{ordinal}{Si es \code{TRUE} indicará que las categorías de la variable ingresada
-son ordinales (\emph{no nominales}), esto con el fin de ordenar la disposición en el
-que se presentan en el eje del gráfico, el valor por defecto es \code{FALSE}.}
+son ordinales (\emph{no nominales}), esto con el fin de ordenar la disposición en
+el que se presentan en el eje del gráfico, el valor por defecto es \code{FALSE}.}
 
-\item{colores}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
+\item{colores}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 
-\item{libreria}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
-
-\item{titulo}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
+\item{titulo}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 
 \item{labelEje}{Cadena de caracteres indicando la etiqueta del eje \code{X} o \code{Y}
 (\emph{dependiendo de la orientación del gráfico}). Por defecto se emplea el rótulo
@@ -49,66 +50,73 @@ que se presentan en el eje del gráfico, el valor por defecto es \code{FALSE}.}
 
 \item{addPeriodo}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
 
-\item{textInfo}{Cadena de caracteres que especifica el texto que se escribe dentro
-de la caja de información al posar el cursor en alguna barra en el gráfico,
-producido por \code{Highcharter}, el valor por defecto es igual al de \code{labelEje}.}
+\item{textInfo}{Cadena de caracteres que especifica el texto que se escribe
+dentro de la caja de información al posar el cursor en alguna barra en el
+gráfico, producido por \code{Highcharter}, el valor por defecto es igual al de
+\code{labelEje}.}
+
+\item{libreria}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
 
 \item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
-de acuerdo con la librería específica para graficar el plot y cuyo objetivo es
-personalizar pequeños detalles de ésta.
+de acuerdo con la librería específica para graficar el plot y cuyo objetivo
+es personalizar pequeños detalles de ésta.
 \itemize{
-\item \code{hc.Tema} y \code{hc.Credits}: Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}
-\item \code{ply.Credits} y \code{ply.Legend}: Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}
+\item \code{hc.Tema}, \code{hc.Credits} y \code{ply.Credits}: Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{ply.Legend}: Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}
 }}
 }
 \value{
-Retorna el diagrama de barras (\emph{objeto widget de HTML}) creado. La clase del objeto
-retornado será un "htmlwidget" y dependiendo de la librería usada pertenecerá
-adicionalmente a la clase "highchart" o "plotly".
+Retorna el diagrama de barras (\emph{objeto widget de HTML}) creado. La clase del
+objeto retornado será un "htmlwidget" y dependiendo de la librería usada
+pertenecerá adicionalmente a la clase "highchart" o "plotly".
 }
 \description{
 Esta función permite mostrar de forma interactiva un gráfico de barras verticales
 u horizontales cuya longitud/altura es proporcional al valor de la variable
 (\emph{categorías de una variable cualitativa}), lo anterior para ayudar a la creación
-de informes descriptivos y analíticos. Dicho diagrama se puede representar usando
-dos diferentes librerías que son \code{Highcharter} y \code{Plotly}, las cuales usan
-internamente \code{JavaScript}.
+de informes descriptivos y analíticos. Dicho diagrama se puede representar
+usando dos diferentes librerías que son \code{Highcharter} y \code{Plotly}, las cuales
+usan internamente \code{JavaScript}.
 }
 \details{
-Al usar el paquete \code{Highcharter} y usar las opciones de descarga, el nombre del
-archivo descargado será la concatenación del plot graficado y la categoría usada,
-así, por ejemplo, si se graficó el diagrama de barras para la categoría "Nacionalidad"
-el nombre será \code{PlotBarras_Nacionalidad.png}.
+Al usar el paquete \code{Highcharter} y usar las opciones de descarga, el nombre
+del archivo descargado será la concatenación del plot graficado y la categoría
+usada, así, por ejemplo, si se graficó el diagrama de barras para la categoría
+"Nacionalidad" el nombre será \code{PlotBarras_Nacionalidad.png}.
 }
 \examples{
-ano <- 2020; semestre <- 2
 Msj <- "Ac\u00e1 puede ir m\u00e1s informaci\u00f3n acerca del gr\u00e1fico."
-Plot.Barras(datos      = Consolidado,
-            categoria  = "NIVEL",
-            ano        = ano,
-            periodo    = semestre,
-            vertical   = TRUE,
-            ordinal    = TRUE,
-            colores    = heat.colors(5),
-            libreria   = "highcharter",
-            titulo     = "\u00c9STE ES UN T\u00cdTULO PERSONALIZADO",
-            labelEje   = "\u00c9ste es el nombre del eje personalizado",
-            addPeriodo = FALSE,
-            textInfo   = "Este es el texto dentro del InfoBox",
-            estilo     = list(hc.Tema = 1, hc.Credits = Msj)
-            )
-Plot.Barras(datos      = Consolidado,
-            categoria  = "NIVEL",
-            ano        = ano,
-            periodo    = semestre,
-            vertical   = FALSE,
-            ordinal    = FALSE,
-            libreria   = "plotly",
-            titulo     = "\u00c9STE ES UN T\u00cdTULO PERSONALIZADO",
-            labelEje   = "\u00c9ste es el nombre del eje personalizado",
-            addPeriodo = FALSE,
-            estilo     = list(ply.Credits = list(x = 0.35, y = 1.1, text = Msj),
-                              ply.Legend = FALSE)
-            )
+Plot.Barras(
+  datos        = ejConsolidadoGrad,
+  categoria    = "NIVEL",
+  ano          = 2021,
+  periodo      = 1,
+  freqRelativa = TRUE,
+  vertical     = TRUE,
+  ordinal      = TRUE,
+  colores      = RColorBrewer::brewer.pal(5, "Spectral"),
+  titulo       = "GRADUADOS DE ACUERDO CON EL NIVEL DE FORMACI\u00d3N",
+  labelEje     = "Frecuencia Relativa<br>(\% de graduados)",
+  addPeriodo   = TRUE,
+  textInfo     = "Porcentaje de Graduados",
+  libreria     = "highcharter",
+  estilo       = list(hc.Tema = 2, hc.Credits = Msj)
+)
+
+Msj <- "Año 2020, sin segregar por semestre (considerando ambos)."
+Plot.Barras(
+  datos     = ejConsolidadoGrad,
+  categoria = "NIVEL",
+  ano       = 2020,
+  vertical  = FALSE,
+  ordinal   = FALSE,
+  colores   = RColorBrewer::brewer.pal(5, "Set2"),
+  titulo    = "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL",
+  labelEje  = "N\u00famero de Graduados",
+  libreria  = "plotly",
+  estilo    = list(
+    ply.Credits = list(x = 0.45, y = 1.1, text = Msj), ply.Legend = FALSE
+  )
+)
 
 }

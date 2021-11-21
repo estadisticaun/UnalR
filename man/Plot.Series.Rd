@@ -7,6 +7,9 @@
 Plot.Series(
   datos,
   categoria,
+  freqRelativa = FALSE,
+  invertir = FALSE,
+  ylim,
   colores,
   titulo = "",
   labelX = "Periodo",
@@ -20,8 +23,19 @@ Plot.Series(
 
 \item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
-\item{colores}{Cadena de caracteres indicando los colores con los cuales se deben
-colorear cada una de las series correspondiente a cada nivel del parámetro
+\item{freqRelativa}{Si es \code{FALSE} (\emph{valor predeterminado}) la serie graficada
+representará las frecuencias absolutas (\emph{conteo}) más no las relativas (\emph{porcentaje}).}
+
+\item{invertir}{Si es \code{FALSE} (\emph{valor predeterminado}) no se invertirá el eje
+\code{Y}. Establézcalo en \code{TRUE} si desea que en el eje \code{Y} el número más alto es
+el más cercano al origen.}
+
+\item{ylim}{Vector numérico que especifica el límite inferior y superior,
+respectivamente, del eje \code{Y}. Si no se introduce algún valor se mostrará todo
+el rango disponible para dicho eje.}
+
+\item{colores}{Cadena de caracteres indicando los colores con los cuales se
+deben colorear cada una de las series correspondiente a cada nivel del argumento
 \code{categoria}. Si no se introduce algún vector se usará la paleta \code{rainbow} por
 defecto.}
 
@@ -33,42 +47,44 @@ se emplea el rótulo "Periodo".}
 \item{labelY}{Cadena de caracteres indicando la etiqueta del eje \code{Y}.}
 
 \item{libreria}{Cadena de caracteres que indica el paquete con el cual se realizará
-la serie. Los valores permitidos son \code{"highcharter"} (valor predeterminado),
+la serie. Los valores permitidos son \code{"highcharter"} (\emph{valor predeterminado}),
 \code{"plotly"} o \code{"dygraphs"}. Los valores se emparejarán parcialmente.}
 
 \item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
 de acuerdo con la librería especificada para graficar la serie y cuyo objetivo
 es personalizar pequeños detalles de ésta.
 \itemize{
-\item \code{LegendTitle}: Cadena de caracteres indicado un título para la legenda
-(\emph{diferentes niveles del parámetro \code{categorias}}). Se utilizará tanto
+\item \code{LegendTitle}: Cadena de caracteres indicado un título para la leyenda
+(\emph{diferentes niveles del argumento \code{categorias}}). Se utilizará tanto
 en el paquete \code{Highcharter} como en \code{Plotly}.
 \item \code{hc.Tema}: Modifica el tema con el cual se creará la serie. Los posibles
-valores son un número entero entre \eqn{[1, 10]} (\emph{el tema por defecto
-es el número 5, \code{hc_theme_flat()}}), el cual hace referencia a diferentes
-temas disponibles en dicha librería.
-\item \code{hc.Slider}: Si es \code{TRUE} agrega un deslizador/navegador dinámico en la parte
-inferior de la serie. Proporciona herramientas para acercar y alejar partes
-de la serie, así como para desplazarse por el conjunto de datos. El valor por
-defecto es \code{FALSE}.
-\item \code{hc.BoxInfo}: Si es \code{TRUE} (valor predeterminado) la información concerniente
-a cada punto se visualiza conjuntamente en un cuadro, o de forma individual
-(\code{FALSE}) al pasar el cursor.
+valores son un número entero entre \eqn{[1, 10]} el cual hace referencia
+a diferentes temas disponibles en dicha librería (\code{ffx}, \code{google}, \code{tufte},
+\code{538}, \code{ggplot2}, \code{economist}, \code{sandsignika}, \code{ft}, \code{superheroes} y \code{flatdark},
+respectivamente). El tema por defecto, al no ingresar valor alguno, es
+\code{hc_theme_flat()}.
+\item \code{hc.Slider}: Si es \code{TRUE} agrega un deslizador/navegador dinámico en la
+parte inferior de la serie. Proporciona herramientas para acercar y alejar
+partes de la serie, así como para desplazarse por el conjunto de datos. El
+valor por defecto es \code{FALSE}.
+\item \code{hc.BoxInfo}: Si es \code{TRUE} (\emph{valor predeterminado}) la información
+concerniente a cada punto se visualiza conjuntamente en un cuadro, o de
+forma individual (\code{FALSE}) al pasar el cursor.
 \item \code{hc.Credits}: Cadena de caracteres indicando un subtítulo o etiqueta de
 créditos debajo del título principal.
-\item \code{ply.LegendPosition}: Lista que específica la posición y orientación de la
-legenda. Los valores por defecto la ubican centrada verticalmente a la
+\item \code{ply.LegendPosition}: Lista que especifica la posición y orientación de la
+leyenda. Los valores por defecto la ubican centrada verticalmente a la
 derecha del plot, es decir, \code{c(x = 1, y = 0.5, orientation = "v")}.
 \item \code{ply.Interaction}: Cadena de caracteres que determina el modo de las
 interacciones de desplazamiento. Los valores permitidos son "x unified"
-(valor predeterminado), "y unified", "closest", "x", "y" y FALSE.
-\item \code{ply.Credits}: Lista que específica la posición y texto para añadir un
+(\emph{valor predeterminado}), "y unified", "closest", "x", "y" y \code{FALSE}.
+\item \code{ply.Credits}: Lista que especifica la posición y texto para añadir un
 subtítulo o etiqueta de créditos a la serie principal, por ejemplo,
 \code{c(x = 0.2, y = 1, text = "https://...")}.
-\item \code{dyg.LegendWidth}: Un número que indica el ancho (\emph{en píxeles}) que ocupará
-la leyenda. El valor por defecto es 250.
-\item \code{dyg.Resaltar}: Si es \code{FALSE} (valor predeterminado) no se resaltará la serie
-en que se sitúa el cursor.
+\item \code{dyg.LegendWidth}: Un número que indica el ancho (\emph{en píxeles}) que
+ocupará la leyenda. El valor por defecto es 250.
+\item \code{dyg.Resaltar}: Si es \code{FALSE} (\emph{valor predeterminado}) no se resaltará
+la serie en que se sitúa el cursor.
 }}
 }
 \value{
@@ -78,10 +94,10 @@ a la clase "highchart", "plotly" o "dygraphs".
 }
 \description{
 Esta función proporciona excelentes herramientas y opciones para la visualización
-de series de tiempo dinámicas con el objetivo de estudiar la evolución de una o
-varias variables a lo largo del tiempo. Dicha serie interactiva se puede representar
-usando tres diferentes librerías que son \code{Highcharter}, \code{Plotly} y \code{Dygraph}, las
-cuales usan internamente \code{JavaScript}.
+de series de tiempo dinámicas con el objetivo de estudiar la evolución de una
+o varias variables a lo largo del tiempo. Dicha serie interactiva se puede
+representar usando tres diferentes librerías que son \code{Highcharter}, \code{Plotly}
+y \code{Dygraph}, las cuales usan internamente \code{JavaScript}.
 }
 \details{
 Al usar el paquete \code{Highcharter} y usar las opciones de descarga, el nombre del
@@ -90,41 +106,69 @@ así, por ejemplo, si se graficó la serie de tiempo para la categoría "Sede" e
 nombre será \code{PlotSeries_Sede.png}.
 }
 \examples{
-col <- c("#29ABE2", # AZUL CLARO  | Amazonia
-         "#8CC63F", # VERDE       | Bogota
-         "#CC241D", # ROJO        | Caribe
-         "#FF3673", # MORADO CLARO| De la paz
-         "#0071BC", # AZUL VIVO   | Manizales
-         "#F15A24", # NARANJA     | Medellin
-         "#FBB03B", # AMARILLO    | Orinoquia
-         "#93278F", # MORADO      | Palmira
-         "#8A381A") # GRIS        | Tumaco
-Msj <- "Distribuci\u00f3n de estudiantes admitidos (desde el 2009-I al 2020-II) por sede."
-Plot.Series(datos     = Consolidado,
-            categoria = "SEDE_NOMBRE_ADM",
-            colores   = col,
-            titulo    = "EVOLUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR SEDE",
-            labelY    = "N\u00famero de graduados (k: miles)",
-            libreria  = "highcharter",
-            estilo    = list(LegendTitle = "SEDE:", hc.Tema = 4, hc.Slider = TRUE, hc.Credits = Msj)
-            )
-Plot.Series(datos     = Consolidado,
-            categoria = "SEDE_NOMBRE_ADM",
-            colores   = col,
-            titulo    = "EVOLUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR SEDE",
-            labelY    = "N\u00famero de graduados (k: miles)",
-            libreria  = "plotly",
-            estilo    = list(LegendTitle = "SEDE:", ply.Interaction = "closest",
-                             ply.LegendPosition = list(x = 0.16, y = -0.25, orientation = "h"),
-                             ply.Credits = list(x = 0.5, y = 0.95, text = Msj))
-            )
-Plot.Series(datos     = Consolidado,
-            categoria = "SEDE_NOMBRE_ADM",
-            colores   = col,
-            titulo    = "EVOLUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR SEDE",
-            labelY    = "N\u00famero de graduados (k: miles)",
-            libreria  = "dygraphs",
-            estilo    = list(dyg.LegendWidth = 810, dyg.Resaltar = TRUE)
-            )
+misColores <- c(
+  "#29ABE2", # AZUL CLARO  | Amazonia
+  "#8CC63F", # VERDE       | Bogota
+  "#CC241D", # ROJO        | Caribe
+  "#0071BC", # AZUL VIVO   | Manizales
+  "#F15A24", # NARANJA     | Medellin
+  "#FBB03B", # AMARILLO    | Orinoquia
+  "#93278F", # MORADO      | Palmira
+  "#8A381A"  # GRIS        | Tumaco
+)
+Msj <- "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede."
+Txt <- "EVOLUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR SEDE"
+Plot.Series(
+  datos        = ejConsolidadoGrad,
+  categoria    = "SEDE_NOMBRE_ADM",
+  freqRelativa = TRUE,
+  ylim         = c(0, 75),
+  colores      = misColores,
+  titulo       = Txt,
+  labelY       = "Frecuencia Relativa<br>(\% de graduados)",
+  libreria     = "highcharter",
+  estilo       = list(LegendTitle = "SEDE:", hc.Tema = 10, hc.Slider = TRUE, hc.Credits = Msj)
+)
+Plot.Series(
+  datos     = ejConsolidadoGrad,
+  categoria = "SEDE_NOMBRE_ADM",
+  invertir  = TRUE,
+  colores   = misColores,
+  titulo    = Txt,
+  labelY    = "N\u00famero de Graduados",
+  libreria  = "plotly",
+  estilo    = list(
+    LegendTitle = "SEDE:", ply.Interaction = "closest",
+    ply.LegendPosition = list(x = 0.16, y = -0.25, orientation = "h"),
+    ply.Credits = list(x = 0.5, y = 0.1, text = Msj)
+  )
+)
+Plot.Series(
+  datos     = ejConsolidadoGrad,
+  categoria = "SEDE_NOMBRE_ADM",
+  colores   = misColores,
+  titulo    = Txt,
+  labelY    = "N\u00famero de Graduados (k: miles)",
+  libreria  = "dygraphs",
+  estilo    = list(dyg.LegendWidth = 650, dyg.Resaltar = TRUE)
+)
+
+# Agrupando para eliminar el semestre
+if (require("dplyr")) {
+  df <- ejConsolidadoGrad \%>\% group_by(Variable, YEAR, Clase) \%>\%
+    summarise(Total = sum(Total, na.rm = TRUE))
+}
+Msj <- "Comportamiento anual, considerando ambos semestres (exceptuando el caso del 2021)."
+Plot.Series(
+  datos     = df,
+  categoria = "SEXO",
+  ylim      = c(1000, 6000),
+  colores   = c("#3360FF", "#F30081"),
+  titulo    = "EVOLUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR SEXO",
+  labelX    = "A\u00f1o",
+  labelY    = "N\u00famero de Graduados",
+  libreria  = "highcharter",
+  estilo    = list(hc.Tema = 1, hc.Credits = Msj)
+)
 
 }

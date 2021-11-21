@@ -2,7 +2,7 @@ Type: Package
 Package: UnalR
 Title: Una implementación de funciones de uso interno
 Version: 0.1.0
-Date: 2021-02-28
+Date: 2021-11-28
 Authors@R: c(
   person("Jeison", "Alarcón", email = "jmalarconbe@unal.edu.co", role = c("aut", "cre", "ctr"), comment = c(ORCID = "0000-0002-1517-7840")),
   person("Alberto", "Rodríguez", email = "albrodriguezr@unal.edu.co", role = c("aut", "rev")),
@@ -15,22 +15,25 @@ Description: Una herramienta rápida y consistente para la disposición de micro
     tipos de gráficos con una sintaxis altamente configurable y simple. Entre estos
     encontramos la visualización de tablas HTML, series, gráficos de barras y
     circulares, mapas, etc. Todo lo anterior apoyado en bibliotecas de JavaScript.
-License: GPL (>= 3)
+License: MIT + file LICENSE
 URL: https://unal.edu.co, http://estadisticas.unal.edu.co/home/
 BugReports: https://github.com/estadisticaun
-Depends: 
-    R (>= 3.5)
 Imports: 
-    DT (>= 0.17),
+    DT (>= 0.20),
     highcharter (>= 0.8.2),
-    plotly (>= 4.9.3),
+    plotly (>= 4.10.0),
     dygraphs (>= 1.1.1.6),
     leaflet (>= 2.0.4.1),
     leaflet.extras (>= 1.0.0),
-    dplyr (>= 1.0.4),
-    tidyr (>= 1.1.2),
+    echarts4r (>= 0.4.2),
+    treemap (>= 2.4.3),
+    d3r (>= 1.0.0),
+    d3treeR (>= 0.1),
+    sunburstR (>= 2.1.6),
+    dplyr (>= 1.0.7),
+    tidyr (>= 1.1.4),
     forcats (>= 0.5.1),
-    rlang (>= 0.4.11),
+    rlang (>= 0.4.12),
     magrittr,
     scales,
     xts,
@@ -47,7 +50,17 @@ Imports:
     RColorBrewer,
     utils,
     methods
+Suggests: 
+    readxl,
+    pals,
+    viridis
+Depends: 
+    R (>= 4.1.0)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
+Remotes: 
+    rstudio/DT,
+    JohnCoene/echarts4r,
+    timelyportfolio/d3treeR

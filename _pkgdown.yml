@@ -21,17 +21,28 @@ reference:
       contents:
         - Tabla
         - Tabla.SaberPro
+        - Tabla.General
     - title: Gráficos
       contents:
         - Plot.Series
         - Plot.Torta
         - Plot.Barras
         - Plot.Mapa
+        - Plot.Boxplot
+        - Plot.Radar
+        - Plot.Treemap
+        - Plot.Drilldown
+        - Plot.Apiladas
     - title: Auxiliares
       contents:
+        - Agregar
         - StaticPlot
+        - read_example
     - title: Data
       contents:
-        - Consolidado
-        - Graduados
-        - SaberPro
+        - ejConsolidadoGrad
+        - ejGraduados
+        - ejConsolidadoSaberPro2019
+        - ejSaberPro2020
+        - ejMiniConsolidadoAsp
+        - ejMiniAspirantesPre

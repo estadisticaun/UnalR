@@ -15,28 +15,31 @@ Agregar(
 )
 }
 \arguments{
-\item{formula}{Fórmula en la que el primer componente especificado (antes del
-\eqn{\sim}) hace referencia a la variable de interés, y el segundo componente
-(luego del \eqn{\sim}) a la(s) variable(s) temporales por la cuales se quiere
-agrupar (separadas por cualquier operador como \code{+}, \code{*}, \code{:}, etc.).}
+\item{formula}{Fórmula en la que el primer componente especificado (\emph{antes
+del \eqn{\sim}}) hace referencia a la variable de interés, y el segundo
+componente (\emph{luego del \eqn{\sim}}) a la(s) variable(s) temporales por la
+cuales se quiere agrupar (\emph{separadas por cualquier operador como
+\code{+}, \code{*}, \code{:}, etc.}).}
 
-\item{frecuencia}{Vector o lista (dependiendo de la cantidad de variables temporales
-especificadas) numérica con los periodos que debería tener cada una de éstas.}
+\item{frecuencia}{Vector o lista (\emph{dependiendo de la cantidad de variables
+temporales especificadas}) numérica con los periodos que debería tener cada
+una de éstas.}
 
 \item{datos}{Un data frame con los microdatos.}
 
-\item{intervalo}{Vector o lista (dependiendo de la cantidad de variables temporales
-especificadas) numérica que contiene los períodos de inicio y fin con los cuales
-se quiere realizar el filtro.}
+\item{intervalo}{Vector o lista (\emph{dependiendo de la cantidad de variables
+temporales especificadas}) numérica que contiene los períodos de inicio y
+fin con los cuales se quiere realizar el filtro.}
 
 \item{textNA}{Cadena de caracteres indicando el nombre que se dará a los registros
-cuando éstos presenten algún dato faltante (en la variable seleccionada más no
-en las variables temporales especificadas). El valor por defecto es "Sin Información".}
+cuando éstos presenten algún dato faltante (\emph{en la variable seleccionada más
+no en las variables temporales especificadas}). El valor por defecto es
+"Sin Información".}
 
-\item{ask}{Si es \code{TRUE} (valor predeterminado) mostrará un mensaje por consola
+\item{ask}{Si es \code{TRUE} (\emph{valor predeterminado}) mostrará un mensaje por consola
 preguntándole al usuario cuál periodo desea que sea el último por considerar
-(esperando una respuesta por consola). Si previamente se ha introducido el
-argumento intervalo éste quedará inhabilitado y no se ejecutará.}
+(\emph{esperando una respuesta por consola}). Si previamente se ha introducido el
+argumento \code{intervalo} éste quedará inhabilitado y no se ejecutará.}
 }
 \value{
 Un data frame o tibble perteneciente a las clases "tbl_df", "tbl" y "data.frame".
@@ -45,4 +48,53 @@ Un data frame o tibble perteneciente a las clases "tbl_df", "tbl" y "data.frame"
 Esta función permite transformar desde la base de microdatos para obtener el
 consolidado final con el cual trabaja la mayoría de las funciones gráficas
 disponibles en \code{UnalR}.
+}
+\examples{
+if (require("readxl")) {
+  df1 <- read_excel(read_example("TestConsolidado1.xlsx"))
+  df2 <- read_excel(read_example("TestConsolidado2.xlsx"))
+}
+
+\dontrun{
+# Seleccione para cada dataset (A, B, C y D) una de las opciones que se le muestran
+# en consola (1, 2, 3 y 4) respectivamente.
+A <- Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1)
+B <- Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1)
+C <- Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1)
+D <- Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1)
+all.equal(C, D)
+}
+
+G <- Agregar(
+  formula    = TIPO_NIVEL ~ ANO + PERIODO,
+  frecuencia = list("Year" = 2009:2013, "Period" = 1:2),
+  intervalo  = list(c(2009, 1), c(2013, 1)),
+  datos      = df1
+)
+H <- Agregar(
+  formula    = TIPO_NIVEL ~ ANO + PERIODO,
+  frecuencia = list("Year" = 2009:2013, "Period" = 1:2),
+  datos      = df1,
+  ask        = FALSE
+)
+all.equal(G, H)
+
+\dontrun{
+# Observe las diferentes opciones que se le muestran por consola.
+Agregar(formula = SEXO ~ YEAR + PERIODO, frecuencia = list("Year" = 2016:2021, "Period" = 1:3), df2)
+}
+
+Agregar(
+  formula    = SEXO ~ YEAR + PERIODO,
+  frecuencia = list("Year" = 2016:2021, "Period" = 1:3),
+  intervalo  = list(c(2018, 1), c(2020, 3)),
+  datos      = df2
+)
+Agregar(
+  formula    = SEXO ~ YEAR,
+  frecuencia = 2016:2021,
+  intervalo  = c(2018, 2020),
+  datos      = df2
+)
+
 }

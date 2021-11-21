@@ -1,47 +1,94 @@
-#' Consolidado
+#' Consolidado de Graduados
 #'
-#' Esta es un oración de ejemplo proporcionada por ABC.
-#'
-#' @format Un data frame con cinco variables:
-#' \describe{
-#' \item{\code{Variable}}{Abc defg hijk.}
-#' \item{\code{YEAR}}{Abc defg hijk.}
-#' \item{\code{SEMESTRE}}{Abc defg hijk.}
-#' \item{\code{Clase}}{Abc defg hijk.}
-#' \item{\code{Total}}{Abc defg hijk.}
+#' Consolidado de la población de graduados de los programas académicos en la
+#' Universidad Nacional de Colombia, cuenta con la información histórica desde
+#' el 2009-I al 2021-I.
+#' @format Un data frame (*data.frame, tbl_df o tbl*) con `r nrow(ejConsolidadoGrad)`
+#' filas y `r ncol(ejConsolidadoGrad)` columnas:
+#' `r paste0("``", colnames(ejConsolidadoGrad), "``", collapse = ", ")`.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/8qk3y}{aquí}.
+#' @examples
+#' if (require("dplyr")) {
+#'   head(ejConsolidadoGrad)
 #' }
-#'
-#' @examples
-#' head(Consolidado)
-"Consolidado"
+"ejConsolidadoGrad"
 
-#' SaberPro
+
+#' Muestra de Microdatos de Graduados
 #'
-#' Esta es un oración de ejemplo proporcionada por ABC.
+#' Muestra de microdatos de la población de graduados de los programas académicos
+#' en la Universidad Nacional de Colombia, se cuenta con una muestra de la información
+#' disponible (*del 2019-I al 2021-I*). Dicho dataset será usado en los ejemplos
+#' de las funciones `Tabla.General()` y `Plot.Treemap()`.
+#' @format Un data frame (*data.frame, tbl_df o tbl*) con `r nrow(ejGraduados)`
+#' filas y `r ncol(ejGraduados)` columnas:
+#' `r paste0("``", colnames(ejGraduados), "``", collapse = ", ")`.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/8qk3y}{aquí}.
+#' @examples
+#' ejGraduados[1:5, 1:10]
+"ejGraduados"
+
+
+#' Consolidado Saber Pro 2019
 #'
-#' @format Un data frame con cinco variables:
-#' \describe{
-#' \item{\code{Variable}}{Abc defg hijk.}
-#' \item{\code{YEAR}}{Abc defg hijk.}
-#' \item{\code{Clase}}{Abc defg hijk.}
-#' \item{\code{n}}{Abc defg hijk.}
-#' \item{\code{Componente}}{Abc defg hijk.}
-#' \item{\code{Total}}{Abc defg hijk.}
-#' \item{\code{desv}}{Abc defg hijk.}
+#' Consolidado de ejemplo de la prueba Saber Pro (*antes llamada ECAES*) del año
+#' 2019. El cual se utiliza para los ejemplos de la función `Tabla.SaberPro()`.
+#' @format Un data frame (*data.frame, tbl_df o tbl*) con `r nrow(ejConsolidadoSaberPro2019)`
+#' filas y `r ncol(ejConsolidadoSaberPro2019)` columnas:
+#' `r paste0("``", colnames(ejConsolidadoSaberPro2019), "``", collapse = ", ")`.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.
+#' @examples
+#' if (require("dplyr")) {
+#'   head(ejConsolidadoSaberPro2019)
 #' }
-#'
-#' @source Para obtener más detalles, consulte <https://www.icfes.gov.co/investigadores-y-estudiantes-posgrado/acceso-a-bases-de-datos>
-#' @examples
-#' head(SaberPro)
-"SaberPro"
+"ejConsolidadoSaberPro2019"
 
-#' Graduados
+
+#' Microdatos Saber Pro 2020
 #'
-#' Microdatos de los estudiantes graduados concerniente al periodo 2020-II de la
-#' Universidad Nacional de Colombia.
-#'
-#' @format Un data frame con 3813 filas y 53 columnas.
-#' @source Para obtener más detalles de los metadatos, consulte \url{http://estadisticas.unal.edu.co/menu-principal/cifras-generales/metadatos/cifras-generales/}
+#' Microdatos de los resultados de la prueba Saber Pro del año 2020, obtenidos
+#' desde la página del ICFES, los cuales serán usados para los ejemplos de las
+#' funciones `Plot.Boxplot()` y `Plot.Radar()`.
+#' @format Un data frame (*data.frame, tbl_df o tbl*) con `r nrow(ejSaberPro2020)`
+#' filas y `r ncol(ejSaberPro2020)` columnas:
+#' `r paste0("``", colnames(ejSaberPro2020), "``", collapse = ", ")`.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.
 #' @examples
-#' Graduados[1:5, 1:10]
-"Graduados"
+#' ejSaberPro2020[1:5, 1:10]
+"ejSaberPro2020"
+
+
+#' Mini Consolidado de Aspirantes
+#'
+#' Mini consolidado de la población de aspirantes a cursar estudios de pregrado
+#' o postgrado en la universidad nacional de Colombia inscritos a través de
+#' convocatoria pública de manera regular o por medio de los programas de admisión
+#' especial existentes -*sólo pregrado*-. Dicho dataset será usado en los ejemplos
+#' de la función `Plot.Drilldown()`.
+#' @format Un data frame (*data.frame, tbl_df o tbl*) con `r nrow(ejMiniConsolidadoAsp)`
+#' filas y `r ncol(ejMiniConsolidadoAsp)` columnas:
+#' `r paste0("``", colnames(ejMiniConsolidadoAsp), "``", collapse = ", ")`.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.
+#' @examples
+#' if (require("dplyr")) {
+#'   head(ejMiniConsolidadoAsp)
+#' }
+"ejMiniConsolidadoAsp"
+
+
+#' Mini Microdatos de Aspirantes a Pregrado
+#'
+#' Muestra de los microdatos (*únicamente estudiantes de pregrado*) de la población
+#' de aspirantes a cursar estudios de pregrado o postgrado en la universidad
+#' nacional de Colombia inscritos a través de convocatoria pública de manera regular
+#' o por medio de los programas de admisión especial existentes. Dicho dataset
+#' será usado en los ejemplos de la función `Plot.Boxplot()`.
+#' @format Un data frame (*data.frame, tbl_df o tbl*) con `r nrow(ejMiniAspirantesPre)`
+#' filas y `r ncol(ejMiniAspirantesPre)` columnas:
+#' `r paste0("``", colnames(ejMiniAspirantesPre), "``", collapse = ", ")`.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.
+#' @examples
+#' if (require("dplyr")) {
+#'   head(ejMiniAspirantesPre)
+#' }
+"ejMiniAspirantesPre"

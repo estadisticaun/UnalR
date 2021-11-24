@@ -3,18 +3,23 @@ title: UnalR
 repo:
   url:
     home: https://github.com/estadisticaun/UnalR
-development:
-  mode: auto
-template:
-  params:
-    bootswatch: flatly
-    ganalytics: UA-190119946-1
 
 authors:
   Jeison Alarcón:
     href: https://github.com/JeisonAlarcon
   Alberto Rodríguez:
     href: https://github.com/alberto1976
+
+development:
+  mode: auto
+
+template:
+  params:
+    bootswatch: flatly
+    ganalytics: UA-190119946-1
+    docsearch:
+      api_key: API_KEY
+      index_name: INDEX_NAME
 
 reference:
     - title: Tablas

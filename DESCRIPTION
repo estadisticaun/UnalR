@@ -15,7 +15,7 @@ Description: Una herramienta rápida y consistente para la disposición de micro
     tipos de gráficos con una sintaxis altamente configurable y simple. Entre estos
     encontramos la visualización de tablas HTML, series, gráficos de barras y
     circulares, mapas, etc. Todo lo anterior apoyado en bibliotecas de JavaScript.
-License: MIT + file LICENSE
+License: GPL (>= 3) + file LICENSE
 URL: https://unal.edu.co, http://estadisticas.unal.edu.co/home/
 BugReports: https://github.com/estadisticaun
 Imports: 

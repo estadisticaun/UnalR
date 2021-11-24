@@ -47,15 +47,15 @@ example(topic = Plot.Mapa, package = "UnalR")
 ``` r
 example(topic = Plot.Boxplot, package = "UnalR")
 ```
-![](man/figures/PlotExample6.png)
+![](man/figures/PlotExample6.PNG)
 
 ``` r
 example(topic = Plot.Treemap, package = "UnalR")
 ```
-![](man/figures/PlotExample7.png)
-![](man/figures/PlotExample8.png)
-![](man/figures/PlotExample9.png)
-![](man/figures/PlotExample10.png)
+![](man/figures/PlotExample7.PNG)
+![](man/figures/PlotExample8.PNG)
+![](man/figures/PlotExample9.PNG)
+![](man/figures/PlotExample10.PNG)
 
 ## Licencia
 

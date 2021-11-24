@@ -1,12 +1,12 @@
 # UnalR <a href='http://estadisticaun.github.io/UnalR'><img src='man/figures/Logo.png' align="right" height="138" /></a>
 
-El paquete `UnalR` proporciona métodos y herramientas para mostrar y analizar datos estadísticos. Su objetivo es disponer, facilitar y optimizar la disposición de microdatos y la visualización de las cifras y estadísticas oficiales de la [Universidad Nacional de Colombia](https://unal.edu.co). Contiene una biblioteca de funciones gráficas, tanto estáticas como interactivas, que ofrece numerosos tipos de gráficos con una sintaxis altamente configurable y simple. Entre estos encontramos la visualización de tablas HTML, series, gráficos de barras y circulares, mapas, etc. Todo lo anterior apoyado en bibliotecas de JavaScript.
+El paquete `UnalR` proporciona métodos y herramientas para mostrar y analizar datos estadísticos. Su objetivo es disponer, facilitar y optimizar la disposición de microdatos y la visualización de las cifras y estadísticas oficiales de la [Universidad Nacional de Colombia](https://unal.edu.co). Contiene una biblioteca de funciones gráficas, tanto estáticas como interactivas, que ofrece numerosos tipos de gráficos con una sintaxis altamente configurable y simple. Entre estos encontramos la visualización de tablas `HTML`, series, gráficos de barras y circulares, mapas, boxplots, radar charts, treemaps, drilldown, etc. Todo lo anterior apoyado en bibliotecas de `JavaScript`.
 
 El paquete `UnalR` permanecerá en su estado actual y se mantendrá solo con correcciones de errores.
 
 ## Instalación
 
-Puede instalar la versión publicada de `UnalR` (*versión de desarrollo*) desde [GitHub](https://github.com/) con:
+Puede instalar la versión publicada de `UnalR` (*versión menor*) desde [GitHub](https://github.com/) con:
 
 ``` r
 # install.packages("devtools")
@@ -43,6 +43,19 @@ example(topic = Plot.Mapa, package = "UnalR")
 ```
 ![](man/figures/PlotExample4.png)
 ![](man/figures/PlotExample5.png)
+
+``` r
+example(topic = Plot.Boxplot, package = "UnalR")
+```
+![](man/figures/PlotExample6.png)
+
+``` r
+example(topic = Plot.Treemap, package = "UnalR")
+```
+![](man/figures/PlotExample7.png)
+![](man/figures/PlotExample8.png)
+![](man/figures/PlotExample9.png)
+![](man/figures/PlotExample10.png)
 
 ## Licencia
 

@@ -17,7 +17,9 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Una implementación de funciones de uso interno">
+<script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<link href="docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Una implementación de funciones de uso interno">
 <meta property="og:description" content="Una herramienta rápida y consistente para la disposición de microdatos
     y la visualización de las cifras y estadísticas oficiales de la Universidad
     Nacional de Colombia &lt;https://unal.edu.co&gt;. Contiene una biblioteca de
@@ -38,6 +40,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -50,18 +54,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">UnalR</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Versión publicada">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -71,13 +69,19 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/estadisticaun/UnalR">
+  <a href="https://github.com/estadisticaun/UnalR" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
+      </form>
+      
+    </div>
 <!--/.nav-collapse -->
   </div>
 <!--/.container -->
@@ -88,53 +92,59 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="unalr-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#unalr-" class="anchor"></a>UnalR <a href="http://estadisticaun.github.io/UnalR"><img src="reference/figures/Logo.png" align="right" height="138"></a>
+<div class="section level1">
+<div class="page-header"><h1 id="unalr-">UnalR <a href="http://estadisticaun.github.io/UnalR" class="external-link"><img src="reference/figures/Logo.png" align="right" height="138"></a>
+<a class="anchor" aria-label="anchor" href="#unalr-"></a>
 </h1></div>
-<p>El paquete <code>UnalR</code> proporciona métodos y herramientas para mostrar y analizar datos estadísticos. Su objetivo es disponer, facilitar y optimizar la disposición de microdatos y la visualización de las cifras y estadísticas oficiales de la <a href="https://unal.edu.co">Universidad Nacional de Colombia</a>. Contiene una biblioteca de funciones gráficas, tanto estáticas como interactivas, que ofrece numerosos tipos de gráficos con una sintaxis altamente configurable y simple. Entre estos encontramos la visualización de tablas HTML, series, gráficos de barras y circulares, mapas, etc. Todo lo anterior apoyado en bibliotecas de JavaScript.</p>
+<p>El paquete <code>UnalR</code> proporciona métodos y herramientas para mostrar y analizar datos estadísticos. Su objetivo es disponer, facilitar y optimizar la disposición de microdatos y la visualización de las cifras y estadísticas oficiales de la <a href="https://unal.edu.co" class="external-link">Universidad Nacional de Colombia</a>. Contiene una biblioteca de funciones gráficas, tanto estáticas como interactivas, que ofrece numerosos tipos de gráficos con una sintaxis altamente configurable y simple. Entre estos encontramos la visualización de tablas <code>HTML</code>, series, gráficos de barras y circulares, mapas, boxplots, radar charts, treemaps, drilldown, etc. Todo lo anterior apoyado en bibliotecas de <code>JavaScript</code>.</p>
 <p>El paquete <code>UnalR</code> permanecerá en su estado actual y se mantendrá solo con correcciones de errores.</p>
-<div id="instalación" class="section level2">
-<h2 class="hasAnchor">
-<a href="#instalaci%C3%B3n" class="anchor"></a>Instalación</h2>
-<p>Puede instalar la versión publicada de <code>UnalR</code> (<em>versión de desarrollo</em>) desde <a href="https://github.com/">GitHub</a> con:</p>
+<div class="section level2">
+<h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
+</h2>
+<p>Puede instalar la versión publicada de <code>UnalR</code> (<em>versión menor</em>) desde <a href="https://github.com/" class="external-link">GitHub</a> con:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"estadisticaun/UnalR"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"estadisticaun/UnalR"</span><span class="op">)</span>
 
 <span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"estadisticaun/UnalR"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"estadisticaun/UnalR"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="uso" class="section level2">
-<h2 class="hasAnchor">
-<a href="#uso" class="anchor"></a>Uso</h2>
+<div class="section level2">
+<h2 id="uso">Uso<a class="anchor" aria-label="anchor" href="#uso"></a>
+</h2>
 <p>Es difícil describir de manera sucinta cómo funciona <code>UnalR</code> porque encarna una profunda filosofía de visualización que abarca las principales librerías para representar de forma dinámica e interactiva datos usando <code>JavaScript</code> (<strong>htmlwidgets</strong>).</p>
 </div>
-<div id="ejemplo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ejemplo" class="anchor"></a>Ejemplo</h2>
+<div class="section level2">
+<h2 id="ejemplo">Ejemplo<a class="anchor" aria-label="anchor" href="#ejemplo"></a>
+</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://unal.edu.co">UnalR</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/example.html">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Tabla</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://unal.edu.co" class="external-link">UnalR</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Tabla</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/PlotExample1.png"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/example.html">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Plot.Series</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Plot.Series</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/PlotExample2.png"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/example.html">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Plot.Barras</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Plot.Barras</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/PlotExample3.png"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/example.html">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Plot.Mapa</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Plot.Mapa</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/PlotExample4.png"><img src="reference/figures/PlotExample5.png"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Plot.Boxplot</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/PlotExample6.png"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/example.html" class="external-link">example</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="va">Plot.Treemap</span>, package <span class="op">=</span> <span class="st">"UnalR"</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/PlotExample7.png"><img src="reference/figures/PlotExample8.png"><img src="reference/figures/PlotExample9.png"><img src="reference/figures/PlotExample10.png"></p>
 </div>
-<div id="licencia" class="section level2">
-<h2 class="hasAnchor">
-<a href="#licencia" class="anchor"></a>Licencia</h2>
+<div class="section level2">
+<h2 id="licencia">Licencia<a class="anchor" aria-label="anchor" href="#licencia"></a>
+</h2>
 <p>Este paquete es un software gratuito y de código abierto, con licencia GPL-3.</p>
 </div>
-<div id="ayuda" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ayuda" class="anchor"></a>Ayuda</h2>
+<div class="section level2">
+<h2 id="ayuda">Ayuda<a class="anchor" aria-label="anchor" href="#ayuda"></a>
+</h2>
 <p>Si requiere ayuda para usar <code>UnalR</code>:</p>
 <ul>
 <li>Para problemas de instalación, comuníquese a los correos electrónicos proporcionados en la documentación del paquete, normalmente respondemos con prontitud y usted también ayudará a futuros usuarios.</li>
@@ -142,7 +152,7 @@
 <p>Si cree que ha encontrado un error:</p>
 <ul>
 <li>Instale la versión de desarrollo de <code>UnalR</code> usando <code>devtools</code> (<em>ver arriba</em>) y vea si eso ayuda.</li>
-<li>Consulte los <a href="https://github.com/estadisticaun">problemas de github</a>.</li>
+<li>Consulte los <a href="https://github.com/estadisticaun" class="external-link">problemas de github</a>.</li>
 </ul>
 <p>¡Gracias por tu interés en <code>UnalR</code>!</p>
 </div>
@@ -151,54 +161,74 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/estadisticaun/UnalR">https://​github.com/​estadisticaun/​UnalR</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/estadisticaun">https://​github.com/​estadisticaun</a>
-</li>
+<li><a href="https://github.com/estadisticaun/UnalR" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/estadisticaun" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>GPL (&gt;= 3)</li>
+<li>GPL (&gt;= 3) + file <a href="LICENSE-text.html">LICENSE</a>
+</li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
 <li><a href="authors.html">Citing UnalR</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://github.com/JeisonAlarcon">Jeison Alarcón</a> <br><small class="roles"> Author, maintainer, contractor </small> <a href="https://orcid.org/0000-0002-1517-7840" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://github.com/JeisonAlarcon" class="external-link">Jeison Alarcón</a> <br><small class="roles"> Author, maintainer, contractor </small> <a href="https://orcid.org/0000-0002-1517-7840" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
-<a href="https://github.com/alberto1976">Alberto Rodríguez</a> <br><small class="roles"> Author, reviewer </small>  </li>
+<a href="https://github.com/alberto1976" class="external-link">Alberto Rodríguez</a> <br><small class="roles"> Author, reviewer </small>  </li>
 <li>Dirección Nacional de Planeación y Estadística Universidad Nacional de Colombia <br><small class="roles"> Copyright holder, funder </small>  </li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://github.com/JeisonAlarcon">Jeison Alarcón</a>, <a href="https://github.com/alberto1976">Alberto Rodríguez</a>, Dirección Nacional de Planeación y Estadística Universidad Nacional de Colombia.</p>
+  <p></p>
+<p>Developed by <a href="https://github.com/JeisonAlarcon" class="external-link">Jeison Alarcón</a>, <a href="https://github.com/alberto1976" class="external-link">Alberto Rodríguez</a>, Dirección Nacional de Planeación y Estadística Universidad Nacional de Colombia.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>
 </div>
 
   
-
-
-  </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
+  docsearch({
+    
+    
+    apiKey: 'API_KEY',
+    indexName: 'INDEX_NAME',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+</body>
 </html>

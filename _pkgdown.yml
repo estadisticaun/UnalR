@@ -18,8 +18,8 @@ template:
     bootswatch: flatly
     ganalytics: UA-190119946-1
     docsearch:
-      api_key: API_KEY
-      index_name: INDEX_NAME
+      api_key: 4392ea789ee5ec3b141abdfd40e06884
+      index_name: unalR
 
 reference:
     - title: Tablas

@@ -18,7 +18,7 @@ template:
     bootswatch: flatly
     ganalytics: UA-190119946-1
     docsearch:
-      api_key: 6d85095a90950d047b02865692761f9e
+      api_key: 48a86f5ad8f8218ed7191a5492511c14
       index_name: unalR
 
 reference:

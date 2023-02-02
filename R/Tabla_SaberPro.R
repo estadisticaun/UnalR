@@ -16,6 +16,7 @@
 #' @param tituloPdf Igual uso que en [Tabla()]
 #' @param mensajePdf Igual uso que en [Tabla()]
 #' @param ajustarNiveles Igual uso que en [Tabla()]
+#' @param scrollX Igual uso que en [Tabla()]
 #' @param colorHead Igual uso que en [Tabla()]
 #' @param colorear Igual uso que en [Tabla()]
 #' @param estilo Una lista compuesta por dos parámetros:
@@ -36,8 +37,8 @@
 #'
 #' @examples
 #' if (require("dplyr")) {
-#'   VariosYears <- ejConsolidadoSaberPro2019 %>%
-#'     mutate(YEAR = replace(YEAR, YEAR==2019, 2020)) %>%
+#'   VariosYears <- ejConsolidadoSaberPro2019 |>
+#'     mutate(YEAR = replace(YEAR, YEAR==2019, 2020)) |>
 #'     bind_rows(ejConsolidadoSaberPro2019)
 #' }
 #' Msj <- "\u00c9sta es una descripci\u00f3n de la tabla diferente al valor por default."
@@ -75,7 +76,7 @@
 #' @importFrom grDevices colorRampPalette
 Tabla.SaberPro <- function(datos, variable, encabezado = "Encabezados de los Niveles de la Categor\u00eda",
                            leyenda, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
-                           colorHead = "#FFFFFF", colorear = FALSE, estilo) {
+                           scrollX = TRUE, colorHead = "#FFFFFF", colorear = FALSE, estilo) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if(missingArg(datos) || missingArg(variable)) {
@@ -90,6 +91,9 @@ Tabla.SaberPro <- function(datos, variable, encabezado = "Encabezados de los Niv
   }
   if (!is.logical(ajustarNiveles)) {
     stop("\u00a1El argumento 'ajustarNiveles' debe ser un booleano (TRUE o FALSE)!", call. = FALSE)
+  }
+  if (!is.logical(scrollX)) {
+    stop("\u00a1El argumento 'scrollX' debe ser un booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!is.character(colorHead)) {
     stop("\u00a1El argumento 'colorHead' debe ser un car\u00e1cter que indique un color con el nombre ('red'), c\u00f3digo hexadecimal ('#FF0000') o RGB (rgb(1, 0, 0))!", call. = FALSE)
@@ -112,26 +116,26 @@ Tabla.SaberPro <- function(datos, variable, encabezado = "Encabezados de los Niv
   tr <- function(...) { htmltools::tag("tr", ...) }
 
   # CREACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA TABLA
-  DataFrame <- datos %>%
+  DataFrame <- datos |>
     # Convertir a columnas las observaciones dispersas en múltiples filas
-    filter(Variable == variable) %>%
-    mutate("Valor" = paste0(Total, " (", desv, ")")) %>%
-    select(-c(Variable, Total, desv)) %>%
-    pivot_wider(names_from = Componente, values_from = Valor) %>%
-    relocate(n, .after = last_col()) %>%
+    filter(Variable == variable) |>
+    mutate("Valor" = paste0(Total, " (", desv, ")")) |>
+    select(-c(Variable, Total, desv)) |>
+    pivot_wider(names_from = Componente, values_from = Valor) |>
+    relocate(n, .after = last_col()) |>
     mutate(YEAR = factor(YEAR), Clase = factor(Clase))
-  Total_IESB <- datos %>%
-    filter(Variable == "total") %>%
-    mutate("Valor" = paste0(Total, " (", desv, ")")) %>%
-    select(-c(Variable, Total, desv)) %>%
-    pivot_wider(names_from = Componente, values_from = Valor) %>%
-    relocate(n, .after = last_col()) %>%
+  Total_IESB <- datos |>
+    filter(Variable == "total") |>
+    mutate("Valor" = paste0(Total, " (", desv, ")")) |>
+    select(-c(Variable, Total, desv)) |>
+    pivot_wider(names_from = Componente, values_from = Valor) |>
+    relocate(n, .after = last_col()) |>
     mutate(YEAR = factor(YEAR), Clase = factor(Clase))
 
   DataFrame <- bind_rows(DataFrame, Total_IESB)
-  Componentes <- datos %>%
-    filter(Variable == variable) %>%
-    group_by(Componente) %>% distinct(Componente)
+  Componentes <- datos |>
+    filter(Variable == variable) |>
+    group_by(Componente) |> distinct(Componente)
   # Custom Table Container (Nombre de los Encabezados)
   sketch = htmltools::withTags(table(
     class = "display",
@@ -142,7 +146,7 @@ Tabla.SaberPro <- function(datos, variable, encabezado = "Encabezados de los Niv
         th(colspan = n_groups(Componentes), encabezado),
         th(rowspan = 2, "N*")
       ),
-      tr( lapply(Componentes %>% pull(), th) )
+      tr( lapply(Componentes |> pull(), th) )
     )
   ))
 
@@ -153,6 +157,7 @@ Tabla.SaberPro <- function(datos, variable, encabezado = "Encabezados de los Niv
     rownames   = FALSE,
     container  = sketch,
     caption    = Leyenda,
+    escape     = FALSE,
     filter     = list(position = "top", clear = TRUE, plain = FALSE),
     extensions = c("Buttons", "KeyTable"),
     options    = list(autoWidth  = TRUE,
@@ -164,7 +169,7 @@ Tabla.SaberPro <- function(datos, variable, encabezado = "Encabezados de los Niv
                       dom   = "Bfrtip",
                       keys  = TRUE,
                       searchHighlight = TRUE,
-                      scrollX = TRUE,
+                      scrollX = scrollX,
                       initComplete = JS(
                         "function(settings, json) {",
                         "$(this.api().table().header()).css({'background-color':", paste0("'", colorHead, "'"), ", 'color': '#000000'});","}"),
@@ -201,21 +206,21 @@ Tabla.SaberPro <- function(datos, variable, encabezado = "Encabezados de los Niv
   )
 
   if (colorear && missingArg(estilo)) {
-    TablaFinal <- TablaFinal %>%
+    TablaFinal <- TablaFinal |>
       formatStyle(
         "YEAR", target = "cell", fontWeight = "bold",
         backgroundColor = styleEqual( unique(DataFrame$YEAR), colorRampPalette(brewer.pal(12, "Set3"))(nlevels(DataFrame$YEAR)) )
-      ) %>%
+      ) |>
       formatStyle(
         "Clase", target = "cell", fontWeight = "bold",
         color = styleEqual( unique(DataFrame$Clase), rainbow(nlevels(DataFrame$Clase), v = 0.8) )
       )
   } else if (!missingArg(estilo)) {
-    TablaFinal <- TablaFinal %>%
+    TablaFinal <- TablaFinal |>
       formatStyle(
         "YEAR", target = "cell", fontWeight = "bold",
         backgroundColor = styleEqual( unique(DataFrame$YEAR), estilo$PaletaYear )
-      ) %>%
+      ) |>
       formatStyle(
         "Clase", target = "cell", fontWeight = "bold",
         color = styleEqual( unique(DataFrame$Clase), estilo$PaletaCategoria )

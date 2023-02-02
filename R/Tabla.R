@@ -23,6 +23,11 @@
 #' @param ajustarNiveles Si es `TRUE` (*valor predeterminado*) se buscará optimizar
 #'   el espacio entre las columnas, colocando todos los nombres de las columnas de
 #'   forma horizontal y eliminando al máximo el espacio entre éstas.
+#' @param scrollX Si es `TRUE` (*valor predeterminado*) se habilitará la propiedad
+#'   Scroller para el eje X. Tenga presente que cuando su df contiene muchas columnas
+#'   es de utilidad (*pues no permite que se salga la tabla por ancho*), sin embargo,
+#'   asegúrese de desactivarlo cuando presente pocas columnas pues se verá un
+#'   desplazamiento de los encabezados debido a un conflicto interno.
 #' @param colorHead Cadena de caracteres que indica el color de fondo de la cabecera
 #'   de la tabla. Puede indicar el color con el nombre (`"red"`), código hexadecimal
 #'   (`"#FF0000"`) o RGB (`rgb(1, 0, 0)`). El valor por defecto es "blanco" (`"#FFFFFF"`).
@@ -69,7 +74,7 @@
 #' @importFrom grDevices colorRampPalette
 Tabla <- function(datos, categoria, encabezado = "Encabezados de los Niveles de la Categor\u00eda",
                   leyenda = NULL, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
-                  colorHead = "#FFFFFF", colorear = FALSE, estilo) {
+                  scrollX = TRUE, colorHead = "#FFFFFF", colorear = FALSE, estilo) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if(missingArg(datos) || missingArg(categoria)) {
@@ -81,6 +86,9 @@ Tabla <- function(datos, categoria, encabezado = "Encabezados de los Niveles de 
   }
   if (!is.logical(ajustarNiveles)) {
     stop("\u00a1El argumento 'ajustarNiveles' debe ser un booleano (TRUE o FALSE)!", call. = FALSE)
+  }
+  if (!is.logical(scrollX)) {
+    stop("\u00a1El argumento 'scrollX' debe ser un booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!is.character(colorHead)) {
     stop("\u00a1El argumento 'colorHead' debe ser un car\u00e1cter que indique un color con el nombre ('red'), c\u00f3digo hexadecimal ('#FF0000') o RGB (rgb(1, 0, 0))!", call. = FALSE)
@@ -100,25 +108,25 @@ Tabla <- function(datos, categoria, encabezado = "Encabezados de los Niveles de 
   tr <- function(...) { htmltools::tag("tr", ...) }
 
   # CREACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA TABLA
-  DataFrame <- datos %>%
+  DataFrame <- datos |>
     # Convertir a columnas las observaciones dispersas en múltiples filas
-    filter(Variable == categoria) %>%
-    pivot_wider(names_from = Clase, values_from = Total) %>%
-    select(-Variable) %>%
+    filter(Variable == categoria) |>
+    pivot_wider(names_from = Clase, values_from = Total) |>
+    select(-Variable) |>
     # Creación de la columna Total Global (Total por Fila/Semestre)
     left_join(
-      datos %>%
-        filter(Variable == categoria) %>%
-        group_by(YEAR, SEMESTRE) %>%
+      datos |>
+        filter(Variable == categoria) |>
+        group_by(YEAR, SEMESTRE) |>
         summarise(TotalGlobal = sum(Total, na.rm = TRUE))
-    ) %>%
+    ) |>
     mutate(
       YEAR = factor(YEAR),
       SEMESTRE = factor(SEMESTRE)
     )
-  Categorias <- datos %>%
-    filter(Variable == categoria) %>%
-    group_by(Clase) %>% distinct(Clase)
+  Categorias <- datos |>
+    filter(Variable == categoria) |>
+    group_by(Clase) |> distinct(Clase)
   # Custom Table Container (Nombre de los Encabezados)
   sketch = htmltools::withTags(table(
     class = "display",
@@ -129,7 +137,7 @@ Tabla <- function(datos, categoria, encabezado = "Encabezados de los Niveles de 
         th(colspan = n_groups(Categorias), encabezado),
         th(rowspan = 2, "Total")
       ),
-      tr( lapply(Categorias %>% pull(), th) )
+      tr( lapply(Categorias |> pull(), th) )
     )
   ))
 
@@ -140,68 +148,70 @@ Tabla <- function(datos, categoria, encabezado = "Encabezados de los Niveles de 
     rownames   = FALSE,
     container  = sketch,
     caption    = leyenda,
+    escape     = FALSE,
     filter     = list(position = "top", clear = TRUE, plain = FALSE),
     extensions = c("Buttons", "KeyTable"),
-    options    = list(autoWidth  = TRUE,
-                      columnDefs = list(list(className = "dt-center", targets = 0:(n_groups(Categorias)+2)),
-                                        list(width = "65px", targets = 0)),
-                      pageLength = 8,
-                      order = list(list(0, "desc"), list(1, "desc")),
-                      dom   = "Bfrtip",
-                      keys  = TRUE,
-                      searchHighlight = TRUE,
-                      scrollX = TRUE,
-                      initComplete = JS(
-                        "function(settings, json) {",
-                        "$(this.api().table().header()).css({'background-color':", paste0("'", colorHead, "'"), ", 'color': '#000000'});","}"),
-                      language = list(
-                        processing     = "Procesando...",
-                        lengthMenu     = "Mostrar _MENU_ registros",
-                        zeroRecords    = "No se encontraron resultados",
-                        emptyTable     = "Ning\u00fan dato disponible en esta tabla",
-                        info           = "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        infoEmpty      = "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        infoFiltered   = "(filtrado de un total de _MAX_ registros)",
-                        infoPostFix    = "",
-                        search         = "Buscar:",
-                        url            = "",
-                        infoThousands  = ",",
-                        loadingRecords = "Cargando...",
-                        paginate = list(
-                          first    = "Primero",
-                          last     = "\u00daltimo",
-                          `next`   = "Siguiente",
-                          previous = "Anterior"
-                        ),
-                        aria = list(
-                          sortAscending  = "Activar para ordenar la columna de manera ascendente",
-                          sortDescending = "Activar para ordenar la columna de manera descendente"
-                        )
-                      ),
-                      buttons = list(list(extend = "copy", text = "Copiar"), "csv", "excel",
-                                     list(extend = "pdf", pageSize = "A4", filename = "pdf",
-                                          message = mensajePdf, title = tituloPdf),
-                                     list(extend = "print", text = "Imprimir", pageSize = "A4",
-                                          message = mensajePdf, title = tituloPdf))
+    options    = list(
+      autoWidth  = TRUE,
+      columnDefs = list(list(className = "dt-center", targets = 0:(n_groups(Categorias)+2)),
+                        list(width = "65px", targets = 0)),
+      pageLength = 8,
+      order = list(list(0, "desc"), list(1, "desc")),
+      dom   = "Bfrtip",
+      keys  = TRUE,
+      searchHighlight = TRUE,
+      scrollX = scrollX,
+      initComplete = JS(
+        "function(settings, json) {",
+        "$(this.api().table().header()).css({'background-color':", paste0("'", colorHead, "'"), ", 'color': '#000000'});","}"),
+      language = list(
+        processing     = "Procesando...",
+        lengthMenu     = "Mostrar _MENU_ registros",
+        zeroRecords    = "No se encontraron resultados",
+        emptyTable     = "Ning\u00fan dato disponible en esta tabla",
+        info           = "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        infoEmpty      = "Mostrando registros del 0 al 0 de un total de 0 registros",
+        infoFiltered   = "(filtrado de un total de _MAX_ registros)",
+        infoPostFix    = "",
+        search         = "Buscar:",
+        url            = "",
+        infoThousands  = ",",
+        loadingRecords = "Cargando...",
+        paginate = list(
+          first    = "Primero",
+          last     = "\u00daltimo",
+          `next`   = "Siguiente",
+          previous = "Anterior"
+        ),
+        aria = list(
+          sortAscending  = "Activar para ordenar la columna de manera ascendente",
+          sortDescending = "Activar para ordenar la columna de manera descendente"
+        )
+      ),
+      buttons = list(list(extend = "copy", text = "Copiar"), "csv", "excel",
+                      list(extend = "pdf", pageSize = "A4", filename = "pdf",
+                          message = mensajePdf, title = tituloPdf),
+                      list(extend = "print", text = "Imprimir", pageSize = "A4",
+                          message = mensajePdf, title = tituloPdf))
     )
   )
 
   if (colorear && missingArg(estilo)) {
-    TablaFinal <- TablaFinal %>%
+    TablaFinal <- TablaFinal |>
       formatStyle(
         "YEAR", target = "cell", fontWeight = "bold",
         backgroundColor = styleEqual( unique(DataFrame$YEAR), colorRampPalette(brewer.pal(12, "Set3"))(nlevels(DataFrame$YEAR)) )
-      ) %>%
+      ) |>
       formatStyle(
         "SEMESTRE", target = "cell", fontWeight = "bold",
         color = styleEqual( unique(DataFrame$SEMESTRE), c("#E72837", "#0A7DBF") )
       )
   } else if (!missingArg(estilo)) {
-    TablaFinal <- TablaFinal %>%
+    TablaFinal <- TablaFinal |>
       formatStyle(
         "YEAR", target = "cell", fontWeight = "bold",
         backgroundColor = styleEqual( unique(DataFrame$YEAR), estilo$PaletaYear )
-      ) %>%
+      ) |>
       formatStyle(
         "SEMESTRE", target = "cell", fontWeight = "bold",
         color = styleEqual( unique(DataFrame$SEMESTRE), estilo$PaletaSemestre )

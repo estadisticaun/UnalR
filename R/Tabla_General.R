@@ -20,6 +20,7 @@
 #' @param tituloPdf Igual uso que en [Tabla()]
 #' @param mensajePdf Igual uso que en [Tabla()]
 #' @param ajustarNiveles Igual uso que en [Tabla()]
+#' @param scrollX Igual uso que en [Tabla()]
 #' @param colorHead Igual uso que en [Tabla()]
 #' @param estilo Una lista compuesta por listas las cuales en su interior contiene
 #'   argumentos válidos de la función [formatStyle()][DT:: formatStyle()], esto
@@ -47,14 +48,14 @@
 #' Tabla.General(datos = mtcars)
 #'
 #' if (require("dplyr") && require("tidyr") && require("DT")) {
-#'   df <- ejGraduados %>%
-#'     filter(TIPO_NIVEL == "Pregrado") %>%
-#'     group_by(YEAR, SEMESTRE, DEP_NAC, CIU_NAC, SEXO, CAT_EDAD, ESTRATO, PROGRAMA) %>%
-#'     summarise(Total = n(), .groups = "drop") %>%
+#'   df <- ejGraduados |>
+#'     filter(TIPO_NIVEL == "Pregrado") |>
+#'     group_by(YEAR, SEMESTRE, DEP_NAC, CIU_NAC, SEXO, CAT_EDAD, ESTRATO, PROGRAMA) |>
+#'     summarise(Total = n(), .groups = "drop") |>
 #'     mutate(across(where(is.character), replace_na, replace = "SIN INFO"))
 #'
-#'   Nombres <- c("A\u00f1o", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
-#'   Titulo  <- "HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS"
+#'   Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
+#'   Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
 #'
 #'   Tabla.General(
 #'     datos          = df,
@@ -89,8 +90,9 @@
 #' @importFrom htmltools withTags tag
 #' @importFrom methods missingArg
 Tabla.General <- function(datos, colNames, filtros = FALSE, colFilters,
-                          encabezado = "", leyenda = "", tituloPdf = NULL, mensajePdf = "",
-                          ajustarNiveles = TRUE, colorHead = "#FFFFFF", estilo) {
+                          encabezado = "", leyenda = "", tituloPdf = NULL,
+                          mensajePdf = "", ajustarNiveles = TRUE, scrollX = TRUE,
+                          colorHead = "#FFFFFF", estilo) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (missingArg(datos)) {
@@ -107,8 +109,8 @@ Tabla.General <- function(datos, colNames, filtros = FALSE, colFilters,
       )
     }
   }
-  if (!(is.logical(filtros) && is.logical(ajustarNiveles))) {
-    stop("\u00a1Los argumentos 'filtros' y 'ajustarNiveles' deben ser un booleano (TRUE o FALSE)!", call. = FALSE)
+  if (!(is.logical(filtros) && is.logical(ajustarNiveles) && is.logical(scrollX))) {
+    stop("\u00a1Los argumentos 'filtros', 'ajustarNiveles' y 'scrollX' deben ser un booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!is.character(colorHead)) {
     stop("\u00a1El argumento 'colorHead' debe ser un car\u00e1cter que indique un color con el nombre ('red'), c\u00f3digo hexadecimal ('#FF0000') o RGB (rgb(1, 0, 0))!", call. = FALSE)
@@ -163,6 +165,7 @@ Tabla.General <- function(datos, colNames, filtros = FALSE, colFilters,
     colnames   = colNames,
     container  = sketch,
     caption    = leyenda,
+    escape     = FALSE,
     filter     = Filtros,
     extensions = c("Buttons", "KeyTable"),
     options    = list(
@@ -176,7 +179,7 @@ Tabla.General <- function(datos, colNames, filtros = FALSE, colFilters,
       dom   = "Bfrtip",
       keys  = TRUE,
       searchHighlight = TRUE,
-      scrollX = TRUE,
+      scrollX = scrollX,
       initComplete = JS(
         "function(settings, json) {",
         "$(this.api().table().header()).css({'background-color':", paste0("'", colorHead, "'"), ", 'color': '#000000'});", "}"

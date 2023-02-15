@@ -5,9 +5,9 @@
 \alias{ejMiniConsolidadoAsp}
 \title{Mini Consolidado de Aspirantes}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con 297
-filas y 5 columnas:
-\code{Variable}, \code{YEAR}, \code{SEMESTRE}, \code{Clase}, \code{Total}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejMiniConsolidadoAsp)}
+filas y \verb{r ncol(ejMiniConsolidadoAsp)} columnas:
+\verb{r paste0("``", colnames(ejMiniConsolidadoAsp), "``", collapse = ", ")}.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.

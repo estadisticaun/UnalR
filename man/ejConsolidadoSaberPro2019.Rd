@@ -5,9 +5,9 @@
 \alias{ejConsolidadoSaberPro2019}
 \title{Consolidado Saber Pro 2019}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con 42
-filas y 7 columnas:
-\code{Variable}, \code{YEAR}, \code{Clase}, \code{n}, \code{Componente}, \code{Total}, \code{desv}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejConsolidadoSaberPro2019)}
+filas y \verb{r ncol(ejConsolidadoSaberPro2019)} columnas:
+\verb{r paste0("``", colnames(ejConsolidadoSaberPro2019), "``", collapse = ", ")}.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.

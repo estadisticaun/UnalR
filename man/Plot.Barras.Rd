@@ -11,6 +11,7 @@ Plot.Barras(
   ano,
   periodo,
   freqRelativa = FALSE,
+  ylim,
   vertical = TRUE,
   ordinal = FALSE,
   colores,
@@ -19,7 +20,8 @@ Plot.Barras(
   addPeriodo = TRUE,
   textInfo = labelEje,
   libreria = c("highcharter", "plotly"),
-  estilo = NULL
+  estilo = NULL,
+  estatico = FALSE
 )
 }
 \arguments{
@@ -32,6 +34,8 @@ Plot.Barras(
 \item{periodo}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
 
 \item{freqRelativa}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+
+\item{ylim}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 
 \item{vertical}{Si es \code{TRUE} (\emph{valor predeterminado}) indicará que la orientación
 del gráfico será vertical.}
@@ -61,9 +65,13 @@ gráfico, producido por \code{Highcharter}, el valor por defecto es igual al de
 de acuerdo con la librería específica para graficar el plot y cuyo objetivo
 es personalizar pequeños detalles de ésta.
 \itemize{
-\item \code{hc.Tema}, \code{hc.Credits} y \code{ply.Credits}: Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{hc.Tema}, \code{hc.Credits}, \code{ply.Credits}, \code{gg.Tema} y \code{gg.Texto}: Igual uso
+que en \code{\link[=Plot.Series]{Plot.Series()}}
 \item \code{ply.Legend}: Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}
+\item \code{gg.Bar}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_bar]{geom_bar()}).
 }}
+
+\item{estatico}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 }
 \value{
 Retorna el diagrama de barras (\emph{objeto widget de HTML}) creado. La clase del
@@ -103,7 +111,7 @@ Plot.Barras(
   estilo       = list(hc.Tema = 2, hc.Credits = Msj)
 )
 
-Msj <- "Año 2020, sin segregar por semestre (considerando ambos)."
+Msj <- "A\u00f1o 2020, sin segregar por semestre (considerando ambos)."
 Plot.Barras(
   datos     = ejConsolidadoGrad,
   categoria = "NIVEL",
@@ -116,6 +124,26 @@ Plot.Barras(
   libreria  = "plotly",
   estilo    = list(
     ply.Credits = list(x = 0.45, y = 1.1, text = Msj), ply.Legend = FALSE
+  )
+)
+# Ejemplo usando el caso estático (ggplot2)
+Plot.Barras(
+  datos     = ejConsolidadoGrad,
+  categoria = "NIVEL",
+  ano       = 2020,
+  vertical  = FALSE,
+  ordinal   = FALSE,
+  colores   = RColorBrewer::brewer.pal(5, "Set2"),
+  titulo    = "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL",
+  labelEje  = "N\u00famero de Graduados",
+  estatico  = TRUE,
+  estilo    = list(
+    gg.Tema  = 9,
+    gg.Bar   = list(width = 0.2, color = "#000000"),
+    gg.Texto = list(subtitle = Msj,
+                    caption  = "Informaci\u00f3n Disponible desde 2009-1",
+                    tag      = "Figura 1. Graduados"
+    )
   )
 )
 

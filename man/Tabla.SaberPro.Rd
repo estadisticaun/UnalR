@@ -13,6 +13,7 @@ Tabla.SaberPro(
   tituloPdf = NULL,
   mensajePdf = "",
   ajustarNiveles = TRUE,
+  scrollX = TRUE,
   colorHead = "#FFFFFF",
   colorear = FALSE,
   estilo
@@ -34,6 +35,8 @@ hace referencia los valores y columnas de la tabla.}
 \item{mensajePdf}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
 
 \item{ajustarNiveles}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
+
+\item{scrollX}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
 
 \item{colorHead}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
 
@@ -66,8 +69,8 @@ tablas.
 }
 \examples{
 if (require("dplyr")) {
-  VariosYears <- ejConsolidadoSaberPro2019 \%>\%
-    mutate(YEAR = replace(YEAR, YEAR==2019, 2020)) \%>\%
+  VariosYears <- ejConsolidadoSaberPro2019 |>
+    mutate(YEAR = replace(YEAR, YEAR==2019, 2020)) |>
     bind_rows(ejConsolidadoSaberPro2019)
 }
 Msj <- "\u00c9sta es una descripci\u00f3n de la tabla diferente al valor por default."

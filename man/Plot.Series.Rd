@@ -15,7 +15,8 @@ Plot.Series(
   labelX = "Periodo",
   labelY = "",
   libreria = c("highcharter", "plotly", "dygraphs"),
-  estilo = NULL
+  estilo = NULL,
+  estatico = FALSE
 )
 }
 \arguments{
@@ -85,7 +86,29 @@ subtítulo o etiqueta de créditos a la serie principal, por ejemplo,
 ocupará la leyenda. El valor por defecto es 250.
 \item \code{dyg.Resaltar}: Si es \code{FALSE} (\emph{valor predeterminado}) no se resaltará
 la serie en que se sitúa el cursor.
+\item \code{gg.Tema}: Modifica el tema con el cual se creará la serie. Los posibles
+valores son un número entero entre \eqn{[1, 17]} el cual hace referencia
+a diferentes temas disponibles para \code{ggplot2} (\code{theme_light}, \code{theme_bw},
+\code{theme_classic}, \code{theme_linedraw}, \code{theme_gray}, \code{theme_hc}, \code{theme_pander},
+\code{theme_gdocs}, \code{theme_fivethirtyeight}, \code{theme_economist}, \code{theme_solarized},
+\code{theme_ipsum}, \code{theme_ipsum_ps}, \code{theme_ft_rc}, \code{theme_tech(theme = "airbnb")},
+\code{theme_tech(theme = "google")} y \code{theme_tech(theme = "X23andme")} respectivamente).
+El tema por defecto, al no ingresar valor alguno, es el construido por el
+departamento \code{theme_DNPE}.
+\item \code{gg.Legend}: Lista que especifica la posición y orientación de la leyenda.
+Los valores por defecto la ubican verticalmente a la derecha del plot.
+Algunos valores aceptados para \code{legend.position} son "none", "left", "top",
+"right", "bottom" y c(CoordX, CoordY). Y para \code{legend.direction} solo se
+acepta "vertical" u "horizontal".
+\item \code{gg.Linea}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_path]{geom_line()}).
+\item \code{gg.Punto}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_point]{geom_point()}).
+\item \code{gg.Texto}: Una lista cuyos valores admitidos y usados son \code{subtitle},
+\code{caption} y \code{tag}.
 }}
+
+\item{estatico}{Si es \code{FALSE} (\emph{valor predeterminado}) el gráfico a retornar
+será dinámico (\emph{dependiendo de la librería seleccionada}), en caso contrario
+se retornará un gráfico estático construido con \code{ggplot2}.}
 }
 \value{
 Retorna la serie (\emph{objeto widget de HTML}) creada. La clase del objeto retornado
@@ -155,7 +178,7 @@ Plot.Series(
 
 # Agrupando para eliminar el semestre
 if (require("dplyr")) {
-  df <- ejConsolidadoGrad \%>\% group_by(Variable, YEAR, Clase) \%>\%
+  df <- ejConsolidadoGrad |> group_by(Variable, YEAR, Clase) |>
     summarise(Total = sum(Total, na.rm = TRUE))
 }
 Msj <- "Comportamiento anual, considerando ambos semestres (exceptuando el caso del 2021)."
@@ -170,5 +193,32 @@ Plot.Series(
   libreria  = "highcharter",
   estilo    = list(hc.Tema = 1, hc.Credits = Msj)
 )
+
+# Ejemplo usando el caso estático (ggplot2)
+if (require("rsvg") && require("magick") && require("grid")) {
+  LogoUN <- magick::image_read_svg("https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg")
+  Plot.Series(
+    datos        = ejConsolidadoGrad,
+    categoria    = "SEDE_NOMBRE_ADM",
+    freqRelativa = FALSE,
+    invertir     = FALSE,
+    ylim         = c(100, 2000),
+    colores      = misColores,
+    titulo       = Txt,
+    labelY       = "N\u00famero de Graduados",
+    estatico     = TRUE,
+    estilo       = list(
+      LegendTitle = "SEDE:", gg.Tema = 8,
+      gg.Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
+      gg.Linea  = list(linetype = 2, size = 0.1, arrow = grid::arrow()),
+      gg.Punto  = list(alpha = 0.2, shape = 21, size = 3, stroke = 5),
+      gg.Texto  = list(subtitle = Msj,
+                       caption  = "Informaci\u00f3n Disponible desde 2009-1",
+                       tag      = "Figura 1. Graduados"
+      )
+    )
+  )
+  grid::grid.raster(LogoUN, x = 0.02, y = 0.02, just = c('left', 'bottom'), width = unit(1.2, "inches"))
+}
 
 }

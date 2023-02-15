@@ -57,7 +57,9 @@ Imports:
 Suggests:
     readxl,
     pals,
-    viridis
+    viridis,
+    magick,
+    rsvg
 Depends:
     R (>= 4.2.0)
 Encoding: UTF-8

@@ -14,6 +14,7 @@ Tabla.General(
   tituloPdf = NULL,
   mensajePdf = "",
   ajustarNiveles = TRUE,
+  scrollX = TRUE,
   colorHead = "#FFFFFF",
   estilo
 )
@@ -42,6 +43,8 @@ las columnas tendrán habilitada la opción de poder filtrar.}
 \item{mensajePdf}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
 
 \item{ajustarNiveles}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
+
+\item{scrollX}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
 
 \item{colorHead}{Igual uso que en \code{\link[=Tabla]{Tabla()}}}
 
@@ -77,14 +80,14 @@ la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesiva
 Tabla.General(datos = mtcars)
 
 if (require("dplyr") && require("tidyr") && require("DT")) {
-  df <- ejGraduados \%>\%
-    filter(TIPO_NIVEL == "Pregrado") \%>\%
-    group_by(YEAR, SEMESTRE, DEP_NAC, CIU_NAC, SEXO, CAT_EDAD, ESTRATO, PROGRAMA) \%>\%
-    summarise(Total = n(), .groups = "drop") \%>\%
+  df <- ejGraduados |>
+    filter(TIPO_NIVEL == "Pregrado") |>
+    group_by(YEAR, SEMESTRE, DEP_NAC, CIU_NAC, SEXO, CAT_EDAD, ESTRATO, PROGRAMA) |>
+    summarise(Total = n(), .groups = "drop") |>
     mutate(across(where(is.character), replace_na, replace = "SIN INFO"))
 
-  Nombres <- c("A\u00f1o", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
-  Titulo  <- "HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS"
+  Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
+  Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
 
   Tabla.General(
     datos          = df,

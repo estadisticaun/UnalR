@@ -1,5 +1,21 @@
 # UnalR 1.0.0
 
+v1.0.0 fue lanzada el 02/02/2023
+
+## Cambios
+  * En los casos aplicables, se reemplaza el operador de `magrittr` por el "native pipe" de `R` (`%>%` *por* `|>`), incluido en la versión `4.1.0`, reemplazando así la "tubería" la cual es el icono distintivo de `dplyr` y el `tidyverse`.
+
+## Nuevas características (*new features*)
+  * Se modifica la función `Agregar()`, ahora permite realizar múltiples agregados simultáneamente, es decir, especificando más de una variable de interés. Internamente realiza agregados individuales y los concatena uno debajo del otro (*por filas*).
+  * Para las funciones `Plot.Series()`, `Plot.Barras()` y `Plot.Apiladas()` se agrega el parámetro `estatico`, el cual ahora permite generar el gráfico de manera invariable mediante la librería `ggplot2`. Para lo cual se agregan una serie de parámetros específicos para dicha librería (*dentro de `estilo`, las podrá encontrar cómo* `gg.*`).
+
+
+## Correcciones (*bug fixes*)
+  * En tablas pequeñas, con pocas columnas, se desplazaba el encabezado (*nombre de las columnas*) a la izquierda, esto sin importar el tamaño de la ventana. Se establece el argumento `scrollX` (fijado antes como `TRUE`) en las funciones `Tabla()`, `Tabla.General()` y `Tabla.SaberPro()`.
+  * Se solicita la inclusión del argumento `escape = TRUE` para que las diversas funciones de tablas permitan la inclusión de entidades **HTML**, se advierte que al ponerlo como `FALSE` puede haber posibles problemas de seguridad cuando la tabla se representa en aplicaciones web dinámicas.
+
+___
+
 # UnalR 0.1.0 (*minor version*)
 
 v0.1.0 fue lanzada el 28/11/2021
@@ -29,10 +45,7 @@ ___
 
 v0.0.0.9000 fue lanzada el 28/02/2021
 
-* ¡Primera versión estable de implementación avanzada de `UnalR`!
-* Muchas funciones escritas para hacer uso de métodos y clases. En consecuencia,
-  se han implementado varias funciones y se han documentado muchos argumentos.
-  Consulte la ayuda para obtener más detalles.
-* Funciones añadidas `Tabla()`, `Tabla.SaberPro()`, `Plot.Series()`, `Plot.Torta()`,
-  `Plot.Barras()`, `Plot.Mapa()` y `StaticPlot()`.
-* Se realizaron varios cambios para garantizar la compatibilidad.
+  * ¡Primera versión estable de implementación avanzada de `UnalR`!
+  * Muchas funciones escritas para hacer uso de métodos y clases. En consecuencia, se han implementado varias funciones y se han documentado muchos argumentos. Consulte la ayuda para obtener más detalles.
+  * Funciones añadidas `Tabla()`, `Tabla.SaberPro()`, `Plot.Series()`, `Plot.Torta()`, `Plot.Barras()`, `Plot.Mapa()` y `StaticPlot()`.
+  * Se realizaron varios cambios para garantizar la compatibilidad.

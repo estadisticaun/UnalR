@@ -5,9 +5,9 @@
 \alias{ejMiniAspirantesPre}
 \title{Mini Microdatos de Aspirantes a Pregrado}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con 30050
-filas y 6 columnas:
-\code{Serie}, \code{PTOTAL}, \code{TIPO_INS}, \code{INS_SEDE_NOMBRE}, \code{ADM_SEDE_NOMBRE}, \code{FACULTAD}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejMiniAspirantesPre)}
+filas y \verb{r ncol(ejMiniAspirantesPre)} columnas:
+\verb{r paste0("``", colnames(ejMiniAspirantesPre), "``", collapse = ", ")}.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.

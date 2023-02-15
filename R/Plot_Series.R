@@ -61,6 +61,27 @@
 #'     ocupará la leyenda. El valor por defecto es 250.
 #'   * `dyg.Resaltar`: Si es `FALSE` (\emph{valor predeterminado}) no se resaltará
 #'     la serie en que se sitúa el cursor.
+#'   * `gg.Tema`: Modifica el tema con el cual se creará la serie. Los posibles
+#'     valores son un número entero entre \eqn{[1, 17]} el cual hace referencia
+#'     a diferentes temas disponibles para `ggplot2` (`theme_light`, `theme_bw`,
+#'     `theme_classic`, `theme_linedraw`, `theme_gray`, `theme_hc`, `theme_pander`,
+#'     `theme_gdocs`, `theme_fivethirtyeight`, `theme_economist`, `theme_solarized`,
+#'     `theme_ipsum`, `theme_ipsum_ps`, `theme_ft_rc`, `theme_tech(theme = "airbnb")`,
+#'     `theme_tech(theme = "google")` y `theme_tech(theme = "X23andme")` respectivamente).
+#'     El tema por defecto, al no ingresar valor alguno, es el construido por el
+#'     departamento `theme_DNPE`.
+#'   * `gg.Legend`: Lista que especifica la posición y orientación de la leyenda.
+#'     Los valores por defecto la ubican verticalmente a la derecha del plot.
+#'     Algunos valores aceptados para `legend.position` son "none", "left", "top",
+#'     "right", "bottom" y c(CoordX, CoordY). Y para `legend.direction` solo se
+#'     acepta "vertical" u "horizontal".
+#'   * `gg.Linea`: Una lista de parámetros admitidos por la función [geom_line()][ggplot2::geom_line()]).
+#'   * `gg.Punto`: Una lista de parámetros admitidos por la función [geom_point()][ggplot2::geom_point()]).
+#'   * `gg.Texto`: Una lista cuyos valores admitidos y usados son `subtitle`,
+#'     `caption` y `tag`.
+#' @param estatico Si es `FALSE` (*valor predeterminado*) el gráfico a retornar
+#'   será dinámico (*dependiendo de la librería seleccionada*), en caso contrario
+#'   se retornará un gráfico estático construido con `ggplot2`.
 #'
 #' @details
 #' Al usar el paquete `Highcharter` y usar las opciones de descarga, el nombre del
@@ -123,7 +144,7 @@
 #'
 #' # Agrupando para eliminar el semestre
 #' if (require("dplyr")) {
-#'   df <- ejConsolidadoGrad %>% group_by(Variable, YEAR, Clase) %>%
+#'   df <- ejConsolidadoGrad |> group_by(Variable, YEAR, Clase) |>
 #'     summarise(Total = sum(Total, na.rm = TRUE))
 #' }
 #' Msj <- "Comportamiento anual, considerando ambos semestres (exceptuando el caso del 2021)."
@@ -139,20 +160,53 @@
 #'   estilo    = list(hc.Tema = 1, hc.Credits = Msj)
 #' )
 #'
+#' # Ejemplo usando el caso estático (ggplot2)
+#' if (require("rsvg") && require("magick") && require("grid")) {
+#'   LogoUN <- magick::image_read_svg("https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg")
+#'   Plot.Series(
+#'     datos        = ejConsolidadoGrad,
+#'     categoria    = "SEDE_NOMBRE_ADM",
+#'     freqRelativa = FALSE,
+#'     invertir     = FALSE,
+#'     ylim         = c(100, 2000),
+#'     colores      = misColores,
+#'     titulo       = Txt,
+#'     labelY       = "N\u00famero de Graduados",
+#'     estatico     = TRUE,
+#'     estilo       = list(
+#'       LegendTitle = "SEDE:", gg.Tema = 8,
+#'       gg.Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
+#'       gg.Linea  = list(linetype = 2, size = 0.1, arrow = grid::arrow()),
+#'       gg.Punto  = list(alpha = 0.2, shape = 21, size = 3, stroke = 5),
+#'       gg.Texto  = list(subtitle = Msj,
+#'                        caption  = "Informaci\u00f3n Disponible desde 2009-1",
+#'                        tag      = "Figura 1. Graduados"
+#'       )
+#'     )
+#'   )
+#'   grid::grid.raster(LogoUN, x = 0.02, y = 0.02, just = c('left', 'bottom'), width = unit(1.2, "inches"))
+#' }
+#'
 #' @export
 #'
 #' @import highcharter
 #' @import plotly
 #' @import dygraphs
+#' @rawNamespace import(ggplot2, except = last_plot)
+#' @import ggthemes
+#' @import hrbrthemes
+#' @import ggtech
 #' @import dplyr
+#' @importFrom scales percent label_percent
 #' @importFrom tidyr pivot_wider pivot_longer
 #' @importFrom xts xts
 #' @importFrom zoo as.Date as.yearmon
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
-Plot.Series <- function(datos, categoria, freqRelativa = FALSE, invertir = FALSE,
-                        ylim, colores, titulo = "", labelX = "Periodo", labelY = "",
-                        libreria = c("highcharter", "plotly", "dygraphs"), estilo = NULL) {
+Plot.Series <- function(
+    datos, categoria, freqRelativa = FALSE, invertir = FALSE, ylim, colores,
+    titulo = "", labelX = "Periodo", labelY = "",
+    libreria = c("highcharter", "plotly", "dygraphs"), estilo = NULL, estatico = FALSE) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (missingArg(datos) || missingArg(categoria)) {
@@ -165,13 +219,17 @@ Plot.Series <- function(datos, categoria, freqRelativa = FALSE, invertir = FALSE
   if (!(is.logical(freqRelativa) && is.logical(invertir))) {
     stop("\u00a1Los argumentos 'freqRelativa' e 'invertir' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
   }
-  if (invertir) { Invertir <- "reversed" } else { Invertir <- NULL }
   if (!missingArg(ylim)) {
     if (!(is.numeric(ylim) && length(ylim) == 2)) {
       stop("\u00a1Por favor introduzca un vector de longitud dos que definen los l\u00edmites del eje Y!", call. = FALSE)
     }
     yLim <- ylim
   } else { yLim <- NULL }
+  if (invertir) {
+    Invertir <- "reversed"; ggInvertir <- "reverse"; yLim <- rev(yLim)
+  } else {
+    Invertir <- NULL      ; ggInvertir <- "identity"
+  }
   if (!(is.character(titulo) && is.character(labelX) && is.character(labelY))) {
     stop("\u00a1Los argumentos 'titulo', 'labelX' y 'labelY' deben ser una cadena de texto!", call. = FALSE)
   }
@@ -188,232 +246,231 @@ Plot.Series <- function(datos, categoria, freqRelativa = FALSE, invertir = FALSE
 
   # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA
   if ("SEMESTRE" %in% names(datos)) {
-    DataFrame <- datos %>% ungroup() %>% filter(Variable == categoria) %>%
-      mutate(Fecha = paste(YEAR, SEMESTRE, sep = "-")) %>%
-      select(-Variable, -YEAR, -SEMESTRE) %>% relocate(Fecha)
+    DataFrame <- datos |> ungroup() |> filter(Variable == categoria) |>
+      mutate(Fecha = paste(YEAR, SEMESTRE, sep = "-")) |>
+      select(-Variable, -YEAR, -SEMESTRE) |> relocate(Fecha)
   } else {
-    DataFrame <- datos %>% ungroup() %>% filter(Variable == categoria) %>%
-      mutate(Fecha = paste(YEAR)) %>% select(-Variable, -YEAR) %>% relocate(Fecha)
+    DataFrame <- datos |> ungroup() |> filter(Variable == categoria) |>
+      mutate(Fecha = paste(YEAR)) |> select(-Variable, -YEAR) |> relocate(Fecha)
   }
 
-  tableHoriz <- DataFrame %>% pivot_wider(names_from = Clase, values_from = Total)
-  categorias <- DataFrame %>% select(Clase) %>% distinct() %>% pull()
+  tableHoriz <- DataFrame |> pivot_wider(names_from = Clase, values_from = Total)
+  categorias <- DataFrame |> select(Clase) |> distinct() |> pull()
 
   if (length(categorias) == 1L) {
-    Relativo <- DataFrame %>%
-      mutate(Relativo = Total / Total * 100) %>%
-      select(-Total)
+    Relativo <- DataFrame |> mutate(Relativo = Total / Total * 100) |> select(-Total)
   } else {
-    Relativo <- tableHoriz %>% select(-Fecha) %>% PocentRelativo() %>%
-      as_tibble() %>% mutate(Fecha = tableHoriz$Fecha) %>%
+    Relativo <- tableHoriz |> select(-Fecha) |> PocentRelativo() |>
+      as_tibble() |> mutate(Fecha = tableHoriz$Fecha) |>
       pivot_longer(cols = categorias, names_to = "Clase", values_to = "Relativo")
   }
-  TablaFinal <- DataFrame %>% inner_join(Relativo)
+  TablaFinal <- DataFrame |> inner_join(Relativo)
 
   if (!(missingArg(colores) || length(colores) == length(categorias))) {
     stop(paste0(
       "\u00a1El n\u00famero de colores ingresados en el vector 'colores' no corresponde con el n\u00famero de categor\u00edas a colorear!",
       "\n\tNo. colores ingresados = ", length(colores), " != ", "No. de categor\u00edas = ", length(categorias)
-    ), call. = FALSE)
+      ), call. = FALSE
+    )
   }
-  if (missingArg(colores)) {
-    colores <- rainbow(length(categorias), alpha = 0.7)
-  }
+  if (missingArg(colores)) { colores <- rainbow(length(categorias), alpha = 0.7) }
 
   # CREACIÓN DEL PLOT A RETORNAR
-  if (libreria == "highcharter") {
-    # SEGREGACIÓN DEL CONDICIONAL DE FRECUENCIA ABSOLUTA O RELATIVA
-    if (freqRelativa) {
-      sufijoY    <- "{value}%"
-      TablaFinal <- TablaFinal %>% rename_at(vars(Relativo, Total), ~ c("Y", "Extra"))
-      strFormat  <- '<span style="color:{series.color}">\u25CF </span><b>{series.name}: {point.y}%</b> ({point.Extra})<br/>'
-    } else {
-      sufijoY    <- "{value}"
-      TablaFinal <- TablaFinal %>% rename_at(vars(Total, Relativo), ~ c("Y", "Extra"))
-      strFormat  <- '<span style="color:{series.color}">\u25CF </span><b>{series.name}: {point.y}</b> ({point.Extra}%)<br/>'
-    }
-
-    Spanish.Highcharter()
-    if (!(missingArg(estilo) || is.null(estilo$hc.Tema))) {
-      ThemeHC <- switch(estilo$hc.Tema,
-        "1"  = hc_theme_ffx(),
-        "2"  = hc_theme_google(),
-        "3"  = hc_theme_tufte(),
-        "4"  = hc_theme_538(),
-        "5"  = hc_theme_ggplot2(),
-        "6"  = hc_theme_economist(),
-        "7"  = hc_theme_sandsignika(),
-        "8"  = hc_theme_ft(),
-        "9"  = hc_theme_superheroes(),
-        "10" = hc_theme_flatdark()
-      )
-    } else { ThemeHC <- hc_theme_flat() }
-    BoxInfo <- ifelse(!(missingArg(estilo) || is.null(estilo$hc.BoxInfo)), estilo$hc.BoxInfo, TRUE)
-
-    PlotSeries <- TablaFinal %>%
-      hchart(
-        type = "line", hcaes(x = Fecha, y = Y, group = Clase), color = colores,
-        zoomType = list(enabled = FALSE), resetZoomButton = TRUE
-      ) %>%
-      hc_chart(type = "datetime", zoomType = "x") %>%
-      hc_plotOptions(line = list(marker = list(enabled = FALSE, symbol = "square", radius = 1))) %>%
-      hc_title(text = titulo, style = list(fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE)) %>%
-      hc_xAxis(
-        title = list(text = labelX, offset = 70, style = list(fontWeight = "bold", fontSize = "18px", color = "black")),
-        align = "center", lineColor = "#787878", opposite = FALSE,
-        labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
-      ) %>%
-      hc_yAxis(
-        reversed = invertir, lineColor = "#787878", opposite = FALSE,
-        lineWidth = 1, min = yLim[1], max = yLim[2],
-        title = list(text = labelY, offset = 70, style = list(
-          fontWeight = "bold", fontSize = "18px", color = "black"
-        )),
-        labels = list(format = sufijoY, style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
-      ) %>%
-      # https://github.com/jbkunst/highcharter/issues/331
-      hc_exporting(enabled = TRUE, filename = paste0("PlotSeries_", categoria)) %>%
-      hc_legend(
-        enabled = TRUE, align = "center", verticalAlign = "bottom", layout = "horizontal",
-        title = list(text = LegendTitle, style = list(textDecoration = "underline")),
-        x = 42, y = 0, itemStyle = list(
-          fontWeight = "bold",
-          color      = "black",
-          fontSize   = "18px"
-        )
-      ) %>%
-      hc_tooltip(
-        crosshairs = TRUE, shared = BoxInfo, pointFormat = strFormat,
-        backgroundColor = hex_to_rgba("#BAAEAE", 0.7),
-        borderColor = "#6D6666", borderWidth = 5, useHTML = TRUE
-      ) %>%
-      hc_add_theme(ThemeHC)
-
-    if (!missingArg(estilo) && "hc.Slider" %in% names(estilo) && estilo$hc.Slider) {
-      PlotSeries <- PlotSeries %>%
-        hc_navigator(
-          height = 15, margin = 5, maskFill = "rgba(255,16,46,0.6)",
-          enabled = TRUE, series = list(
-            color     = "#999999",
-            lineWidth = 30,
-            type      = "areaspline",
-            fillColor = "#999999"
-          )
-        ) %>%
-        hc_rangeSelector(
-          enabled = TRUE, inputEnabled = FALSE, labelStyle = list(display = "none"),
-          buttonPosition = list(align = "left"), floating = FALSE,
-          buttons = list(list(type = "all", text = "Restaurar"))
-        )
-    }
-    if (!(missingArg(estilo) || is.null(estilo$hc.Credits))) {
-      PlotSeries <- PlotSeries %>%
-        hc_subtitle(text = estilo$hc.Credits, align = "left", style = list(color = "#2B908F", fontWeight = "bold"))
-    }
-
-  } else if (libreria == "plotly") {
-    if (!(missingArg(estilo) || is.null(estilo$ply.LegendPosition))) {
-      ParmsLegend <- estilo$ply.LegendPosition
-    } else {
-      ParmsLegend <- list(x = 1, y = 0.5, orientation = "v")
-    }
-    if (!(missingArg(estilo) || is.null(estilo$ply.Credits))) {
-      ParmsCredits <- estilo$ply.Credits
-    } else {
-      ParmsCredits <- list(x = 0.2, y = 1, text = "")
-    }
-    Hovermode <- ifelse(!(missingArg(estilo) || is.null(estilo$ply.Interaction)), estilo$ply.Interaction, "x unified")
-
-    FreqRelativa <- Relativo %>% pivot_wider(names_from = Clase, values_from = Relativo)
-    PlotSeries   <- plot_ly(data = tableHoriz)
-    for (i in 1:length(categorias)) {
+  if (!estatico) {
+    if (libreria == "highcharter") {
+      # SEGREGACIÓN DEL CONDICIONAL DE FRECUENCIA ABSOLUTA O RELATIVA
       if (freqRelativa) {
-        strFormat <- "%{y} (%{text})"; sufijoY <- "%"
-        df_Temp <- data.frame(X = tableHoriz$Fecha, Y = FreqRelativa[[categorias[i]]], Text = tableHoriz[[categorias[i]]])
+        sufijoY    <- "{value}%"
+        TablaFinal <- TablaFinal |> rename_at(vars(Relativo, Total), ~ c("Y", "Extra"))
+        strFormat  <- '<span style="color:{series.color}">\u25CF </span><b>{series.name}: {point.y}%</b> ({point.Extra})<br/>'
       } else {
-        strFormat <- "%{y} (%{text:.2s}%)"; sufijoY <- ""
-        df_Temp <- data.frame(X = tableHoriz$Fecha, Y = tableHoriz[[categorias[i]]], Text = FreqRelativa[[categorias[i]]])
+        sufijoY    <- "{value}"
+        TablaFinal <- TablaFinal |> rename_at(vars(Total, Relativo), ~ c("Y", "Extra"))
+        strFormat  <- '<span style="color:{series.color}">\u25CF </span><b>{series.name}: {point.y}</b> ({point.Extra}%)<br/>'
       }
 
-      PlotSeries <- add_trace(PlotSeries,
-        x = ~X, y = ~Y, data = df_Temp, text = ~Text,
-        name = categorias[i], type = "scatter", mode = "markers+lines",
-        line = list(color = colores[i], width = 3),
-        marker = list(color = colores[i], size = 6, line = list(width = 1.2, color = "#787878")),
-        hovertemplate = strFormat, textposition = "outside"
-      )
-    }
-    # Arial | Open Sans | Courier New, monospace
-    FamilyAxis  <- list(family = "Old Standard TT, serif", size = 16, color = "#525252")
-    FamilyTitle <- list(family = "Open Sans", size = 24, color = "#333333")
-
-    Title <- list(text = paste0("<b>", titulo, "</b>"), font = FamilyTitle, y = 0.96)
-    Xaxis <- list(
-      title = labelX,
-      zeroline       = FALSE,
-      showline       = TRUE,
-      showgrid       = FALSE,
-      showticklabels = TRUE,
-      linecolor      = "#787878",
-      linewidth      = 2.5,
-      autotick       = FALSE,
-      ticks          = "outside",
-      tickwidth      = 2.5,
-      ticklen        = 10,
-      tickcolor      = "#CCCCCC",
-      tickangle      = -45,
-      tickfont       = FamilyAxis
-    )
-    Yaxis <- list(
-      title          = labelY,
-      ticksuffix     = sufijoY,
-      zeroline       = TRUE,
-      autorange      = Invertir,
-      range          = yLim,
-      showline       = TRUE,
-      showgrid       = TRUE,
-      showticklabels = TRUE,
-      linecolor      = "#787878",
-      linewidth      = 3,
-      tickfont       = FamilyAxis,
-      separatethousands = TRUE
-    )
-
-    PlotSeries <- PlotSeries %>%
-      layout(
-        title = Title, xaxis = Xaxis, yaxis = Yaxis,
-        autosize = TRUE, showlegend = TRUE,
-        legend = append(ParmsLegend, list(
-          traceorder = "normal", title = list(text = paste0("<b>", LegendTitle, "</b>"))
-          )
-        ),
-        hovermode = Hovermode,
-        annotations = append(ParmsCredits, list(
-          showarrow = FALSE, xref = "paper", yref = "paper",
-          xanchor = "right", yanchor = "auto", xshift = 0, yshift = 0,
-          font = list(size = 12, color = "#CCCCCC")
-          )
+      Spanish.Highcharter()
+      if (!(missingArg(estilo) || is.null(estilo$hc.Tema))) {
+        ThemeHC <- switch(
+          estilo$hc.Tema,
+          "1"  = hc_theme_ffx(),
+          "2"  = hc_theme_google(),
+          "3"  = hc_theme_tufte(),
+          "4"  = hc_theme_538(),
+          "5"  = hc_theme_ggplot2(),
+          "6"  = hc_theme_economist(),
+          "7"  = hc_theme_sandsignika(),
+          "8"  = hc_theme_ft(),
+          "9"  = hc_theme_superheroes(),
+          "10" = hc_theme_flatdark()
         )
-      ) %>%
-      config(locale = "es")
+      } else { ThemeHC <- hc_theme_flat() }
+      BoxInfo <- ifelse(!(missingArg(estilo) || is.null(estilo$hc.BoxInfo)), estilo$hc.BoxInfo, TRUE)
 
-  } else if (libreria == "dygraphs") {
-    if (freqRelativa) {
-      with0 <- FALSE
-      dygraphDF <- Relativo %>% pivot_wider(names_from = Clase, values_from = Relativo)
-    } else {
-      with0 <- TRUE
-      dygraphDF <- tableHoriz
-    }
+      PlotSeries <- TablaFinal |>
+        hchart(
+          type = "line", hcaes(x = Fecha, y = Y, group = Clase), color = colores,
+          zoomType = list(enabled = FALSE), resetZoomButton = TRUE
+        ) |>
+        hc_chart(type = "datetime", zoomType = "x") |>
+        hc_plotOptions(line = list(marker = list(enabled = FALSE, symbol = "square", radius = 1))) |>
+        hc_title(text = titulo, style = list(fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE)) |>
+        hc_xAxis(
+          title = list(text = labelX, offset = 70, style = list(fontWeight = "bold", fontSize = "18px", color = "black")),
+          align = "center", lineColor = "#787878", opposite = FALSE,
+          labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
+        ) |>
+        hc_yAxis(
+          reversed = invertir, lineColor = "#787878", opposite = FALSE,
+          lineWidth = 1, min = yLim[1], max = yLim[2],
+          title = list(text = labelY, offset = 70, style = list(
+            fontWeight = "bold", fontSize = "18px", color = "black"
+          )),
+          labels = list(format = sufijoY, style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
+        ) |>
+        # https://github.com/jbkunst/highcharter/issues/331
+        hc_exporting(enabled = TRUE, filename = paste0("PlotSeries_", categoria)) |>
+        hc_legend(
+          enabled = TRUE, align = "center", verticalAlign = "bottom", layout = "horizontal",
+          title = list(text = LegendTitle, style = list(textDecoration = "underline")),
+          x = 42, y = 0, itemStyle = list(
+            fontWeight = "bold",
+            color      = "black",
+            fontSize   = "18px"
+          )
+        ) |>
+        hc_tooltip(
+          crosshairs = TRUE, shared = BoxInfo, pointFormat = strFormat,
+          backgroundColor = hex_to_rgba("#BAAEAE", 0.7),
+          borderColor = "#6D6666", borderWidth = 5, useHTML = TRUE
+        ) |>
+        hc_add_theme(ThemeHC)
 
-    LegendWidth <- ifelse(!(missingArg(estilo) || is.null(estilo$dyg.LegendWidth)), estilo$dyg.LegendWidth, 250)
-    Periodos <- dygraphDF %>% select(Fecha) %>% distinct() %>% pull()
-    Periodos <- gsub("-2", "-7", Periodos)
-    TableHorizontal <- dygraphDF
-    TableHorizontal$Fecha <- zoo::as.Date(as.yearmon(Periodos, "%Y-%m"))
-    TableHorizontal <- xts::xts(x = TableHorizontal[, -1], order.by = TableHorizontal$Fecha)
+      if (!missingArg(estilo) && "hc.Slider" %in% names(estilo) && estilo$hc.Slider) {
+        PlotSeries <- PlotSeries |>
+          hc_navigator(
+            height = 15, margin = 5, maskFill = "rgba(255,16,46,0.6)",
+            enabled = TRUE, series = list(
+              color     = "#999999",
+              lineWidth = 30,
+              type      = "areaspline",
+              fillColor = "#999999"
+            )
+          ) |>
+          hc_rangeSelector(
+            enabled = TRUE, inputEnabled = FALSE, labelStyle = list(display = "none"),
+            buttonPosition = list(align = "left"), floating = FALSE,
+            buttons = list(list(type = "all", text = "Restaurar"))
+          )
+      }
+      if (!(missingArg(estilo) || is.null(estilo$hc.Credits))) {
+        PlotSeries <- PlotSeries |>
+          hc_subtitle(text = estilo$hc.Credits, align = "left", style = list(color = "#2B908F", fontWeight = "bold"))
+      }
 
-    getSemestre <- 'function(d) {
+    } else if (libreria == "plotly") {
+      if (!(missingArg(estilo) || is.null(estilo$ply.LegendPosition))) {
+        ParmsLegend <- estilo$ply.LegendPosition
+      } else {
+        ParmsLegend <- list(x = 1, y = 0.5, orientation = "v")
+      }
+      if (!(missingArg(estilo) || is.null(estilo$ply.Credits))) {
+        ParmsCredits <- estilo$ply.Credits
+      } else {
+        ParmsCredits <- list(x = 0.2, y = 1, text = "")
+      }
+      Hovermode <- ifelse(!(missingArg(estilo) || is.null(estilo$ply.Interaction)), estilo$ply.Interaction, "x unified")
+
+      FreqRelativa <- Relativo |> pivot_wider(names_from = Clase, values_from = Relativo)
+      PlotSeries   <- plot_ly(data = tableHoriz)
+      for (i in 1:length(categorias)) {
+        if (freqRelativa) {
+          strFormat <- "%{y} (%{text})"; sufijoY <- "%"
+          df_Temp <- data.frame(X = tableHoriz$Fecha, Y = FreqRelativa[[categorias[i]]], Text = tableHoriz[[categorias[i]]])
+        } else {
+          strFormat <- "%{y} (%{text:.2s}%)"; sufijoY <- ""
+          df_Temp <- data.frame(X = tableHoriz$Fecha, Y = tableHoriz[[categorias[i]]], Text = FreqRelativa[[categorias[i]]])
+        }
+
+        PlotSeries <- add_trace(
+          PlotSeries, x = ~X, y = ~Y, data = df_Temp, text = ~Text,
+          name = categorias[i], type = "scatter", mode = "markers+lines",
+          line = list(color = colores[i], width = 3),
+          marker = list(color = colores[i], size = 6, line = list(width = 1.2, color = "#787878")),
+          hovertemplate = strFormat, textposition = "outside"
+        )
+      }
+      # Arial | Open Sans | Courier New, monospace
+      FamilyAxis  <- list(family = "Old Standard TT, serif", size = 16, color = "#525252")
+      FamilyTitle <- list(family = "Open Sans", size = 24, color = "#333333")
+
+      Title <- list(text = paste0("<b>", titulo, "</b>"), font = FamilyTitle, y = 0.96)
+      Xaxis <- list(
+        title = labelX,
+        zeroline       = FALSE,
+        showline       = TRUE,
+        showgrid       = FALSE,
+        showticklabels = TRUE,
+        linecolor      = "#787878",
+        linewidth      = 2.5,
+        autotick       = FALSE,
+        ticks          = "outside",
+        tickwidth      = 2.5,
+        ticklen        = 10,
+        tickcolor      = "#CCCCCC",
+        tickangle      = -45,
+        tickfont       = FamilyAxis
+      )
+      Yaxis <- list(
+        title          = labelY,
+        ticksuffix     = sufijoY,
+        zeroline       = TRUE,
+        autorange      = Invertir,
+        range          = yLim,
+        showline       = TRUE,
+        showgrid       = TRUE,
+        showticklabels = TRUE,
+        linecolor      = "#787878",
+        linewidth      = 3,
+        tickfont       = FamilyAxis,
+        separatethousands = TRUE
+      )
+
+      PlotSeries <- PlotSeries |>
+        layout(
+          title = Title, xaxis = Xaxis, yaxis = Yaxis,
+          autosize = TRUE, showlegend = TRUE,
+          legend = append(ParmsLegend, list(
+            traceorder = "normal", title = list(text = paste0("<b>", LegendTitle, "</b>"))
+            )
+          ),
+          hovermode = Hovermode,
+          annotations = append(ParmsCredits, list(
+            showarrow = FALSE, xref = "paper", yref = "paper",
+            xanchor = "right", yanchor = "auto", xshift = 0, yshift = 0,
+            font = list(size = 12, color = "#CCCCCC")
+            )
+          )
+        ) |>
+        config(locale = "es")
+
+    } else if (libreria == "dygraphs") {
+      if (freqRelativa) {
+        with0 <- FALSE
+        dygraphDF <- Relativo |> pivot_wider(names_from = Clase, values_from = Relativo)
+      } else {
+        with0 <- TRUE
+        dygraphDF <- tableHoriz
+      }
+
+      LegendWidth <- ifelse(!(missingArg(estilo) || is.null(estilo$dyg.LegendWidth)), estilo$dyg.LegendWidth, 250)
+      Periodos <- dygraphDF |> select(Fecha) |> distinct() |> pull()
+      Periodos <- gsub("-2", "-7", Periodos)
+      TableHorizontal <- dygraphDF
+      TableHorizontal$Fecha <- zoo::as.Date(as.yearmon(Periodos, "%Y-%m"))
+      TableHorizontal <- xts::xts(x = TableHorizontal[, -1], order.by = TableHorizontal$Fecha)
+
+      getSemestre <- 'function(d) {
                       var monthNames = ["I", "", "", "", "", "","II", "", "", "", "", ""];
                       date = new Date(d);
                       if (date.getMonth() == 0 || date.getMonth() == 6) {
@@ -422,34 +479,105 @@ Plot.Series <- function(datos, categoria, freqRelativa = FALSE, invertir = FALSE
                         return "";
                       }
                    }'
-    dyUnzoom <- function(dygraph) {
-      dyPlugin(
-        dygraph = dygraph, name = "Unzoom",
-        path = system.file("plugins/unzoom.js", package = "dygraphs")
+      dyUnzoom <- function(dygraph) {
+        dyPlugin(
+          dygraph = dygraph, name = "Unzoom",
+          path = system.file("plugins/unzoom.js", package = "dygraphs")
+        )
+      }
+
+      PlotSeries <- dygraph(TableHorizontal, main = paste0("<span style='color:", "#333333", ";'>", titulo, "</span>")) |>
+        dyOptions(
+          drawPoints = TRUE, pointSize = 2, strokeWidth = 2, colors = colores,
+          includeZero = with0, axisTickSize = 3, axisLineColor = "#787878",
+          axisLabelColor = "#525252", axisLabelFontSize = 16,
+          drawGrid = TRUE, gridLineColor = "lightblue"
+        ) |>
+        dyLegend(show = "always", width = LegendWidth, hideOnMouseOut = TRUE) |>
+        dyAxis("x", label = labelX, axisLabelFormatter = JS(getSemestre), axisLineWidth = 4) |>
+        dyAxis("y", label = labelY, axisLineWidth = 4) |>
+        dyRangeSelector(height = 30, strokeColor = "") |>
+        dyUnzoom()
+
+      if (!(missingArg(estilo) || is.null(estilo$dyg.Resaltar))) {
+        if (estilo$dyg.Resaltar) {
+          PlotSeries <- PlotSeries |>
+            dyHighlight(
+              highlightCircleSize = 5, highlightSeriesBackgroundAlpha = 0.5,
+              highlightSeriesOpts = list(strokeWidth = 2.5), hideOnMouseOut = TRUE
+            )
+        }
+      }
+    }
+  } else {
+    if (!(missingArg(estilo) || is.null(estilo$gg.Tema))) {
+      ThemeGG <- switch(
+        estilo$gg.Tema,
+        "1"  = theme_light(),
+        "2"  = theme_bw(),
+        "3"  = theme_classic(),
+        "4"  = theme_linedraw(),
+        "5"  = theme_gray(),
+        "6"  = ggthemes::theme_hc(),
+        "7"  = ggthemes::theme_pander(),
+        "8"  = ggthemes::theme_gdocs(),
+        "9"  = ggthemes::theme_fivethirtyeight(),
+        "10" = ggthemes::theme_economist(),
+        "11" = ggthemes::theme_solarized(),
+        "12" = hrbrthemes::theme_ipsum(),
+        "13" = hrbrthemes::theme_ipsum_ps(),
+        "14" = hrbrthemes::theme_ft_rc(),
+        "15" = ggtech::theme_tech(theme = "airbnb"),
+        "16" = ggtech::theme_tech(theme = "google"),
+        "17" = ggtech::theme_tech(theme = "X23andme")
       )
+    } else { ThemeGG <- theme_DNPE() }
+
+    geomText <- list(position = position_dodge(width = 0), vjust = -0.5, size = 3)
+    scaleY   <- list(limits = yLim, trans = ggInvertir)
+    if (freqRelativa) {
+      TablaFinal <- TablaFinal |> rename_at(vars(Relativo, Total), ~ c("Y", "Extra"))
+    } else {
+      TablaFinal <- TablaFinal |> rename_at(vars(Total, Relativo), ~ c("Y", "Extra"))
+    }
+    if (!(missingArg(estilo) || is.null(estilo$gg.Legend))) {
+      ParmsLegend <- estilo$gg.Legend
+    } else {
+      ParmsLegend <- list(legend.position = "right", legend.direction = "vertical")
+    }
+    if (!(missingArg(estilo) || is.null(estilo$gg.Linea))) {
+      ParmsLine  <- estilo$gg.Linea
+    } else {
+      ParmsLine  <- list(linetype = "solid", size = 1)
+    }
+    if (!(missingArg(estilo) || is.null(estilo$gg.Punto))) {
+      ParmsPoint <- estilo$gg.Punto
+    } else {
+      ParmsPoint <- list(size = 2)
+    }
+    if (!(missingArg(estilo) || is.null(estilo$gg.Texto))) {
+      ParmsLabs  <- estilo$gg.Texto
+    } else {
+      ParmsLabs  <- list(subtitle = NULL, caption = NULL, tag = NULL)
     }
 
-    PlotSeries <- dygraph(TableHorizontal, main = paste0("<span style='color:", "#333333", ";'>", titulo, "</span>")) %>%
-      dyOptions(
-        drawPoints = TRUE, pointSize = 2, strokeWidth = 2, colors = colores,
-        includeZero = with0, axisTickSize = 3, axisLineColor = "#787878",
-        axisLabelColor = "#525252", axisLabelFontSize = 16,
-        drawGrid = TRUE, gridLineColor = "lightblue"
-      ) %>%
-      dyLegend(show = "always", width = LegendWidth, hideOnMouseOut = TRUE) %>%
-      dyAxis("x", label = labelX, axisLabelFormatter = JS(getSemestre), axisLineWidth = 4) %>%
-      dyAxis("y", label = labelY, axisLineWidth = 4) %>%
-      dyRangeSelector(height = 30, strokeColor = "") %>%
-      dyUnzoom()
+    PlotSeries <- ggplot(data = TablaFinal, aes(x = Fecha, y = Y, group = Clase, color = Clase)) +
+      do.call(geom_line, ParmsLine) + do.call(geom_point, ParmsPoint) +
+      labs(title = titulo, subtitle = ParmsLabs$subtitle, y = br2addline(labelY),
+           caption = ParmsLabs$caption, tag = ParmsLabs$tag, color = LegendTitle
+      ) +
+      scale_x_discrete(guide = guide_axis(angle = 45)) +
+      scale_color_manual(values = colores) +
+      ThemeGG + do.call(theme, ParmsLegend)
 
-    if (!(missingArg(estilo) || is.null(estilo$dyg.Resaltar))) {
-      if (estilo$dyg.Resaltar) {
-        PlotSeries <- PlotSeries %>%
-          dyHighlight(
-            highlightCircleSize = 5, highlightSeriesBackgroundAlpha = 0.5,
-            highlightSeriesOpts = list(strokeWidth = 2.5), hideOnMouseOut = TRUE
-          )
-      }
+    if (freqRelativa) {
+      PlotSeries <- PlotSeries +
+        do.call(geom_text, append(geomText, list(aes(label = scales::percent(Y, scale = 1))))) +
+        do.call(scale_y_continuous, append(scaleY, list(labels = scales::label_percent(scale = 1))))
+    } else {
+      PlotSeries <- PlotSeries +
+        do.call(geom_text, append(geomText, list(aes(label = Y)))) +
+        do.call(scale_y_continuous, scaleY)
     }
   }
 

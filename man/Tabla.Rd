@@ -12,6 +12,7 @@ Tabla(
   tituloPdf = NULL,
   mensajePdf = "",
   ajustarNiveles = TRUE,
+  scrollX = TRUE,
   colorHead = "#FFFFFF",
   colorear = FALSE,
   estilo
@@ -41,6 +42,12 @@ al botón de imprimir.}
 \item{ajustarNiveles}{Si es \code{TRUE} (\emph{valor predeterminado}) se buscará optimizar
 el espacio entre las columnas, colocando todos los nombres de las columnas de
 forma horizontal y eliminando al máximo el espacio entre éstas.}
+
+\item{scrollX}{Si es \code{TRUE} (\emph{valor predeterminado}) se habilitará la propiedad
+Scroller para el eje X. Tenga presente que cuando su df contiene muchas columnas
+es de utilidad (\emph{pues no permite que se salga la tabla por ancho}), sin embargo,
+asegúrese de desactivarlo cuando presente pocas columnas pues se verá un
+desplazamiento de los encabezados debido a un conflicto interno.}
 
 \item{colorHead}{Cadena de caracteres que indica el color de fondo de la cabecera
 de la tabla. Puede indicar el color con el nombre (\code{"red"}), código hexadecimal

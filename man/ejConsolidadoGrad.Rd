@@ -5,9 +5,9 @@
 \alias{ejConsolidadoGrad}
 \title{Consolidado de Graduados}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con 775
-filas y 5 columnas:
-\code{Variable}, \code{YEAR}, \code{SEMESTRE}, \code{Clase}, \code{Total}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejConsolidadoGrad)}
+filas y \verb{r ncol(ejConsolidadoGrad)} columnas:
+\verb{r paste0("``", colnames(ejConsolidadoGrad), "``", collapse = ", ")}.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/8qk3y}{aquí}.

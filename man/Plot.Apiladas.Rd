@@ -12,7 +12,8 @@ Plot.Apiladas(
   colores,
   titulo = "",
   addPeriodo = TRUE,
-  estilo = NULL
+  estilo = NULL,
+  estatico = FALSE
 )
 }
 \arguments{
@@ -34,10 +35,14 @@ Plot.Apiladas(
 para graficar las barras apiladas y cuyo objetivo es personalizar pequeños
 detalles de éste.
 \itemize{
+\item \code{hc.Tema}, \code{hc.Credits}, \code{gg.Tema}, \code{gg.Legend} y \code{gg.Texto}: Igual uso
+que en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{gg.Bar}: Igual uso que en \code{\link[=Plot.Barras]{Plot.Barras()}}
 \item \code{LegendTitle}: Cadena de caracteres indicado un título para la leyenda
 (\emph{diferentes niveles del argumento \code{varPrincipal}}).
-\item \code{hc.Tema} y \code{hc.Credits}: Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}
 }}
+
+\item{estatico}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 }
 \value{
 Retorna el diagrama de barras apiladas (\emph{objeto widget de HTML}) creado. La
@@ -61,6 +66,25 @@ Plot.Apiladas(
   colores   = c("#FFA700", "#C10AA1", "#01CDFE", "#00FF44", "#FF0040"),
   titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O",
   estilo    = list(LegendTitle = "NIVEL ACAD\u00c9MICO:", hc.Tema = 4, hc.Credits = Msj)
+)
+# Ejemplo usando el caso estático (ggplot2)
+Plot.Apiladas(
+  datos     = ejConsolidadoGrad,
+  categoria = "NIVEL",
+  anos      = c(2019:2021),
+  periodo   = 1,
+  colores   = c("#FFA700", "#C10AA1", "#01CDFE", "#00FF44", "#FF0040"),
+  titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O",
+  estatico  = TRUE,
+  estilo    = list(
+    LegendTitle = "NIVEL ACAD\u00c9MICO:", gg.Tema = 8,
+    gg.Legend = list(legend.position = "right", legend.direction = "vertical"),
+    gg.Bar    = list(width = 0.6, color = "#000000"),
+    gg.Texto  = list(subtitle = Msj,
+                    caption  = "Informaci\u00f3n Disponible desde 2009-1",
+                    tag      = "Figura 1. Graduados"
+    )
+  )
 )
 
 }

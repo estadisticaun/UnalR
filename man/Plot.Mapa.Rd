@@ -8,8 +8,7 @@ el paquete \code{Leaflet}}
 Plot.Mapa(
   depto,
   mpio,
-  estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min",
-    "Max"),
+  estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
   variable = NA,
   tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"),
   titulo,

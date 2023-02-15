@@ -5,9 +5,9 @@
 \alias{ejSaberPro2020}
 \title{Microdatos Saber Pro 2020}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con 4896
-filas y 59 columnas:
-\code{YEAR}, \code{SEMESTRE}, \code{YEAR_MAT}, \code{SEMESTRE_MAT}, \code{TIPO_NIVEL}, \code{NIVEL}, \code{DEP_NAC}, \code{COD_DEP_NAC}, \code{CIU_NAC}, \code{COD_CIU_NAC}, \code{LON_CIU_NAC}, \code{LAT_CIU_NAC}, \code{DEP_PROC}, \code{COD_DEP_PROC}, \code{CIU_PROC}, \code{COD_CIU_PROC}, \code{LON_CIU_PROC}, \code{LAT_CIU_PROC}, \code{CODS_NAC}, \code{CODN_NAC}, \code{NACIONALIDAD}, \code{EDAD_MOD}, \code{CAT_EDAD}, \code{SEXO}, \code{ESTRATO_ORIG}, \code{ESTRATO}, \code{TIPO_COL}, \code{PBM_ORIG}, \code{PBM}, \code{SNIES_SEDE_ADM}, \code{SEDE_NOMBRE_ADM}, \code{SNIES_SEDE_MAT}, \code{SEDE_NOMBRE_MAT}, \code{ADM_PEAMA_ANDINA}, \code{MOD_ADM}, \code{TIPO_ADM}, \code{PAES}, \code{PEAMA}, \code{FACULTAD}, \code{FACULTAD_S}, \code{SNIES_PROGRA}, \code{PROGRAMA}, \code{PROGRAMA_S}, \code{AREAC_SNIES}, \code{CA_CINE}, \code{CD_CINE}, \code{AREA_CINE}, \code{SNP}, \code{PUNTAJE_GLOBAL}, \code{PUNT_COMP_CIUD}, \code{NIVEL_COMP_CIUD}, \code{PUNT_COMU_ESCR}, \code{NIVEL_COMU_ESCR}, \code{PUNT_INGLES}, \code{NIVEL_INGLES}, \code{PUNT_LECT_CRIT}, \code{NIVEL_LECT_CRIT}, \code{PUNT_RAZO_CUANT}, \code{NIVEL_RAZO_CUANT}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejSaberPro2020)}
+filas y \verb{r ncol(ejSaberPro2020)} columnas:
+\verb{r paste0("``", colnames(ejSaberPro2020), "``", collapse = ", ")}.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.

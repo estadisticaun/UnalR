@@ -14,7 +14,8 @@ Plot.Radar(
   ordinal = FALSE,
   titulo = "",
   libreria = c("plotly", "echarts"),
-  estilo = NULL
+  estilo = NULL,
+  estatico = FALSE
 )
 }
 \arguments{
@@ -36,8 +37,8 @@ deben colorear cada una de las trazas correspondiente a cada nivel del argumento
 por defecto.}
 
 \item{rango}{Vector numérico de longitud dos que indica el valor mínimo y máximo,
-respectivamente. Si no conoce el dominio del estadístico seleccionado puede
-usar el truco de pasar \code{c(Min, NaN)} como rango.}
+respectivamente. Si no conoce el dominio del estadístico seleccionado omita
+éste parámetro, pues internamente se usará \code{c(0, NaN)} como rango.}
 
 \item{ordinal}{Igual uso que en \code{\link[=Plot.Barras]{Plot.Barras()}}}
 
@@ -80,7 +81,22 @@ información consulte la función \link[echarts4r:e_legend]{e_legend()}.
 \item \code{e.LegLoc}: Valor numérico o cadena de caracteres indicando la distancia
 entre la leyenda y el lado derecho del contenedor, puede ser expresado como
 un valor puntual o un valor porcentual relativo al ancho del contenedor.
+\item \code{gg.Range}: Valor booleano opcional, si se especifica en \code{TRUE} el rango
+a tomar será simétrico, en el sentido en que se tomará el mínimo y máximo
+global de todas las variables, uno mismo para cada una de ellas. Diferente
+a si se omite el parámetro \code{rango}, pues acá el mínimo y máximo varía para
+cada variable.
+\item \code{gg.plty}: Tipo de línea para los datos del gráfico. Para más detalles
+consulte la función \link[fmsb:radarchart]{radarchart()}.
+\item \code{gg.plwd}: Ancho de la línea para los datos del gráfico. Para más detalles
+consulte la función \link[fmsb:radarchart]{radarchart()}.
+\item \code{gg.cglwd}: Ancho de la línea para las grillas del radar. Para más detalles
+consulte la función \link[fmsb:radarchart]{radarchart()}.
+\item \code{gg.cglcol}: Color de la línea para las grillas del radar. Para más detalles
+consulte la función \link[fmsb:radarchart]{radarchart()}.
 }}
+
+\item{estatico}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 }
 \value{
 Retorna el radar (\emph{objeto widget de HTML}) creado. La clase del objeto retornado
@@ -170,6 +186,21 @@ Plot.Radar(
   estilo      = list(
     e.Credits = Msj, e.Forma = "circle", e.Tema = 10,
     e.LegType = "scroll", e.LegLoc = 0
+  )
+)
+# Ejemplo usando el caso estático (fmsb)
+Plot.Radar(
+  datos     = UnalR::ejSaberPro2020,
+  categoria = TIPO_COL,
+  variables = vars(
+    PUNT_RAZO_CUANT, PUNT_INGLES, PUNT_LECT_CRIT, PUNT_COMP_CIUD, PUNT_COMU_ESCR
+  ),
+  estadistico = "SD",
+  colores  = c("#89D8FF", "#9CFF86", "#FFA568", "#FF7F7F"),
+  titulo   = "RADAR CHART DE LA DESVIACI\u00d3N EST\u00c1NDAR\nPOR COMPONENTE EVALUADO",
+  estatico = TRUE,
+  estilo   = list(
+    gg.Range = TRUE, gg.plty = 5, gg.plwd = 4, gg.cglwd = 2, gg.cglcol = "#856AA1"
   )
 )
 

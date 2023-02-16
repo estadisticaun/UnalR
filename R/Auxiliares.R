@@ -36,6 +36,12 @@ Spanish.Highcharter <- function() {
 
   options(highcharter.lang = lang)
 }
+addMaxMin <- function(df, min, max) {
+  Max_Min <- as.data.frame(matrix(c(max, min), ncol = length(colnames(df)), nrow = 2, byrow = F))
+  colnames(Max_Min) <- colnames(df)
+  rownames(Max_Min) <- c("Max", "Min")
+  return(rbind(Max_Min, df))
+}
 br2addline <- function(x) { gsub("<br>", "\n", x) }
 theme_DNPE <- function() {
   font <- "Ancizar Sans Light"

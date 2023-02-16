@@ -31,6 +31,7 @@ Imports:
     d3r (>= 1.0.0),
     d3treeR (>= 0.1),
     sunburstR (>= 2.1.6),
+    fmsb (>= 0.7.5),
     dplyr (>= 1.0.10),
     tidyr (>= 1.3.0),
     forcats (>= 1.0.0),

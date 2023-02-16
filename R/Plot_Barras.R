@@ -131,8 +131,8 @@ Plot.Barras <- function(
   if (!(categoria %in% datos$Variable)) {
     stop("\u00a1Por favor introduzca una categor\u00eda que se encuentra dentro de la columna 'Variable'!", call. = FALSE)
   }
-  if (!(is.logical(freqRelativa) && is.logical(vertical) && is.logical(ordinal) && is.logical(addPeriodo))) {
-    stop("\u00a1Los argumentos 'freqRelativa', 'vertical', 'ordinal' y 'addPeriodo' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
+  if (!all(is.logical(freqRelativa), is.logical(vertical), is.logical(ordinal), is.logical(addPeriodo), is.logical(estatico))) {
+    stop("\u00a1Los argumentos 'freqRelativa', 'vertical', 'ordinal', 'addPeriodo' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!missingArg(ylim)) {
     if (!(is.numeric(ylim) && length(ylim) == 2)) {
@@ -140,16 +140,18 @@ Plot.Barras <- function(
     }
     yLim <- ylim
   } else { yLim <- NULL }
-  if (!(is.character(titulo) && is.character(labelEje) && is.character(textInfo))) {
+  if (!all(is.character(titulo), is.character(labelEje), is.character(textInfo))) {
     stop("\u00a1Los argumentos 'titulo', 'labelEje' y 'textInfo' deben ser una cadena de texto!", call. = FALSE)
   }
-  if (missingArg(libreria)) {
-    warning("\u00a1Se usar\u00e1 la librer\u00eda 'highcharter' por defecto para realizar el plot!", call. = FALSE)
-    libreria <- "highcharter"
-  } else {
-    libreria <- tolower(libreria)
-    if (libreria %NotIN% c("highcharter", "plotly")) {
-      stop("\u00a1Por favor introduzca el nombre de una librer\u00eda valida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
+  if (!estatico) {
+    if (missingArg(libreria)) {
+      warning("\u00a1Se usar\u00e1 la librer\u00eda 'highcharter' por defecto para realizar el plot!", call. = FALSE)
+      libreria <- "highcharter"
+    } else {
+      libreria <- tolower(libreria)
+      if (libreria %NotIN% c("highcharter", "plotly")) {
+        stop("\u00a1Por favor introduzca el nombre de una librer\u00eda valida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
+      }
     }
   }
 

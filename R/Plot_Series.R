@@ -216,8 +216,8 @@ Plot.Series <- function(
   if (!(categoria %in% datos$Variable)) {
     stop("\u00a1Por favor introduzca una categor\u00eda que se encuentre dentro de la columna 'Variable'!", call. = FALSE)
   }
-  if (!(is.logical(freqRelativa) && is.logical(invertir))) {
-    stop("\u00a1Los argumentos 'freqRelativa' e 'invertir' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
+  if (!all(is.logical(freqRelativa), is.logical(invertir), is.logical(estatico))) {
+    stop("\u00a1Los argumentos 'freqRelativa', 'invertir' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!missingArg(ylim)) {
     if (!(is.numeric(ylim) && length(ylim) == 2)) {
@@ -230,16 +230,18 @@ Plot.Series <- function(
   } else {
     Invertir <- NULL      ; ggInvertir <- "identity"
   }
-  if (!(is.character(titulo) && is.character(labelX) && is.character(labelY))) {
+  if (!all(is.character(titulo), is.character(labelX), is.character(labelY))) {
     stop("\u00a1Los argumentos 'titulo', 'labelX' y 'labelY' deben ser una cadena de texto!", call. = FALSE)
   }
-  if (missingArg(libreria)) {
-    warning("\u00a1Se usar\u00e1 la librer\u00eda 'highcharter' por defecto para realizar el plot!", call. = FALSE)
-    libreria <- "highcharter"
-  } else {
-    libreria <- tolower(libreria)
-    if (libreria %NotIN% c("highcharter", "plotly", "dygraphs")) {
-      stop("\u00a1Por favor introduzca el nombre de una librer\u00eda valida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
+  if (!estatico) {
+    if (missingArg(libreria)) {
+      warning("\u00a1Se usar\u00e1 la librer\u00eda 'highcharter' por defecto para realizar el plot!", call. = FALSE)
+      libreria <- "highcharter"
+    } else {
+      libreria <- tolower(libreria)
+      if (libreria %NotIN% c("highcharter", "plotly", "dygraphs")) {
+        stop("\u00a1Por favor introduzca el nombre de una librer\u00eda valida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
+      }
     }
   }
   LegendTitle <- ifelse(is.null(estilo$LegendTitle), "", estilo$LegendTitle)

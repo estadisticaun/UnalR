@@ -78,6 +78,9 @@ Plot.Apiladas <- function(
   if (!is.character(titulo)) {
     stop("\u00a1El argumento 'titulo' deben ser una cadena de texto!", call. = FALSE)
   }
+  if (!(is.logical(addPeriodo) && is.logical(estatico))) {
+    stop("\u00a1Los argumentos 'addPeriodo' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
+  }
   LegendTitle <- ifelse(is.null(estilo$LegendTitle), "", estilo$LegendTitle)
 
   # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA

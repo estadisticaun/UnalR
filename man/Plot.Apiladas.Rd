@@ -12,6 +12,7 @@ Plot.Apiladas(
   colores,
   titulo = "",
   addPeriodo = TRUE,
+  libreria = c("highcharter", "plotly"),
   estilo = NULL,
   estatico = FALSE
 )
@@ -31,15 +32,19 @@ Plot.Apiladas(
 
 \item{addPeriodo}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
 
+\item{libreria}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
+
 \item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
 para graficar las barras apiladas y cuyo objetivo es personalizar pequeños
 detalles de éste.
 \itemize{
 \item \code{hc.Tema}, \code{hc.Credits}, \code{gg.Tema}, \code{gg.Legend} y \code{gg.Texto}: Igual uso
 que en \code{\link[=Plot.Series]{Plot.Series()}}
-\item \code{gg.Bar}: Igual uso que en \code{\link[=Plot.Barras]{Plot.Barras()}}
 \item \code{LegendTitle}: Cadena de caracteres indicado un título para la leyenda
 (\emph{diferentes niveles del argumento \code{varPrincipal}}).
+\item \code{ply.LegendPosition}: Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{ply.Credits}: Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{gg.Bar}: Igual uso que en \code{\link[=Plot.Barras]{Plot.Barras()}}
 }}
 
 \item{estatico}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
@@ -66,6 +71,19 @@ Plot.Apiladas(
   colores   = c("#FFA700", "#C10AA1", "#01CDFE", "#00FF44", "#FF0040"),
   titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O",
   estilo    = list(LegendTitle = "NIVEL ACAD\u00c9MICO:", hc.Tema = 4, hc.Credits = Msj)
+)
+Plot.Apiladas(
+  datos     = ejConsolidadoGrad,
+  categoria = "AREAC_SNIES",
+  anos      = c(2018:2020),
+  periodo   = 1,
+  colores   = c("#D2D4DC", "#FF8ABF", "#945BC2", "#D11879","#FF7F7F", "#FFA568", "#9CFF86", "#89D8FF"),
+  titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL \u00c1REA DEL SNIES",
+  libreria  = "plotly",
+  estilo    = list(LegendTitle = "NIVEL ACAD\u00c9MICO:",
+                   ply.Credits = list(x = 0.45, y = 1.1, text = Msj),
+                   ply.LegendPosition = list(x = 0.04, y = -0.3, orientation = "h")
+  )
 )
 # Ejemplo usando el caso estático (ggplot2)
 Plot.Apiladas(

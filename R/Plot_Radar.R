@@ -159,7 +159,7 @@
 #' )
 #' # Ejemplo usando el caso estático (fmsb)
 #' Plot.Radar(
-#'   datos     = UnalR::ejSaberPro2020,
+#'   datos     = ejSaberPro2020,
 #'   categoria = TIPO_COL,
 #'   variables = vars(
 #'     PUNT_RAZO_CUANT, PUNT_INGLES, PUNT_LECT_CRIT, PUNT_COMP_CIUD, PUNT_COMU_ESCR
@@ -167,6 +167,7 @@
 #'   estadistico = "SD",
 #'   colores  = c("#89D8FF", "#9CFF86", "#FFA568", "#FF7F7F"),
 #'   titulo   = "RADAR CHART DE LA DESVIACI\u00d3N EST\u00c1NDAR\nPOR COMPONENTE EVALUADO",
+#'   # rango    = c(10, 40),
 #'   estatico = TRUE,
 #'   estilo   = list(
 #'     gg.Range = TRUE, gg.plty = 5, gg.plwd = 4, gg.cglwd = 2, gg.cglcol = "#856AA1"
@@ -212,12 +213,12 @@ Plot.Radar <- function(
   )
 
   if (missingArg(rango)) {
-    rango <- c(0, NaN); MaxMin <- TRUE
+    rango <- c(0, NaN); MaxMin <- FALSE
   } else {
     if (!(is.numeric(rango) && length(rango) == 2)) {
       stop("\u00a1El par\u00e1metro 'rango' debe ser un vector num\u00e9rico de longitud 2!", call. = FALSE)
     }
-    MaxMin <- FALSE
+    MaxMin <- ifelse(any(is.nan(rango)), FALSE, TRUE)
   }
   if (!(is.logical(ordinal) && is.logical(estatico))) {
     stop("\u00a1Los argumentos 'ordinal' y 'estatico' deben ser un booleano (TRUE o FALSE)!", call. = FALSE)
@@ -385,16 +386,17 @@ Plot.Radar <- function(
     dfFinal        <- as.data.frame(t(dfSpecial))
     namesLegend    <- rownames(dfFinal)
 
-    if (!(missingArg(rango) || any(is.nan(rango)))) {
-      dfFinal <- addMaxMin(dfFinal, rango[1], rango[2])
-      namesLegend <- rownames(dfFinal[-c(1,2),])
-    }
     if (!(missingArg(estilo) || is.null(estilo$gg.Range)) && estilo$gg.Range) {
+      MaxMin    <- TRUE
       MaxGlobal <- round(max(dfFinal), 2)
       MinGlobal <- round(min(dfFinal), 2)
       dfFinal   <- addMaxMin(dfFinal, MinGlobal, MaxGlobal)
       namesLegend <- rownames(dfFinal[-c(1,2),])
-      print(dfFinal); print(MaxMin)
+    } else {
+      if (!(missingArg(rango) || any(is.nan(rango)))) {
+        dfFinal <- addMaxMin(dfFinal, rango[1], rango[2])
+        namesLegend <- rownames(dfFinal[-c(1,2),])
+      }
     }
 
     {

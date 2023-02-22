@@ -190,7 +190,7 @@ Plot.Radar(
 )
 # Ejemplo usando el caso estático (fmsb)
 Plot.Radar(
-  datos     = UnalR::ejSaberPro2020,
+  datos     = ejSaberPro2020,
   categoria = TIPO_COL,
   variables = vars(
     PUNT_RAZO_CUANT, PUNT_INGLES, PUNT_LECT_CRIT, PUNT_COMP_CIUD, PUNT_COMU_ESCR
@@ -198,6 +198,7 @@ Plot.Radar(
   estadistico = "SD",
   colores  = c("#89D8FF", "#9CFF86", "#FFA568", "#FF7F7F"),
   titulo   = "RADAR CHART DE LA DESVIACI\u00d3N EST\u00c1NDAR\nPOR COMPONENTE EVALUADO",
+  # rango    = c(10, 40),
   estatico = TRUE,
   estilo   = list(
     gg.Range = TRUE, gg.plty = 5, gg.plwd = 4, gg.cglwd = 2, gg.cglcol = "#856AA1"

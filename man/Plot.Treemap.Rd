@@ -14,7 +14,8 @@ Plot.Treemap(
   colores,
   titulo = "",
   libreria = c("highcharter", "plotly"),
-  estilo = NULL
+  estilo = NULL,
+  estatico = FALSE
 )
 }
 \arguments{
@@ -78,7 +79,37 @@ etiquetas en los cortes. Solo aplica para cuando \code{método = Sunburst2}.
 (\emph{root}). Puede indicar el color con el nombre (\code{"red"}), código
 hexadecimal (\code{"#FF0000"}) o RGB (\code{rgb(1, 0, 0)}). El valor por defecto es
 "rojo". Solo aplica para cuando \code{método = Sunburst2}.
+\item \code{gg.fontsize.title}: Tamaño de la fuente del título. El valor por defecto
+es 14. Para más detalles consulte la función \link[treemap:treemap]{treemap()}.
+\item \code{gg.fontsize.labels}: Tamaño de la fuente de las etiquetas. Si ingresa un
+número especificará el tamaño para todos los niveles de agregación, por el
+contrario, si ingresa un vector podrá especificar el tamaño para cada nivel.
+El valor por defecto es 11. Para más detalles consulte la función \link[treemap:treemap]{treemap()}.
+\item \code{gg.fontcolor.labels}: Especifica los colores de la etiqueta. Ya sea una
+cadena de caracteres o un vector (\emph{uno para cada nivel de agregación}).
+El valor por defecto es NULL. Para más detalles consulte la función \link[treemap:treemap]{treemap()}.
+\item \code{gg.border.lwds}: Tamaño de las líneas de borde. Si ingresa un número
+especificará el grosor para todos los rectángulos, o un vector para especificar
+el grueso para cada nivel de agregación. Para más detalles consulte la
+función \link[treemap:treemap]{treemap()}.
+\item \code{gg.border.col}: Color de los bordes dibujados alrededor de cada rectángulo,
+ya sea un valor único o un vector. El valor por defecto es '#000000'. Para
+más detalles consulte la función \link[treemap:treemap]{treemap()}.
+\item \code{gg.lowerbound.cex.labels}: Número entre \eqn{[0, 1]}, 0 significa dibujar
+todas las etiquetas y 1 significa dibujar sólo las etiquetas si encajan
+(\emph{considerando el \code{fontsize.labels}}). El valor por defecto es 0.4. Para
+más detalles consulte la función \link[treemap:treemap]{treemap()}.
+\item \code{gg.force.print.labels}: Si es \code{FALSE} (\emph{valor predeterminado}) las etiquetas
+de datos no se ven obligadas a imprimirse si no encajan. Para más detalles
+consulte la función \link[treemap:treemap]{treemap()}.
+\item \code{gg.overlap.labels}: Número entre \eqn{[0, 1]}, que determina la tolerancia
+de superposición entre etiquetas. 0 significa que las etiquetas de los
+niveles inferiores no se imprimen si las etiquetas de los niveles superiores
+se superponen, 1 significa que las etiquetas siempre se imprimen. El valor
+por defecto es 0.5. Para más detalles consulte la función \link[treemap:treemap]{treemap()}.
 }}
+
+\item{estatico}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
 }
 \value{
 Retorna el treemap (\emph{objeto widget de HTML}) creado. La clase del objeto
@@ -185,6 +216,22 @@ if (require("dplyr")) {
     estilo    = list(sun.showLabels = TRUE, sun.colorRoot = "#EF0055")
   )
 }
+}
+# Ejemplo usando el caso estático (treemap)
+if (require("dplyr")) {
+Plot.Treemap(
+  datos       = ejGraduados,
+  variables   = vars(SEDE_NOMBRE_MAT, FACULTAD),
+  colores     = c("#FF3232", "#AFFF5E", "#FD6DB3", "#4CCAF2", "#FF9248", "#FBB03B"),
+  titulo      = "TOTAL DE GRADUADOS POR SEDE DE LA UNIVERSIDAD NACIONAL",
+  estatico    = TRUE,
+  estilo      = list(
+    gg.fontsize.title = 17, gg.fontsize.labels = c(15, 9),
+    gg.fontcolor.labels = c("#FFFFFF", "#212020"),
+    gg.border.lwds = c(4, 2), gg.border.col = c("#73095D", "#D60D4B"),
+    gg.lowerbound.cex.labels = 0.3, gg.overlap.labels = 0.1
+  )
+)
 }
 
 }

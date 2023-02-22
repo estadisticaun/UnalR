@@ -59,6 +59,35 @@
 #'     (\emph{root}). Puede indicar el color con el nombre (`"red"`), código
 #'     hexadecimal (`"#FF0000"`) o RGB (`rgb(1, 0, 0)`). El valor por defecto es
 #'     "rojo". Solo aplica para cuando `método = Sunburst2`.
+#'   * `gg.fontsize.title`: Tamaño de la fuente del título. El valor por defecto
+#'     es 14. Para más detalles consulte la función [treemap()][treemap::treemap()].
+#'   * `gg.fontsize.labels`: Tamaño de la fuente de las etiquetas. Si ingresa un
+#'     número especificará el tamaño para todos los niveles de agregación, por el
+#'     contrario, si ingresa un vector podrá especificar el tamaño para cada nivel.
+#'     El valor por defecto es 11. Para más detalles consulte la función [treemap()][treemap::treemap()].
+#'   * `gg.fontcolor.labels`: Especifica los colores de la etiqueta. Ya sea una
+#'     cadena de caracteres o un vector (*uno para cada nivel de agregación*).
+#'     El valor por defecto es NULL. Para más detalles consulte la función [treemap()][treemap::treemap()].
+#'   * `gg.border.lwds`: Tamaño de las líneas de borde. Si ingresa un número
+#'     especificará el grosor para todos los rectángulos, o un vector para especificar
+#'     el grueso para cada nivel de agregación. Para más detalles consulte la
+#'     función [treemap()][treemap::treemap()].
+#'   * `gg.border.col`: Color de los bordes dibujados alrededor de cada rectángulo,
+#'     ya sea un valor único o un vector. El valor por defecto es '#000000'. Para
+#'     más detalles consulte la función [treemap()][treemap::treemap()].
+#'   * `gg.lowerbound.cex.labels`: Número entre \eqn{[0, 1]}, 0 significa dibujar
+#'     todas las etiquetas y 1 significa dibujar sólo las etiquetas si encajan
+#'     (*considerando el `fontsize.labels`*). El valor por defecto es 0.4. Para
+#'     más detalles consulte la función [treemap()][treemap::treemap()].
+#'   * `gg.force.print.labels`: Si es `FALSE` (*valor predeterminado*) las etiquetas
+#'     de datos no se ven obligadas a imprimirse si no encajan. Para más detalles
+#'     consulte la función [treemap()][treemap::treemap()].
+#'   * `gg.overlap.labels`: Número entre \eqn{[0, 1]}, que determina la tolerancia
+#'     de superposición entre etiquetas. 0 significa que las etiquetas de los
+#'     niveles inferiores no se imprimen si las etiquetas de los niveles superiores
+#'     se superponen, 1 significa que las etiquetas siempre se imprimen. El valor
+#'     por defecto es 0.5. Para más detalles consulte la función [treemap()][treemap::treemap()].
+#' @param estatico Igual uso que en [Plot.Series()]
 #'
 #' @details
 #' Si está trabajando en un `R Markdown` o un aplicativo `Shiny` no se puede usar
@@ -156,6 +185,22 @@
 #'   )
 #' }
 #' }
+#' # Ejemplo usando el caso estático (treemap)
+#' if (require("dplyr")) {
+#' Plot.Treemap(
+#'   datos       = ejGraduados,
+#'   variables   = vars(SEDE_NOMBRE_MAT, FACULTAD),
+#'   colores     = c("#FF3232", "#AFFF5E", "#FD6DB3", "#4CCAF2", "#FF9248", "#FBB03B"),
+#'   titulo      = "TOTAL DE GRADUADOS POR SEDE DE LA UNIVERSIDAD NACIONAL",
+#'   estatico    = TRUE,
+#'   estilo      = list(
+#'     gg.fontsize.title = 17, gg.fontsize.labels = c(15, 9),
+#'     gg.fontcolor.labels = c("#FFFFFF", "#212020"),
+#'     gg.border.lwds = c(4, 2), gg.border.col = c("#73095D", "#D60D4B"),
+#'     gg.lowerbound.cex.labels = 0.3, gg.overlap.labels = 0.1
+#'   )
+#' )
+#' }
 #'
 #' @export
 #'
@@ -168,10 +213,12 @@
 #' @importFrom utils head
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
-Plot.Treemap <- function(datos, variables, atributo, textFreq = "N",
-                         metodo = c("Classic", "Classic2", "Sunburst", "Sunburst2"),
-                         estadistico = c("Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
-                         colores, titulo = "", libreria = c("highcharter", "plotly"), estilo = NULL) {
+Plot.Treemap <- function(
+    datos, variables, atributo, textFreq = "N",
+    metodo = c("Classic", "Classic2", "Sunburst", "Sunburst2"),
+    estadistico = c("Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
+    colores, titulo = "", libreria = c("highcharter", "plotly"), estilo = NULL,
+    estatico = FALSE) {
 
   if (missingArg(datos) || missingArg(variables)) {
     stop("\u00a1Por favor introduzca un conjunto de datos y una(s) variable(s) cualitativas con las cuales se crear\u00e1 la jerarqu\u00eda!", call. = FALSE)
@@ -194,7 +241,8 @@ Plot.Treemap <- function(datos, variables, atributo, textFreq = "N",
 
   Method    <- match.arg(metodo)
   Statistic <- match.arg(estadistico)
-  Function  <- switch(Statistic,
+  Function  <- switch(
+    Statistic,
     Promedio = mean,
     Mediana  = median,
     Varianza = var,
@@ -207,187 +255,233 @@ Plot.Treemap <- function(datos, variables, atributo, textFreq = "N",
   Opacidad <- ifelse(!(missingArg(estilo) || is.null(estilo$ply.Opacidad)), estilo$ply.Opacidad, 1)
 
   # CREACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA
-  if (length(rlang::quo_get_expr(enquo(variables))) <= 2) {
-    if (!missingArg(atributo)) {
-      if (missingArg(estadistico)) {
-        warning("\u00a1Se usar\u00e1 como estad\u00edstico la media muestral ('mean') por defecto!", call. = FALSE)
-      }
-      Caso <- "I"
 
-      x <- rlang::quo_name(enquo(variables))
-      y <- rlang::quo_name(enquo(atributo))
+  if (!estatico) {
+    if (length(rlang::quo_get_expr(enquo(variables))) <= 2) {
+      if (!missingArg(atributo)) {
+        if (missingArg(estadistico)) {
+          warning("\u00a1Se usar\u00e1 como estad\u00edstico la media muestral ('mean') por defecto!", call. = FALSE)
+        }
+        Caso <- "I"
 
-      Groups <- datos %>%
-        select({{ atributo }}, {{ variables }}) %>%
-        group_by({{ variables }}, .drop = FALSE)
-      N <- Groups %>% summarise("n" = n())
-      df <- Groups %>%
-        summarise_all(Function, na.rm = TRUE) %>%
-        left_join(N, by = x) %>%
-        rename_at(all_of(c(x, y)), ~ c("X", "Y")) %>%
-        mutate(Porcentaje = Percentage(n))
+        x <- rlang::quo_name(enquo(variables))
+        y <- rlang::quo_name(enquo(atributo))
 
-      if (missingArg(colores)) { colores <- rainbow(nrow(df), alpha = 0.6) }
-  # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
-      TreemapHC <- df %>%
-        hchart("treemap", hcaes(x = X, value = n, color = Y), name = textFreq,
-          dataLabels = list(enabled = TRUE, format = "{point.name}<br/>{point.Porcentaje: .1f}%")
-        ) %>%
-        hc_tooltip(pointFormat = paste0("{series.name}: {point.n} <br> <b>", Statistic, ": {point.Y: .2f}</b>"), useHTML = TRUE)
-      # https://plotly.com/r/reference/treemap/#treemap-legendrank
-      TreemapPy <- df %>%
-        plot_ly(
-          type = "treemap", name = "", parents = NA, values = ~n, labels = ~X,
-          text = ~Y, opacity = Opacidad, textposition = "middle center",
-          texttemplate = paste0(
-            "<b>%{label}</b>\n ", textFreq, ": %{value} (<i>%{percentParent}</i>)\n",
-            Statistic, ": %{text: .2f}"
-          ),
-          hovertemplate = "%{label}", marker = list(colors = colores), sort = TRUE
-        )
-    } else {
-      df <- datos %>%
-        count({{ variables }}, sort = TRUE) %>%
-        mutate(Porcentaje = Percentage(n), X := {{ variables }}) %>%
-        arrange(X)
-      if (missingArg(colores)) { colores <- rainbow(nrow(df), alpha = 0.6) }
-      Caso <- "II"
-  # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
-      TreemapHC <- df %>%
-        hchart("treemap", hcaes(x = X, value = n), name = textFreq,
-          dataLabels = list(enabled = TRUE, format = "{point.name}<br/>{point.Porcentaje: .1f}%")
-        )
-      TreemapPy <- df %>%
-        plot_ly(
-          type = "treemap", name = "", parents = NA, values = ~n, labels = ~X,
-          opacity = Opacidad, textposition = "middle center",
-          texttemplate = "<b>%{label}</b>\n ", textFreq, ": %{value} (<i>%{percentParent}</i>)\n",
-          hovertemplate = "%{label}: %{value}", marker = list(colors = colores), sort = TRUE
-        )
-    }
+        Groups <- datos |> select({{ atributo }}, {{ variables }}) |>
+          group_by({{ variables }}, .drop = FALSE)
+        N  <- Groups |> summarise("n" = n())
+        df <- Groups |>
+          summarise_all(Function, na.rm = TRUE) |> left_join(N, by = x) |>
+          rename_at(all_of(c(x, y)), ~ c("X", "Y")) |>
+          mutate(Porcentaje = Percentage(n))
 
-    if (libreria == "highcharter") {
-      Spanish.Highcharter()
-      if (!(missingArg(estilo) || is.null(estilo$hc.Tema))) {
-        ThemeHC <- switch(estilo$hc.Tema,
-          "1"  = hc_theme_ffx(),
-          "2"  = hc_theme_google(),
-          "3"  = hc_theme_tufte(),
-          "4"  = hc_theme_538(),
-          "5"  = hc_theme_ggplot2(),
-          "6"  = hc_theme_economist(),
-          "7"  = hc_theme_sandsignika(),
-          "8"  = hc_theme_ft(),
-          "9"  = hc_theme_superheroes(),
-          "10" = hc_theme_flatdark()
-        )
-      } else { ThemeHC <- hc_theme_flat() }
-      Borde <- ifelse(!(missingArg(estilo) || is.null(estilo$hc.borderRadius)), estilo$hc.borderRadius, 0)
-
-      PlotTreemap <- TreemapHC
-      if (Caso == "I") {
-        PlotTreemap <- PlotTreemap %>%
-          hc_colorAxis(stops = color_stops(colors = colores)) %>%
-          hc_plotOptions(treemap = list(borderRadius = Borde))
-      } else {
-        PlotTreemap <- PlotTreemap %>%
-          hc_plotOptions(treemap = list(colorByPoint = TRUE, colors = colores, borderRadius = Borde))
-      }
-
-      PlotTreemap <- PlotTreemap %>%
-        hc_title(text = titulo, style = list(
-          fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE
+        if (missingArg(colores)) { colores <- rainbow(nrow(df), alpha = 0.6) }
+        # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+        TreemapHC <- df |>
+          hchart("treemap", hcaes(x = X, value = n, color = Y), name = textFreq,
+                 dataLabels = list(enabled = TRUE, format = "{point.name}<br/>{point.Porcentaje: .1f}%")
+          ) |>
+          hc_tooltip(pointFormat = paste0("{series.name}: {point.n} <br> <b>", Statistic, ": {point.Y: .2f}</b>"), useHTML = TRUE)
+        # https://plotly.com/r/reference/treemap/#treemap-legendrank
+        TreemapPy <- df %>%
+          plot_ly(
+            type = "treemap", name = "", parents = NA, values = ~n, labels = ~X,
+            text = ~Y, opacity = Opacidad, textposition = "middle center",
+            texttemplate = paste0(
+              "<b>%{label}</b>\n ", textFreq, ": %{value} (<i>%{percentParent}</i>)\n",
+              Statistic, ": %{text: .2f}"
+            ),
+            hovertemplate = "%{label}", marker = list(colors = colores), sort = TRUE
           )
-        ) %>%
-        hc_exporting(enabled = TRUE, filename = paste0("PlotTreemap_", as_label(enquo(variables)))) %>%
-        hc_credits(enabled = TRUE, text = "DNPE", href = "http://estadisticas.unal.edu.co/home/") %>%
-        hc_add_theme(ThemeHC)
-
-      if (!(missingArg(estilo) || is.null(estilo$hc.Credits))) {
-        PlotTreemap <- PlotTreemap %>%
-          hc_subtitle(text = estilo$hc.Credits, align = "left", style = list(color = "#2B908F", fontWeight = "bold"))
-      }
-    } else if (libreria == "plotly") {
-      if (!(missingArg(estilo) || is.null(estilo$ply.Credits))) {
-        ParmsCredits <- estilo$ply.Credits
       } else {
-        ParmsCredits <- list(x = 0, y = 0, text = "")
+        df <- datos |> count({{ variables }}, sort = TRUE) |>
+          mutate(Porcentaje = Percentage(n), X := {{ variables }}) |> arrange(X)
+        if (missingArg(colores)) { colores <- rainbow(nrow(df), alpha = 0.6) }
+        Caso <- "II"
+        # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+        TreemapHC <- df |>
+          hchart("treemap", hcaes(x = X, value = n), name = textFreq,
+                 dataLabels = list(enabled = TRUE, format = "{point.name}<br/>{point.Porcentaje: .1f}%")
+          )
+        TreemapPy <- df %>%
+          plot_ly(
+            type = "treemap", name = "", parents = NA, values = ~n, labels = ~X,
+            opacity = Opacidad, textposition = "middle center",
+            texttemplate = "<b>%{label}</b>\n ", textFreq, ": %{value} (<i>%{percentParent}</i>)\n",
+            hovertemplate = "%{label}: %{value}", marker = list(colors = colores), sort = TRUE
+          )
       }
 
-      # Arial | Open Sans | Courier New, monospace, Old Standard TT
-      FamilyTitle <- list(family = "Old Standard TT", size = 24, color = "#333333")
-      Title <- list(text = paste0("<b>", titulo, "</b>"), font = FamilyTitle, y = 0.995)
+      if (libreria == "highcharter") {
+        Spanish.Highcharter()
+        if (!(missingArg(estilo) || is.null(estilo$hc.Tema))) {
+          ThemeHC <- switch(
+            estilo$hc.Tema,
+            "1"  = hc_theme_ffx(),
+            "2"  = hc_theme_google(),
+            "3"  = hc_theme_tufte(),
+            "4"  = hc_theme_538(),
+            "5"  = hc_theme_ggplot2(),
+            "6"  = hc_theme_economist(),
+            "7"  = hc_theme_sandsignika(),
+            "8"  = hc_theme_ft(),
+            "9"  = hc_theme_superheroes(),
+            "10" = hc_theme_flatdark()
+          )
+        } else { ThemeHC <- hc_theme_flat() }
+        Borde <- ifelse(!(missingArg(estilo) || is.null(estilo$hc.borderRadius)), estilo$hc.borderRadius, 0)
 
-      PlotTreemap <- TreemapPy %>%
-        layout(
-          title = Title, autosize = TRUE, showlegend = TRUE,
-          annotations = append(ParmsCredits, list(
-            showarrow = FALSE, xref = "paper", yref = "paper",
-            xanchor = "right", yanchor = "auto", xshift = 0, yshift = 0,
-            font = list(size = 12, color = "#CCCCCC")
-          ))
-        ) %>%
-        config(locale = "es")
+        PlotTreemap <- TreemapHC
+        if (Caso == "I") {
+          PlotTreemap <- PlotTreemap |>
+            hc_colorAxis(stops = color_stops(colors = colores)) |>
+            hc_plotOptions(treemap = list(borderRadius = Borde))
+        } else {
+          PlotTreemap <- PlotTreemap |>
+            hc_plotOptions(treemap = list(colorByPoint = TRUE, colors = colores, borderRadius = Borde))
+        }
+
+        PlotTreemap <- PlotTreemap |>
+          hc_title(text = titulo, style = list(
+            fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE
+            )
+          ) |>
+          hc_exporting(enabled = TRUE, filename = paste0("PlotTreemap_", as_label(enquo(variables)))) |>
+          hc_credits(enabled = TRUE, text = "DNPE", href = "http://estadisticas.unal.edu.co/home/") |>
+          hc_add_theme(ThemeHC)
+
+        if (!(missingArg(estilo) || is.null(estilo$hc.Credits))) {
+          PlotTreemap <- PlotTreemap |>
+            hc_subtitle(text = estilo$hc.Credits, align = "left", style = list(color = "#2B908F", fontWeight = "bold"))
+        }
+      } else if (libreria == "plotly") {
+        if (!(missingArg(estilo) || is.null(estilo$ply.Credits))) {
+          ParmsCredits <- estilo$ply.Credits
+        } else { ParmsCredits <- list(x = 0, y = 0, text = "") }
+
+        # Arial | Open Sans | Courier New, monospace, Old Standard TT
+        FamilyTitle <- list(family = "Old Standard TT", size = 24, color = "#333333")
+        Title <- list(text = paste0("<b>", titulo, "</b>"), font = FamilyTitle, y = 0.995)
+
+        PlotTreemap <- TreemapPy |>
+          layout(
+            title = Title, autosize = TRUE, showlegend = TRUE,
+            annotations = append(ParmsCredits, list(
+              showarrow = FALSE, xref = "paper", yref = "paper",
+              xanchor = "right", yanchor = "auto", xshift = 0, yshift = 0,
+              font = list(size = 12, color = "#CCCCCC")
+              )
+            )
+          ) |>
+          config(locale = "es")
+      }
+    } else {
+      df <- datos |> count(!!!variables, sort = TRUE)
+      if (missingArg(colores)) {
+        colores <- rainbow(nrow(unique(df[, 1])), alpha = 0.6, rev = TRUE)
+      }
+
+      Figure <- df |>
+        treemap(index = head(names(df), -1), vSize = "n", type = "index", palette = colores, draw = FALSE)
+      grDevices::dev.off()
+
+      if (Method %in% c("Classic", "Classic2")) {
+        switch(
+          Method,
+          Classic = {
+            PlotTreemap <- d3tree(Figure, rootname = "General", width = "100%")
+          },
+          Classic2 = {
+            PlotTreemap <- d3tree2(Figure, rootname = "General", width = "100%")
+          }
+        )
+      } else {
+        tmNest <- d3_nest(data = Figure$tm, value_cols = colnames(Figure$tm)[-(1:length(variables))])
+        if (Method == "Sunburst") {
+          if (!(missingArg(estilo) || is.null(estilo$sun.Color))) {
+            Colores <- estilo$sun.Color
+          } else {
+            Colores <- htmlwidgets::JS("function(d){return d3.select(this).datum().data.color;}")
+          }
+          Dots <- list(
+            data = tmNest, colors = Colores, valueField = "vSize",
+            legend = FALSE, sumNodes = FALSE, withD3 = TRUE, width = "100%"
+          )
+          if (!(missingArg(estilo) || is.null(estilo$sun.Explanation))) {
+            switch(
+              estilo$sun.Explanation,
+              Percent = { Dots <- append(Dots, list(percent = TRUE)) },
+              Count   = { Dots <- append(Dots, list(percent = FALSE, count = TRUE)) },
+              All = {
+                Text <- "function(d) {
+                          return d.data.name + '<br>' + d.value + ' (' + Math.round(d.value/this*1000)/10 + '%)'
+                  }"
+                Dots <- append(Dots, list(explanation = Text))
+              }
+            )
+          }
+          PlotTreemap <- do.call(sunburst, Dots)
+        } else {
+          textNode <- ifelse(!(missingArg(estilo) || is.null(estilo$sun.showLabels)), estilo$sun.showLabels, FALSE)
+          colRoot  <- ifelse(!(missingArg(estilo) || is.null(estilo$sun.colorRoot)), estilo$sun.colorRoot, "#DD2626")
+
+          Colores <- htmlwidgets::JS(paste0("function(name, d){return d.color || '", colRoot, "';}"))
+          Text <- "function(nodedata, size, percent) {
+                   return '<span style=\"font-weight: bold;\">' + nodedata.name + ':</span>' + ' ' + size
+                }"
+          PlotTreemap <- sund2b(
+            data = tmNest, colors = Colores, valueField = "vSize",
+            tooltip = sund2bTooltip(html = htmlwidgets::JS(Text)),
+            showLabels = textNode, width = "100%"
+          )
+        }
+      }
     }
   } else {
-    df <- datos %>% count(!!!variables, sort = TRUE)
+    df <- datos |> count(!!!variables, sort = TRUE)
     if (missingArg(colores)) {
       colores <- rainbow(nrow(unique(df[, 1])), alpha = 0.6, rev = TRUE)
     }
 
-    Figure <- df %>%
-      treemap(index = head(names(df), -1), vSize = "n", type = "index", palette = colores, draw = FALSE)
-
-    if (Method %in% c("Classic", "Classic2")) {
-      switch(Method,
-        Classic = {
-          PlotTreemap <- d3tree(Figure, rootname = "General", width = "100%")
-        },
-        Classic2 = {
-          PlotTreemap <- d3tree2(Figure, rootname = "General", width = "100%")
-        }
+    fontsize.title  <- ifelse(
+      missingArg(estilo) || is.null(estilo$gg.fontsize.title),
+      14, estilo$gg.fontsize.title
       )
-    } else {
-      tmNest <- d3_nest(data = Figure$tm, value_cols = colnames(Figure$tm)[-(1:length(variables))])
-      if (Method == "Sunburst") {
-        if (!(missingArg(estilo) || is.null(estilo$sun.Color))) {
-          Colores <- estilo$sun.Color
-        } else {
-          Colores <- htmlwidgets::JS("function(d){return d3.select(this).datum().data.color;}")
-        }
-        Dots <- list(
-          data = tmNest, colors = Colores, valueField = "vSize",
-          legend = FALSE, sumNodes = FALSE, withD3 = TRUE, width = "100%"
-        )
-        if (!(missingArg(estilo) || is.null(estilo$sun.Explanation))) {
-          switch(estilo$sun.Explanation,
-            Percent = { Dots <- append(Dots, list(percent = TRUE)) },
-            Count   = { Dots <- append(Dots, list(percent = FALSE, count = TRUE)) },
-            All = {
-              Text <- "function(d) {
-                              return d.data.name + '<br>' + d.value + ' (' + Math.round(d.value/this*1000)/10 + '%)'
-                      }"
-              Dots <- append(Dots, list(explanation = Text))
-            }
-          )
-        }
-        PlotTreemap <- do.call(sunburst, Dots)
-      } else {
-        textNode <- ifelse(!(missingArg(estilo) || is.null(estilo$sun.showLabels)), estilo$sun.showLabels, FALSE)
-        colRoot  <- ifelse(!(missingArg(estilo) || is.null(estilo$sun.colorRoot)), estilo$sun.colorRoot, "#DD2626")
+    if (missingArg(estilo) || is.null(estilo$gg.fontsize.labels)) {
+      fontsize.labels <- 11
+    } else { fontsize.labels <- estilo$gg.fontsize.labels }
+    if (missingArg(estilo) || is.null(estilo$gg.fontcolor.labels)) {
+      fontcolor.labels <- NULL
+    } else { fontcolor.labels <- estilo$gg.fontcolor.labels }
+    if (missingArg(estilo) || is.null(estilo$gg.border.lwds)) {
+      border.lwds <- c(3, 2)
+    } else { border.lwds <- estilo$gg.border.lwds }
+    if (missingArg(estilo) || is.null(estilo$gg.border.col)) {
+      border.col <- "#000000"
+    } else { border.col <- estilo$gg.border.col }
+    lowerbound.cex.labels <- ifelse(
+      missingArg(estilo) || is.null(estilo$gg.lowerbound.cex.labels),
+      0.4, estilo$gg.lowerbound.cex.labels
+      )
+    force.print.labels    <- ifelse(
+      missingArg(estilo) || is.null(estilo$gg.force.print.labels),
+      FALSE, estilo$gg.force.print.labels
+      )
+    overlap.labels <- ifelse(
+      missingArg(estilo) || is.null(estilo$gg.overlap.labels),
+      0.5, estilo$gg.overlap.labels
+      )
 
-        Colores <- htmlwidgets::JS(paste0("function(name, d){return d.color || '", colRoot, "';}"))
-        Text <- "function(nodedata, size, percent) {
-                   return '<span style=\"font-weight: bold;\">' + nodedata.name + ':</span>' + ' ' + size
-                }"
-        PlotTreemap <- sund2b(
-          data = tmNest, colors = Colores, valueField = "vSize",
-          tooltip = sund2bTooltip(html = htmlwidgets::JS(Text)),
-          showLabels = textNode, width = "100%"
-        )
-      }
-    }
+    PlotTreemap <- treemap(
+      df, index = head(names(df), -1), vSize = "n", type = "index",
+      palette = colores, title = titulo, fontsize.title = fontsize.title,
+      fontsize.labels = fontsize.labels, fontcolor.labels = fontcolor.labels,
+      border.lwds = border.lwds, border.col = border.col,
+      lowerbound.cex.labels = lowerbound.cex.labels, inflate.labels = FALSE,
+      bg.labels = 200, force.print.labels = force.print.labels,
+      overlap.labels = overlap.labels, draw = TRUE
+    )
   }
 
-  return(PlotTreemap)
+  if (!estatico) { return(PlotTreemap) } else { return(invisible(PlotTreemap)) }
 }

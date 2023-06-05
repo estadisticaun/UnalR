@@ -5,9 +5,10 @@
 \alias{ejMiniAspirantesPre}
 \title{Mini Microdatos de Aspirantes a Pregrado}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejMiniAspirantesPre)}
-filas y \verb{r ncol(ejMiniAspirantesPre)} columnas:
-\verb{r paste0("``", colnames(ejMiniAspirantesPre), "``", collapse = ", ")}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con
+30.050
+filas y 6 columnas:
+'Serie', 'PTOTAL', 'TIPO_INS', 'INS_SEDE_NOMBRE', 'ADM_SEDE_NOMBRE', 'FACULTAD'.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.
@@ -17,14 +18,15 @@ ejMiniAspirantesPre
 }
 \description{
 Muestra de los microdatos (\emph{únicamente estudiantes de pregrado}) de la población
-de aspirantes a cursar estudios de pregrado o postgrado en la universidad
-nacional de Colombia inscritos a través de convocatoria pública de manera regular
+de aspirantes a cursar estudios de pregrado o postgrado en la Universidad
+Nacional de Colombia inscritos a través de convocatoria pública de manera regular
 o por medio de los programas de admisión especial existentes. Dicho dataset
 será usado en los ejemplos de la función \code{Plot.Boxplot()}.
 }
 \examples{
-if (require("dplyr")) {
-  head(ejMiniAspirantesPre)
-}
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(dplyr)
+head(ejMiniAspirantesPre)
+\dontshow{\}) # examplesIf}
 }
 \keyword{datasets}

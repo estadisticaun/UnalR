@@ -1,5 +1,5 @@
 #' Cree el consolidado a partir de los microdatos con los que dispone, agrupando
-#' por las variables temporales que considere necesario
+#' por las variables temporales que considere necesarias
 #'
 #' Esta función permite transformar desde la base de microdatos para obtener el
 #' consolidado final con el cual trabaja la mayoría de las funciones gráficas
@@ -7,7 +7,7 @@
 #'
 #' @param formula Fórmula en la que el primer componente especificado (*antes
 #'   del \eqn{\sim}*) hace referencia a la(s) variable(s) de interés, y el segundo
-#'   componente (*luego del \eqn{\sim}*) a la(s) variable(s) temporales por la
+#'   componente (*luego del \eqn{\sim}*) a la(s) variable(s) temporales por las
 #'   cuales se quiere agrupar (\emph{separadas por cualquier operador como
 #'   `+`, `*`, `:`, etc.}).
 #' @param frecuencia Vector o lista (*dependiendo de la cantidad de variables
@@ -26,16 +26,14 @@
 #'   (*esperando una respuesta por consola*). Si previamente se ha introducido el
 #'   argumento `intervalo` éste quedará inhabilitado y no se ejecutará.
 #'
-#' @return
+#' @returns
 #' Un data frame o tibble perteneciente a las clases "tbl_df", "tbl" y "data.frame".
 #'
-#' @examples
-#' if (require("readxl")) {
-#'   df1 <- read_excel(read_example("TestConsolidado1.xlsx"))
-#'   df2 <- read_excel(read_example("TestConsolidado2.xlsx"))
-#' }
+#' @examplesIf all(FALSE)
+#' # library(readxl)
+#' df1 <- read_excel(read_example("TestConsolidado1.xlsx"))
+#' df2 <- read_excel(read_example("TestConsolidado2.xlsx"))
 #'
-#' \dontrun{
 #' # Seleccione para cada dataset (A, B, C y D) una de las opciones que se le muestran
 #' # en consola (1, 2, 3 y 4) respectivamente.
 #' Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1) -> A
@@ -43,7 +41,6 @@
 #' Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1) -> C
 #' Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1) -> D
 #' all.equal(C, D)
-#' }
 #'
 #' G <- Agregar(
 #'   formula    = TIPO_NIVEL ~ ANO + PERIODO,
@@ -61,7 +58,6 @@
 #'
 #' # Observe las diferentes opciones que se le muestran por consola.
 #' Agregar(formula = SEXO ~ YEAR + PERIODO, frecuencia = list("Year" = 2016:2021, "Period" = 1:3), df2)
-#' }
 #'
 #' Agregar(
 #'   formula    = SEXO ~ YEAR + PERIODO,
@@ -92,7 +88,6 @@
 #'   frecuencia = list("Year" = 2010:2013, "Period" = 1:2),
 #'   datos      = df1
 #' ) -> B
-#' }
 #'
 #' @export
 #'
@@ -101,7 +96,7 @@
 #' @importFrom rlang :=
 #' @importFrom utils menu
 #' @importFrom methods is
-#' @importFrom forcats fct_unique fct_explicit_na
+#' @importFrom forcats fct_unique fct_na_value_to_level
 Agregar <- function(formula, frecuencia, datos, intervalo, textNA = "Sin Informaci\u00f3n", ask = TRUE) {
 
   if (!is(formula, class2 = "formula")) {
@@ -126,7 +121,7 @@ Agregar <- function(formula, frecuencia, datos, intervalo, textNA = "Sin Informa
     Var <- Vars[i]
     # Convirtiendo los agentes en factores y haciendo explícitos los valores perdidos
     Step1 <- datos |>
-      mutate(!!Var := fct_explicit_na(!!sym(Var), na_level = textNA)) |>
+      mutate(!!Var := fct_na_value_to_level(!!sym(Var), level = textNA)) |>
       mutate_at(all_of(Tiempo), list(~ as.factor(.)))
 
     # Almacenamos los valores únicos que contiene el factor de la variable de interés

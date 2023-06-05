@@ -36,8 +36,8 @@ recuento en cada uno de los grupos. Por defecto se emplea el rótulo "N".}
 
 \item{metodo}{Cadena de caracteres indicando el diseño con el cual se realizará
 el gráfico (\emph{en el caso de ingresar dos niveles o más}). Los valores permitidos
-son "Classic" (\emph{valor predeterminado}), "Classic2", "Sunburst" y "Sunburst2",
-así se usará las funciones \link[d3treeR:d3tree]{d3tree()},
+son \code{"Classic"} (\emph{valor predeterminado}), \code{"Classic2"}, \code{"Sunburst"} y
+\code{"Sunburst2"}, así se usará las funciones \link[d3treeR:d3tree]{d3tree()},
 \link[d3treeR:d3tree2]{d3tree2()}, \link[sunburstR:sunburst]{sunburst()} y
 \link[sunburstR:sund2b]{sund2b()} respectivamente.}
 
@@ -49,11 +49,11 @@ un atributo es recomendable pasarle una escala de colores, pues con esto se
 construirá la barra horizontal. En el caso de usar el argumento \code{atributo}
 se puede ingresar el nombre de una paleta, por ejemplo "Set1".}
 
-\item{titulo}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{titulo}{Cadena de caracteres indicando el título principal del plot.}
 
 \item{libreria}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}, con algunos matices, pues
-en el caso de ingresar más de una variable categórica se omitirá dicho argumento,
-ya que \code{metodo} tomará su lugar.}
+en el caso de ingresar más de una variable categórica se omitirá dicho
+argumento, ya que \code{metodo} tomará su lugar.}
 
 \item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
 para graficar el treemap y cuyo objetivo es personalizar pequeños detalles
@@ -68,48 +68,50 @@ de cada elemento. El valor por defecto es 0 (\emph{rectángulos}).
 ver en el centro del sunburst al pasar el mouse por los diferentes anillos
 (\emph{niveles de la jerarquía}). Los valores permitidos son "All"
 (\emph{valor predeterminado}), "Count" y "Percent". Solo aplica para cuando
-\code{método = Sunburst}.
+\code{metodo = "Sunburst"}.
 \item \code{sun.Color}: A diferencia del argumento \code{colores} acá puede pasar una paleta
 o vector de colores sin que se recorte (\emph{más no se recicle}) éste a
 la longitud de categorías del nodo padre. Su uso reemplaza el funcionamiento
-del argumento \code{colores}. Solo aplica para cuando \code{método = Sunburst}.
+del argumento \code{colores}. Solo aplica para cuando \code{metodo = "Sunburst"}.
 \item \code{sun.showLabels}: Si es \code{FALSE} (\emph{valor predeterminado}) no se mostrará
-etiquetas en los cortes. Solo aplica para cuando \code{método = Sunburst2}.
+etiquetas en los cortes. Solo aplica para cuando \code{metodo = "Sunburst2"}.
 \item \code{sun.colorRoot}: Cadena de caracteres que indica el color del nodo raíz
 (\emph{root}). Puede indicar el color con el nombre (\code{"red"}), código
 hexadecimal (\code{"#FF0000"}) o RGB (\code{rgb(1, 0, 0)}). El valor por defecto es
-"rojo". Solo aplica para cuando \code{método = Sunburst2}.
+"rojo". Solo aplica para cuando \code{metodo = "Sunburst2"}.
 \item \code{gg.fontsize.title}: Tamaño de la fuente del título. El valor por defecto
-es 14. Para más detalles consulte la función \link[treemap:treemap]{treemap()}.
+es \code{14}. Para más detalles, consulte la función \link[treemap:treemap]{treemap()}.
 \item \code{gg.fontsize.labels}: Tamaño de la fuente de las etiquetas. Si ingresa un
 número especificará el tamaño para todos los niveles de agregación, por el
 contrario, si ingresa un vector podrá especificar el tamaño para cada nivel.
-El valor por defecto es 11. Para más detalles consulte la función \link[treemap:treemap]{treemap()}.
+El valor por defecto es \code{11}. Para más detalles, consulte la función \link[treemap:treemap]{treemap()}.
 \item \code{gg.fontcolor.labels}: Especifica los colores de la etiqueta. Ya sea una
 cadena de caracteres o un vector (\emph{uno para cada nivel de agregación}).
-El valor por defecto es NULL. Para más detalles consulte la función \link[treemap:treemap]{treemap()}.
+El valor por defecto es \code{NULL}. Para más detalles, consulte la función \link[treemap:treemap]{treemap()}.
 \item \code{gg.border.lwds}: Tamaño de las líneas de borde. Si ingresa un número
-especificará el grosor para todos los rectángulos, o un vector para especificar
-el grueso para cada nivel de agregación. Para más detalles consulte la
-función \link[treemap:treemap]{treemap()}.
+especificará el grosor para todos los rectángulos, o un vector para
+especificar el grueso para cada nivel de agregación. Para más detalles,
+consulte la función \link[treemap:treemap]{treemap()}.
 \item \code{gg.border.col}: Color de los bordes dibujados alrededor de cada rectángulo,
-ya sea un valor único o un vector. El valor por defecto es '#000000'. Para
-más detalles consulte la función \link[treemap:treemap]{treemap()}.
+ya sea un valor único o un vector. El valor por defecto es \code{'#000000'}.
+Para más detalles, consulte la función \link[treemap:treemap]{treemap()}.
 \item \code{gg.lowerbound.cex.labels}: Número entre \eqn{[0, 1]}, 0 significa dibujar
 todas las etiquetas y 1 significa dibujar sólo las etiquetas si encajan
-(\emph{considerando el \code{fontsize.labels}}). El valor por defecto es 0.4. Para
+(\emph{considerando el \code{fontsize.labels}}). El valor por defecto es \code{0.4}.
+Para más detalles, consulte la función \link[treemap:treemap]{treemap()}.
+\item \code{gg.force.print.labels}: Si es \code{FALSE} (\emph{valor predeterminado}) las
+etiquetas de datos no se ven obligadas a imprimirse si no encajan. Para
 más detalles consulte la función \link[treemap:treemap]{treemap()}.
-\item \code{gg.force.print.labels}: Si es \code{FALSE} (\emph{valor predeterminado}) las etiquetas
-de datos no se ven obligadas a imprimirse si no encajan. Para más detalles
-consulte la función \link[treemap:treemap]{treemap()}.
 \item \code{gg.overlap.labels}: Número entre \eqn{[0, 1]}, que determina la tolerancia
 de superposición entre etiquetas. 0 significa que las etiquetas de los
 niveles inferiores no se imprimen si las etiquetas de los niveles superiores
 se superponen, 1 significa que las etiquetas siempre se imprimen. El valor
-por defecto es 0.5. Para más detalles consulte la función \link[treemap:treemap]{treemap()}.
+por defecto es \code{0.5}. Para más detalles, consulte la función \link[treemap:treemap]{treemap()}.
 }}
 
-\item{estatico}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{estatico}{Si es \code{FALSE} (\emph{valor predeterminado}) el gráfico a retornar
+será dinámico (\emph{dependiendo de la librería seleccionada}), en caso contrario
+se retornará un gráfico estático construido con \code{ggplot2}.}
 }
 \value{
 Retorna el treemap (\emph{objeto widget de HTML}) creado. La clase del objeto
@@ -120,37 +122,93 @@ o "sund2b".
 \description{
 Esta función proporciona excelentes herramientas y opciones para la visualización
 de datos jerárquicos/estructurados como un conjunto de rectángulos anidados.
-Cada grupo está representado por un rectángulo, cuya área (\emph{tamaño}) es proporcional
-a su frecuencia absoluta (\emph{recuento}) y el color se usa para mostrar otra
-dimensión numérica. Usando la interactividad, es posible representar varias
-dimensiones/niveles: grupos, subgrupos, etc. Dicha gráfica se va a representar
-usando la librería \code{Highcharter}, \code{Plotly}, \code{d3treeR}, entre otras, las cuales
-usa internamente \code{JavaScript}.
+Cada grupo está representado por un rectángulo, cuya área (\emph{tamaño}) es
+proporcional a su frecuencia absoluta (\emph{recuento}) y el color se usa para
+mostrar otra dimensión numérica. Usando la interactividad, es posible representar
+varias dimensiones/niveles: grupos, subgrupos, etc. Dicha gráfica se va a
+representar usando la librería \code{Highcharter}, \code{Plotly}, \code{d3treeR}, entre otras,
+las cuales usan internamente \code{JavaScript}.
 }
 \details{
 Si está trabajando en un \verb{R Markdown} o un aplicativo \code{Shiny} no se puede usar
-de forma conjunta el \code{método = Classic} (ó \code{Classic2}) y \code{método = Sunburst}
-(ó \code{Sunburst2}), pues se trata de un problema interno, ya que usan versiones
+de forma conjunta el \code{método = Classic} (o \code{Classic2}) y \code{método = Sunburst}
+(o \code{Sunburst2}), pues se trata de un problema interno, ya que usan versiones
 diferentes de \code{d3}, puede darle seguimiento al problema
 \href{https://github.com/timelyportfolio/sunburstR/issues/102}{aquí}. De igual forma,
 si utiliza la librería \code{sunburstR} en algunas ocasiones se le verán afectadas
 las tablas creadas con \code{DT}.
 }
-\examples{
-Msj <- "Acompa\u00f1ado del Estad\u00edstico seleccionado para la Variable Edad."
-if (require("viridis")) {
-  Plot.Treemap(
-    datos       = ejGraduados,
-    variables   = SEDE_NOMBRE_MAT,
-    atributo    = EDAD_MOD,
-    textFreq    = "Tamaño de la Muestra",
-    estadistico = "Max",
-    colores     = inferno(10),
-    titulo      = "TOTAL DE GRADUADOS POR SEDE DE LA UNIVERSIDAD NACIONAL",
-    libreria    = "highcharter",
-    estilo      = list(hc.Tema = 7, hc.borderRadius = 20, hc.Credits = Msj)
-  )
+\section{Lista de argumentos de estilo}{
+
+
+Sabemos que puede ser abrumador el número de argumentos dentro del parámetro
+\code{estilo}, pero es necesario si queremos ofrecer al usuario la máxima
+personalización dentro de cada función usando cualquier librería. Por tal
+razón, a continuación, se detalla el listado completo de argumentos, usados
+al especificar la librería y en qué función están presentes
+(\emph{marcado con una × si lo posee}).\tabular{clcccccccc}{
+   \strong{Librería} \tab \strong{estilo$} \tab \code{\link[=Plot.Series]{Plot.Series()}} \tab \code{\link[=Plot.Barras]{Plot.Barras()}} \tab \code{\link[=Plot.Apiladas]{Plot.Apiladas()}} \tab \code{\link[=Plot.Boxplot]{Plot.Boxplot()}} \tab \code{\link[=Plot.Radar]{Plot.Radar()}} \tab \code{\link[=Plot.Treemap]{Plot.Treemap()}} \tab \code{\link[=Plot.Torta]{Plot.Torta()}} \tab \code{\link[=Plot.Drilldown]{Plot.Drilldown()}} \cr
+   ┌ \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{ggplot2} \tab \emph{gg.plty} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   └ \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ╔ \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ║ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   \strong{highcharter} \tab \emph{hc.BoxInfo} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ║ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ┌ \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
+   │ \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
+   │ \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
+   \strong{plotly} \tab \emph{ply.Interaction} \tab × \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
+   └ \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{dygraphs} \tab \emph{dyg.LegendWidth} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ┌ \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{echarts4r} \tab \emph{e.Forma} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   └ \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
 }
+}
+
+\examples{
+\dontshow{if (require("viridis")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(viridis)
+Msj <- "Acompa\u00f1ado del Estad\u00edstico seleccionado para la Variable Edad."
+Plot.Treemap(
+  datos       = ejGraduados,
+  variables   = SEDE_NOMBRE_MAT,
+  atributo    = EDAD_MOD,
+  textFreq    = "Tamaño de la Muestra",
+  estadistico = "Max",
+  colores     = inferno(10),
+  titulo      = "TOTAL DE GRADUADOS POR SEDE DE LA UNIVERSIDAD NACIONAL",
+  libreria    = "highcharter",
+  estilo      = list(hc.Tema = 7, hc.borderRadius = 20, hc.Credits = Msj)
+)
+# ---------------------------------------------------------------------------
 Plot.Treemap(
   datos       = ejGraduados,
   variables   = FACULTAD,
@@ -162,8 +220,10 @@ Plot.Treemap(
   libreria    = "plotly",
   estilo      = list(ply.Credits = list(x = 0.6, y = 1, text = Msj))
 )
-
-\dontrun{
+\dontshow{\}) # examplesIf}
+\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
+# library(dplyr)
 misColores <- c(
   "#29ABE2", # AZUL CLARO  | Amazonia
   "#8CC63F", # VERDE       | Bogota
@@ -174,64 +234,61 @@ misColores <- c(
   "#93278F", # MORADO      | Palmira
   "#8A381A"  # GRIS        | Tumaco
 )
-if (require("dplyr")) {
-  Plot.Treemap(
-    datos     = ejGraduados,
-    variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-    metodo    = "Classic",
-    colores   = misColores # "Set3"
-  )
-  Plot.Treemap(
-    datos     = ejGraduados,
-    variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-    metodo    = "Classic2",
-    colores   = "Set2"
-  )
-
-  Plot.Treemap(
-    datos     = ejGraduados,
-    variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-    metodo    = "Sunburst",
-    colores   = misColores,
-    estilo    = list(sun.Explanation = "All")
-  )
-  Plot.Treemap(
-    datos     = ejGraduados,
-    variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-    metodo    = "Sunburst",
-    # colores   = misColores,
-    estilo    = list(sun.Explanation = "All", sun.Color = list(range = RColorBrewer::brewer.pal(11, "Spectral")))
-  )
-
-  Plot.Treemap(
-    datos     = ejGraduados,
-    variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-    metodo    = "Sunburst2"
-  )
-  Plot.Treemap(
-    datos     = ejGraduados,
-    variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-    metodo    = "Sunburst2",
-    colores   = misColores,
-    estilo    = list(sun.showLabels = TRUE, sun.colorRoot = "#EF0055")
-  )
-}
-}
-# Ejemplo usando el caso estático (treemap)
-if (require("dplyr")) {
 Plot.Treemap(
-  datos       = ejGraduados,
-  variables   = vars(SEDE_NOMBRE_MAT, FACULTAD),
-  colores     = c("#FF3232", "#AFFF5E", "#FD6DB3", "#4CCAF2", "#FF9248", "#FBB03B"),
-  titulo      = "TOTAL DE GRADUADOS POR SEDE DE LA UNIVERSIDAD NACIONAL",
-  estatico    = TRUE,
-  estilo      = list(
-    gg.fontsize.title = 17, gg.fontsize.labels = c(15, 9),
+  datos     = ejGraduados,
+  variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+  metodo    = "Classic",
+  colores   = misColores # "Set3"
+)
+Plot.Treemap(
+  datos     = ejGraduados,
+  variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+  metodo    = "Classic2",
+  colores   = "Set2"
+)
+Plot.Treemap(
+  datos     = ejGraduados,
+  variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+  metodo    = "Sunburst",
+  colores   = misColores,
+  estilo    = list(sun.Explanation = "All")
+)
+Plot.Treemap(
+  datos     = ejGraduados,
+  variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+  metodo    = "Sunburst",
+  # colores   = misColores,
+  estilo    = list(sun.Explanation = "All", sun.Color = list(range = RColorBrewer::brewer.pal(11, "Spectral")))
+)
+Plot.Treemap(
+  datos     = ejGraduados,
+  variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+  metodo    = "Sunburst2"
+)
+Plot.Treemap(
+  datos     = ejGraduados,
+  variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+  metodo    = "Sunburst2",
+  colores   = misColores,
+  estilo    = list(sun.showLabels = TRUE, sun.colorRoot = "#EF0055")
+)
+\dontshow{\}) # examplesIf}
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
+# Ejemplo usando el caso estático (treemap)
+# library(dplyr)
+Plot.Treemap(
+  datos     = ejGraduados,
+  variables = vars(SEDE_NOMBRE_MAT, FACULTAD),
+  colores   = c("#FF3232", "#AFFF5E", "#FD6DB3", "#4CCAF2", "#FF9248", "#FBB03B"),
+  titulo    = "TOTAL DE GRADUADOS \u00d7 SEDE",
+  estatico  = TRUE,
+  estilo    = list(
+    gg.fontsize.title = 12, gg.fontsize.labels = c(15, 9),
     gg.fontcolor.labels = c("#FFFFFF", "#212020"),
     gg.border.lwds = c(4, 2), gg.border.col = c("#73095D", "#D60D4B"),
     gg.lowerbound.cex.labels = 0.3, gg.overlap.labels = 0.1
   )
 )
-}
-
+\dontshow{\}) # examplesIf}
 }

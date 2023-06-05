@@ -5,9 +5,10 @@
 \alias{ejConsolidadoSaberPro2019}
 \title{Consolidado Saber Pro 2019}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejConsolidadoSaberPro2019)}
-filas y \verb{r ncol(ejConsolidadoSaberPro2019)} columnas:
-\verb{r paste0("``", colnames(ejConsolidadoSaberPro2019), "``", collapse = ", ")}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con
+42
+filas y 7 columnas:
+'Variable', 'YEAR', 'Clase', 'n', 'Componente', 'Total', 'desv'.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.
@@ -20,8 +21,9 @@ Consolidado de ejemplo de la prueba Saber Pro (\emph{antes llamada ECAES}) del a
 2019. El cual se utiliza para los ejemplos de la función \code{Tabla.SaberPro()}.
 }
 \examples{
-if (require("dplyr")) {
-  head(ejConsolidadoSaberPro2019)
-}
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(dplyr)
+head(ejConsolidadoSaberPro2019)
+\dontshow{\}) # examplesIf}
 }
 \keyword{datasets}

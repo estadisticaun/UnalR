@@ -1,43 +1,36 @@
-#' Cree un gráfico de barras que muestra la información en columnas horizontales
-#' o verticales y para variables nominales u ordinales con dos diferentes paquetes
+#' Cree un gráfico de barras que muestre la información de forma horizontal o
+#' vertical y para variables nominales u ordinales con dos diferentes paquetes
 #'
 #' Esta función permite mostrar de forma interactiva un gráfico de barras verticales
-#' u horizontales cuya longitud/altura es proporcional al valor de la variable
+#' u horizontales cuya altura/longitud es proporcional al valor de la variable
 #' (*categorías de una variable cualitativa*), lo anterior para ayudar a la creación
 #' de informes descriptivos y analíticos. Dicho diagrama se puede representar
 #' usando dos diferentes librerías que son `Highcharter` y `Plotly`, las cuales
 #' usan internamente `JavaScript`.
 #'
-#' @param datos Un data frame.
-#' @param categoria Igual uso que en [Plot.Series()]
-#' @param ano Igual uso que en [Plot.Torta()]
-#' @param periodo Igual uso que en [Plot.Torta()]
-#' @param freqRelativa Igual uso que en [Plot.Series()]
-#' @param ylim Igual uso que en [Plot.Series()]
+#' @inheritParams Plot.Torta
+#' @inheritParams Plot.Series
 #' @param vertical Si es `TRUE` (*valor predeterminado*) indicará que la orientación
 #'   del gráfico será vertical.
 #' @param ordinal Si es `TRUE` indicará que las categorías de la variable ingresada
 #'   son ordinales (*no nominales*), esto con el fin de ordenar la disposición en
 #'   el que se presentan en el eje del gráfico, el valor por defecto es `FALSE`.
-#' @param colores Igual uso que en [Plot.Series()]
-#' @param titulo Igual uso que en [Plot.Series()]
 #' @param labelEje Cadena de caracteres indicando la etiqueta del eje `X` o `Y`
 #'   (*dependiendo de la orientación del gráfico*). Por defecto se emplea el rótulo
-#'   "Número de Graduados".
-#' @param addPeriodo Igual uso que en [Plot.Torta()]
+#'   `"Número de "`.
 #' @param textInfo Cadena de caracteres que especifica el texto que se escribe
 #'   dentro de la caja de información al posar el cursor en alguna barra en el
 #'   gráfico, producido por `Highcharter`, el valor por defecto es igual al de
 #'   `labelEje`.
-#' @param libreria Igual uso que en [Plot.Torta()]
 #' @param estilo Lista compuesta por varios parámetros, los cuales van a ser usados
-#'   de acuerdo con la librería específica para graficar el plot y cuyo objetivo
+#'   de acuerdo con la librería especificada para graficar el plot y cuyo objetivo
 #'   es personalizar pequeños detalles de ésta.
 #'   * `hc.Tema`, `hc.Credits`, `ply.Credits`, `gg.Tema` y `gg.Texto`: Igual uso
 #'     que en [Plot.Series()]
-#'   * `ply.Legend`: Igual uso que en [Plot.Torta()]
+#'   * `ply.Legend`: Por defecto la gráfica muestra la leyenda fuera del gráfico
+#'     de pie, si se introduce la cadena de texto `"inside"` se resumirá toda la
+#'     información dentro del pie.
 #'   * `gg.Bar`: Una lista de parámetros admitidos por la función [geom_bar()][ggplot2::geom_bar()]).
-#' @param estatico Igual uso que en [Plot.Series()]
 #'
 #' @details
 #' Al usar el paquete `Highcharter` y usar las opciones de descarga, el nombre
@@ -45,7 +38,9 @@
 #' usada, así, por ejemplo, si se graficó el diagrama de barras para la categoría
 #' "Nacionalidad" el nombre será `PlotBarras_Nacionalidad.png`.
 #'
-#' @return
+#' @inheritSection Plot.Series Lista de argumentos de estilo
+#'
+#' @returns
 #' Retorna el diagrama de barras (*objeto widget de HTML*) creado. La clase del
 #' objeto retornado será un "htmlwidget" y dependiendo de la librería usada
 #' pertenecerá adicionalmente a la clase "highchart" o "plotly".
@@ -68,7 +63,7 @@
 #'   libreria     = "highcharter",
 #'   estilo       = list(hc.Tema = 2, hc.Credits = Msj)
 #' )
-#'
+#' Txt <- "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL"
 #' Msj <- "A\u00f1o 2020, sin segregar por semestre (considerando ambos)."
 #' Plot.Barras(
 #'   datos     = ejConsolidadoGrad,
@@ -77,7 +72,7 @@
 #'   vertical  = FALSE,
 #'   ordinal   = FALSE,
 #'   colores   = RColorBrewer::brewer.pal(5, "Set2"),
-#'   titulo    = "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL",
+#'   titulo    = Txt,
 #'   labelEje  = "N\u00famero de Graduados",
 #'   libreria  = "plotly",
 #'   estilo    = list(
@@ -91,17 +86,17 @@
 #'   ano       = 2020,
 #'   vertical  = FALSE,
 #'   ordinal   = FALSE,
-#'   colores   = RColorBrewer::brewer.pal(5, "Set2"),
-#'   titulo    = "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL",
+#'   colores   = RColorBrewer::brewer.pal(5, "Set1"),
+#'   titulo    = gsub("DE GR", "DE\nGR", Txt),
 #'   labelEje  = "N\u00famero de Graduados",
 #'   estatico  = TRUE,
 #'   estilo    = list(
-#'     gg.Tema  = 9,
+#'     gg.Tema  = 10,
 #'     gg.Bar   = list(width = 0.2, color = "#000000"),
-#'     gg.Texto = list(subtitle = Msj,
+#'     gg.Texto = list(subtitle = gsub("A", "\nA", Msj),
 #'                     caption  = "Informaci\u00f3n Disponible desde 2009-1",
-#'                     tag      = "Figura 1. Graduados"
-#'     )
+#'                     tag      = "\u00ae"
+#'                    )
 #'   )
 #' )
 #'
@@ -119,9 +114,10 @@
 #' @importFrom grDevices rainbow
 Plot.Barras <- function(
     datos, categoria, ano, periodo, freqRelativa = FALSE, ylim, vertical = TRUE,
-    ordinal = FALSE, colores, titulo = "", labelEje = "N\u00famero de Graduados",
+    ordinal = FALSE, colores, titulo = "", labelEje = "N\u00famero de",
     addPeriodo = TRUE, textInfo = labelEje, libreria = c("highcharter", "plotly"),
-    estilo = NULL, estatico = FALSE) {
+    estilo = NULL, estatico = FALSE
+    ) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (missingArg(datos) || missingArg(categoria)) {
@@ -156,7 +152,7 @@ Plot.Barras <- function(
   }
 
   # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA
-  DataFrame <- ungroup(datos) |> filter(Variable == categoria) |>
+  DataFrame  <- ungroup(datos) |> filter(Variable == categoria) |>
     select(-Variable) |> filter(is.na(Clase) != TRUE)
   categorias <- DataFrame |> select(Clase) |> distinct() |> pull()
 
@@ -330,10 +326,12 @@ Plot.Barras <- function(
       }
 
       PlotBarras <- PlotBarras |>
-        layout(annotations = append(ParmsCredits, list(
-          showarrow = FALSE, xref = "paper", yref = "paper",
-          xanchor = "right", yanchor = "auto", xshift = 0, yshift = 0,
-          font = list(size = 12, color = "#2B908F"))
+        layout(
+          annotations = append(
+            ParmsCredits, list(
+              showarrow = FALSE, xref = "paper", yref = "paper", xanchor = "right",
+              yanchor = "auto", xshift = 0, yshift = 0, font = list(size = 12, color = "#2B908F")
+            )
           )
         ) |>
         config(locale = "es")

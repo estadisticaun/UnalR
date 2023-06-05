@@ -1,6 +1,6 @@
 # UnalR 1.0.0
 
-v1.0.0 fue lanzada el 02/02/2023
+v1.0.0 fue lanzada el 03/06/2023
 
 ## Cambios
   * En los casos aplicables, se reemplaza el operador de `magrittr` por el "native pipe" de `R` (`%>%` *por* `|>`), incluido en la versión `4.1.0`, reemplazando así la "tubería" la cual es el icono distintivo de `dplyr` y el `tidyverse`.

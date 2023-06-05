@@ -9,17 +9,29 @@ authors:
     href: https://github.com/JeisonAlarcon
   Alberto Rodríguez:
     href: https://github.com/alberto1976
+  UnalR:
+    href: https://github.com/estadisticaun/UnalR
+    html: <img src='https://github.com/estadisticaun/UnalR/blob/master/man/figures/Logo.png' alt='Logo' width='72' />
 
 development:
   mode: auto
 
+lang: es
+
 template:
   params:
     bootswatch: flatly
-    ganalytics: UA-190119946-1
+    ganalytics: G-V7GD1HK9WW
     docsearch:
       api_key: 48a86f5ad8f8218ed7191a5492511c14
       index_name: unalR
+
+footer:
+  structure:
+    left: developed_by
+    right: [package, legal]
+  components:
+    legal: '| Provided without **any warranty**.'
 
 reference:
     - title: Tablas
@@ -30,14 +42,15 @@ reference:
     - title: Gráficos
       contents:
         - Plot.Series
-        - Plot.Torta
         - Plot.Barras
+        - Plot.Torta
         - Plot.Mapa
+        - Plot.Mundo
         - Plot.Boxplot
         - Plot.Radar
         - Plot.Treemap
-        - Plot.Drilldown
         - Plot.Apiladas
+        - Plot.Drilldown
     - title: Auxiliares
       contents:
         - Agregar

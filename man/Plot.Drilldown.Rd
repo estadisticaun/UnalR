@@ -24,8 +24,8 @@ Plot.Drilldown(
 \arguments{
 \item{datos}{Un data frame, no un vector numérico.}
 
-\item{varPrincipal}{Una variable categórica dentro del data frame ingresado en
-\code{datos}.}
+\item{varPrincipal}{Una variable categórica dentro del data frame ingresado
+en \code{datos}.}
 
 \item{varSecundaria}{Otra variable categórica dentro del data frame ingresado
 en \code{datos}, diferente a la principal, pues se segregará a otros niveles.}
@@ -43,9 +43,9 @@ orientación del gráfico principal como secundario será vertical. Solamente
 aplicará si el argumento \code{torta} es \code{FALSE}.}
 
 \item{colores}{Cadena de caracteres indicando los colores con los cuales se
-deben colorear cada una de las trazas correspondiente a cada nivel del argumento
-\code{varPrincipal}. Si no se introduce algún vector se usará la paleta \code{rainbow}
-por defecto.}
+deben colorear cada una de las trazas correspondiente a cada nivel del
+argumento \code{varPrincipal}. Si no se introduce algún vector se usará la paleta
+\code{rainbow} por defecto.}
 
 \item{colores2}{Igual que \code{colores} pero aplicado al gráfico secundario.}
 
@@ -83,28 +83,27 @@ gráfica se va a representar usando la librería \code{Highcharter}, la cual usa
 internamente \code{JavaScript}.
 }
 \examples{
-if (require("dplyr") && require("RColorBrewer")) {
-  df <- ejMiniConsolidadoAsp \%>\%
-    filter(Clase != "Sin Información", tolower(Clase) != "no aplica")
-
-  text <- "DISTRIBUCI\u00d3N DE ASPIRANTES A PREGRADO EN SITUACI\u00d3N DE DISCAPACIDAD"
-  Msj  <- "Discapacidad: Deficiencia, limitaci\u00f3n de la actividad y la restricci\u00f3n de la participaci\u00f3n."
-  Plot.Drilldown(
-    datos         = df,
-    varPrincipal  = "DISCAPACIDAD",
-    varSecundaria = "TIPO_DISC",
-    ano           = max(df$YEAR),
-    periodo       = slice(df, n())$SEMESTRE,
-    torta         = TRUE, # Pruebe poniendo ambos valores ahora en FALSE
-    vertical      = TRUE,
-    colores       = c("#FF0040", "#00FF40"),
-    colores2      = brewer.pal(n = 6, "Set2"),
-    titulo        = text,
-    label         = "Aspirantes",
-    textInfo      = "Aspirantes con discapacidades por tipo",
-    addPeriodo    = TRUE,
-    estilo        = list(hc.Tema = 7, hc.Credits = Msj)
-  )
-}
-
+\dontshow{if (all(require("dplyr"), require("RColorBrewer"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(dplyr); library(RColorBrewer)
+df <- ejMiniConsolidadoAsp |>
+  filter(Clase != "Sin Información", tolower(Clase) != "no aplica")
+text <- "DISTRIBUCI\u00d3N DE ASPIRANTES A PREGRADO EN SITUACI\u00d3N DE DISCAPACIDAD"
+Msj  <- "Discapacidad: Deficiencia, limitaci\u00f3n de la actividad y la restricci\u00f3n de la participaci\u00f3n."
+Plot.Drilldown(
+  datos         = df,
+  varPrincipal  = "DISCAPACIDAD",
+  varSecundaria = "TIPO_DISC",
+  ano           = max(df$YEAR),
+  periodo       = slice(df, n())$SEMESTRE,
+  torta         = TRUE, # Pruebe poniendo ambos valores ahora en FALSE
+  vertical      = TRUE,
+  colores       = c("#FF0040", "#00FF40"),
+  colores2      = brewer.pal(n = 6, "Set2"),
+  titulo        = text,
+  label         = "Aspirantes",
+  textInfo      = "Aspirantes con discapacidades por tipo",
+  addPeriodo    = TRUE,
+  estilo        = list(hc.Tema = 7, hc.Credits = Msj)
+)
+\dontshow{\}) # examplesIf}
 }

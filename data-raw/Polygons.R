@@ -62,4 +62,13 @@ if (file.exists("data-raw/DIVIPOLA_2021.xls")) {
     filter(Tipo_Centro == "CABECERA MUNICIPAL")
 } else { print("En la carpeta de datos sin procesar (data-raw) no existe el archivo 'DIVIPOLA_2021.xls'") }
 
-use_data(Depto_Final, Mpio_Final, Cabeceras, internal = TRUE, overwrite = TRUE, compress = "xz")
+# ----------------------------------------------------------------------- #
+# ------------------------------- ISO3166 ------------------------------- #
+# ----------------------------------------------------------------------- #
+ISO3166     <- maps::iso3166
+CountryCode <- giscoR::gisco_countrycode
+
+
+use_data(Depto_Final, Mpio_Final, Cabeceras, ISO3166, CountryCode,
+         internal = TRUE, overwrite = TRUE, compress = "xz"
+         )

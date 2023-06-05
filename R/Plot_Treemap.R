@@ -2,13 +2,14 @@
 #'
 #' Esta función proporciona excelentes herramientas y opciones para la visualización
 #' de datos jerárquicos/estructurados como un conjunto de rectángulos anidados.
-#' Cada grupo está representado por un rectángulo, cuya área (*tamaño*) es proporcional
-#' a su frecuencia absoluta (*recuento*) y el color se usa para mostrar otra
-#' dimensión numérica. Usando la interactividad, es posible representar varias
-#' dimensiones/niveles: grupos, subgrupos, etc. Dicha gráfica se va a representar
-#' usando la librería `Highcharter`, `Plotly`, `d3treeR`, entre otras, las cuales
-#' usa internamente `JavaScript`.
+#' Cada grupo está representado por un rectángulo, cuya área (*tamaño*) es
+#' proporcional a su frecuencia absoluta (*recuento*) y el color se usa para
+#' mostrar otra dimensión numérica. Usando la interactividad, es posible representar
+#' varias dimensiones/niveles: grupos, subgrupos, etc. Dicha gráfica se va a
+#' representar usando la librería `Highcharter`, `Plotly`, `d3treeR`, entre otras,
+#' las cuales usan internamente `JavaScript`.
 #'
+#' @inheritParams Plot.Series
 #' @param datos Un data frame, no un vector numérico.
 #' @param variables Una lista (*ya sea creada con la sintaxis `base` o `tidy`*)
 #'   con las variables categóricas dentro del data frame ingresado en `datos` con
@@ -22,8 +23,8 @@
 #'   recuento en cada uno de los grupos. Por defecto se emplea el rótulo "N".
 #' @param metodo Cadena de caracteres indicando el diseño con el cual se realizará
 #'   el gráfico (*en el caso de ingresar dos niveles o más*). Los valores permitidos
-#'   son "Classic" (*valor predeterminado*), "Classic2", "Sunburst" y "Sunburst2",
-#'   así se usará las funciones [d3tree()][d3treeR::d3tree()],
+#'   son `"Classic"` (*valor predeterminado*), `"Classic2"`, `"Sunburst"` y
+#'   `"Sunburst2"`, así se usará las funciones [d3tree()][d3treeR::d3tree()],
 #'   [d3tree2()][d3treeR::d3tree2()], [sunburst()][sunburstR::sunburst()] y
 #'   [sund2b()][sunburstR::sund2b()] respectivamente.
 #' @param estadistico Igual uso que en [Plot.Mapa()]
@@ -32,10 +33,9 @@
 #'   un atributo es recomendable pasarle una escala de colores, pues con esto se
 #'   construirá la barra horizontal. En el caso de usar el argumento `atributo`
 #'   se puede ingresar el nombre de una paleta, por ejemplo "Set1".
-#' @param titulo Igual uso que en [Plot.Series()]
 #' @param libreria Igual uso que en [Plot.Torta()], con algunos matices, pues
-#'   en el caso de ingresar más de una variable categórica se omitirá dicho argumento,
-#'   ya que `metodo` tomará su lugar.
+#'   en el caso de ingresar más de una variable categórica se omitirá dicho
+#'   argumento, ya que `metodo` tomará su lugar.
 #' @param estilo Lista compuesta por varios parámetros, los cuales van a ser usados
 #'   para graficar el treemap y cuyo objetivo es personalizar pequeños detalles
 #'   de éste.
@@ -48,77 +48,76 @@
 #'     ver en el centro del sunburst al pasar el mouse por los diferentes anillos
 #'     (\emph{niveles de la jerarquía}). Los valores permitidos son "All"
 #'     (\emph{valor predeterminado}), "Count" y "Percent". Solo aplica para cuando
-#'     `método = Sunburst`.
+#'     `metodo = "Sunburst"`.
 #'   * `sun.Color`: A diferencia del argumento `colores` acá puede pasar una paleta
 #'     o vector de colores sin que se recorte (\emph{más no se recicle}) éste a
 #'     la longitud de categorías del nodo padre. Su uso reemplaza el funcionamiento
-#'     del argumento `colores`. Solo aplica para cuando `método = Sunburst`.
+#'     del argumento `colores`. Solo aplica para cuando `metodo = "Sunburst"`.
 #'   * `sun.showLabels`: Si es `FALSE` (\emph{valor predeterminado}) no se mostrará
-#'     etiquetas en los cortes. Solo aplica para cuando `método = Sunburst2`.
+#'     etiquetas en los cortes. Solo aplica para cuando `metodo = "Sunburst2"`.
 #'   * `sun.colorRoot`: Cadena de caracteres que indica el color del nodo raíz
 #'     (\emph{root}). Puede indicar el color con el nombre (`"red"`), código
 #'     hexadecimal (`"#FF0000"`) o RGB (`rgb(1, 0, 0)`). El valor por defecto es
-#'     "rojo". Solo aplica para cuando `método = Sunburst2`.
+#'     "rojo". Solo aplica para cuando `metodo = "Sunburst2"`.
 #'   * `gg.fontsize.title`: Tamaño de la fuente del título. El valor por defecto
-#'     es 14. Para más detalles consulte la función [treemap()][treemap::treemap()].
+#'     es `14`. Para más detalles, consulte la función [treemap()][treemap::treemap()].
 #'   * `gg.fontsize.labels`: Tamaño de la fuente de las etiquetas. Si ingresa un
 #'     número especificará el tamaño para todos los niveles de agregación, por el
 #'     contrario, si ingresa un vector podrá especificar el tamaño para cada nivel.
-#'     El valor por defecto es 11. Para más detalles consulte la función [treemap()][treemap::treemap()].
+#'     El valor por defecto es `11`. Para más detalles, consulte la función [treemap()][treemap::treemap()].
 #'   * `gg.fontcolor.labels`: Especifica los colores de la etiqueta. Ya sea una
 #'     cadena de caracteres o un vector (*uno para cada nivel de agregación*).
-#'     El valor por defecto es NULL. Para más detalles consulte la función [treemap()][treemap::treemap()].
+#'     El valor por defecto es `NULL`. Para más detalles, consulte la función [treemap()][treemap::treemap()].
 #'   * `gg.border.lwds`: Tamaño de las líneas de borde. Si ingresa un número
-#'     especificará el grosor para todos los rectángulos, o un vector para especificar
-#'     el grueso para cada nivel de agregación. Para más detalles consulte la
-#'     función [treemap()][treemap::treemap()].
+#'     especificará el grosor para todos los rectángulos, o un vector para
+#'     especificar el grueso para cada nivel de agregación. Para más detalles,
+#'     consulte la función [treemap()][treemap::treemap()].
 #'   * `gg.border.col`: Color de los bordes dibujados alrededor de cada rectángulo,
-#'     ya sea un valor único o un vector. El valor por defecto es '#000000'. Para
-#'     más detalles consulte la función [treemap()][treemap::treemap()].
+#'     ya sea un valor único o un vector. El valor por defecto es `'#000000'`.
+#'     Para más detalles, consulte la función [treemap()][treemap::treemap()].
 #'   * `gg.lowerbound.cex.labels`: Número entre \eqn{[0, 1]}, 0 significa dibujar
 #'     todas las etiquetas y 1 significa dibujar sólo las etiquetas si encajan
-#'     (*considerando el `fontsize.labels`*). El valor por defecto es 0.4. Para
+#'     (*considerando el `fontsize.labels`*). El valor por defecto es `0.4`.
+#'     Para más detalles, consulte la función [treemap()][treemap::treemap()].
+#'   * `gg.force.print.labels`: Si es `FALSE` (*valor predeterminado*) las
+#'     etiquetas de datos no se ven obligadas a imprimirse si no encajan. Para
 #'     más detalles consulte la función [treemap()][treemap::treemap()].
-#'   * `gg.force.print.labels`: Si es `FALSE` (*valor predeterminado*) las etiquetas
-#'     de datos no se ven obligadas a imprimirse si no encajan. Para más detalles
-#'     consulte la función [treemap()][treemap::treemap()].
 #'   * `gg.overlap.labels`: Número entre \eqn{[0, 1]}, que determina la tolerancia
 #'     de superposición entre etiquetas. 0 significa que las etiquetas de los
 #'     niveles inferiores no se imprimen si las etiquetas de los niveles superiores
 #'     se superponen, 1 significa que las etiquetas siempre se imprimen. El valor
-#'     por defecto es 0.5. Para más detalles consulte la función [treemap()][treemap::treemap()].
-#' @param estatico Igual uso que en [Plot.Series()]
+#'     por defecto es `0.5`. Para más detalles, consulte la función [treemap()][treemap::treemap()].
 #'
 #' @details
 #' Si está trabajando en un `R Markdown` o un aplicativo `Shiny` no se puede usar
-#' de forma conjunta el `método = Classic` (ó `Classic2`) y `método = Sunburst`
-#' (ó `Sunburst2`), pues se trata de un problema interno, ya que usan versiones
+#' de forma conjunta el `método = Classic` (o `Classic2`) y `método = Sunburst`
+#' (o `Sunburst2`), pues se trata de un problema interno, ya que usan versiones
 #' diferentes de `d3`, puede darle seguimiento al problema
 #' [aquí](https://github.com/timelyportfolio/sunburstR/issues/102). De igual forma,
 #' si utiliza la librería `sunburstR` en algunas ocasiones se le verán afectadas
 #' las tablas creadas con `DT`.
 #'
-#' @return
+#' @returns
 #' Retorna el treemap (*objeto widget de HTML*) creado. La clase del objeto
 #' retornado será un "htmlwidget" y dependiendo de la librería usada pertenecerá
 #' adicionalmente a la clase "highchart", "plotly", " d3tree", "d3tree2", "sunburst"
 #' o "sund2b".
 #'
-#' @examples
+#' @examplesIf require("viridis")
+#' library(viridis)
 #' Msj <- "Acompa\u00f1ado del Estad\u00edstico seleccionado para la Variable Edad."
-#' if (require("viridis")) {
-#'   Plot.Treemap(
-#'     datos       = ejGraduados,
-#'     variables   = SEDE_NOMBRE_MAT,
-#'     atributo    = EDAD_MOD,
-#'     textFreq    = "Tamaño de la Muestra",
-#'     estadistico = "Max",
-#'     colores     = inferno(10),
-#'     titulo      = "TOTAL DE GRADUADOS POR SEDE DE LA UNIVERSIDAD NACIONAL",
-#'     libreria    = "highcharter",
-#'     estilo      = list(hc.Tema = 7, hc.borderRadius = 20, hc.Credits = Msj)
-#'   )
-#' }
+#' Plot.Treemap(
+#'   datos       = ejGraduados,
+#'   variables   = SEDE_NOMBRE_MAT,
+#'   atributo    = EDAD_MOD,
+#'   textFreq    = "Tamaño de la Muestra",
+#'   estadistico = "Max",
+#'   colores     = inferno(10),
+#'   titulo      = "TOTAL DE GRADUADOS POR SEDE DE LA UNIVERSIDAD NACIONAL",
+#'   libreria    = "highcharter",
+#'   estilo      = list(hc.Tema = 7, hc.borderRadius = 20, hc.Credits = Msj)
+#' )
+#' # ---------------------------------------------------------------------------
 #' Plot.Treemap(
 #'   datos       = ejGraduados,
 #'   variables   = FACULTAD,
@@ -131,7 +130,9 @@
 #'   estilo      = list(ply.Credits = list(x = 0.6, y = 1, text = Msj))
 #' )
 #'
-#' \dontrun{
+#' @examplesIf all(FALSE)
+#' # ---------------------------------------------------------------------------
+#' # library(dplyr)
 #' misColores <- c(
 #'   "#29ABE2", # AZUL CLARO  | Amazonia
 #'   "#8CC63F", # VERDE       | Bogota
@@ -142,65 +143,64 @@
 #'   "#93278F", # MORADO      | Palmira
 #'   "#8A381A"  # GRIS        | Tumaco
 #' )
-#' if (require("dplyr")) {
-#'   Plot.Treemap(
-#'     datos     = ejGraduados,
-#'     variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-#'     metodo    = "Classic",
-#'     colores   = misColores # "Set3"
-#'   )
-#'   Plot.Treemap(
-#'     datos     = ejGraduados,
-#'     variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-#'     metodo    = "Classic2",
-#'     colores   = "Set2"
-#'   )
-#'
-#'   Plot.Treemap(
-#'     datos     = ejGraduados,
-#'     variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-#'     metodo    = "Sunburst",
-#'     colores   = misColores,
-#'     estilo    = list(sun.Explanation = "All")
-#'   )
-#'   Plot.Treemap(
-#'     datos     = ejGraduados,
-#'     variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-#'     metodo    = "Sunburst",
-#'     # colores   = misColores,
-#'     estilo    = list(sun.Explanation = "All", sun.Color = list(range = RColorBrewer::brewer.pal(11, "Spectral")))
-#'   )
-#'
-#'   Plot.Treemap(
-#'     datos     = ejGraduados,
-#'     variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-#'     metodo    = "Sunburst2"
-#'   )
-#'   Plot.Treemap(
-#'     datos     = ejGraduados,
-#'     variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
-#'     metodo    = "Sunburst2",
-#'     colores   = misColores,
-#'     estilo    = list(sun.showLabels = TRUE, sun.colorRoot = "#EF0055")
-#'   )
-#' }
-#' }
-#' # Ejemplo usando el caso estático (treemap)
-#' if (require("dplyr")) {
 #' Plot.Treemap(
-#'   datos       = ejGraduados,
-#'   variables   = vars(SEDE_NOMBRE_MAT, FACULTAD),
-#'   colores     = c("#FF3232", "#AFFF5E", "#FD6DB3", "#4CCAF2", "#FF9248", "#FBB03B"),
-#'   titulo      = "TOTAL DE GRADUADOS POR SEDE DE LA UNIVERSIDAD NACIONAL",
-#'   estatico    = TRUE,
-#'   estilo      = list(
-#'     gg.fontsize.title = 17, gg.fontsize.labels = c(15, 9),
+#'   datos     = ejGraduados,
+#'   variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+#'   metodo    = "Classic",
+#'   colores   = misColores # "Set3"
+#' )
+#' Plot.Treemap(
+#'   datos     = ejGraduados,
+#'   variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+#'   metodo    = "Classic2",
+#'   colores   = "Set2"
+#' )
+#' Plot.Treemap(
+#'   datos     = ejGraduados,
+#'   variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+#'   metodo    = "Sunburst",
+#'   colores   = misColores,
+#'   estilo    = list(sun.Explanation = "All")
+#' )
+#' Plot.Treemap(
+#'   datos     = ejGraduados,
+#'   variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+#'   metodo    = "Sunburst",
+#'   # colores   = misColores,
+#'   estilo    = list(sun.Explanation = "All", sun.Color = list(range = RColorBrewer::brewer.pal(11, "Spectral")))
+#' )
+#' Plot.Treemap(
+#'   datos     = ejGraduados,
+#'   variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+#'   metodo    = "Sunburst2"
+#' )
+#' Plot.Treemap(
+#'   datos     = ejGraduados,
+#'   variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
+#'   metodo    = "Sunburst2",
+#'   colores   = misColores,
+#'   estilo    = list(sun.showLabels = TRUE, sun.colorRoot = "#EF0055")
+#' )
+#'
+#' @examplesIf require("dplyr")
+#' # ---------------------------------------------------------------------------
+#' # Ejemplo usando el caso estático (treemap)
+#' # library(dplyr)
+#' Plot.Treemap(
+#'   datos     = ejGraduados,
+#'   variables = vars(SEDE_NOMBRE_MAT, FACULTAD),
+#'   colores   = c("#FF3232", "#AFFF5E", "#FD6DB3", "#4CCAF2", "#FF9248", "#FBB03B"),
+#'   titulo    = "TOTAL DE GRADUADOS \u00d7 SEDE",
+#'   estatico  = TRUE,
+#'   estilo    = list(
+#'     gg.fontsize.title = 12, gg.fontsize.labels = c(15, 9),
 #'     gg.fontcolor.labels = c("#FFFFFF", "#212020"),
 #'     gg.border.lwds = c(4, 2), gg.border.col = c("#73095D", "#D60D4B"),
 #'     gg.lowerbound.cex.labels = 0.3, gg.overlap.labels = 0.1
 #'   )
 #' )
-#' }
+#'
+#' @inheritSection Plot.Series Lista de argumentos de estilo
 #'
 #' @export
 #'
@@ -223,7 +223,7 @@ Plot.Treemap <- function(
   if (missingArg(datos) || missingArg(variables)) {
     stop("\u00a1Por favor introduzca un conjunto de datos y una(s) variable(s) cualitativas con las cuales se crear\u00e1 la jerarqu\u00eda!", call. = FALSE)
   }
-  if (!(is.character(textFreq) && is.character(titulo))) {
+  if (!all(is.character(textFreq), is.character(titulo))) {
     stop("\u00a1El argumento 'textFreq' y 'titulo' deben ser una cadena de texto!", call. = FALSE)
   }
   if (length(rlang::quo_get_expr(enquo(variables))) <= 2) {
@@ -276,7 +276,7 @@ Plot.Treemap <- function(
           mutate(Porcentaje = Percentage(n))
 
         if (missingArg(colores)) { colores <- rainbow(nrow(df), alpha = 0.6) }
-        # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+        # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
         TreemapHC <- df |>
           hchart("treemap", hcaes(x = X, value = n, color = Y), name = textFreq,
                  dataLabels = list(enabled = TRUE, format = "{point.name}<br/>{point.Porcentaje: .1f}%")
@@ -298,7 +298,7 @@ Plot.Treemap <- function(
           mutate(Porcentaje = Percentage(n), X := {{ variables }}) |> arrange(X)
         if (missingArg(colores)) { colores <- rainbow(nrow(df), alpha = 0.6) }
         Caso <- "II"
-        # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+        # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
         TreemapHC <- df |>
           hchart("treemap", hcaes(x = X, value = n), name = textFreq,
                  dataLabels = list(enabled = TRUE, format = "{point.name}<br/>{point.Porcentaje: .1f}%")

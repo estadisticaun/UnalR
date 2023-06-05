@@ -3,7 +3,7 @@
 \name{Tabla.SaberPro}
 \alias{Tabla.SaberPro}
 \title{Cree fácilmente un widget para visualizar los resultados de la prueba Saber Pro
-en tablas HTML usando el paquete \code{DT}.}
+en tablas HTML usando el paquete \code{DT}}
 \usage{
 Tabla.SaberPro(
   datos,

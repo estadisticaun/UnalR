@@ -21,28 +21,30 @@ Plot.Radar(
 \arguments{
 \item{datos}{Un data frame, se espera en formato de microdatos no un agregado.}
 
-\item{categoria}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
-\item{variables}{Una lista (\emph{ya sea creada con la sintaxis \code{base} o \code{tidy}})
+\item{variables}{Lista (\emph{ya sea creada con la sintaxis \code{base} o \code{tidy}})
 con las variables numéricas (\emph{mínimo tres para que se pueda realizar el gráfico})
 dentro del data frame ingresado en \code{datos}.}
 
 \item{estadistico}{Cadena de caracteres que indica el estadístico a graficar.
-Los valores permitidos son "Promedio" (\emph{valor predeterminado}), "Mediana",
-"Varianza", "SD", "CV", "Min" y "Max".}
+Los valores permitidos son \code{"Promedio"} (\emph{valor predeterminado}), \code{"Mediana"},
+\code{"Varianza"}, \code{"SD"}, \code{"CV"}, \code{"Min"} y \verb{"Max}".}
 
 \item{colores}{Cadena de caracteres indicando los colores con los cuales se
-deben colorear cada una de las trazas correspondiente a cada nivel del argumento
-\code{categoria}. Si no se introduce algún vector se usará la paleta \code{rainbow}
-por defecto.}
+deben colorear cada una de las trazas correspondiente a cada nivel del
+argumento \code{categoria}. Si no se introduce algún vector se usará la paleta
+\code{rainbow} por defecto.}
 
 \item{rango}{Vector numérico de longitud dos que indica el valor mínimo y máximo,
 respectivamente. Si no conoce el dominio del estadístico seleccionado omita
 éste parámetro, pues internamente se usará \code{c(0, NaN)} como rango.}
 
-\item{ordinal}{Igual uso que en \code{\link[=Plot.Barras]{Plot.Barras()}}}
+\item{ordinal}{Si es \code{TRUE} indicará que las categorías de la variable ingresada
+son ordinales (\emph{no nominales}), esto con el fin de ordenar la disposición en
+el que se presentan en el eje del gráfico, el valor por defecto es \code{FALSE}.}
 
-\item{titulo}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{titulo}{Cadena de caracteres indicando el título principal del plot.}
 
 \item{libreria}{Cadena de caracteres que indica el paquete con el cual se
 realizará el radar. Los valores permitidos son \code{"plotly"} (\emph{valor predeterminado})
@@ -63,10 +65,10 @@ el área dentro de ellos.
 \item \code{ply.Opacidad}: Un número entre \eqn{[0, 1]} que indica la opacidad de los
 polígonos/trazos.
 \item \code{e.Credits}: Cadena de caracteres indicando el subtítulo del gráfico principal.
-Para mayor información consulte la función \link[echarts4r:e_title]{e_title()}.
+Para mayor información, consulte la función \link[echarts4r:e_title]{e_title()}.
 \item \code{e.Forma}: Cadena de caracteres indicando el tipo de renderizado del radar,
 los valores admitidos son \code{polygon} (\emph{valor predeterminado}) y \code{circle}.
-Para mayor información consulte la función \link[echarts4r:e_radar_opts]{e_radar_opts()}.
+Para mayor información, consulte la función \link[echarts4r:e_radar_opts]{e_radar_opts()}.
 \item \code{e.Tema}: Modifica el tema con el cual se creará el gráfico. Los posibles
 valores son un número entero entre \eqn{[1, 14]} el cual hace referencia
 a diferentes temas disponibles en dicha librería (\code{helianthus}, \code{azul},
@@ -75,7 +77,7 @@ a diferentes temas disponibles en dicha librería (\code{helianthus}, \code{azul
 El tema por defecto se logra al no ingresar valor alguno. Para más información
 consulte \href{https://echarts4r.john-coene.com/articles/themes.html}{aquí}.
 \item \code{e.LegType}: Cadena de caracteres indicando el tipo de leyenda, los valores
-admitidos son  \code{plain} (\emph{valor predeterminado}) y  \code{scroll}
+admitidos son \code{plain} (\emph{valor predeterminado}) y \code{scroll}
 (\emph{útil cuando es necesario mostrar demasiados elementos}). Para mayor
 información consulte la función \link[echarts4r:e_legend]{e_legend()}.
 \item \code{e.LegLoc}: Valor numérico o cadena de caracteres indicando la distancia
@@ -96,31 +98,89 @@ consulte la función \link[fmsb:radarchart]{radarchart()}.
 consulte la función \link[fmsb:radarchart]{radarchart()}.
 }}
 
-\item{estatico}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{estatico}{Si es \code{FALSE} (\emph{valor predeterminado}) el gráfico a retornar
+será dinámico (\emph{dependiendo de la librería seleccionada}), en caso contrario
+se retornará un gráfico estático construido con \code{ggplot2}.}
 }
 \value{
 Retorna el radar (\emph{objeto widget de HTML}) creado. La clase del objeto retornado
-será un "htmlwidget" y dependiendo de la librería usada pertenecerá adicionalmente
-a la clase "plotly" o "echarts4r".
+será un "htmlwidget" y dependiendo de la librería usada pertenecerá
+adicionalmente a la clase "plotly" o "echarts4r".
 }
 \description{
 Esta función proporciona excelentes herramientas y opciones para la visualización
 de un gráfico de radar (\emph{también conocido como gráfico de araña}) dinámico con
 el objetivo de observar datos multivariados de forma bidimensional. Dicho radar
 chart o spider plot se puede representar usando dos diferentes librerías que
-son \code{Plotly} y \code{ ECharts}, las cuales usan internamente \code{JavaScript}.
+son \code{Plotly} y \code{ECharts}, las cuales usan internamente \code{JavaScript}.
 }
+\section{Lista de argumentos de estilo}{
+
+
+Sabemos que puede ser abrumador el número de argumentos dentro del parámetro
+\code{estilo}, pero es necesario si queremos ofrecer al usuario la máxima
+personalización dentro de cada función usando cualquier librería. Por tal
+razón, a continuación, se detalla el listado completo de argumentos, usados
+al especificar la librería y en qué función están presentes
+(\emph{marcado con una × si lo posee}).\tabular{clcccccccc}{
+   \strong{Librería} \tab \strong{estilo$} \tab \code{\link[=Plot.Series]{Plot.Series()}} \tab \code{\link[=Plot.Barras]{Plot.Barras()}} \tab \code{\link[=Plot.Apiladas]{Plot.Apiladas()}} \tab \code{\link[=Plot.Boxplot]{Plot.Boxplot()}} \tab \code{\link[=Plot.Radar]{Plot.Radar()}} \tab \code{\link[=Plot.Treemap]{Plot.Treemap()}} \tab \code{\link[=Plot.Torta]{Plot.Torta()}} \tab \code{\link[=Plot.Drilldown]{Plot.Drilldown()}} \cr
+   ┌ \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{ggplot2} \tab \emph{gg.plty} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   └ \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ╔ \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ║ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   \strong{highcharter} \tab \emph{hc.BoxInfo} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ║ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ┌ \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
+   │ \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
+   │ \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
+   \strong{plotly} \tab \emph{ply.Interaction} \tab × \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
+   └ \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{dygraphs} \tab \emph{dyg.LegendWidth} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ┌ \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{echarts4r} \tab \emph{e.Forma} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   └ \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+}
+}
+
 \examples{
-if (require("dplyr")) {
-  Plot.Radar(
-    datos     = ejSaberPro2020,
-    categoria = TIPO_COL,
-    variables = vars(PUNT_LECT_CRIT, PUNT_RAZO_CUANT, PUNT_INGLES),
-    colores   = c("#2ACE82", "#FE2667", "#32E7C8", "#FF8D00"),
-    rango     = c(0, NaN),
-    estilo    = list(ply.Relleno = "tonext")
-  )
-}
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(dplyr)
+Plot.Radar(
+  datos     = ejSaberPro2020,
+  categoria = TIPO_COL,
+  variables = vars(PUNT_LECT_CRIT, PUNT_RAZO_CUANT, PUNT_INGLES),
+  colores   = c("#2ACE82", "#FE2667", "#32E7C8", "#FF8D00"),
+  rango     = c(0, NaN),
+  estilo    = list(ply.Relleno = "tonext")
+)
+# ---------------------------------------------------------------------------
 Plot.Radar(
   datos     = ejSaberPro2020,
   categoria = SEDE_NOMBRE_ADM,
@@ -130,6 +190,7 @@ Plot.Radar(
   ),
   rango     = c(0, NaN)
 )
+# ---------------------------------------------------------------------------
 Plot.Radar(
   datos     = ejSaberPro2020,
   categoria = SEDE_NOMBRE_ADM,
@@ -140,7 +201,7 @@ Plot.Radar(
   rango     = c(0, NaN),
   libreria  = "echarts"
 )
-
+# ---------------------------------------------------------------------------
 misColores <- c(
   "#29ABE2", # AZUL CLARO  | Amazonia
   "#8CC63F", # VERDE       | Bogota
@@ -167,10 +228,10 @@ Plot.Radar(
   libreria    = "plotly",
   estilo      = list(
     ply.LegendTitle = "SEDE:", ply.LegendPosition = list(x = 0, y = -0.15, orientation = "h"),
-    ply.Relleno = "tonext", ply.Opacidad = 0.8, ply.Credits = list(x = 0.7, y = -0.1, text = Msj)
+    ply.Relleno = "tonext", ply.Opacidad = 0.8, ply.Credits = list(x = 0.8, y = -0.1, text = Msj)
   )
 )
-
+# ---------------------------------------------------------------------------
 Plot.Radar(
   datos       = ejSaberPro2020,
   categoria   = SEDE_NOMBRE_ADM,
@@ -188,6 +249,7 @@ Plot.Radar(
     e.LegType = "scroll", e.LegLoc = 0
   )
 )
+# ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (fmsb)
 Plot.Radar(
   datos     = ejSaberPro2020,
@@ -204,5 +266,5 @@ Plot.Radar(
     gg.Range = TRUE, gg.plty = 5, gg.plwd = 4, gg.cglwd = 2, gg.cglcol = "#856AA1"
   )
 )
-
+\dontshow{\}) # examplesIf}
 }

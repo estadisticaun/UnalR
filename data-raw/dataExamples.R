@@ -54,6 +54,7 @@ ejMiniAspirantesPre <- do.call(rbind, mapply(Get_Rows, Split, SampledObs, SIMPLI
 # Creación del dataset llamado "ejSaberPro2020" --------------------------------
 ejSaberPro2020 <- UnalData::SaberPro %>% filter(YEAR == 2020) %>% select(!c(ID, TID))
 
+
 # Create package data ----------------------------------------------------------
 use_data(ejGraduados         , overwrite = TRUE, compress = "xz")
 use_data(ejConsolidadoGrad   , overwrite = TRUE, compress = "xz")

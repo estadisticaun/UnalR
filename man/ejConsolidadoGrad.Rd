@@ -5,9 +5,10 @@
 \alias{ejConsolidadoGrad}
 \title{Consolidado de Graduados}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejConsolidadoGrad)}
-filas y \verb{r ncol(ejConsolidadoGrad)} columnas:
-\verb{r paste0("``", colnames(ejConsolidadoGrad), "``", collapse = ", ")}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con
+775 filas
+y 5 columnas:
+'Variable', 'YEAR', 'SEMESTRE', 'Clase', 'Total'.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/8qk3y}{aquí}.
@@ -21,8 +22,9 @@ Universidad Nacional de Colombia, cuenta con la información histórica desde
 el 2009-I al 2021-I.
 }
 \examples{
-if (require("dplyr")) {
-  head(ejConsolidadoGrad)
-}
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(dplyr)
+head(ejConsolidadoGrad)
+\dontshow{\}) # examplesIf}
 }
 \keyword{datasets}

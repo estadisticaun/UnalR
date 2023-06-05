@@ -47,7 +47,7 @@ El tiempo de espera antes de tomar una captura de pantalla, en segundos, es de
 gráficos generados por \code{Highcharter} se muestren correctamente.
 }
 \examples{
-\dontrun{
+\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 misColores <- c(
   "#29ABE2", # AZUL CLARO  | Amazonia
   "#8CC63F", # VERDE       | Bogota
@@ -76,6 +76,5 @@ figure2 <- Plot.Torta(
   libreria  = "highcharter"
 )
 StaticPlot(figure2)
-}
-
+\dontshow{\}) # examplesIf}
 }

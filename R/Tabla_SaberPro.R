@@ -1,5 +1,5 @@
 #' Cree fácilmente un widget para visualizar los resultados de la prueba Saber Pro
-#' en tablas HTML usando el paquete `DT`.
+#' en tablas HTML usando el paquete `DT`
 #'
 #' Esta función está diseñada para facilitar la creación de tablas para informes
 #' y publicaciones produciendo un widget HTML para visualizar un data frame utilizando
@@ -32,7 +32,7 @@
 #' de filtrado, paginación, clasificación y muchas otras características en las
 #' tablas.
 #'
-#' @return
+#' @returns
 #' Retorna la tabla creada mediante `DT` la cual pertenece a la clase "datatables" y "htmlwidget".
 #'
 #' @examples
@@ -74,9 +74,10 @@
 #' @importFrom methods missingArg
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices colorRampPalette
-Tabla.SaberPro <- function(datos, variable, encabezado = "Encabezados de los Niveles de la Categor\u00eda",
-                           leyenda, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
-                           scrollX = TRUE, colorHead = "#FFFFFF", colorear = FALSE, estilo) {
+Tabla.SaberPro <- function(
+    datos, variable, encabezado = "Encabezados de los Niveles de la Categor\u00eda",
+    leyenda, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
+    scrollX = TRUE, colorHead = "#FFFFFF", colorear = FALSE, estilo) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if(missingArg(datos) || missingArg(variable)) {
@@ -197,11 +198,15 @@ Tabla.SaberPro <- function(datos, variable, encabezado = "Encabezados de los Niv
                           sortDescending = "Activar para ordenar la columna de manera descendente"
                         )
                       ),
-                      buttons = list(list(extend = "copy", text = "Copiar"), "csv", "excel",
-                                     list(extend = "pdf", pageSize = "A4", filename = "pdf",
-                                          message = mensajePdf, title = tituloPdf),
-                                     list(extend = "print", text = "Imprimir", pageSize = "A4",
-                                          message = mensajePdf, title = tituloPdf))
+                      buttons = list(
+                        list(extend = "copy", text = "Copiar"), "csv", "excel",
+                        list(extend = "pdf", pageSize = "A4", filename = "pdf",
+                             message = mensajePdf, title = tituloPdf
+                        ),
+                        list(extend = "print", text = "Imprimir", pageSize = "A4",
+                             message = mensajePdf, title = tituloPdf
+                        )
+                      )
     )
   )
 

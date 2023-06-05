@@ -18,9 +18,9 @@ Plot.Torta(
 )
 }
 \arguments{
-\item{datos}{Un data frame.}
+\item{datos}{Un data frame, no un objeto clase serie de tiempo o vector numérico.}
 
-\item{categoria}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
 \item{ano}{Valor numérico que indica el año de interés para realizar el gráfico.
 Si solo se introduce el año, pero no el período, se calculará independiente
@@ -28,14 +28,17 @@ del semestre (\emph{tomando ambos}).}
 
 \item{periodo}{Valor numérico que indica el período o semestre de interés para
 realizar el gráfico. Si solo se introduce el período, pero no el año, se
-calculará en base a todos los años disponibles en \code{datos}.}
+calculará con base en todos los años disponibles en \code{datos}.}
 
-\item{colores}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{colores}{Cadena de caracteres indicando los colores con los cuales se
+deben colorear cada una de las series correspondiente a cada nivel del
+argumento \code{categoria}. Si no se introduce algún vector se usará la paleta
+\code{rainbow} por defecto.}
 
-\item{titulo}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{titulo}{Cadena de caracteres indicando el título principal del plot.}
 
 \item{label}{Cadena de caracteres indicando la etiqueta a la que hace referencia
-el plot. Por defecto se emplea el rótulo "Número de ".}
+el plot. Por defecto se emplea el rótulo \code{"Número de "}.}
 
 \item{addPeriodo}{Si es \code{TRUE} (\emph{valor predeterminado ssi se introduce los
 argumentos \code{ano} y \code{periodo} simultáneamente}) concatenará al título introducido
@@ -46,20 +49,18 @@ el plot. Los valores permitidos son \code{"highcharter"} (\emph{valor predetermi
 y \code{"plotly"}. Los valores se emparejarán parcialmente.}
 
 \item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
-de acuerdo con la librería específica para graficar la torta y cuyo objetivo
+de acuerdo con la librería especificada para graficar la torta y cuyo objetivo
 es personalizar pequeños detalles de ésta.
 \itemize{
 \item \code{LegendTitle}, \code{hc.Tema}, \code{hc.Credits} y \code{ply.Credits}: Igual uso que en
 \code{\link[=Plot.Series]{Plot.Series()}}
-\item \code{ply.Legend}: Por defecto la gráfica muestra la leyenda fuera del gráfico
-de pie, si se introduce la cadena de texto "inside" se resumirá toda la
-información dentro del pie.
+\item \code{ply.Legend}: Igual uso que en \code{\link[=Plot.Barras]{Plot.Barras()}}
 }}
 }
 \value{
-Retorna el diagrama circular (\emph{objeto widget de HTML}) creado. La clase del objeto
-retornado será un "htmlwidget" y dependiendo de la librería usada pertenecerá
-adicionalmente a la clase "highchart" o "plotly".
+Retorna el diagrama circular (\emph{objeto widget de HTML}) creado. La clase del
+objeto retornado será un "htmlwidget" y dependiendo de la librería usada
+pertenecerá adicionalmente a la clase "highchart" o "plotly".
 }
 \description{
 Esta función permite mostrar de forma interactiva una descripción compacta y
@@ -74,13 +75,69 @@ así, por ejemplo, si se graficó el diagrama de pie para la categoría "Sexo" e
 nombre será \code{PlotTorta_Sexo.png}.
 }
 \note{
-Los gráficos circulares son una forma muy mala de mostrar información. El ojo es
-bueno para juzgar medidas lineales y malo para juzgar áreas relativas. Un gráfico
-de barras o un gráfico de puntos es una forma preferible de mostrar este tipo de datos.
+Los gráficos circulares son una forma muy mala de mostrar información. El ojo
+es bueno para juzgar medidas lineales y malo para juzgar áreas relativas. Un
+gráfico de barras o un gráfico de puntos es una forma preferible de mostrar
+este tipo de datos.
 }
+\section{Lista de argumentos de estilo}{
+
+
+Sabemos que puede ser abrumador el número de argumentos dentro del parámetro
+\code{estilo}, pero es necesario si queremos ofrecer al usuario la máxima
+personalización dentro de cada función usando cualquier librería. Por tal
+razón, a continuación, se detalla el listado completo de argumentos, usados
+al especificar la librería y en qué función están presentes
+(\emph{marcado con una × si lo posee}).\tabular{clcccccccc}{
+   \strong{Librería} \tab \strong{estilo$} \tab \code{\link[=Plot.Series]{Plot.Series()}} \tab \code{\link[=Plot.Barras]{Plot.Barras()}} \tab \code{\link[=Plot.Apiladas]{Plot.Apiladas()}} \tab \code{\link[=Plot.Boxplot]{Plot.Boxplot()}} \tab \code{\link[=Plot.Radar]{Plot.Radar()}} \tab \code{\link[=Plot.Treemap]{Plot.Treemap()}} \tab \code{\link[=Plot.Torta]{Plot.Torta()}} \tab \code{\link[=Plot.Drilldown]{Plot.Drilldown()}} \cr
+   ┌ \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{ggplot2} \tab \emph{gg.plty} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   └ \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ╔ \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ║ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   \strong{highcharter} \tab \emph{hc.BoxInfo} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ║ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ┌ \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
+   │ \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
+   │ \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
+   \strong{plotly} \tab \emph{ply.Interaction} \tab × \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
+   └ \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{dygraphs} \tab \emph{dyg.LegendWidth} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ┌ \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{echarts4r} \tab \emph{e.Forma} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   └ \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+}
+}
+
 \examples{
 col <- c("#F15A24", "#8CC63F")
-Msj <- "Distribuci\u00f3n de estudiantes gradados en el primer periodo acad\u00e9mico del 2021."
+Msj <- "Distribuci\u00f3n de estudiantes graduados en el primer periodo acad\u00e9mico del 2021."
 Txt <- "DISTRIBUCI\u00d3N DE GRADUADOS POR MODALIDAD DE FORMACI\u00d3N"
 Plot.Torta(
   datos     = ejConsolidadoGrad,
@@ -97,16 +154,16 @@ Plot.Torta(
   )
 )
 
-Msj <- "Distribuci\u00f3n hist\u00f3rica de estudiantes gradados (desde el 2009-I al 2021-I)."
+Msj <- "Distribuci\u00f3n hist\u00f3rica de estudiantes graduados (desde el 2009-I al 2021-I)."
 Plot.Torta(
   datos     = ejConsolidadoGrad,
   categoria = "TIPO_NIVEL",
   colores   = col,
-  titulo    = Txt,
+  titulo    = gsub("DOS POR", "DOS\nPOR", Txt),
   libreria  = "plotly",
   estilo    = list(
     ply.Legend = "inside", ply.Credits = list(
-      x = 0.66, y = 1.1, text = paste0("<b>", Msj, "</b>")
+      x = 0.8, y = 1.1, text = paste0("<b>", Msj, "</b>")
     )
   )
 )

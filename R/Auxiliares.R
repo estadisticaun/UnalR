@@ -88,6 +88,9 @@ theme_DNPE <- function() {
         family = font   ,
         colour = "black",
         size   = 12
-      )
+      ),
+      legend.background = element_blank(),
+      panel.background  = element_blank(),
+      plot.background   = element_blank()
     )
 }

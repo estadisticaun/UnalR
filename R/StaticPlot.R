@@ -32,11 +32,10 @@
 #' \eqn{1s}. Este valor es debido a que se necesita un retraso mayor para que los
 #' gráficos generados por `Highcharter` se muestren correctamente.
 #'
-#' @return
+#' @returns
 #' Una imagen estática.
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf all(FALSE)
 #' misColores <- c(
 #'   "#29ABE2", # AZUL CLARO  | Amazonia
 #'   "#8CC63F", # VERDE       | Bogota
@@ -65,7 +64,6 @@
 #'   libreria  = "highcharter"
 #' )
 #' StaticPlot(figure2)
-#' }
 #'
 #' @export
 #'
@@ -74,7 +72,6 @@
 #' @importFrom png readPNG
 #' @importFrom grid grid.raster
 StaticPlot <- function(widgetHTML, height = 500, primeraVez = FALSE, ...) {
-
   # https://stackoverflow.com/questions/57581268/embed-plotly-into-pdf-rmarkdown
   if (primeraVez) { webshot::install_phantomjs() }
 

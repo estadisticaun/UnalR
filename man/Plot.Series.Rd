@@ -28,34 +28,35 @@ Plot.Series(
 representará las frecuencias absolutas (\emph{conteo}) más no las relativas (\emph{porcentaje}).}
 
 \item{invertir}{Si es \code{FALSE} (\emph{valor predeterminado}) no se invertirá el eje
-\code{Y}. Establézcalo en \code{TRUE} si desea que en el eje \code{Y} el número más alto es
-el más cercano al origen.}
+\code{Y}. Establézcalo en \code{TRUE} si desea que en el eje \code{Y} el número más alto
+sea el más cercano al origen.}
 
 \item{ylim}{Vector numérico que especifica el límite inferior y superior,
-respectivamente, del eje \code{Y}. Si no se introduce algún valor se mostrará todo
-el rango disponible para dicho eje.}
+respectivamente, del eje \code{Y}. Si no se introduce algún valor se mostrará
+todo el rango disponible para dicho eje.}
 
 \item{colores}{Cadena de caracteres indicando los colores con los cuales se
-deben colorear cada una de las series correspondiente a cada nivel del argumento
-\code{categoria}. Si no se introduce algún vector se usará la paleta \code{rainbow} por
-defecto.}
+deben colorear cada una de las series correspondiente a cada nivel del
+argumento \code{categoria}. Si no se introduce algún vector se usará la paleta
+\code{rainbow} por defecto.}
 
 \item{titulo}{Cadena de caracteres indicando el título principal del plot.}
 
-\item{labelX}{Cadena de caracteres indicando la etiqueta del eje \code{X}. Por defecto
-se emplea el rótulo "Periodo".}
+\item{labelX}{Cadena de caracteres indicando la etiqueta del eje \code{X}. Por
+defecto se emplea el rótulo "Periodo".}
 
 \item{labelY}{Cadena de caracteres indicando la etiqueta del eje \code{Y}.}
 
-\item{libreria}{Cadena de caracteres que indica el paquete con el cual se realizará
-la serie. Los valores permitidos son \code{"highcharter"} (\emph{valor predeterminado}),
-\code{"plotly"} o \code{"dygraphs"}. Los valores se emparejarán parcialmente.}
+\item{libreria}{Cadena de caracteres que indica el paquete con el cual se
+realizará la serie. Los valores permitidos son \code{"highcharter"}
+(\emph{valor predeterminado}), \code{"plotly"} o \code{"dygraphs"}. Los valores se emparejarán
+parcialmente.}
 
 \item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
 de acuerdo con la librería especificada para graficar la serie y cuyo objetivo
 es personalizar pequeños detalles de ésta.
 \itemize{
-\item \code{LegendTitle}: Cadena de caracteres indicado un título para la leyenda
+\item \code{LegendTitle}: Cadena de caracteres indicando un título para la leyenda
 (\emph{diferentes niveles del argumento \code{categorias}}). Se utilizará tanto
 en el paquete \code{Highcharter} como en \code{Plotly}.
 \item \code{hc.Tema}: Modifica el tema con el cual se creará la serie. Los posibles
@@ -66,24 +67,25 @@ respectivamente). El tema por defecto, al no ingresar valor alguno, es
 \code{hc_theme_flat()}.
 \item \code{hc.Slider}: Si es \code{TRUE} agrega un deslizador/navegador dinámico en la
 parte inferior de la serie. Proporciona herramientas para acercar y alejar
-partes de la serie, así como para desplazarse por el conjunto de datos. El
-valor por defecto es \code{FALSE}.
+partes de la serie, así como para desplazarse por el conjunto de datos.
+El valor por defecto es \code{FALSE}.
 \item \code{hc.BoxInfo}: Si es \code{TRUE} (\emph{valor predeterminado}) la información
 concerniente a cada punto se visualiza conjuntamente en un cuadro, o de
-forma individual (\code{FALSE}) al pasar el cursor.
+forma individual (\code{FALSE}) al pasar el cursor sobre él.
 \item \code{hc.Credits}: Cadena de caracteres indicando un subtítulo o etiqueta de
 créditos debajo del título principal.
-\item \code{ply.LegendPosition}: Lista que especifica la posición y orientación de la
-leyenda. Los valores por defecto la ubican centrada verticalmente a la
+\item \code{ply.LegendPosition}: Lista que especifica la posición y orientación de
+la leyenda. Los valores por defecto la ubican centrada verticalmente a la
 derecha del plot, es decir, \code{c(x = 1, y = 0.5, orientation = "v")}.
 \item \code{ply.Interaction}: Cadena de caracteres que determina el modo de las
-interacciones de desplazamiento. Los valores permitidos son "x unified"
-(\emph{valor predeterminado}), "y unified", "closest", "x", "y" y \code{FALSE}.
+interacciones de desplazamiento. Los valores permitidos son \code{"x unified"}
+(\emph{valor predeterminado}), \code{"y unified"}, \code{"closest"}, \code{"x"}, \code{"y"} y
+\code{FALSE}.
 \item \code{ply.Credits}: Lista que especifica la posición y texto para añadir un
 subtítulo o etiqueta de créditos a la serie principal, por ejemplo,
 \code{c(x = 0.2, y = 1, text = "https://...")}.
-\item \code{dyg.LegendWidth}: Un número que indica el ancho (\emph{en píxeles}) que
-ocupará la leyenda. El valor por defecto es 250.
+\item \code{dyg.LegendWidth}: Número que indica el ancho (\emph{en píxeles}) que
+ocupará la leyenda. El valor por defecto es \code{250}.
 \item \code{dyg.Resaltar}: Si es \code{FALSE} (\emph{valor predeterminado}) no se resaltará
 la serie en que se sitúa el cursor.
 \item \code{gg.Tema}: Modifica el tema con el cual se creará la serie. Los posibles
@@ -97,9 +99,9 @@ El tema por defecto, al no ingresar valor alguno, es el construido por el
 departamento \code{theme_DNPE}.
 \item \code{gg.Legend}: Lista que especifica la posición y orientación de la leyenda.
 Los valores por defecto la ubican verticalmente a la derecha del plot.
-Algunos valores aceptados para \code{legend.position} son "none", "left", "top",
-"right", "bottom" y c(CoordX, CoordY). Y para \code{legend.direction} solo se
-acepta "vertical" u "horizontal".
+Algunos valores aceptados para \code{legend.position} son \code{"none"}, \code{"left"},
+\code{"top"}, \code{"right"}, \code{"bottom"} y \code{c(CoordX, CoordY)}. Para \code{legend.direction}
+solo se acepta \code{"vertical"} u \code{"horizontal"}.
 \item \code{gg.Linea}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_path]{geom_line()}).
 \item \code{gg.Punto}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_point]{geom_point()}).
 \item \code{gg.Texto}: Una lista cuyos valores admitidos y usados son \code{subtitle},
@@ -128,6 +130,82 @@ archivo descargado será la concatenación del plot graficado y la categoría us
 así, por ejemplo, si se graficó la serie de tiempo para la categoría "Sede" el
 nombre será \code{PlotSeries_Sede.png}.
 }
+\note{
+A continuación, se consolida en una tabla amigable el listado, uso y disposición
+de todas las opciones para el parámetro \code{estilo}, dependiendo del tipo de gráfico
+(\emph{dinámico o estático}) y la librería usada (\emph{en el caso de que sea dinámico}).\tabular{ccccl}{
+   \strong{PARÁMETRO} \tab \strong{VALOR} \tab \strong{PARÁMETRO} \tab \strong{VALOR} \tab \strong{PARÁMETRO} \cr
+   │ \tab ▓ \tab  \tab ╔ \tab gg.Tema \cr
+   │ \tab ▓ \tab  \tab ╠ \tab gg.Legend \cr
+   │ \tab \emph{TRUE} \tab  \tab ╠ \tab gg.Linea \cr
+   │ \tab ▓ \tab  \tab ╠ \tab gg.Punto \cr
+   │ \tab ▓ \tab  \tab ╚ \tab gg.Texto \cr
+   │ \tab ░ \tab » \tab \emph{highcharter} \tab hc.Tema \cr
+   \strong{estatico} \tab ░ \tab » \tab ┌ \tab hc.BoxInfo \cr
+   │ \tab ░ \tab » \tab ├ \tab hc.Slider \cr
+   │ \tab ░ \tab » \tab └ \tab hc.Credits \cr
+   │ \tab \emph{FALSE} \tab \strong{libreria} \tab \emph{plotly} \tab ply.LegendPosition \cr
+   │ \tab ░ \tab » \tab ┌ \tab ply.Credits \cr
+   │ \tab ░ \tab » \tab └ \tab ply.Interaction \cr
+   │ \tab ░ \tab » \tab \emph{dygraphs} \tab dyg.LegendWidth \cr
+   │ \tab ░ \tab » \tab └ \tab dyg.Resaltar \cr
+}
+}
+\section{Lista de argumentos de estilo}{
+
+
+Sabemos que puede ser abrumador el número de argumentos dentro del parámetro
+\code{estilo}, pero es necesario si queremos ofrecer al usuario la máxima
+personalización dentro de cada función usando cualquier librería. Por tal
+razón, a continuación, se detalla el listado completo de argumentos, usados
+al especificar la librería y en qué función están presentes
+(\emph{marcado con una × si lo posee}).\tabular{clcccccccc}{
+   \strong{Librería} \tab \strong{estilo$} \tab \code{\link[=Plot.Series]{Plot.Series()}} \tab \code{\link[=Plot.Barras]{Plot.Barras()}} \tab \code{\link[=Plot.Apiladas]{Plot.Apiladas()}} \tab \code{\link[=Plot.Boxplot]{Plot.Boxplot()}} \tab \code{\link[=Plot.Radar]{Plot.Radar()}} \tab \code{\link[=Plot.Treemap]{Plot.Treemap()}} \tab \code{\link[=Plot.Torta]{Plot.Torta()}} \tab \code{\link[=Plot.Drilldown]{Plot.Drilldown()}} \cr
+   ┌ \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{ggplot2} \tab \emph{gg.plty} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   └ \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ╔ \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ║ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   \strong{highcharter} \tab \emph{hc.BoxInfo} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ║ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ┌ \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
+   │ \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
+   │ \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
+   \strong{plotly} \tab \emph{ply.Interaction} \tab × \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
+   └ \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{dygraphs} \tab \emph{dyg.LegendWidth} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ┌ \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{echarts4r} \tab \emph{e.Forma} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   └ \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+}
+}
+
 \examples{
 misColores <- c(
   "#29ABE2", # AZUL CLARO  | Amazonia
@@ -152,6 +230,7 @@ Plot.Series(
   libreria     = "highcharter",
   estilo       = list(LegendTitle = "SEDE:", hc.Tema = 10, hc.Slider = TRUE, hc.Credits = Msj)
 )
+# ---------------------------------------------------------------------------
 Plot.Series(
   datos     = ejConsolidadoGrad,
   categoria = "SEDE_NOMBRE_ADM",
@@ -166,6 +245,7 @@ Plot.Series(
     ply.Credits = list(x = 0.5, y = 0.1, text = Msj)
   )
 )
+# ---------------------------------------------------------------------------
 Plot.Series(
   datos     = ejConsolidadoGrad,
   categoria = "SEDE_NOMBRE_ADM",
@@ -176,11 +256,13 @@ Plot.Series(
   estilo    = list(dyg.LegendWidth = 650, dyg.Resaltar = TRUE)
 )
 
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
 # Agrupando para eliminar el semestre
-if (require("dplyr")) {
-  df <- ejConsolidadoGrad |> group_by(Variable, YEAR, Clase) |>
-    summarise(Total = sum(Total, na.rm = TRUE))
-}
+# library("dplyr")
+df <- ejConsolidadoGrad |> group_by(Variable, YEAR, Clase) |>
+  summarise(Total = sum(Total, na.rm = TRUE), .groups = "drop")
+
 Msj <- "Comportamiento anual, considerando ambos semestres (exceptuando el caso del 2021)."
 Plot.Series(
   datos     = df,
@@ -193,32 +275,41 @@ Plot.Series(
   libreria  = "highcharter",
   estilo    = list(hc.Tema = 1, hc.Credits = Msj)
 )
-
+\dontshow{\}) # examplesIf}
+\dontshow{if (all(require("ggplot2"), require("magick"), require("cowplot"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
-if (require("rsvg") && require("magick") && require("grid")) {
-  LogoUN <- magick::image_read_svg("https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg")
-  Plot.Series(
-    datos        = ejConsolidadoGrad,
-    categoria    = "SEDE_NOMBRE_ADM",
-    freqRelativa = FALSE,
-    invertir     = FALSE,
-    ylim         = c(100, 2000),
-    colores      = misColores,
-    titulo       = Txt,
-    labelY       = "N\u00famero de Graduados",
-    estatico     = TRUE,
-    estilo       = list(
-      LegendTitle = "SEDE:", gg.Tema = 8,
-      gg.Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
-      gg.Linea  = list(linetype = 2, size = 0.1, arrow = grid::arrow()),
-      gg.Punto  = list(alpha = 0.2, shape = 21, size = 3, stroke = 5),
-      gg.Texto  = list(subtitle = Msj,
-                       caption  = "Informaci\u00f3n Disponible desde 2009-1",
-                       tag      = "Figura 1. Graduados"
-      )
+txtA <- "EVOLUCI\u00d3N DEL N.\u00ba DE GRADUADOS \u00d7 SEDE"
+txtB <- "\nComportamiento anual (exceptuando el caso del 2021)."
+fig1 <- Plot.Series(
+  datos        = ejConsolidadoGrad,
+  categoria    = "SEDE_NOMBRE_ADM",
+  freqRelativa = FALSE,
+  invertir     = FALSE,
+  ylim         = c(100, 2000),
+  colores      = misColores,
+  titulo       = txtA,
+  labelY       = "N\u00famero de Graduados",
+  estatico     = TRUE,
+  estilo       = list(
+    LegendTitle = "SEDE:", gg.Tema = 8,
+    gg.Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
+    gg.Linea  = list(linetype = 2, size = 0.1, arrow = grid::arrow()),
+    gg.Punto  = list(alpha = 0.2, shape = 21, size = 2, stroke = 5),
+    gg.Texto  = list(
+      subtitle = txtB, caption = "\t\t Informaci\u00f3n Disponible desde 2009-1", tag = "\u00ae"
     )
   )
-  grid::grid.raster(LogoUN, x = 0.02, y = 0.02, just = c('left', 'bottom'), width = unit(1.2, "inches"))
-}
-
+)
+# A continuación, se detalla el caso en el que quiera adicionar un logo a 'fig1'
+# library("ggplot2"); library("magick"); require("cowplot")
+LogoUN <- magick::image_read_svg("https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg")
+ggdraw() +
+  draw_image(LogoUN, scale = 0.15, x = 0.15, hjust = 1, halign = 1, valign = 0) +
+  draw_plot(fig1 + theme(legend.background = element_blank(),
+                         panel.background = element_blank(),
+                         plot.background = element_blank()
+                         )
+  )
+\dontshow{\}) # examplesIf}
 }

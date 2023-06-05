@@ -4,25 +4,24 @@
 #' de un gráfico de radar (*también conocido como gráfico de araña*) dinámico con
 #' el objetivo de observar datos multivariados de forma bidimensional. Dicho radar
 #' chart o spider plot se puede representar usando dos diferentes librerías que
-#' son `Plotly` y ` ECharts`, las cuales usan internamente `JavaScript`.
+#' son `Plotly` y `ECharts`, las cuales usan internamente `JavaScript`.
 #'
+#' @inheritParams Plot.Series
+#' @inheritParams Plot.Barras
 #' @param datos Un data frame, se espera en formato de microdatos no un agregado.
-#' @param categoria Igual uso que en [Plot.Series()]
-#' @param variables Una lista (*ya sea creada con la sintaxis `base` o `tidy`*)
+#' @param variables Lista (*ya sea creada con la sintaxis `base` o `tidy`*)
 #'   con las variables numéricas (*mínimo tres para que se pueda realizar el gráfico*)
 #'   dentro del data frame ingresado en `datos`.
 #' @param estadistico Cadena de caracteres que indica el estadístico a graficar.
-#'   Los valores permitidos son "Promedio" (*valor predeterminado*), "Mediana",
-#'   "Varianza", "SD", "CV", "Min" y "Max".
+#'   Los valores permitidos son `"Promedio"` (*valor predeterminado*), `"Mediana"`,
+#'   `"Varianza"`, `"SD"`, `"CV"`, `"Min"` y `"Max`".
 #' @param colores Cadena de caracteres indicando los colores con los cuales se
-#'   deben colorear cada una de las trazas correspondiente a cada nivel del argumento
-#'   `categoria`. Si no se introduce algún vector se usará la paleta `rainbow`
-#'   por defecto.
+#'   deben colorear cada una de las trazas correspondiente a cada nivel del
+#'   argumento `categoria`. Si no se introduce algún vector se usará la paleta
+#'   `rainbow` por defecto.
 #' @param rango Vector numérico de longitud dos que indica el valor mínimo y máximo,
 #'   respectivamente. Si no conoce el dominio del estadístico seleccionado omita
 #'   éste parámetro, pues internamente se usará `c(0, NaN)` como rango.
-#' @param ordinal Igual uso que en [Plot.Barras()]
-#' @param titulo Igual uso que en [Plot.Series()]
 #' @param libreria Cadena de caracteres que indica el paquete con el cual se
 #'   realizará el radar. Los valores permitidos son `"plotly"` (*valor predeterminado*)
 #'   o `"echarts"`. Los valores se emparejarán parcialmente.
@@ -40,10 +39,10 @@
 #'   * `ply.Opacidad`: Un número entre \eqn{[0, 1]} que indica la opacidad de los
 #'     polígonos/trazos.
 #'   * `e.Credits`: Cadena de caracteres indicando el subtítulo del gráfico principal.
-#'     Para mayor información consulte la función [e_title()][echarts4r::e_title()].
+#'     Para mayor información, consulte la función [e_title()][echarts4r::e_title()].
 #'   * `e.Forma`: Cadena de caracteres indicando el tipo de renderizado del radar,
 #'     los valores admitidos son `polygon` (\emph{valor predeterminado}) y `circle`.
-#'     Para mayor información consulte la función [e_radar_opts()][echarts4r::e_radar_opts()].
+#'     Para mayor información, consulte la función [e_radar_opts()][echarts4r::e_radar_opts()].
 #'   * `e.Tema`: Modifica el tema con el cual se creará el gráfico. Los posibles
 #'     valores son un número entero entre \eqn{[1, 14]} el cual hace referencia
 #'     a diferentes temas disponibles en dicha librería (`helianthus`, `azul`,
@@ -52,7 +51,7 @@
 #'     El tema por defecto se logra al no ingresar valor alguno. Para más información
 #'     consulte [aquí](https://echarts4r.john-coene.com/articles/themes.html).
 #'   * `e.LegType`: Cadena de caracteres indicando el tipo de leyenda, los valores
-#'     admitidos son  `plain` (\emph{valor predeterminado}) y  `scroll`
+#'     admitidos son `plain` (\emph{valor predeterminado}) y `scroll`
 #'     (\emph{útil cuando es necesario mostrar demasiados elementos}). Para mayor
 #'     información consulte la función [e_legend()][echarts4r::e_legend()].
 #'   * `e.LegLoc`: Valor numérico o cadena de caracteres indicando la distancia
@@ -72,24 +71,22 @@
 #'   * `gg.cglcol`: Color de la línea para las grillas del radar. Para más detalles
 #'     consulte la función [radarchart()][fmsb::radarchart()].
 #'
-#' @param estatico Igual uso que en [Plot.Series()]
-#'
-#' @return
+#' @returns
 #' Retorna el radar (*objeto widget de HTML*) creado. La clase del objeto retornado
-#' será un "htmlwidget" y dependiendo de la librería usada pertenecerá adicionalmente
-#' a la clase "plotly" o "echarts4r".
+#' será un "htmlwidget" y dependiendo de la librería usada pertenecerá
+#' adicionalmente a la clase "plotly" o "echarts4r".
 #'
-#' @examples
-#' if (require("dplyr")) {
-#'   Plot.Radar(
-#'     datos     = ejSaberPro2020,
-#'     categoria = TIPO_COL,
-#'     variables = vars(PUNT_LECT_CRIT, PUNT_RAZO_CUANT, PUNT_INGLES),
-#'     colores   = c("#2ACE82", "#FE2667", "#32E7C8", "#FF8D00"),
-#'     rango     = c(0, NaN),
-#'     estilo    = list(ply.Relleno = "tonext")
-#'   )
-#' }
+#' @examplesIf require("dplyr")
+#' # library(dplyr)
+#' Plot.Radar(
+#'   datos     = ejSaberPro2020,
+#'   categoria = TIPO_COL,
+#'   variables = vars(PUNT_LECT_CRIT, PUNT_RAZO_CUANT, PUNT_INGLES),
+#'   colores   = c("#2ACE82", "#FE2667", "#32E7C8", "#FF8D00"),
+#'   rango     = c(0, NaN),
+#'   estilo    = list(ply.Relleno = "tonext")
+#' )
+#' # ---------------------------------------------------------------------------
 #' Plot.Radar(
 #'   datos     = ejSaberPro2020,
 #'   categoria = SEDE_NOMBRE_ADM,
@@ -99,6 +96,7 @@
 #'   ),
 #'   rango     = c(0, NaN)
 #' )
+#' # ---------------------------------------------------------------------------
 #' Plot.Radar(
 #'   datos     = ejSaberPro2020,
 #'   categoria = SEDE_NOMBRE_ADM,
@@ -109,7 +107,7 @@
 #'   rango     = c(0, NaN),
 #'   libreria  = "echarts"
 #' )
-#'
+#' # ---------------------------------------------------------------------------
 #' misColores <- c(
 #'   "#29ABE2", # AZUL CLARO  | Amazonia
 #'   "#8CC63F", # VERDE       | Bogota
@@ -136,10 +134,10 @@
 #'   libreria    = "plotly",
 #'   estilo      = list(
 #'     ply.LegendTitle = "SEDE:", ply.LegendPosition = list(x = 0, y = -0.15, orientation = "h"),
-#'     ply.Relleno = "tonext", ply.Opacidad = 0.8, ply.Credits = list(x = 0.7, y = -0.1, text = Msj)
+#'     ply.Relleno = "tonext", ply.Opacidad = 0.8, ply.Credits = list(x = 0.8, y = -0.1, text = Msj)
 #'   )
 #' )
-#'
+#' # ---------------------------------------------------------------------------
 #' Plot.Radar(
 #'   datos       = ejSaberPro2020,
 #'   categoria   = SEDE_NOMBRE_ADM,
@@ -157,6 +155,7 @@
 #'     e.LegType = "scroll", e.LegLoc = 0
 #'   )
 #' )
+#' # ---------------------------------------------------------------------------
 #' # Ejemplo usando el caso estático (fmsb)
 #' Plot.Radar(
 #'   datos     = ejSaberPro2020,
@@ -173,6 +172,8 @@
 #'     gg.Range = TRUE, gg.plty = 5, gg.plwd = 4, gg.cglwd = 2, gg.cglcol = "#856AA1"
 #'   )
 #' )
+#'
+#' @inheritSection Plot.Series Lista de argumentos de estilo
 #'
 #' @export
 #'
@@ -195,14 +196,15 @@ Plot.Radar <- function(
   if (missingArg(datos) || missingArg(categoria) || missingArg(variables)) {
     stop("\u00a1Por favor introduzca un conjunto de datos, una categor\u00eda y una lista de variables num\u00e9ricas con las cuales se graficar\u00e1!", call. = FALSE)
   }
-  if (!(is.list(variables) && length(variables) >= 3)) {
+  if (!all(is.list(variables), length(variables) >= 3)) {
     stop("\u00a1El par\u00e1metro 'variables' debe ser una lista y adem\u00e1s contener tres o m\u00e1s variables cuantitativas!", call. = FALSE)
   }
   if (missingArg(estadistico)) {
     warning("\u00a1Se usar\u00e1 como estad\u00edstico la media muestral ('mean') por defecto!", call. = FALSE)
   }
   Statistic <- match.arg(estadistico)
-  Function  <- switch(Statistic,
+  Function  <- switch(
+    Statistic,
     Promedio = mean,
     Mediana  = median,
     Varianza = var,
@@ -215,12 +217,12 @@ Plot.Radar <- function(
   if (missingArg(rango)) {
     rango <- c(0, NaN); MaxMin <- FALSE
   } else {
-    if (!(is.numeric(rango) && length(rango) == 2)) {
+    if (!all(is.numeric(rango), length(rango) == 2)) {
       stop("\u00a1El par\u00e1metro 'rango' debe ser un vector num\u00e9rico de longitud 2!", call. = FALSE)
     }
     MaxMin <- ifelse(any(is.nan(rango)), FALSE, TRUE)
   }
-  if (!(is.logical(ordinal) && is.logical(estatico))) {
+  if (!all(is.logical(ordinal), is.logical(estatico))) {
     stop("\u00a1Los argumentos 'ordinal' y 'estatico' deben ser un booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!(is.character(titulo))) {
@@ -240,11 +242,11 @@ Plot.Radar <- function(
   LegendTitle <- ifelse(is.null(estilo$ply.LegendTitle), "", estilo$ply.LegendTitle)
 
   # CREACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA
-  Groups <- datos |> select({{categoria}}, !!!variables) |>
+  Groups  <- datos |> select({{categoria}}, !!!variables) |>
     group_by({{ categoria }}, .drop = FALSE)
-  N <- Groups |> summarise("n" = n())
+  N       <- Groups |> summarise("n" = n())
   df_Full <- Groups |> summarise_all(Function, na.rm = TRUE) |> left_join(N)
-  df <- df_Full |> select(!c({{ categoria }}, n))
+  df      <- df_Full |> select(!c({{ categoria }}, n))
   categorias <- colnames(df)
 
   if (ordinal) {
@@ -365,6 +367,7 @@ Plot.Radar <- function(
       if (Flag) { PlotRadar <- PlotRadar |> e_theme(Theme) }
       if (!missingArg(colores)) { PlotRadar <- PlotRadar |> e_color(colores) }
     }
+    return(PlotRadar)
   } else {
 
     plty <- ifelse(
@@ -386,7 +389,7 @@ Plot.Radar <- function(
     dfFinal        <- as.data.frame(t(dfSpecial))
     namesLegend    <- rownames(dfFinal)
 
-    if (!(missingArg(estilo) || is.null(estilo$gg.Range)) && estilo$gg.Range) {
+    if (!any(missingArg(estilo), is.null(estilo$gg.Range)) && estilo$gg.Range) {
       MaxMin    <- TRUE
       MaxGlobal <- round(max(dfFinal), 2)
       MinGlobal <- round(min(dfFinal), 2)
@@ -400,6 +403,7 @@ Plot.Radar <- function(
     }
 
     {
+      parDefault <- par(no.readonly = TRUE)
       op <- par(mar = c(1, 1, 2.2, 1))
       radarchart(
         dfFinal, maxmin = MaxMin, title = titulo, pcol = colores,
@@ -409,12 +413,10 @@ Plot.Radar <- function(
       );
       legend(
         x = "bottom", horiz = TRUE, legend = namesLegend, bty = "n", pch = 20,
-        col = colores, cex = 1.2, text.col = "black", pt.cex = 3
+        col = colores, cex = 0.9, text.col = "black", pt.cex = 3
       )
-      par(op)
+      par(parDefault)
     }
-    PlotRadar <- NULL
+    return(invisible(NULL))
   }
-
-  return(PlotRadar)
 }

@@ -6,31 +6,86 @@
 #' representar usando tres diferentes librerías que son `Highcharter`, `Plotly`
 #' y `Dygraph`, las cuales usan internamente `JavaScript`.
 #'
+#' @section Lista de argumentos de estilo:
+#'
+#' Sabemos que puede ser abrumador el número de argumentos dentro del parámetro
+#' `estilo`, pero es necesario si queremos ofrecer al usuario la máxima
+#' personalización dentro de cada función usando cualquier librería. Por tal
+#' razón, a continuación, se detalla el listado completo de argumentos, usados
+#' al especificar la librería y en qué función están presentes
+#' (*marcado con una × si lo posee*).
+#'
+#' |   **Librería**  | **estilo$**                | [Plot.Series()] | [Plot.Barras()] | [Plot.Apiladas()] | [Plot.Boxplot()] | [Plot.Radar()] | [Plot.Treemap()] | [Plot.Torta()] | [Plot.Drilldown()] |
+#' |:---------------:|----------------------------|:---------------:|:---------------:|:-----------------:|:----------------:|:--------------:|:----------------:|:--------------:|:------------------:|
+#' |        ┌        | _gg.Tema_                  |        ×        |        ×        |         ×         |         ×        |                |                  |                |                    |
+#' |        │        | _gg.Texto_                 |        ×        |        ×        |         ×         |         ×        |                |                  |                |                    |
+#' |        │        | _gg.Legend_                |        ×        |                 |         ×         |         ×        |                |                  |                |                    |
+#' |        │        | _gg.Linea_                 |        ×        |                 |                   |                  |                |                  |                |                    |
+#' |        │        | _gg.Punto_                 |        ×        |                 |                   |                  |                |                  |                |                    |
+#' |        │        | _gg.Bar_                   |                 |        ×        |         ×         |                  |                |                  |                |                    |
+#' |        │        | _gg.VarWidth_              |                 |                 |                   |         ×        |                |                  |                |                    |
+#' |        │        | _gg.OutShape_              |                 |                 |                   |         ×        |                |                  |                |                    |
+#' |        │        | _gg.JitWidth_              |                 |                 |                   |         ×        |                |                  |                |                    |
+#' |        │        | _gg.JitSize_               |                 |                 |                   |         ×        |                |                  |                |                    |
+#' |        │        | _gg.Range_                 |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |   **ggplot2**   | _gg.plty_                  |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        │        | _gg.plwd_                  |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        │        | _gg.cglwd_                 |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        │        | _gg.cglcol_                |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        │        | _gg.fontsize.title_        |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        │        | _gg.fontsize.labels_       |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        │        | _gg.fontcolor.labels_      |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        │        | _gg.border.lwds_           |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        │        | _gg.border.col_            |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        │        | _gg.lowerbound.cex.labels_ |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        │        | _gg.force.print.labels_    |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        └        | _gg.overlap.labels_        |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        ╔        | _hc.Tema_                  |        ×        |        ×        |         ×         |         ×        |                |         ×        |        ×       |          ×         |
+#' |        ║        | _hc.Credits_               |        ×        |        ×        |         ×         |         ×        |                |         ×        |        ×       |          ×         |
+#' | **highcharter** | _hc.BoxInfo_               |        ×        |                 |                   |                  |                |                  |                |                    |
+#' |        ║        | _hc.Slider_                |        ×        |                 |                   |                  |                |                  |                |                    |
+#' |        ╚        | _hc.borderRadius_          |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        ┌        | _ply.Credits_              |        ×        |        ×        |         ×         |         ×        |        ×       |         ×        |        ×       |                    |
+#' |        │        | _ply.Legend_               |                 |        ×        |                   |                  |                |                  |        ×       |                    |
+#' |        │        | _ply.LegendPosition_       |        ×        |                 |         ×         |         ×        |        ×       |                  |                |                    |
+#' |    **plotly**   | _ply.Interaction_          |        ×        |                 |                   |         ×        |                |                  |                |                    |
+#' |        │        | _ply.Relleno_              |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        │        | _ply.Opacidad_             |                 |                 |                   |                  |        ×       |         ×        |                |                    |
+#' |        └        | _ply.LegendTitle_          |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |   **dygraphs**  | _dyg.LegendWidth_          |        ×        |                 |                   |                  |                |                  |                |                    |
+#' |        ╚        | _dyg.Resaltar_             |        ×        |                 |                   |                  |                |                  |                |                    |
+#' |        ┌        | _e.Tema_                   |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        │        | _e.Credits_                |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |  **echarts4r**  | _e.Forma_                  |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        │        | _e.LegType_                |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        └        | _e.LegLoc_                 |                 |                 |                   |                  |        ×       |                  |                |                    |
+#'
 #' @param datos Un data frame, no un objeto clase serie de tiempo o vector numérico.
 #' @param categoria Una variable categórica dentro del data frame ingresado en `datos`.
 #' @param colores Cadena de caracteres indicando los colores con los cuales se
-#'   deben colorear cada una de las series correspondiente a cada nivel del argumento
-#'   `categoria`. Si no se introduce algún vector se usará la paleta `rainbow` por
-#'   defecto.
+#'   deben colorear cada una de las series correspondiente a cada nivel del
+#'   argumento `categoria`. Si no se introduce algún vector se usará la paleta
+#'   `rainbow` por defecto.
 #' @param freqRelativa Si es `FALSE` (*valor predeterminado*) la serie graficada
 #'   representará las frecuencias absolutas (*conteo*) más no las relativas (*porcentaje*).
 #' @param invertir Si es `FALSE` (*valor predeterminado*) no se invertirá el eje
-#'   `Y`. Establézcalo en `TRUE` si desea que en el eje `Y` el número más alto es
-#'   el más cercano al origen.
+#'   `Y`. Establézcalo en `TRUE` si desea que en el eje `Y` el número más alto
+#'   sea el más cercano al origen.
 #' @param ylim Vector numérico que especifica el límite inferior y superior,
-#'   respectivamente, del eje `Y`. Si no se introduce algún valor se mostrará todo
-#'   el rango disponible para dicho eje.
+#'   respectivamente, del eje `Y`. Si no se introduce algún valor se mostrará
+#'   todo el rango disponible para dicho eje.
 #' @param titulo Cadena de caracteres indicando el título principal del plot.
-#' @param labelX Cadena de caracteres indicando la etiqueta del eje `X`. Por defecto
-#'   se emplea el rótulo "Periodo".
+#' @param labelX Cadena de caracteres indicando la etiqueta del eje `X`. Por
+#'   defecto se emplea el rótulo "Periodo".
 #' @param labelY Cadena de caracteres indicando la etiqueta del eje `Y`.
-#' @param libreria Cadena de caracteres que indica el paquete con el cual se realizará
-#'   la serie. Los valores permitidos son `"highcharter"` (*valor predeterminado*),
-#'   `"plotly"` o `"dygraphs"`. Los valores se emparejarán parcialmente.
+#' @param libreria Cadena de caracteres que indica el paquete con el cual se
+#'   realizará la serie. Los valores permitidos son `"highcharter"`
+#'   (*valor predeterminado*), `"plotly"` o `"dygraphs"`. Los valores se emparejarán
+#'   parcialmente.
 #' @param estilo Lista compuesta por varios parámetros, los cuales van a ser usados
 #'   de acuerdo con la librería especificada para graficar la serie y cuyo objetivo
 #'   es personalizar pequeños detalles de ésta.
-#'   * `LegendTitle`: Cadena de caracteres indicado un título para la leyenda
+#'   * `LegendTitle`: Cadena de caracteres indicando un título para la leyenda
 #'     (\emph{diferentes niveles del argumento `categorias`}). Se utilizará tanto
 #'     en el paquete `Highcharter` como en `Plotly`.
 #'   * `hc.Tema`: Modifica el tema con el cual se creará la serie. Los posibles
@@ -41,24 +96,25 @@
 #'     `hc_theme_flat()`.
 #'   * `hc.Slider`: Si es `TRUE` agrega un deslizador/navegador dinámico en la
 #'     parte inferior de la serie. Proporciona herramientas para acercar y alejar
-#'     partes de la serie, así como para desplazarse por el conjunto de datos. El
-#'     valor por defecto es `FALSE`.
+#'     partes de la serie, así como para desplazarse por el conjunto de datos.
+#'     El valor por defecto es `FALSE`.
 #'   * `hc.BoxInfo`: Si es `TRUE` (\emph{valor predeterminado}) la información
 #'     concerniente a cada punto se visualiza conjuntamente en un cuadro, o de
-#'     forma individual (`FALSE`) al pasar el cursor.
+#'     forma individual (`FALSE`) al pasar el cursor sobre él.
 #'   * `hc.Credits`: Cadena de caracteres indicando un subtítulo o etiqueta de
 #'     créditos debajo del título principal.
-#'   * `ply.LegendPosition`: Lista que especifica la posición y orientación de la
-#'     leyenda. Los valores por defecto la ubican centrada verticalmente a la
+#'   * `ply.LegendPosition`: Lista que especifica la posición y orientación de
+#'     la leyenda. Los valores por defecto la ubican centrada verticalmente a la
 #'     derecha del plot, es decir, `c(x = 1, y = 0.5, orientation = "v")`.
 #'   * `ply.Interaction`: Cadena de caracteres que determina el modo de las
-#'     interacciones de desplazamiento. Los valores permitidos son "x unified"
-#'     (\emph{valor predeterminado}), "y unified", "closest", "x", "y" y `FALSE`.
+#'     interacciones de desplazamiento. Los valores permitidos son `"x unified"`
+#'     (\emph{valor predeterminado}), `"y unified"`, `"closest"`, `"x"`, `"y"` y
+#'     `FALSE`.
 #'   * `ply.Credits`: Lista que especifica la posición y texto para añadir un
 #'     subtítulo o etiqueta de créditos a la serie principal, por ejemplo,
 #'     `c(x = 0.2, y = 1, text = "https://...")`.
-#'   * `dyg.LegendWidth`: Un número que indica el ancho (\emph{en píxeles}) que
-#'     ocupará la leyenda. El valor por defecto es 250.
+#'   * `dyg.LegendWidth`: Número que indica el ancho (\emph{en píxeles}) que
+#'     ocupará la leyenda. El valor por defecto es `250`.
 #'   * `dyg.Resaltar`: Si es `FALSE` (\emph{valor predeterminado}) no se resaltará
 #'     la serie en que se sitúa el cursor.
 #'   * `gg.Tema`: Modifica el tema con el cual se creará la serie. Los posibles
@@ -72,9 +128,9 @@
 #'     departamento `theme_DNPE`.
 #'   * `gg.Legend`: Lista que especifica la posición y orientación de la leyenda.
 #'     Los valores por defecto la ubican verticalmente a la derecha del plot.
-#'     Algunos valores aceptados para `legend.position` son "none", "left", "top",
-#'     "right", "bottom" y c(CoordX, CoordY). Y para `legend.direction` solo se
-#'     acepta "vertical" u "horizontal".
+#'     Algunos valores aceptados para `legend.position` son `"none"`, `"left"`,
+#'     `"top"`, `"right"`, `"bottom"` y `c(CoordX, CoordY)`. Para `legend.direction`
+#'     solo se acepta `"vertical"` u `"horizontal"`.
 #'   * `gg.Linea`: Una lista de parámetros admitidos por la función [geom_line()][ggplot2::geom_line()]).
 #'   * `gg.Punto`: Una lista de parámetros admitidos por la función [geom_point()][ggplot2::geom_point()]).
 #'   * `gg.Texto`: Una lista cuyos valores admitidos y usados son `subtitle`,
@@ -89,7 +145,29 @@
 #' así, por ejemplo, si se graficó la serie de tiempo para la categoría "Sede" el
 #' nombre será `PlotSeries_Sede.png`.
 #'
-#' @return
+#' @note
+#' A continuación, se consolida en una tabla amigable el listado, uso y disposición
+#' de todas las opciones para el parámetro `estilo`, dependiendo del tipo de gráfico
+#' (*dinámico o estático*) y la librería usada (*en el caso de que sea dinámico*).
+#'
+#' | **PARÁMETRO** | **VALOR** | **PARÁMETRO** |   **VALOR**   | **PARÁMETRO**      |
+#' |:-------------:|:---------:|:-------------:|:-------------:|--------------------|
+#' |       │       |     ▓     |               |       ╔       | gg.Tema            |
+#' |       │       |     ▓     |               |       ╠       | gg.Legend          |
+#' |       │       |   _TRUE_  |               |       ╠       | gg.Linea           |
+#' |       │       |     ▓     |               |       ╠       | gg.Punto           |
+#' |       │       |     ▓     |               |       ╚       | gg.Texto           |
+#' |       │       |     ░     |       »       | _highcharter_ | hc.Tema            |
+#' |  **estatico** |     ░     |       »       |       ┌       | hc.BoxInfo         |
+#' |       │       |     ░     |       »       |       ├       | hc.Slider          |
+#' |       │       |     ░     |       »       |       └       | hc.Credits         |
+#' |       │       |  _FALSE_  |  **libreria** |    _plotly_   | ply.LegendPosition |
+#' |       │       |     ░     |       »       |       ┌       | ply.Credits        |
+#' |       │       |     ░     |       »       |       └       | ply.Interaction    |
+#' |       │       |     ░     |       »       |   _dygraphs_  | dyg.LegendWidth    |
+#' |       │       |     ░     |       »       |       └       | dyg.Resaltar       |
+#'
+#' @returns
 #' Retorna la serie (*objeto widget de HTML*) creada. La clase del objeto retornado
 #' será un "htmlwidget" y dependiendo de la librería usada pertenecerá adicionalmente
 #' a la clase "highchart", "plotly" o "dygraphs".
@@ -118,6 +196,7 @@
 #'   libreria     = "highcharter",
 #'   estilo       = list(LegendTitle = "SEDE:", hc.Tema = 10, hc.Slider = TRUE, hc.Credits = Msj)
 #' )
+#' # ---------------------------------------------------------------------------
 #' Plot.Series(
 #'   datos     = ejConsolidadoGrad,
 #'   categoria = "SEDE_NOMBRE_ADM",
@@ -132,6 +211,7 @@
 #'     ply.Credits = list(x = 0.5, y = 0.1, text = Msj)
 #'   )
 #' )
+#' # ---------------------------------------------------------------------------
 #' Plot.Series(
 #'   datos     = ejConsolidadoGrad,
 #'   categoria = "SEDE_NOMBRE_ADM",
@@ -142,11 +222,13 @@
 #'   estilo    = list(dyg.LegendWidth = 650, dyg.Resaltar = TRUE)
 #' )
 #'
+#' @examplesIf require("dplyr")
+#' # ---------------------------------------------------------------------------
 #' # Agrupando para eliminar el semestre
-#' if (require("dplyr")) {
-#'   df <- ejConsolidadoGrad |> group_by(Variable, YEAR, Clase) |>
-#'     summarise(Total = sum(Total, na.rm = TRUE))
-#' }
+#' # library("dplyr")
+#' df <- ejConsolidadoGrad |> group_by(Variable, YEAR, Clase) |>
+#'   summarise(Total = sum(Total, na.rm = TRUE), .groups = "drop")
+#'
 #' Msj <- "Comportamiento anual, considerando ambos semestres (exceptuando el caso del 2021)."
 #' Plot.Series(
 #'   datos     = df,
@@ -160,32 +242,41 @@
 #'   estilo    = list(hc.Tema = 1, hc.Credits = Msj)
 #' )
 #'
+#' @examplesIf all(require("ggplot2"), require("magick"), require("cowplot"))
+#' # ---------------------------------------------------------------------------
 #' # Ejemplo usando el caso estático (ggplot2)
-#' if (require("rsvg") && require("magick") && require("grid")) {
-#'   LogoUN <- magick::image_read_svg("https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg")
-#'   Plot.Series(
-#'     datos        = ejConsolidadoGrad,
-#'     categoria    = "SEDE_NOMBRE_ADM",
-#'     freqRelativa = FALSE,
-#'     invertir     = FALSE,
-#'     ylim         = c(100, 2000),
-#'     colores      = misColores,
-#'     titulo       = Txt,
-#'     labelY       = "N\u00famero de Graduados",
-#'     estatico     = TRUE,
-#'     estilo       = list(
-#'       LegendTitle = "SEDE:", gg.Tema = 8,
-#'       gg.Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
-#'       gg.Linea  = list(linetype = 2, size = 0.1, arrow = grid::arrow()),
-#'       gg.Punto  = list(alpha = 0.2, shape = 21, size = 3, stroke = 5),
-#'       gg.Texto  = list(subtitle = Msj,
-#'                        caption  = "Informaci\u00f3n Disponible desde 2009-1",
-#'                        tag      = "Figura 1. Graduados"
-#'       )
+#' txtA <- "EVOLUCI\u00d3N DEL N.\u00ba DE GRADUADOS \u00d7 SEDE"
+#' txtB <- "\nComportamiento anual (exceptuando el caso del 2021)."
+#' fig1 <- Plot.Series(
+#'   datos        = ejConsolidadoGrad,
+#'   categoria    = "SEDE_NOMBRE_ADM",
+#'   freqRelativa = FALSE,
+#'   invertir     = FALSE,
+#'   ylim         = c(100, 2000),
+#'   colores      = misColores,
+#'   titulo       = txtA,
+#'   labelY       = "N\u00famero de Graduados",
+#'   estatico     = TRUE,
+#'   estilo       = list(
+#'     LegendTitle = "SEDE:", gg.Tema = 8,
+#'     gg.Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
+#'     gg.Linea  = list(linetype = 2, size = 0.1, arrow = grid::arrow()),
+#'     gg.Punto  = list(alpha = 0.2, shape = 21, size = 2, stroke = 5),
+#'     gg.Texto  = list(
+  #'       subtitle = txtB, caption = "\t\t Informaci\u00f3n Disponible desde 2009-1", tag = "\u00ae"
 #'     )
 #'   )
-#'   grid::grid.raster(LogoUN, x = 0.02, y = 0.02, just = c('left', 'bottom'), width = unit(1.2, "inches"))
-#' }
+#' )
+#' # A continuación, se detalla el caso en el que quiera adicionar un logo a 'fig1'
+#' # library("ggplot2"); library("magick"); require("cowplot")
+#' LogoUN <- magick::image_read_svg("https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg")
+#' ggdraw() +
+#'   draw_image(LogoUN, scale = 0.15, x = 0.15, hjust = 1, halign = 1, valign = 0) +
+#'   draw_plot(fig1 + theme(legend.background = element_blank(),
+#'                          panel.background = element_blank(),
+#'                          plot.background = element_blank()
+#'                          )
+#'   )
 #'
 #' @export
 #'
@@ -206,13 +297,14 @@
 Plot.Series <- function(
     datos, categoria, freqRelativa = FALSE, invertir = FALSE, ylim, colores,
     titulo = "", labelX = "Periodo", labelY = "",
-    libreria = c("highcharter", "plotly", "dygraphs"), estilo = NULL, estatico = FALSE) {
+    libreria = c("highcharter", "plotly", "dygraphs"), estilo = NULL,
+    estatico = FALSE) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (missingArg(datos) || missingArg(categoria)) {
     stop("\u00a1Por favor introduzca un conjunto de datos y una categor\u00eda dentro de la columna 'Variable'!", call. = FALSE)
   }
-  # categoria <- toupper(categoria)
+  categoria <- toupper(categoria)
   if (!(categoria %in% datos$Variable)) {
     stop("\u00a1Por favor introduzca una categor\u00eda que se encuentre dentro de la columna 'Variable'!", call. = FALSE)
   }
@@ -327,7 +419,8 @@ Plot.Series <- function(
           lineWidth = 1, min = yLim[1], max = yLim[2],
           title = list(text = labelY, offset = 70, style = list(
             fontWeight = "bold", fontSize = "18px", color = "black"
-          )),
+            )
+          ),
           labels = list(format = sufijoY, style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
         ) |>
         # https://github.com/jbkunst/highcharter/issues/331
@@ -408,7 +501,7 @@ Plot.Series <- function(
 
       Title <- list(text = paste0("<b>", titulo, "</b>"), font = FamilyTitle, y = 0.96)
       Xaxis <- list(
-        title = labelX,
+        title          = labelX,
         zeroline       = FALSE,
         showline       = TRUE,
         showgrid       = FALSE,

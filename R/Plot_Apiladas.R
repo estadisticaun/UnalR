@@ -2,78 +2,76 @@
 #'
 #' Esta función proporciona excelentes herramientas y opciones para la visualización
 #' de un gráfico de barras apiladas con el objetivo de mostrar el tamaño relativo
-#' (*como porcentaje*) de una variable de categorías, subdivididas por colores en
+#' (*como porcentaje*) de una variable categórica, subdivididas por colores en
 #' función de un subgrupo. Dicha gráfica se va a representar usando la librería
 #' `Highcharter`, la cual usa internamente `JavaScript`.
 #'
+#' @inheritParams Plot.Torta
+#' @inheritParams Plot.Series
 #' @param datos Un data frame, no un vector numérico.
-#' @param categoria Igual uso que en [Plot.Series()]
-#' @param anos Igual uso que en [Plot.Torta()]
-#' @param periodo Igual uso que en [Plot.Torta()]
-#' @param colores Igual uso que en [Plot.Series()]
-#' @param titulo Igual uso que en [Plot.Series()]
-#' @param addPeriodo Igual uso que en [Plot.Torta()]
-#' @param libreria Igual uso que en [Plot.Torta()]
-#' @param estilo Lista compuesta por varios parámetros, los cuales van a ser usados
-#'   para graficar las barras apiladas y cuyo objetivo es personalizar pequeños
-#'   detalles de éste.
+#' @param estilo Lista compuesta por varios parámetros, los cuales van a ser
+#'   usados para graficar las barras apiladas y cuyo objetivo es personalizar
+#'   pequeños detalles de éste.
 #'   * `hc.Tema`, `hc.Credits`, `gg.Tema`, `gg.Legend` y `gg.Texto`: Igual uso
 #'     que en [Plot.Series()]
-#'   * `LegendTitle`: Cadena de caracteres indicado un título para la leyenda
-#'     (\emph{diferentes niveles del argumento `varPrincipal`}).
+#'   * `LegendTitle`: Cadena de caracteres indicando un título para la leyenda
+#'     (\emph{diferentes niveles del argumento `categoria`}).
 #'   * `ply.LegendPosition`: Igual uso que en [Plot.Series()]
 #'   * `ply.Credits`: Igual uso que en [Plot.Series()]
 #'   * `gg.Bar`: Igual uso que en [Plot.Barras()]
-#' @param estatico Igual uso que en [Plot.Series()]
 #'
-#' @return
+#' @returns
 #' Retorna el diagrama de barras apiladas (*objeto widget de HTML*) creado. La
 #' clase del objeto retornado será un "htmlwidget" y adicionalmente pertenecerá
 #' a la clase "highchart".
 #'
 #' @examples
+#' Txt <- "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O"
 #' Msj <- "Se considera \u00fanicamente los valores obtenidos en el primer periodo acad\u00e9mico de cada a\u00f1o."
 #' Plot.Apiladas(
 #'   datos     = ejConsolidadoGrad,
-#'   categoria = "NIVEL",      # Pruebe también con -> unique(ejConsolidadoGrad$Variable)
-#'   anos      = c(2018:2020),
+#'   categoria = "NIVEL",      # Pruebe también con alguna de -> unique(ejConsolidadoGrad$Variable)
+#'   ano       = c(2018:2020),
 #'   periodo   = 1,
 #'   colores   = c("#FFA700", "#C10AA1", "#01CDFE", "#00FF44", "#FF0040"),
-#'   titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O",
+#'   titulo    = Txt,
 #'   estilo    = list(LegendTitle = "NIVEL ACAD\u00c9MICO:", hc.Tema = 4, hc.Credits = Msj)
 #' )
 #' Plot.Apiladas(
 #'   datos     = ejConsolidadoGrad,
 #'   categoria = "AREAC_SNIES",
-#'   anos      = c(2018:2020),
+#'   ano       = c(2018:2020),
 #'   periodo   = 1,
 #'   colores   = c("#D2D4DC", "#FF8ABF", "#945BC2", "#D11879","#FF7F7F", "#FFA568", "#9CFF86", "#89D8FF"),
 #'   titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL \u00c1REA DEL SNIES",
 #'   libreria  = "plotly",
-#'   estilo    = list(LegendTitle = "NIVEL ACAD\u00c9MICO:",
-#'                    ply.Credits = list(x = 0.45, y = 1.1, text = Msj),
-#'                    ply.LegendPosition = list(x = 0.04, y = -0.3, orientation = "h")
+#'   estilo    = list(
+#'     LegendTitle = "NIVEL ACAD\u00c9MICO:",
+#'     ply.Credits = list(x = 0.5, y = 1.5, text = gsub("l p", "l\np", Msj)),
+#'     ply.LegendPosition = list(x = 0.04, y = -0.3, orientation = "h")
 #'   )
 #' )
 #' # Ejemplo usando el caso estático (ggplot2)
 #' Plot.Apiladas(
 #'   datos     = ejConsolidadoGrad,
 #'   categoria = "NIVEL",
-#'   anos      = c(2019:2021),
+#'   ano       = c(2019:2021),
 #'   periodo   = 1,
 #'   colores   = c("#FFA700", "#C10AA1", "#01CDFE", "#00FF44", "#FF0040"),
-#'   titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O",
+#'   titulo    = gsub("L AC", "L\nAC", Txt),
 #'   estatico  = TRUE,
 #'   estilo    = list(
 #'     LegendTitle = "NIVEL ACAD\u00c9MICO:", gg.Tema = 8,
 #'     gg.Legend = list(legend.position = "right", legend.direction = "vertical"),
 #'     gg.Bar    = list(width = 0.6, color = "#000000"),
-#'     gg.Texto  = list(subtitle = Msj,
-#'                     caption  = "Informaci\u00f3n Disponible desde 2009-1",
-#'                     tag      = "Figura 1. Graduados"
+#'     gg.Texto  = list(
+#'       subtitle = "\u00bb\u00bb\u00bb", tag = "\u00ae",
+#'       caption  = "Informaci\u00f3n Disponible desde 2009-1"
 #'     )
 #'   )
 #' )
+#'
+#' @inheritSection Plot.Series Lista de argumentos de estilo
 #'
 #' @export
 #'
@@ -85,17 +83,21 @@
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
 Plot.Apiladas <- function(
-    datos, categoria, anos, periodo, colores, titulo = "", addPeriodo = TRUE,
+    datos, categoria, ano, periodo, colores, titulo = "", addPeriodo = TRUE,
     libreria = c("highcharter", "plotly"), estilo = NULL, estatico = FALSE) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (missingArg(datos)) {
     stop("\u00a1Por favor introduzca un conjunto de datos!", call. = FALSE)
   }
+  categoria <- toupper(categoria)
+  if (!(categoria %in% datos$Variable)) {
+    stop("\u00a1Por favor introduzca una categor\u00eda que se encuentra dentro de la columna 'Variable'!", call. = FALSE)
+  }
   if (!is.character(titulo)) {
     stop("\u00a1El argumento 'titulo' deben ser una cadena de texto!", call. = FALSE)
   }
-  if (!(is.logical(addPeriodo) && is.logical(estatico))) {
+  if (!all(is.logical(addPeriodo), is.logical(estatico))) {
     stop("\u00a1Los argumentos 'addPeriodo' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!estatico) {
@@ -114,15 +116,15 @@ Plot.Apiladas <- function(
   # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA
   DataFrame <- ungroup(datos) |> filter(Variable == categoria, is.na(Clase) != TRUE)
 
-  if (!(missingArg(anos) || missingArg(periodo))) {
-    TablaFinal <- DataFrame |> filter(YEAR %in% anos, SEMESTRE %in% periodo)
+  if (!(missingArg(ano) || missingArg(periodo))) {
+    TablaFinal <- DataFrame |> filter(YEAR %in% ano, SEMESTRE %in% periodo)
   } else {
-    if (missingArg(anos) && missingArg(periodo)) {
+    if (missingArg(ano) && missingArg(periodo)) {
       TablaFinal <- DataFrame
-    } else if (missingArg(anos)) {
+    } else if (missingArg(ano)) {
       TablaFinal <- DataFrame |> filter(SEMESTRE %in% periodo)
     } else {
-      TablaFinal <- DataFrame |> filter(YEAR %in% anos)
+      TablaFinal <- DataFrame |> filter(YEAR %in% ano)
     }
   }
 
@@ -277,9 +279,9 @@ Plot.Apiladas <- function(
       ParmsBar <- list(stat = "identity", width = 0.9)
     }
     if (!(missingArg(estilo) || is.null(estilo$gg.Texto))) {
-      ParmsLabs  <- estilo$gg.Texto
+      ParmsLabs <- estilo$gg.Texto
     } else {
-      ParmsLabs  <- list(subtitle = NULL, caption = NULL, tag = NULL)
+      ParmsLabs <- list(subtitle = NULL, caption = NULL, tag = NULL)
     }
 
     PlotApiladas <- ggplot(data = df, aes(x = factor(YEAR), y = Valor, fill = Clase)) +

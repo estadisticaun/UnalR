@@ -10,7 +10,17 @@ read_example(ruta = NULL)
 \item{ruta}{Nombre del archivo. Si es \code{NULL}, se enumerarán los archivos de
 ejemplo.}
 }
+\value{
+Cadena de caracteres indicando la ruta absoluta
+(\emph{no relativa a la carpeta en donde se ubique}) en donde se encuentra el archivo
+especificado dentro del paquete.
+}
 \description{
 UnalR viene con algunos archivos de ejemplo en su directorio \code{inst/extdata}.
 Esta función facilita el acceso a ellos.
+}
+\examples{
+\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+read_example("TestConsolidado1.xlsx")
+\dontshow{\}) # examplesIf}
 }

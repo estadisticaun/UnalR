@@ -40,48 +40,47 @@
 #' Para el argumento `colFilters` recuerde que la numeración inicia en 0, es decir,
 #' la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesivamente.
 #'
-#' @return
+#' @returns
 #' Retorna la tabla creada mediante `DT` la cual pertenece a la clase "datatables"
 #' y "htmlwidget".
 #'
-#' @examples
-#' Tabla.General(datos = mtcars)
+#' @examplesIf require("datasets")
+#' Tabla.General(datos = datasets::mtcars)
 #'
-#' if (require("dplyr") && require("tidyr") && require("DT")) {
-#'   df <- ejGraduados |>
-#'     filter(TIPO_NIVEL == "Pregrado") |>
-#'     group_by(YEAR, SEMESTRE, DEP_NAC, CIU_NAC, SEXO, CAT_EDAD, ESTRATO, PROGRAMA) |>
-#'     summarise(Total = n(), .groups = "drop") |>
-#'     mutate(across(where(is.character), replace_na, replace = "SIN INFO"))
+#' @examplesIf all(require("dplyr"), require("tidyr"), require("DT"))
+#' # library("dplyr"); library("tidyr"); library("DT")
+#' df <- ejGraduados |>
+#'   filter(TIPO_NIVEL == "Pregrado") |>
+#'   group_by(YEAR, SEMESTRE, DEP_NAC, CIU_NAC, SEXO, CAT_EDAD, ESTRATO, PROGRAMA) |>
+#'   summarise(Total = n(), .groups = "drop") |>
+#'   mutate(across(where(is.character), \(x) replace_na(x, replace = "SIN INFO")))
 #'
-#'   Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
-#'   Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
-#'
-#'   Tabla.General(
-#'     datos          = df,
-#'     colNames       = Nombres,
-#'     filtros        = TRUE,
-#'     colFilters     = 0:3,
-#'     encabezado     = Titulo,
-#'     leyenda        = "N\u00famero de graduados de pregrado por lugar de procedencia.",
-#'     tituloPdf      = "Este es un t\u00edtulo provisional para el PDF",
-#'     mensajePdf     = "Este es un mensaje provisional para el PDF",
-#'     ajustarNiveles = TRUE,
-#'     colorHead      = "#4CFF49",
-#'     estilo         = list(
-#'       list(
-#'         columns = "YEAR", target = "cell", fontWeight = "bold",
-#'         backgroundColor = styleEqual(unique(df$YEAR), c("#FF6400", "#01CDFE", "#FF0532"))
-#'       ),
-#'       list(
-#'         columns = "SEMESTRE", target = "cell", fontWeight = "bold",
-#'         color = styleEqual(unique(df$SEMESTRE), c("#3D3397", "#AE0421"))
-#'       ),
-#'       list(columns = "DEP_NAC", color = "#FFFFFF", backgroundColor = "#4D1B7B"),
-#'       list(columns = "CIU_NAC", color = "#FFFFFF", backgroundColor = "#F59E11")
-#'     )
+#' Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
+#' Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
+#' Tabla.General(
+#'   datos          = df,
+#'   colNames       = Nombres,
+#'   filtros        = TRUE,
+#'   colFilters     = 0:3,
+#'   encabezado     = Titulo,
+#'   leyenda        = "N\u00famero de graduados de pregrado por lugar de procedencia.",
+#'   tituloPdf      = "Este es un t\u00edtulo provisional para el PDF",
+#'   mensajePdf     = "Este es un mensaje provisional para el PDF",
+#'   ajustarNiveles = TRUE,
+#'   colorHead      = "#4CFF49",
+#'   estilo         = list(
+#'     list(
+#'       columns = "YEAR", target = "cell", fontWeight = "bold",
+#'       backgroundColor = styleEqual(unique(df$YEAR), c("#FF6400", "#01CDFE", "#FF0532"))
+#'     ),
+#'     list(
+#'       columns = "SEMESTRE", target = "cell", fontWeight = "bold",
+#'       color = styleEqual(unique(df$SEMESTRE), c("#3D3397", "#AE0421"))
+#'     ),
+#'     list(columns = "DEP_NAC", color = "#FFFFFF", backgroundColor = "#4D1B7B"),
+#'     list(columns = "CIU_NAC", color = "#FFFFFF", backgroundColor = "#F59E11")
 #'   )
-#' }
+#' )
 #'
 #' @export
 #'
@@ -89,10 +88,10 @@
 #' @import dplyr
 #' @importFrom htmltools withTags tag
 #' @importFrom methods missingArg
-Tabla.General <- function(datos, colNames, filtros = FALSE, colFilters,
-                          encabezado = "", leyenda = "", tituloPdf = NULL,
-                          mensajePdf = "", ajustarNiveles = TRUE, scrollX = TRUE,
-                          colorHead = "#FFFFFF", estilo) {
+Tabla.General <- function(
+    datos, colNames, filtros = FALSE, colFilters, encabezado = "", leyenda = "",
+    tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE, scrollX = TRUE,
+    colorHead = "#FFFFFF", estilo) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (missingArg(datos)) {
@@ -109,7 +108,7 @@ Tabla.General <- function(datos, colNames, filtros = FALSE, colFilters,
       )
     }
   }
-  if (!(is.logical(filtros) && is.logical(ajustarNiveles) && is.logical(scrollX))) {
+  if (!all(is.logical(filtros), is.logical(ajustarNiveles), is.logical(scrollX))) {
     stop("\u00a1Los argumentos 'filtros', 'ajustarNiveles' y 'scrollX' deben ser un booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!is.character(colorHead)) {

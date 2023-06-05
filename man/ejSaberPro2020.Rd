@@ -5,9 +5,10 @@
 \alias{ejSaberPro2020}
 \title{Microdatos Saber Pro 2020}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejSaberPro2020)}
-filas y \verb{r ncol(ejSaberPro2020)} columnas:
-\verb{r paste0("``", colnames(ejSaberPro2020), "``", collapse = ", ")}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con
+4.896 filas y
+59 columnas:
+'YEAR', 'SEMESTRE', 'YEAR_MAT', 'SEMESTRE_MAT', 'TIPO_NIVEL', 'NIVEL', 'DEP_NAC', 'COD_DEP_NAC', 'CIU_NAC', 'COD_CIU_NAC', 'LON_CIU_NAC', 'LAT_CIU_NAC', 'DEP_PROC', 'COD_DEP_PROC', 'CIU_PROC', 'COD_CIU_PROC', 'LON_CIU_PROC', 'LAT_CIU_PROC', 'CODS_NAC', 'CODN_NAC', 'NACIONALIDAD', 'EDAD_MOD', 'CAT_EDAD', 'SEXO', 'ESTRATO_ORIG', 'ESTRATO', 'TIPO_COL', 'PBM_ORIG', 'PBM', 'SNIES_SEDE_ADM', 'SEDE_NOMBRE_ADM', 'SNIES_SEDE_MAT', 'SEDE_NOMBRE_MAT', 'ADM_PEAMA_ANDINA', 'MOD_ADM', 'TIPO_ADM', 'PAES', 'PEAMA', 'FACULTAD', 'FACULTAD_S', 'SNIES_PROGRA', 'PROGRAMA', 'PROGRAMA_S', 'AREAC_SNIES', 'CA_CINE', 'CD_CINE', 'AREA_CINE', 'SNP', 'PUNTAJE_GLOBAL', 'PUNT_COMP_CIUD', 'NIVEL_COMP_CIUD', 'PUNT_COMU_ESCR', 'NIVEL_COMU_ESCR', 'PUNT_INGLES', 'NIVEL_INGLES', 'PUNT_LECT_CRIT', 'NIVEL_LECT_CRIT', 'PUNT_RAZO_CUANT', 'NIVEL_RAZO_CUANT'.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.
@@ -21,6 +22,9 @@ desde la página del ICFES, los cuales serán usados para los ejemplos de las
 funciones \code{Plot.Boxplot()} y \code{Plot.Radar()}.
 }
 \examples{
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(dplyr)
 ejSaberPro2020[1:5, 1:10]
+\dontshow{\}) # examplesIf}
 }
 \keyword{datasets}

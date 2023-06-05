@@ -22,7 +22,8 @@ Plot.Boxplot(
   labelY = "",
   textBox = "",
   libreria = c("highcharter", "plotly"),
-  estilo = NULL
+  estilo = NULL,
+  estatico = FALSE
 )
 }
 \arguments{
@@ -64,30 +65,51 @@ deben colorear cada una de las trazas correspondiente a cada nivel del argumento
 como atípicos, por defecto se tiene un valor específico al que se le sumará
 el ingresado acá.}
 
-\item{colOutlier}{Cadena de caracteres indicando el color de los puntos considerados
-como atípicos, por defecto se pintarán de un azul rey.}
+\item{colOutlier}{Cadena de caracteres indicando el color de los puntos
+considerados como atípicos, por defecto se pintarán de un azul rey.}
 
-\item{titulo}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{titulo}{Cadena de caracteres indicando el título principal del plot.}
 
-\item{labelX}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{labelX}{Cadena de caracteres indicando la etiqueta del eje \code{X}. Por
+defecto se emplea el rótulo "Periodo".}
 
-\item{labelY}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{labelY}{Cadena de caracteres indicando la etiqueta del eje \code{Y}.}
 
 \item{textBox}{Cadena de caracteres indicando el nombre de la serie numérica
 con la que se construye las cajas, necesario únicamente si se especifica
 solamente el \code{grupo1}, para el caso en que se tenga dos grupos no tendrá
 ningún efecto en el plot.}
 
-\item{libreria}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
+\item{libreria}{Cadena de caracteres que indica el paquete con el cual se realizará
+el plot. Los valores permitidos son \code{"highcharter"} (\emph{valor predeterminado})
+y \code{"plotly"}. Los valores se emparejarán parcialmente.}
 
 \item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
-de acuerdo con la librería especificada para graficar el boxplot y cuyo objetivo
-es personalizar pequeños detalles de éste.
+de acuerdo con la librería especificada para graficar el boxplot y cuyo
+objetivo es personalizar pequeños detalles de éste.
 \itemize{
 \item \code{LegendTitle}, \code{hc.Tema} y \code{hc.Credits}: Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}
 \item \code{ply.Interaction}, \code{ply.LegendPosition} y \code{ply.Credits}: Igual uso que en
 \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{gg.Tema}, \code{gg.Legend} y \code{gg.Texto}: Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{gg.VarWidth}: Si es \code{FALSE} (\emph{valor predeterminado}) se realizará
+un diagrama de caja estándar. Si es \code{TRUE}, las cajas se dibujan con anchos
+proporcionales a las raíces cuadradas del número de observaciones en los
+grupos. Para más información, consulte la función \link[ggplot2:geom_boxplot]{geom_boxplot()}).
+\item \code{gg.OutShape}: Modifica la forma de los outliers (\emph{datos atípicos}).
+Los posibles valores son un número entero entre \eqn{[1, 23]}. Para más
+información consulte la función \link[ggplot2:geom_boxplot]{geom_boxplot()}).
+\item \code{gg.JitWidth}: Valor numérico que indica el tamaño del ancho en el que los
+puntos pueden dispersarse en cada una de las cajas El valor por defecto es
+\code{0.25}. Para más información, consulte la función \link[ggplot2:geom_jitter]{geom_jitter()}).
+\item \code{gg.JitSize}: Valor numérico que indica el tamaño de los jittered points.
+El valor por defecto es \code{0.4}. Para más información, consulte la función
+\link[ggplot2:geom_jitter]{geom_jitter()}).
 }}
+
+\item{estatico}{Si es \code{FALSE} (\emph{valor predeterminado}) el gráfico a retornar
+será dinámico (\emph{dependiendo de la librería seleccionada}), en caso contrario
+se retornará un gráfico estático construido con \code{ggplot2}.}
 }
 \value{
 Retorna el boxplot (\emph{objeto widget de HTML}) creado. La clase del objeto retornado
@@ -105,28 +127,83 @@ que son \code{Highcharter} y \code{Plotly}, las cuales usan internamente \code{J
 El argumento \code{numericalVars} funciona solamente con la librería \code{"plotly"},
 pues la función de crear los botones dinámicos es procedente de dicha librería.
 }
-\examples{
-Txt <- "EVOLUCI\u00d3N DEL PUNTAJE EN EL EXAMEN DE ADMISI\u00d3N"
-Msj <- "Aspirantes a pregrado (<i>no se incluye los datos at\u00edpicos</i>)"
-if (require("pals")) {
-  Plot.Boxplot(
-    datos       = ejMiniAspirantesPre,
-    variable    = PTOTAL,
-    grupo1      = Serie,
-    outliers    = FALSE,
-    ylim        = c(0, 1000),
-    colores     = jet(25),
-    sizeOutlier = 1,
-    colOutlier  = "#FF3366",
-    titulo      = Txt,
-    labelY      = "Puntaje",
-    textBox     = "Score",
-    libreria    = "highcharter",
-    estilo      = list(hc.Tema = 2, hc.Credits = Msj)
-  )
+\section{Lista de argumentos de estilo}{
+
+
+Sabemos que puede ser abrumador el número de argumentos dentro del parámetro
+\code{estilo}, pero es necesario si queremos ofrecer al usuario la máxima
+personalización dentro de cada función usando cualquier librería. Por tal
+razón, a continuación, se detalla el listado completo de argumentos, usados
+al especificar la librería y en qué función están presentes
+(\emph{marcado con una × si lo posee}).\tabular{clcccccccc}{
+   \strong{Librería} \tab \strong{estilo$} \tab \code{\link[=Plot.Series]{Plot.Series()}} \tab \code{\link[=Plot.Barras]{Plot.Barras()}} \tab \code{\link[=Plot.Apiladas]{Plot.Apiladas()}} \tab \code{\link[=Plot.Boxplot]{Plot.Boxplot()}} \tab \code{\link[=Plot.Radar]{Plot.Radar()}} \tab \code{\link[=Plot.Treemap]{Plot.Treemap()}} \tab \code{\link[=Plot.Torta]{Plot.Torta()}} \tab \code{\link[=Plot.Drilldown]{Plot.Drilldown()}} \cr
+   ┌ \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{ggplot2} \tab \emph{gg.plty} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   └ \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ╔ \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ║ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   \strong{highcharter} \tab \emph{hc.BoxInfo} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ║ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ┌ \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
+   │ \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
+   │ \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
+   \strong{plotly} \tab \emph{ply.Interaction} \tab × \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
+   └ \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{dygraphs} \tab \emph{dyg.LegendWidth} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ┌ \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{echarts4r} \tab \emph{e.Forma} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   └ \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+}
 }
 
-Msj <- "Aspirantes a pregrado (<i>cada periodo se encuentra segregado por el tipo de admisi\u00f3n</i>)"
+\examples{
+\dontshow{if (require("pals")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+Txt <- "EVOLUCI\u00d3N DEL PUNTAJE EN EL EXAMEN DE ADMISI\u00d3N"
+Msj <- "Aspirantes a pregrado (<i>no se incluye los datos at\u00edpicos</i>)"
+Plot.Boxplot(
+  datos       = ejMiniAspirantesPre,
+  variable    = PTOTAL,
+  grupo1      = Serie,
+  outliers    = FALSE,
+  ylim        = c(0, 1000),
+  colores     = pals::jet(25),
+  sizeOutlier = 1,
+  colOutlier  = "#FF3366",
+  titulo      = Txt,
+  labelY      = "Puntaje",
+  textBox     = "Score",
+  libreria    = "highcharter",
+  estilo      = list(hc.Tema = 2, hc.Credits = Msj)
+)
+\dontshow{\}) # examplesIf}
+# ---------------------------------------------------------------------------
+Msj2 <- "Aspirantes a pregrado (<i>cada periodo se encuentra segregado por el tipo de admisi\u00f3n</i>)"
 Plot.Boxplot(
   datos    = ejMiniAspirantesPre,
   variable = PTOTAL,
@@ -138,9 +215,9 @@ Plot.Boxplot(
   titulo   = Txt,
   labelY   = "Puntaje",
   libreria = "highcharter",
-  estilo   = list(LegendTitle = "Programa:", hc.Tema = 6, hc.Credits = Msj)
+  estilo   = list(LegendTitle = "Programa:", hc.Tema = 6, hc.Credits = Msj2)
 )
-
+# ---------------------------------------------------------------------------
 Plot.Boxplot(
   datos    = iris,
   variable = Sepal.Length,
@@ -152,7 +229,7 @@ Plot.Boxplot(
   labelY   = "Longitud del S\u00e9palo",
   libreria = "plotly"
 )
-
+# ---------------------------------------------------------------------------
 Plot.Boxplot(
   datos       = ejMiniAspirantesPre,
   variable    = PTOTAL,
@@ -169,19 +246,20 @@ Plot.Boxplot(
   estilo      = list(
     LegendTitle = "Programa:", ply.Interaction = "closest",
     ply.LegendPosition = list(x = 0.16, y = -0.25, orientation = "h"),
-    ply.Credits = list(x = 0.4, y = 0.95, text = Msj)
+    ply.Credits = list(x = 0.4, y = 0.95, text = Msj2)
   )
 ) -> Advertencia
 suppressWarnings(print(Advertencia))
 
-if (require("dplyr")) {
-  df <- ejSaberPro2020 \%>\%
-    select(SEDE_NOMBRE_ADM, PUNTAJE_GLOBAL, PUNT_RAZO_CUANT, PUNT_INGLES,
-           PUNT_LECT_CRIT, PUNT_COMP_CIUD, PUNT_COMU_ESCR
-           )
-  Numericas <- vars(PUNT_RAZO_CUANT, PUNT_INGLES, PUNT_LECT_CRIT, PUNT_COMP_CIUD, PUNT_COMU_ESCR)
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
+# library(dplyr)
+df <- ejSaberPro2020 |>
+  select(SEDE_NOMBRE_ADM, PUNTAJE_GLOBAL, PUNT_RAZO_CUANT, PUNT_INGLES,
+         PUNT_LECT_CRIT, PUNT_COMP_CIUD, PUNT_COMU_ESCR
+         )
+Numericas <- vars(PUNT_RAZO_CUANT, PUNT_INGLES, PUNT_LECT_CRIT, PUNT_COMP_CIUD, PUNT_COMU_ESCR)
 # Numericas <- c("PUNT_RAZO_CUANT", "PUNT_INGLES", "PUNT_LECT_CRIT", "PUNT_COMP_CIUD", "PUNT_COMU_ESCR")
-}
 misColores <- c(
   "#29ABE2", # AZUL CLARO  | Amazonia
   "#8CC63F", # VERDE       | Bogota
@@ -192,7 +270,6 @@ misColores <- c(
   "#93278F", # MORADO      | Palmira
   "#8A381A"  # GRIS        | Tumaco
 )
-
 Plot.Boxplot(
   datos         = df,
   variable      = PUNTAJE_GLOBAL,
@@ -200,6 +277,55 @@ Plot.Boxplot(
   numericalVars = Numericas,
   colores       = misColores,
   libreria      = "plotly"
+)
+\dontshow{\}) # examplesIf}
+\dontshow{if (require("pals")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
+# Ejemplo usando el caso estático (ggplot2)
+# library(pals)
+Plot.Boxplot(
+  datos      = ejMiniAspirantesPre,
+  variable   = PTOTAL,
+  grupo1     = Serie,
+  jitter     = TRUE,
+  colores    = pals::turbo(25),
+  colOutlier = "#CBB8FF",
+  titulo     = gsub("L E", "L\nE", Txt),
+  labelY     = "Puntaje",
+  textBox    = "Score",
+  estatico   = TRUE,
+  estilo     = list(
+    gg.Tema = 11, gg.Legend = list(legend.position = "none"),
+    gg.Texto = list(
+      subtitle = gsub("<|/|i>", "", Msj ),
+      caption  = "Información Disponible desde 2008-1", tag = "\u00ae"
+    ),
+    gg.VarWidth = TRUE, gg.JitWidth = 0.08, gg.JitSize = 0.05
+  )
+)
+\dontshow{\}) # examplesIf}
+# ---------------------------------------------------------------------------
+Plot.Boxplot(
+  datos       = ejMiniAspirantesPre,
+  variable    = PTOTAL,
+  grupo1      = Serie,
+  grupo2      = TIPO_INS,
+  outliers    = TRUE,
+  colores     = c("#00ABFF", "#F3224B", "#FCD116", "#29DF2C"),
+  sizeOutlier = 2,
+  colOutlier  = "#F5E8E8",
+  titulo      = gsub("L E", "L\nE", Txt),
+  labelY      = "Puntaje",
+  textBox     = "Score",
+  estatico    = TRUE,
+  estilo      = list(
+    LegendTitle = "NIVEL ACAD\u00c9MICO:", gg.Tema = 9, gg.OutShape = 21,
+    gg.Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
+    gg.Texto = list(
+      subtitle = gsub("<|/|i>", "", Msj2),
+      caption  = "Información Disponible desde 2008-1", tag = "\u00ae"
+    )
+  )
 )
 
 }

@@ -2,8 +2,8 @@
 % Please edit documentation in R/Plot_Barras.R
 \name{Plot.Barras}
 \alias{Plot.Barras}
-\title{Cree un gráfico de barras que muestra la información en columnas horizontales
-o verticales y para variables nominales u ordinales con dos diferentes paquetes}
+\title{Cree un gráfico de barras que muestre la información de forma horizontal o
+vertical y para variables nominales u ordinales con dos diferentes paquetes}
 \usage{
 Plot.Barras(
   datos,
@@ -16,7 +16,7 @@ Plot.Barras(
   ordinal = FALSE,
   colores,
   titulo = "",
-  labelEje = "Número de Graduados",
+  labelEje = "Número de",
   addPeriodo = TRUE,
   textInfo = labelEje,
   libreria = c("highcharter", "plotly"),
@@ -25,17 +25,24 @@ Plot.Barras(
 )
 }
 \arguments{
-\item{datos}{Un data frame.}
+\item{datos}{Un data frame, no un objeto clase serie de tiempo o vector numérico.}
 
-\item{categoria}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
-\item{ano}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
+\item{ano}{Valor numérico que indica el año de interés para realizar el gráfico.
+Si solo se introduce el año, pero no el período, se calculará independiente
+del semestre (\emph{tomando ambos}).}
 
-\item{periodo}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
+\item{periodo}{Valor numérico que indica el período o semestre de interés para
+realizar el gráfico. Si solo se introduce el período, pero no el año, se
+calculará con base en todos los años disponibles en \code{datos}.}
 
-\item{freqRelativa}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{freqRelativa}{Si es \code{FALSE} (\emph{valor predeterminado}) la serie graficada
+representará las frecuencias absolutas (\emph{conteo}) más no las relativas (\emph{porcentaje}).}
 
-\item{ylim}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{ylim}{Vector numérico que especifica el límite inferior y superior,
+respectivamente, del eje \code{Y}. Si no se introduce algún valor se mostrará
+todo el rango disponible para dicho eje.}
 
 \item{vertical}{Si es \code{TRUE} (\emph{valor predeterminado}) indicará que la orientación
 del gráfico será vertical.}
@@ -44,34 +51,45 @@ del gráfico será vertical.}
 son ordinales (\emph{no nominales}), esto con el fin de ordenar la disposición en
 el que se presentan en el eje del gráfico, el valor por defecto es \code{FALSE}.}
 
-\item{colores}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{colores}{Cadena de caracteres indicando los colores con los cuales se
+deben colorear cada una de las series correspondiente a cada nivel del
+argumento \code{categoria}. Si no se introduce algún vector se usará la paleta
+\code{rainbow} por defecto.}
 
-\item{titulo}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{titulo}{Cadena de caracteres indicando el título principal del plot.}
 
 \item{labelEje}{Cadena de caracteres indicando la etiqueta del eje \code{X} o \code{Y}
 (\emph{dependiendo de la orientación del gráfico}). Por defecto se emplea el rótulo
-"Número de Graduados".}
+\code{"Número de "}.}
 
-\item{addPeriodo}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
+\item{addPeriodo}{Si es \code{TRUE} (\emph{valor predeterminado ssi se introduce los
+argumentos \code{ano} y \code{periodo} simultáneamente}) concatenará al título introducido
+una cadena de caracteres indicando entre paréntesis el "año-periodo" insertado.}
 
 \item{textInfo}{Cadena de caracteres que especifica el texto que se escribe
 dentro de la caja de información al posar el cursor en alguna barra en el
 gráfico, producido por \code{Highcharter}, el valor por defecto es igual al de
 \code{labelEje}.}
 
-\item{libreria}{Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}}
+\item{libreria}{Cadena de caracteres que indica el paquete con el cual se realizará
+el plot. Los valores permitidos son \code{"highcharter"} (\emph{valor predeterminado})
+y \code{"plotly"}. Los valores se emparejarán parcialmente.}
 
 \item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
-de acuerdo con la librería específica para graficar el plot y cuyo objetivo
+de acuerdo con la librería especificada para graficar el plot y cuyo objetivo
 es personalizar pequeños detalles de ésta.
 \itemize{
 \item \code{hc.Tema}, \code{hc.Credits}, \code{ply.Credits}, \code{gg.Tema} y \code{gg.Texto}: Igual uso
 que en \code{\link[=Plot.Series]{Plot.Series()}}
-\item \code{ply.Legend}: Igual uso que en \code{\link[=Plot.Torta]{Plot.Torta()}}
+\item \code{ply.Legend}: Por defecto la gráfica muestra la leyenda fuera del gráfico
+de pie, si se introduce la cadena de texto \code{"inside"} se resumirá toda la
+información dentro del pie.
 \item \code{gg.Bar}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_bar]{geom_bar()}).
 }}
 
-\item{estatico}{Igual uso que en \code{\link[=Plot.Series]{Plot.Series()}}}
+\item{estatico}{Si es \code{FALSE} (\emph{valor predeterminado}) el gráfico a retornar
+será dinámico (\emph{dependiendo de la librería seleccionada}), en caso contrario
+se retornará un gráfico estático construido con \code{ggplot2}.}
 }
 \value{
 Retorna el diagrama de barras (\emph{objeto widget de HTML}) creado. La clase del
@@ -80,7 +98,7 @@ pertenecerá adicionalmente a la clase "highchart" o "plotly".
 }
 \description{
 Esta función permite mostrar de forma interactiva un gráfico de barras verticales
-u horizontales cuya longitud/altura es proporcional al valor de la variable
+u horizontales cuya altura/longitud es proporcional al valor de la variable
 (\emph{categorías de una variable cualitativa}), lo anterior para ayudar a la creación
 de informes descriptivos y analíticos. Dicho diagrama se puede representar
 usando dos diferentes librerías que son \code{Highcharter} y \code{Plotly}, las cuales
@@ -92,6 +110,61 @@ del archivo descargado será la concatenación del plot graficado y la categorí
 usada, así, por ejemplo, si se graficó el diagrama de barras para la categoría
 "Nacionalidad" el nombre será \code{PlotBarras_Nacionalidad.png}.
 }
+\section{Lista de argumentos de estilo}{
+
+
+Sabemos que puede ser abrumador el número de argumentos dentro del parámetro
+\code{estilo}, pero es necesario si queremos ofrecer al usuario la máxima
+personalización dentro de cada función usando cualquier librería. Por tal
+razón, a continuación, se detalla el listado completo de argumentos, usados
+al especificar la librería y en qué función están presentes
+(\emph{marcado con una × si lo posee}).\tabular{clcccccccc}{
+   \strong{Librería} \tab \strong{estilo$} \tab \code{\link[=Plot.Series]{Plot.Series()}} \tab \code{\link[=Plot.Barras]{Plot.Barras()}} \tab \code{\link[=Plot.Apiladas]{Plot.Apiladas()}} \tab \code{\link[=Plot.Boxplot]{Plot.Boxplot()}} \tab \code{\link[=Plot.Radar]{Plot.Radar()}} \tab \code{\link[=Plot.Treemap]{Plot.Treemap()}} \tab \code{\link[=Plot.Torta]{Plot.Torta()}} \tab \code{\link[=Plot.Drilldown]{Plot.Drilldown()}} \cr
+   ┌ \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{ggplot2} \tab \emph{gg.plty} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   │ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   └ \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ╔ \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ║ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   \strong{highcharter} \tab \emph{hc.BoxInfo} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ║ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ┌ \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
+   │ \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
+   │ \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
+   \strong{plotly} \tab \emph{ply.Interaction} \tab × \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
+   └ \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{dygraphs} \tab \emph{dyg.LegendWidth} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ╚ \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ┌ \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   \strong{echarts4r} \tab \emph{e.Forma} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   │ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   └ \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+}
+}
+
 \examples{
 Msj <- "Ac\u00e1 puede ir m\u00e1s informaci\u00f3n acerca del gr\u00e1fico."
 Plot.Barras(
@@ -110,7 +183,7 @@ Plot.Barras(
   libreria     = "highcharter",
   estilo       = list(hc.Tema = 2, hc.Credits = Msj)
 )
-
+Txt <- "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL"
 Msj <- "A\u00f1o 2020, sin segregar por semestre (considerando ambos)."
 Plot.Barras(
   datos     = ejConsolidadoGrad,
@@ -119,7 +192,7 @@ Plot.Barras(
   vertical  = FALSE,
   ordinal   = FALSE,
   colores   = RColorBrewer::brewer.pal(5, "Set2"),
-  titulo    = "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL",
+  titulo    = Txt,
   labelEje  = "N\u00famero de Graduados",
   libreria  = "plotly",
   estilo    = list(
@@ -133,17 +206,17 @@ Plot.Barras(
   ano       = 2020,
   vertical  = FALSE,
   ordinal   = FALSE,
-  colores   = RColorBrewer::brewer.pal(5, "Set2"),
-  titulo    = "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL",
+  colores   = RColorBrewer::brewer.pal(5, "Set1"),
+  titulo    = gsub("DE GR", "DE\nGR", Txt),
   labelEje  = "N\u00famero de Graduados",
   estatico  = TRUE,
   estilo    = list(
-    gg.Tema  = 9,
+    gg.Tema  = 10,
     gg.Bar   = list(width = 0.2, color = "#000000"),
-    gg.Texto = list(subtitle = Msj,
+    gg.Texto = list(subtitle = gsub("A", "\nA", Msj),
                     caption  = "Informaci\u00f3n Disponible desde 2009-1",
-                    tag      = "Figura 1. Graduados"
-    )
+                    tag      = "\u00ae"
+                   )
   )
 )
 

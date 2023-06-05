@@ -6,15 +6,17 @@
 el paquete \code{Leaflet}}
 \usage{
 Plot.Mapa(
+  df,
   depto,
   mpio,
+  variable,
+  agregado = TRUE,
   estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
-  variable = NA,
   tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"),
   titulo,
   naTo0 = TRUE,
   colNA = "#EEEEEE",
-  centroideMapa = "CUNDINAMARCA",
+  centroideMapa,
   zoomMapa = 6,
   baldosas,
   cortes,
@@ -25,26 +27,37 @@ Plot.Mapa(
   colBorde,
   compacto = TRUE,
   textSize = 10,
-  limpio = FALSE
+  limpio = FALSE,
+  estatico = FALSE,
+  estilo
 )
 }
 \arguments{
-\item{depto}{Vector numérico que contiene los códigos de los departamentos, de
-acuerdo con la codificación de la División Político-Administrativa de Colombia
-(\emph{DIVIPOLA}) dispuesta por el \code{DANE}.}
+\item{df}{Un data frame, no un vector numérico.}
 
-\item{mpio}{Vector numérico que contiene los códigos de los municipios, de
-acuerdo con la codificación de la División Político-Administrativa de Colombia
-(\emph{DIVIPOLA}) dispuesta por el \code{DANE}.}
+\item{depto}{Una variable numérica dentro del data frame ingresado en \code{df},
+que contiene los códigos de los departamentos, de acuerdo con la codificación
+de la División Político-Administrativa de Colombia (\emph{DIVIPOLA}) dispuesta
+por el \code{DANE}.}
+
+\item{mpio}{Una variable numérica dentro del data frame ingresado en \code{df},
+que contiene los códigos de los municipios, de acuerdo con la codificación
+de la División Político-Administrativa de Colombia (\emph{DIVIPOLA}) dispuesta
+por el \code{DANE}.}
+
+\item{variable}{Variable auxiliar con la cual se calculará el estadístico
+previamente seleccionado. Para el caso en que la estadística a calcular sea
+el conteo no es necesario (\emph{no se usará}) especificar dicha variable numérica.}
+
+\item{agregado}{Si es \code{TRUE} (\emph{valor predeterminado}) indica que el data frame
+ingresado se deberá agrupar porque no es un consolidado, sino que se cuenta
+con los microdatos. Por el contrario, si se especifica en \code{FALSE} quiere
+decir que cada fila es única y se cuenta con el estadístico ya calculado,
+además de poder ingresar únicamente uno de los argumentos \code{depto} o \code{mpio}.}
 
 \item{estadistico}{Cadena de caracteres que indica el estadístico a graficar
-en el mapa. Los valores permitidos son "Conteo" (\emph{valor predeterminado}),
-"Promedio", "Mediana", "Varianza", "SD", "CV", "Min" y "Max".}
-
-\item{variable}{Vector numérico cuya función es servir como variable auxiliar
-con la cual se calculará el estadístico previamente seleccionado. Para el
-caso en que la estadística a calcular sea el conteo no es necesario
-(\emph{no se usará}) especificar dicho vector.}
+en el mapa. Los valores permitidos son \code{"Conteo"} (\emph{valor predeterminado}),
+\code{"Promedio"}, \code{"Mediana"}, \code{"Varianza"}, \code{"SD"}, \code{"CV"}, \code{"Min"} y \code{"Max"}.}
 
 \item{tipo}{Cadena de caracteres que indica el tipo de mapa a graficar. Los
 valores permitidos son "Deptos", "SiNoMpios", "Mpios" y "DeptoMpio"
@@ -66,9 +79,9 @@ leyenda "Sin Información".}
 de centroide al momento de graficar el mapa. El valor por defecto es "CUNDINAMARCA".
 Se emparejará parcialmente.}
 
-\item{zoomMapa}{Valor numérico que indica el nivel de zoom del mapa (\emph{usado por
-la función} \link[leaflet:map-methods]{setView()}). El valor por defecto es 6, entre
-mayor sea su valor más zoom se aplicará al mapa.}
+\item{zoomMapa}{Valor numérico que indica el nivel de zoom del mapa
+(\emph{usado por la función} \link[leaflet:map-methods]{setView()}). El valor por
+defecto es \code{6}, entre mayor sea su valor más zoom se aplicará al mapa.}
 
 \item{baldosas}{Vector de caracteres indicando los mapas base con los que se
 realizará el mapa, sean los popularizados por Google Maps o por terceros.
@@ -99,7 +112,7 @@ siguiente manera \code{list(Deptos = c(), Mpios = c())}, pues requiere dos corte
 uno para departamentos y otro para municipios.}
 
 \item{colores}{Vector de caracteres indicando los colores para cada uno de los
-intervalos con los que cuenta el mapa. Si no se introduce algún vector se
+intervalos con los que cuenta el mapa. Si no se introduce algún vector, se
 usará una paleta predeterminada dependiendo del tipo de mapa.}
 
 \item{showSedes}{Si es \code{TRUE} (\emph{valor predeterminado}) en el control de capas
@@ -133,6 +146,31 @@ de los municipios. El valor para los departamentos será \eqn{+2px}.}
 la barra de escala y los botones para ver en pantalla completa, retornar zoom
 y localización. Ajústelo a \code{TRUE} si desea omitir dichas herramientas adicionales
 al mapa.}
+
+\item{estatico}{Si es \code{FALSE} (\emph{valor predeterminado}) el gráfico a retornar
+será dinámico (\emph{dependiendo de la librería seleccionada}), en caso contrario
+se retornará un gráfico estático construido con \code{ggplot2}.}
+
+\item{estilo}{Lista compuesta por varios parámetros, los cuales van a ser usados
+para graficar el mapa \strong{estático} y cuyo objetivo es personalizar pequeños
+detalles de éste.
+\itemize{
+\item \code{anchoBorde}: Número decimal que indica el ancho de la línea de contorno
+de los polígonos del mapa. El valor por defecto es \code{0.5}.
+\item \code{labelX}, \code{labelY}: Cadena de caracteres indicando la etiqueta del eje
+respectivo. El valor por defecto es \code{"Longitud"} y \code{"Latitud"} respectivamente.
+\item \code{xlim}, \code{ylim}: Vector numérico que especifica los límites de los ejes respectivos.
+\item \code{Legend}: Igual uso que \code{gg.Legend} en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{Labs}: Igual uso que \code{gg.Texto} en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{Theme}: Igual uso que \code{gg.Tema} en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{Style}: Cadena de caracteres que indica el tipo de mapa a graficar.
+Los valores permitidos son \code{"Intervalo"}, \code{"SiNo"}, \code{"Calor"} y \code{NA}
+(\emph{valor predeterminado}). Se emparejará parcialmente.
+\item \code{Text}: Lista que especifica aspectos como el color y tamaño de los títulos
+de los polígonos. Para más información, consulte la función \link[ggplot2:ggsf]{geom_sf_text()}.
+\item \code{scaleX}, \code{scaleY}: Vector numérico que especifica los puntos o cortes a
+graficar en dicho eje. Sacado de la función \link[ggplot2:scale_continuous]{scale_x_continuous()}.
+}}
 }
 \value{
 Retorna el mapa (\emph{objeto widget de HTML}) creado mediante \code{Leaflet}, el cual
@@ -143,7 +181,7 @@ Esta función está planeada para facilitar la creación de mapas interactivos
 compatible con plataformas móviles y de escritorio, además de estar diseñada
 pensando en la simplicidad y el rendimiento. Esta utilidad produce mapas que
 tienen controles para hacer zoom, desplazarse y alternar capas y puntos entre
-mostrar y ocultar. Igualmente permite incrustar mapas en webs, documentos
+mostrar y ocultar. Igualmente, permite incrustar mapas en webs, documentos
 \verb{R Markdown} y aplicaciones \code{Shiny}. Todo lo anterior basado enteramente en la
 librería \code{Leaflet}, la cual es la biblioteca \code{JavaScript} de código abierto más
 popular para mapas interactivos.
@@ -154,22 +192,16 @@ es decir, la pareja formada por \verb{(depto, mpio)} debe corresponder a un indi
 En los argumentos no se acepta la entrada de objetos espaciales o polígonos.
 }
 \examples{
-if (require("dplyr")) {
-  df <- ejGraduados \%>\%
-    filter(YEAR == 2021) \%>\%
-    select(
-      Code_Dept    = COD_DEP_NAC,
-      Code_Mun     = COD_CIU_NAC,
-      Departamento = DEP_NAC,
-      Municipio    = CIU_NAC,
-      Longitud     = LON_CIU_NAC,
-      Latitud      = LAT_CIU_NAC
-    )
-}
-
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(dplyr)
+df <- ejGraduados |> filter(YEAR == 2021) |>
+  select(
+    COD_DEP_NAC, COD_CIU_NAC, DEP_NAC, CIU_NAC, LON_CIU_NAC, LAT_CIU_NAC
+  )
 Plot.Mapa(
-  depto    = df$Code_Dept,
-  mpio     = df$Code_Mun,
+  df       = df,
+  depto    = COD_DEP_NAC,
+  mpio     = COD_CIU_NAC,
   tipo     = "SiNoMpios",
   titulo   = "Graduados 2021-I",
   baldosas = c(
@@ -184,13 +216,14 @@ Plot.Mapa(
   textSize = 16,
   limpio   = TRUE
 )
-
+# ---------------------------------------------------------------------------
 Plot.Mapa(
-  depto   = df$Code_Dept,
-  mpio    = df$Code_Mun,
-  tipo    = "DeptoMpio",
-  titulo  = "Graduados 2020-II",
-  cortes  = list(
+  df     = df,
+  depto  = COD_DEP_NAC,
+  mpio   = COD_CIU_NAC,
+  tipo   = "DeptoMpio",
+  titulo = "Graduados 2021-I",
+  cortes = list(
     Deptos = c(0, 10, 20, 50, 500, Inf), Mpios = c(0, 1, 5, 10, 100, Inf)
   ),
   colores = list(
@@ -198,41 +231,110 @@ Plot.Mapa(
     Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")
   )
 )
-
-if (require("dplyr") && require("magrittr")) {
-  ejSaberPro2020 \%>\%
-    select(
-      Code_Dept = COD_DEP_NAC,
-      Code_Mun  = COD_CIU_NAC,
-      Edad      = EDAD_MOD,
-      PBM       = PBM_ORIG,
-      ScoreGlobal   = PUNTAJE_GLOBAL,
-      ScoreCompCiud = PUNT_COMP_CIUD,
-      ScoreComuEscr = PUNT_COMU_ESCR,
-      ScoreIngles   = PUNT_INGLES,
-      ScoreLectCrit = PUNT_LECT_CRIT,
-      ScoreRazCuant = PUNT_RAZO_CUANT
-    ) \%$\%
-    Plot.Mapa(
-      depto         = Code_Dept,
-      mpio          = Code_Mun,
-      estadistico   = "Mediana",
-      variable      = ScoreGlobal,
-      tipo          = "DeptoMpio",
-      titulo        = "P.Global 2020",
-      naTo0         = FALSE,
-      colNA         = "#472985",
-      centroideMapa = "ANTIOQUIA",
-      zoomMapa      = 8,
-      cortes        = list(
-        Deptos = c(0, 155, 170, 180, 185, Inf), Mpios = c(0, 50, 178, 200, 250, Inf)
-      ),
-      colores       = list(
-        Deptos = c("#FF7D5A", "#FDBD7D", "#E5DF73", "#63D2A8", "#0055A1"),
-        Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")
-      ),
-      showSedes     = FALSE
-    )
-}
-
+# ---------------------------------------------------------------------------
+\dontshow{\}) # examplesIf}
+\dontshow{if (require("dplyr") && require("magrittr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(dplyr); library(magrittr)
+ejSaberPro2020 \%>\%
+  select(
+    Code_Dept = COD_DEP_NAC,
+    Code_Mun  = COD_CIU_NAC,
+    Edad      = EDAD_MOD,
+    PBM       = PBM_ORIG,
+    ScoreGlobal   = PUNTAJE_GLOBAL,
+    ScoreCompCiud = PUNT_COMP_CIUD,
+    ScoreComuEscr = PUNT_COMU_ESCR,
+    ScoreIngles   = PUNT_INGLES,
+    ScoreLectCrit = PUNT_LECT_CRIT,
+    ScoreRazCuant = PUNT_RAZO_CUANT
+  ) \%$\%
+  Plot.Mapa(
+    df            = .,
+    depto         = Code_Dept,
+    mpio          = Code_Mun,
+    estadistico   = "Mediana",
+    variable      = ScoreGlobal,
+    tipo          = "DeptoMpio",
+    titulo        = "P.Global 2020",
+    naTo0         = FALSE,
+    colNA         = "#472985",
+    centroideMapa = "ANTIOQUIA",
+    zoomMapa      = 8,
+    cortes        = list(
+      Deptos = c(0, 155, 170, 180, 185, Inf), Mpios = c(0, 50, 178, 200, 250, Inf)
+    ),
+    colores       = list(
+      Deptos = c("#FF7D5A", "#FDBD7D", "#E5DF73", "#63D2A8", "#0055A1"),
+      Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")
+    ),
+    showSedes     = FALSE
+  )
+\dontshow{\}) # examplesIf}
+# ---------------------------------------------------------------------------
+# Ejemplo usando el caso estático (ggplot2)
+Plot.Mapa(
+  df       = df,
+  depto    = COD_DEP_NAC,
+  mpio     = COD_CIU_NAC,
+  tipo     = "Deptos",
+  naTo0    = FALSE,
+  colNA    = "#543619",
+  titulo   = "N\u00daM. DE GRADUADOS \u00d7 DEPARTAMENTO",
+  cortes   = c(0, 10, 20, 50, 500, Inf),
+  colores  =  c("#6812F2", "#8FCE00", "#F6ED0D", "#EE6115", "#EC2525"),
+  opacidad = 0.6,
+  estatico = TRUE,
+  estilo   = list(
+    Style = "Intervalo", anchoBorde = 0.5, Theme = 2,
+    Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
+    Labs   = list(subtitle = "A\u00f1o 2021", caption = "(*) Lugar de Nacimiento", tag = "\u00ae"),
+    scaleX = seq(-82, -64, by = 1), scaleY = seq(-4, 14, by = 1)
+  )
+)
+\dontshow{if (require("tibble")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
+# library(tibble)
+PIB <- tibble(
+  DIVIPOLA = c(91,05,81,08,11,13,15,17,18,85,19,20,27,23,25,94,95,41,44,47,50,52,54,86,63,66,88,68,70,73,76,97,99),
+  Valor    = c(883,177837,6574,52961,301491,42027,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
+)
+Plot.Mapa(
+  df       = PIB,
+  depto    = DIVIPOLA,
+  variable = Valor,
+  agregado = FALSE,
+  tipo     = "Deptos",
+  titulo   = "PIB \u00d7 DEPARTAMENTO",
+  cortes   = c(0, 500, 5000, 20000, 30000, Inf),
+  colores  = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
+  colBorde = "#3A0F2D",
+  estatico = TRUE,
+  textSize = 0,
+  estilo   = list(
+    Style  = "Intervalo", Theme = 7,
+    Legend = list(legend.position = "top", legend.direction = "horizontal"),
+    Labs   = list(subtitle = "A Precios Corrientes", caption = "Para el periodo de 2021P (en miles de millones de pesos)")
+  )
+)
+# ---------------------------------------------------------------------------
+AreaVichada <- tibble(
+  MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)
+)
+Plot.Mapa(
+  df       = AreaVichada,
+  mpio     = MunCode,
+  variable = Area,
+  agregado = FALSE,
+  tipo     = "Mpios",
+  titulo   = "\u00c1REA DE LOS MUNICIPIOS DEL\nDEPARTAMENTO DE VICHADA",
+  naTo0    = FALSE,
+  centroideMapa = "VICHADA",
+  estatico = TRUE,
+  estilo   = list(
+    Style = "Calor", Theme = 9,
+    Labs  = list(caption = "(*) En Metros Cuadrados"),
+    Text  = list(color = "#011532", size = 3)
+  )
+)
+\dontshow{\}) # examplesIf}
 }

@@ -1,10 +1,10 @@
 #' Cree fácilmente un widget para visualización de tablas HTML usando el paquete `DT`
 #'
 #' Esta función está diseñada para facilitar la creación de tablas para informes
-#' y publicaciones produciendo un widget HTML para visualizar un data frame utilizando
-#' el paquete `DT`. La forma en que esta función maneja las cosas por usted significa
-#' que a menudo no tiene que preocuparse por los pequeños detalles para obtener
-#' un resultado impresionante y listo para usar.
+#' y publicaciones, produciendo un widget HTML para visualizar un data frame
+#' utilizando el paquete `DT`. La forma en que esta función maneja las cosas por
+#' usted significa que a menudo no tiene que preocuparse por los pequeños detalles
+#' para obtener un resultado impresionante y listo para usar.
 #'
 #' @param datos Un data frame.
 #' @param categoria Una variable categórica dentro del data frame ingresado en `datos`.
@@ -15,18 +15,18 @@
 #'   dicho texto se visualizará en todas las opciones de descarga. Su valor por
 #'   defecto es `NULL`.
 #' @param tituloPdf Cadena de caracteres que proporciona un título a la tabla al
-#'   momento de generar el `.pdf` como al darle al botón de imprimir. Su valor por
-#'   defecto es el introducido en el argumento `encabezado`.
+#'   momento de generar el `.pdf` como al hacer clic al botón de imprimir. Su valor
+#'   por defecto es el introducido en el argumento `encabezado`.
 #' @param mensajePdf Cadena de caracteres que proporciona un mensaje situado entre
-#'   el título y la tabla. Se visualizará tanto al generar el `.pdf` como al darle
-#'   al botón de imprimir.
+#'   el título y la tabla. Se visualizará tanto al generar el `.pdf` como al
+#'   hacer clic al botón de imprimir.
 #' @param ajustarNiveles Si es `TRUE` (*valor predeterminado*) se buscará optimizar
 #'   el espacio entre las columnas, colocando todos los nombres de las columnas de
 #'   forma horizontal y eliminando al máximo el espacio entre éstas.
 #' @param scrollX Si es `TRUE` (*valor predeterminado*) se habilitará la propiedad
 #'   Scroller para el eje X. Tenga presente que cuando su df contiene muchas columnas
 #'   es de utilidad (*pues no permite que se salga la tabla por ancho*), sin embargo,
-#'   asegúrese de desactivarlo cuando presente pocas columnas pues se verá un
+#'   asegúrese de desactivarlo cuando presente pocas columnas, pues se verá un
 #'   desplazamiento de los encabezados debido a un conflicto interno.
 #' @param colorHead Cadena de caracteres que indica el color de fondo de la cabecera
 #'   de la tabla. Puede indicar el color con el nombre (`"red"`), código hexadecimal
@@ -42,12 +42,13 @@
 #'     para los periodos (\emph{semestres}).
 #'
 #' @details
-#' Esta función se basa enteramente del paquete `DT`, el cual proporciona una interfaz
-#' para `R` a la biblioteca `DataTables` de `JavaScript`. Los data frames de `R`
-#' se pueden mostrar como tablas en páginas HTML, proporcionando opciones de filtrado,
-#' paginación, clasificación y muchas otras características en las tablas.
+#' Esta función se basa enteramente del paquete `DT`, el cual proporciona una
+#' interfaz para `R` a la biblioteca `DataTables` de `JavaScript`. Los data frames
+#' de `R` se pueden mostrar como tablas en páginas HTML, proporcionando opciones
+#' de filtrado, paginación, clasificación y muchas otras características en las
+#' tablas.
 #'
-#' @return
+#' @returns
 #' Retorna la tabla creada mediante `DT` la cual pertenece a la clase "datatables"
 #' y "htmlwidget".
 #'
@@ -72,34 +73,30 @@
 #' @importFrom methods missingArg
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices colorRampPalette
-Tabla <- function(datos, categoria, encabezado = "Encabezados de los Niveles de la Categor\u00eda",
-                  leyenda = NULL, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
-                  scrollX = TRUE, colorHead = "#FFFFFF", colorear = FALSE, estilo) {
+Tabla <- function(
+    datos, categoria, encabezado = "Encabezados de los Niveles de la Categor\u00eda",
+    leyenda = NULL, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
+    scrollX = TRUE, colorHead = "#FFFFFF", colorear = FALSE, estilo) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
-  if(missingArg(datos) || missingArg(categoria)) {
+  if(any(missingArg(datos), missingArg(categoria))) {
     stop("\u00a1Por favor introduzca un conjunto de datos y una categor\u00eda dentro de la columna 'Variable'!", call. = FALSE)
   }
   categoria <- toupper(categoria)
   if (!(categoria %in% datos$Variable)) {
     stop("\u00a1Por favor introduzca una categor\u00eda que se encuentra dentro de la columna 'Variable'!", call. = FALSE)
   }
-  if (!is.logical(ajustarNiveles)) {
-    stop("\u00a1El argumento 'ajustarNiveles' debe ser un booleano (TRUE o FALSE)!", call. = FALSE)
-  }
-  if (!is.logical(scrollX)) {
-    stop("\u00a1El argumento 'scrollX' debe ser un booleano (TRUE o FALSE)!", call. = FALSE)
+  if (!all(is.logical(ajustarNiveles), is.logical(scrollX), is.logical(colorear))) {
+    stop("\u00a1Los argumentos 'ajustarNiveles', 'scrollX' y 'colorear' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!is.character(colorHead)) {
     stop("\u00a1El argumento 'colorHead' debe ser un car\u00e1cter que indique un color con el nombre ('red'), c\u00f3digo hexadecimal ('#FF0000') o RGB (rgb(1, 0, 0))!", call. = FALSE)
   }
-  if (!is.logical(colorear)) {
-    stop("\u00a1El argumento 'colorear' debe ser un booleano (TRUE o FALSE)!", call. = FALSE)
-  }
   if (missingArg(tituloPdf)) { tituloPdf <- encabezado }
   if (is.null(leyenda) == FALSE) {
     leyenda <- htmltools::tags$caption(style = 'caption-side: bottom; text-align: center;',
-                                       "Tabla : ", htmltools::em(leyenda))
+                                       "Tabla : ", htmltools::em(leyenda)
+                                       )
   }
   AjusteNiveles <- ifelse(ajustarNiveles == TRUE, "compact nowrap hover row-border", "display")
 
@@ -120,10 +117,7 @@ Tabla <- function(datos, categoria, encabezado = "Encabezados de los Niveles de 
         group_by(YEAR, SEMESTRE) |>
         summarise(TotalGlobal = sum(Total, na.rm = TRUE))
     ) |>
-    mutate(
-      YEAR = factor(YEAR),
-      SEMESTRE = factor(SEMESTRE)
-    )
+    mutate(YEAR = factor(YEAR), SEMESTRE = factor(SEMESTRE))
   Categorias <- datos |>
     filter(Variable == categoria) |>
     group_by(Clase) |> distinct(Clase)
@@ -153,8 +147,10 @@ Tabla <- function(datos, categoria, encabezado = "Encabezados de los Niveles de 
     extensions = c("Buttons", "KeyTable"),
     options    = list(
       autoWidth  = TRUE,
-      columnDefs = list(list(className = "dt-center", targets = 0:(n_groups(Categorias)+2)),
-                        list(width = "65px", targets = 0)),
+      columnDefs = list(
+        list(className = "dt-center", targets = 0:(n_groups(Categorias)+2)),
+        list(width = "65px", targets = 0)
+      ),
       pageLength = 8,
       order = list(list(0, "desc"), list(1, "desc")),
       dom   = "Bfrtip",
@@ -188,15 +184,19 @@ Tabla <- function(datos, categoria, encabezado = "Encabezados de los Niveles de 
           sortDescending = "Activar para ordenar la columna de manera descendente"
         )
       ),
-      buttons = list(list(extend = "copy", text = "Copiar"), "csv", "excel",
-                      list(extend = "pdf", pageSize = "A4", filename = "pdf",
-                          message = mensajePdf, title = tituloPdf),
-                      list(extend = "print", text = "Imprimir", pageSize = "A4",
-                          message = mensajePdf, title = tituloPdf))
+      buttons = list(
+        list(extend = "copy", text = "Copiar"), "csv", "excel",
+        list(extend = "pdf", pageSize = "A4", filename = "pdf",
+             message = mensajePdf, title = tituloPdf
+        ),
+        list(extend = "print", text = "Imprimir", pageSize = "A4",
+             message = mensajePdf, title = tituloPdf
+        )
+      )
     )
   )
 
-  if (colorear && missingArg(estilo)) {
+  if (all(colorear, missingArg(estilo))) {
     TablaFinal <- TablaFinal |>
       formatStyle(
         "YEAR", target = "cell", fontWeight = "bold",

@@ -25,6 +25,9 @@
     <loc>/reference/Consolidado.html</loc>
   </url>
   <url>
+    <loc>/reference/CountryCode.html</loc>
+  </url>
+  <url>
     <loc>/reference/ejConsolidadoGrad.html</loc>
   </url>
   <url>
@@ -49,6 +52,9 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/ISO3166.html</loc>
+  </url>
+  <url>
     <loc>/reference/pipe.html</loc>
   </url>
   <url>
@@ -65,6 +71,9 @@
   </url>
   <url>
     <loc>/reference/Plot.Mapa.html</loc>
+  </url>
+  <url>
+    <loc>/reference/Plot.Mundo.html</loc>
   </url>
   <url>
     <loc>/reference/Plot.Radar.html</loc>

@@ -32,12 +32,12 @@ dicho texto se visualizará en todas las opciones de descarga. Su valor por
 defecto es \code{NULL}.}
 
 \item{tituloPdf}{Cadena de caracteres que proporciona un título a la tabla al
-momento de generar el \code{.pdf} como al darle al botón de imprimir. Su valor por
-defecto es el introducido en el argumento \code{encabezado}.}
+momento de generar el \code{.pdf} como al hacer clic al botón de imprimir. Su valor
+por defecto es el introducido en el argumento \code{encabezado}.}
 
 \item{mensajePdf}{Cadena de caracteres que proporciona un mensaje situado entre
-el título y la tabla. Se visualizará tanto al generar el \code{.pdf} como al darle
-al botón de imprimir.}
+el título y la tabla. Se visualizará tanto al generar el \code{.pdf} como al
+hacer clic al botón de imprimir.}
 
 \item{ajustarNiveles}{Si es \code{TRUE} (\emph{valor predeterminado}) se buscará optimizar
 el espacio entre las columnas, colocando todos los nombres de las columnas de
@@ -46,7 +46,7 @@ forma horizontal y eliminando al máximo el espacio entre éstas.}
 \item{scrollX}{Si es \code{TRUE} (\emph{valor predeterminado}) se habilitará la propiedad
 Scroller para el eje X. Tenga presente que cuando su df contiene muchas columnas
 es de utilidad (\emph{pues no permite que se salga la tabla por ancho}), sin embargo,
-asegúrese de desactivarlo cuando presente pocas columnas pues se verá un
+asegúrese de desactivarlo cuando presente pocas columnas, pues se verá un
 desplazamiento de los encabezados debido a un conflicto interno.}
 
 \item{colorHead}{Cadena de caracteres que indica el color de fondo de la cabecera
@@ -72,16 +72,17 @@ y "htmlwidget".
 }
 \description{
 Esta función está diseñada para facilitar la creación de tablas para informes
-y publicaciones produciendo un widget HTML para visualizar un data frame utilizando
-el paquete \code{DT}. La forma en que esta función maneja las cosas por usted significa
-que a menudo no tiene que preocuparse por los pequeños detalles para obtener
-un resultado impresionante y listo para usar.
+y publicaciones, produciendo un widget HTML para visualizar un data frame
+utilizando el paquete \code{DT}. La forma en que esta función maneja las cosas por
+usted significa que a menudo no tiene que preocuparse por los pequeños detalles
+para obtener un resultado impresionante y listo para usar.
 }
 \details{
-Esta función se basa enteramente del paquete \code{DT}, el cual proporciona una interfaz
-para \code{R} a la biblioteca \code{DataTables} de \code{JavaScript}. Los data frames de \code{R}
-se pueden mostrar como tablas en páginas HTML, proporcionando opciones de filtrado,
-paginación, clasificación y muchas otras características en las tablas.
+Esta función se basa enteramente del paquete \code{DT}, el cual proporciona una
+interfaz para \code{R} a la biblioteca \code{DataTables} de \code{JavaScript}. Los data frames
+de \code{R} se pueden mostrar como tablas en páginas HTML, proporcionando opciones
+de filtrado, paginación, clasificación y muchas otras características en las
+tablas.
 }
 \examples{
 misColores <- rainbow(length(unique(ejConsolidadoGrad$YEAR)), alpha = 0.5, rev = TRUE)

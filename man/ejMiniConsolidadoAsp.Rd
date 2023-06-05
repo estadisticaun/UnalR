@@ -5,9 +5,10 @@
 \alias{ejMiniConsolidadoAsp}
 \title{Mini Consolidado de Aspirantes}
 \format{
-Un data frame (\emph{data.frame, tbl_df o tbl}) con \verb{r nrow(ejMiniConsolidadoAsp)}
-filas y \verb{r ncol(ejMiniConsolidadoAsp)} columnas:
-\verb{r paste0("``", colnames(ejMiniConsolidadoAsp), "``", collapse = ", ")}.
+Un data frame (\emph{data.frame, tbl_df o tbl}) con
+297
+filas y 5 columnas:
+'Variable', 'YEAR', 'SEMESTRE', 'Clase', 'Total'.
 }
 \source{
 Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.
@@ -17,14 +18,15 @@ ejMiniConsolidadoAsp
 }
 \description{
 Mini consolidado de la población de aspirantes a cursar estudios de pregrado
-o postgrado en la universidad nacional de Colombia inscritos a través de
+o postgrado en la Universidad Nacional de Colombia inscritos a través de
 convocatoria pública de manera regular o por medio de los programas de admisión
 especial existentes -\emph{sólo pregrado}-. Dicho dataset será usado en los ejemplos
 de la función \code{Plot.Drilldown()}.
 }
 \examples{
-if (require("dplyr")) {
-  head(ejMiniConsolidadoAsp)
-}
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(dplyr)
+head(ejMiniConsolidadoAsp)
+\dontshow{\}) # examplesIf}
 }
 \keyword{datasets}

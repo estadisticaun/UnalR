@@ -5,24 +5,32 @@
 #' compatible con plataformas móviles y de escritorio, además de estar diseñada
 #' pensando en la simplicidad y el rendimiento. Esta utilidad produce mapas que
 #' tienen controles para hacer zoom, desplazarse y alternar capas y puntos entre
-#' mostrar y ocultar. Igualmente permite incrustar mapas en webs, documentos
+#' mostrar y ocultar. Igualmente, permite incrustar mapas en webs, documentos
 #' `R Markdown` y aplicaciones `Shiny`. Todo lo anterior basado enteramente en la
 #' librería `Leaflet`, la cual es la biblioteca `JavaScript` de código abierto más
 #' popular para mapas interactivos.
 #'
-#' @param depto Vector numérico que contiene los códigos de los departamentos, de
-#'   acuerdo con la codificación de la División Político-Administrativa de Colombia
-#'   (*DIVIPOLA*) dispuesta por el `DANE`.
-#' @param mpio Vector numérico que contiene los códigos de los municipios, de
-#'   acuerdo con la codificación de la División Político-Administrativa de Colombia
-#'   (*DIVIPOLA*) dispuesta por el `DANE`.
+#' @inheritParams Plot.Series
+#' @param df Un data frame, no un vector numérico.
+#' @param depto Una variable numérica dentro del data frame ingresado en `df`,
+#'   que contiene los códigos de los departamentos, de acuerdo con la codificación
+#'   de la División Político-Administrativa de Colombia (*DIVIPOLA*) dispuesta
+#'   por el `DANE`.
+#' @param mpio Una variable numérica dentro del data frame ingresado en `df`,
+#'   que contiene los códigos de los municipios, de acuerdo con la codificación
+#'   de la División Político-Administrativa de Colombia (*DIVIPOLA*) dispuesta
+#'   por el `DANE`.
+#' @param variable Variable auxiliar con la cual se calculará el estadístico
+#'   previamente seleccionado. Para el caso en que la estadística a calcular sea
+#'   el conteo no es necesario (*no se usará*) especificar dicha variable numérica.
+#' @param agregado Si es `TRUE` (*valor predeterminado*) indica que el data frame
+#'   ingresado se deberá agrupar porque no es un consolidado, sino que se cuenta
+#'   con los microdatos. Por el contrario, si se especifica en `FALSE` quiere
+#'   decir que cada fila es única y se cuenta con el estadístico ya calculado,
+#'   además de poder ingresar únicamente uno de los argumentos `depto` o `mpio`.
 #' @param estadistico Cadena de caracteres que indica el estadístico a graficar
-#'   en el mapa. Los valores permitidos son "Conteo" (*valor predeterminado*),
-#'   "Promedio", "Mediana", "Varianza", "SD", "CV", "Min" y "Max".
-#' @param variable Vector numérico cuya función es servir como variable auxiliar
-#'   con la cual se calculará el estadístico previamente seleccionado. Para el
-#'   caso en que la estadística a calcular sea el conteo no es necesario
-#'   (*no se usará*) especificar dicho vector.
+#'   en el mapa. Los valores permitidos son `"Conteo"` (*valor predeterminado*),
+#'   `"Promedio"`, `"Mediana"`, `"Varianza"`, `"SD"`, `"CV"`, `"Min"` y `"Max"`.
 #' @param tipo Cadena de caracteres que indica el tipo de mapa a graficar. Los
 #'   valores permitidos son "Deptos", "SiNoMpios", "Mpios" y "DeptoMpio"
 #'   (*valor predeterminado*). Se emparejará parcialmente.
@@ -38,9 +46,9 @@
 #' @param centroideMapa Cadena de caracteres indicando el departamento que servirá
 #'   de centroide al momento de graficar el mapa. El valor por defecto es "CUNDINAMARCA".
 #'   Se emparejará parcialmente.
-#' @param zoomMapa Valor numérico que indica el nivel de zoom del mapa (*usado por
-#'   la función* [setView()][leaflet::setView()]). El valor por defecto es 6, entre
-#'   mayor sea su valor más zoom se aplicará al mapa.
+#' @param zoomMapa Valor numérico que indica el nivel de zoom del mapa
+#'   (\emph{usado por la función} [setView()][leaflet::setView()]). El valor por
+#'   defecto es `6`, entre mayor sea su valor más zoom se aplicará al mapa.
 #' @param baldosas Vector de caracteres indicando los mapas base con los que se
 #'   realizará el mapa, sean los popularizados por Google Maps o por terceros.
 #'   Los valores aceptados son los admitidos por la función
@@ -67,7 +75,7 @@
 #'   siguiente manera `list(Deptos = c(), Mpios = c())`, pues requiere dos cortes,
 #'   uno para departamentos y otro para municipios.
 #' @param colores Vector de caracteres indicando los colores para cada uno de los
-#'   intervalos con los que cuenta el mapa. Si no se introduce algún vector se
+#'   intervalos con los que cuenta el mapa. Si no se introduce algún vector, se
 #'   usará una paleta predeterminada dependiendo del tipo de mapa.
 #' @param showSedes Si es `TRUE` (*valor predeterminado*) en el control de capas
 #'   (*usado en la función* [addLayersControl()][leaflet::addLayersControl()])
@@ -94,33 +102,44 @@
 #'   la barra de escala y los botones para ver en pantalla completa, retornar zoom
 #'   y localización. Ajústelo a `TRUE` si desea omitir dichas herramientas adicionales
 #'   al mapa.
+#' @param estilo Lista compuesta por varios parámetros, los cuales van a ser usados
+#'   para graficar el mapa **estático** y cuyo objetivo es personalizar pequeños
+#'   detalles de éste.
+#'   * `anchoBorde`: Número decimal que indica el ancho de la línea de contorno
+#'     de los polígonos del mapa. El valor por defecto es `0.5`.
+#'   * `labelX`, `labelY`: Cadena de caracteres indicando la etiqueta del eje
+#'     respectivo. El valor por defecto es `"Longitud"` y `"Latitud"` respectivamente.
+#'   * `xlim`, `ylim`: Vector numérico que especifica los límites de los ejes respectivos.
+#'   * `Legend`: Igual uso que `gg.Legend` en [Plot.Series()]
+#'   * `Labs`: Igual uso que `gg.Texto` en [Plot.Series()]
+#'   * `Theme`: Igual uso que `gg.Tema` en [Plot.Series()]
+#'   * `Style`: Cadena de caracteres que indica el tipo de mapa a graficar.
+#'     Los valores permitidos son `"Intervalo"`, `"SiNo"`, `"Calor"` y `NA`
+#'     (*valor predeterminado*). Se emparejará parcialmente.
+#'   * `Text`: Lista que especifica aspectos como el color y tamaño de los títulos
+#'     de los polígonos. Para más información, consulte la función [geom_sf_text()][ggplot2::geom_sf_text()].
+#'   * `scaleX`, `scaleY`: Vector numérico que especifica los puntos o cortes a
+#'     graficar en dicho eje. Sacado de la función [scale_x_continuous()][ggplot2::scale_x_continuous()].
 #'
 #' @details
 #' Los vectores `depto` y `mpio` introducidos hacen referencia a atributos atómicos,
 #' es decir, la pareja formada por `(depto, mpio)` debe corresponder a un individuo.
 #' En los argumentos no se acepta la entrada de objetos espaciales o polígonos.
 #'
-#' @return
+#' @returns
 #' Retorna el mapa (*objeto widget de HTML*) creado mediante `Leaflet`, el cual
 #' pertenece a la clase "leaflet" y "htmlwidget".
 #'
-#' @examples
-#' if (require("dplyr")) {
-#'   df <- ejGraduados %>%
-#'     filter(YEAR == 2021) %>%
-#'     select(
-#'       Code_Dept    = COD_DEP_NAC,
-#'       Code_Mun     = COD_CIU_NAC,
-#'       Departamento = DEP_NAC,
-#'       Municipio    = CIU_NAC,
-#'       Longitud     = LON_CIU_NAC,
-#'       Latitud      = LAT_CIU_NAC
-#'     )
-#' }
-#'
+#' @examplesIf require("dplyr")
+#' # library(dplyr)
+#' df <- ejGraduados |> filter(YEAR == 2021) |>
+#'   select(
+#'     COD_DEP_NAC, COD_CIU_NAC, DEP_NAC, CIU_NAC, LON_CIU_NAC, LAT_CIU_NAC
+#'   )
 #' Plot.Mapa(
-#'   depto    = df$Code_Dept,
-#'   mpio     = df$Code_Mun,
+#'   df       = df,
+#'   depto    = COD_DEP_NAC,
+#'   mpio     = COD_CIU_NAC,
 #'   tipo     = "SiNoMpios",
 #'   titulo   = "Graduados 2021-I",
 #'   baldosas = c(
@@ -135,13 +154,14 @@
 #'   textSize = 16,
 #'   limpio   = TRUE
 #' )
-#'
+#' # ---------------------------------------------------------------------------
 #' Plot.Mapa(
-#'   depto   = df$Code_Dept,
-#'   mpio    = df$Code_Mun,
-#'   tipo    = "DeptoMpio",
-#'   titulo  = "Graduados 2020-II",
-#'   cortes  = list(
+#'   df     = df,
+#'   depto  = COD_DEP_NAC,
+#'   mpio   = COD_CIU_NAC,
+#'   tipo   = "DeptoMpio",
+#'   titulo = "Graduados 2021-I",
+#'   cortes = list(
 #'     Deptos = c(0, 10, 20, 50, 500, Inf), Mpios = c(0, 1, 5, 10, 100, Inf)
 #'   ),
 #'   colores = list(
@@ -149,42 +169,110 @@
 #'     Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")
 #'   )
 #' )
-#'
-#' if (require("dplyr") && require("magrittr")) {
-#'   ejSaberPro2020 %>%
-#'     select(
-#'       Code_Dept = COD_DEP_NAC,
-#'       Code_Mun  = COD_CIU_NAC,
-#'       Edad      = EDAD_MOD,
-#'       PBM       = PBM_ORIG,
-#'       ScoreGlobal   = PUNTAJE_GLOBAL,
-#'       ScoreCompCiud = PUNT_COMP_CIUD,
-#'       ScoreComuEscr = PUNT_COMU_ESCR,
-#'       ScoreIngles   = PUNT_INGLES,
-#'       ScoreLectCrit = PUNT_LECT_CRIT,
-#'       ScoreRazCuant = PUNT_RAZO_CUANT
-#'     ) %$%
-#'     Plot.Mapa(
-#'       depto         = Code_Dept,
-#'       mpio          = Code_Mun,
-#'       estadistico   = "Mediana",
-#'       variable      = ScoreGlobal,
-#'       tipo          = "DeptoMpio",
-#'       titulo        = "P.Global 2020",
-#'       naTo0         = FALSE,
-#'       colNA         = "#472985",
-#'       centroideMapa = "ANTIOQUIA",
-#'       zoomMapa      = 8,
-#'       cortes        = list(
-#'         Deptos = c(0, 155, 170, 180, 185, Inf), Mpios = c(0, 50, 178, 200, 250, Inf)
-#'       ),
-#'       colores       = list(
-#'         Deptos = c("#FF7D5A", "#FDBD7D", "#E5DF73", "#63D2A8", "#0055A1"),
-#'         Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")
-#'       ),
-#'       showSedes     = FALSE
-#'     )
-#' }
+#' # ---------------------------------------------------------------------------
+#' @examplesIf require("dplyr") && require("magrittr")
+#' # library(dplyr); library(magrittr)
+#' ejSaberPro2020 %>%
+#'   select(
+#'     Code_Dept = COD_DEP_NAC,
+#'     Code_Mun  = COD_CIU_NAC,
+#'     Edad      = EDAD_MOD,
+#'     PBM       = PBM_ORIG,
+#'     ScoreGlobal   = PUNTAJE_GLOBAL,
+#'     ScoreCompCiud = PUNT_COMP_CIUD,
+#'     ScoreComuEscr = PUNT_COMU_ESCR,
+#'     ScoreIngles   = PUNT_INGLES,
+#'     ScoreLectCrit = PUNT_LECT_CRIT,
+#'     ScoreRazCuant = PUNT_RAZO_CUANT
+#'   ) %$%
+#'   Plot.Mapa(
+#'     df            = .,
+#'     depto         = Code_Dept,
+#'     mpio          = Code_Mun,
+#'     estadistico   = "Mediana",
+#'     variable      = ScoreGlobal,
+#'     tipo          = "DeptoMpio",
+#'     titulo        = "P.Global 2020",
+#'     naTo0         = FALSE,
+#'     colNA         = "#472985",
+#'     centroideMapa = "ANTIOQUIA",
+#'     zoomMapa      = 8,
+#'     cortes        = list(
+#'       Deptos = c(0, 155, 170, 180, 185, Inf), Mpios = c(0, 50, 178, 200, 250, Inf)
+#'     ),
+#'     colores       = list(
+#'       Deptos = c("#FF7D5A", "#FDBD7D", "#E5DF73", "#63D2A8", "#0055A1"),
+#'       Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")
+#'     ),
+#'     showSedes     = FALSE
+#'   )
+#' @examples
+#' # ---------------------------------------------------------------------------
+#' # Ejemplo usando el caso estático (ggplot2)
+#' Plot.Mapa(
+#'   df       = df,
+#'   depto    = COD_DEP_NAC,
+#'   mpio     = COD_CIU_NAC,
+#'   tipo     = "Deptos",
+#'   naTo0    = FALSE,
+#'   colNA    = "#543619",
+#'   titulo   = "N\u00daM. DE GRADUADOS \u00d7 DEPARTAMENTO",
+#'   cortes   = c(0, 10, 20, 50, 500, Inf),
+#'   colores  =  c("#6812F2", "#8FCE00", "#F6ED0D", "#EE6115", "#EC2525"),
+#'   opacidad = 0.6,
+#'   estatico = TRUE,
+#'   estilo   = list(
+#'     Style = "Intervalo", anchoBorde = 0.5, Theme = 2,
+#'     Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
+#'     Labs   = list(subtitle = "A\u00f1o 2021", caption = "(*) Lugar de Nacimiento", tag = "\u00ae"),
+#'     scaleX = seq(-82, -64, by = 1), scaleY = seq(-4, 14, by = 1)
+#'   )
+#' )
+#' @examplesIf require("tibble")
+#' # ---------------------------------------------------------------------------
+#' # library(tibble)
+#' PIB <- tibble(
+#'   DIVIPOLA = c(91,05,81,08,11,13,15,17,18,85,19,20,27,23,25,94,95,41,44,47,50,52,54,86,63,66,88,68,70,73,76,97,99),
+#'   Valor    = c(883,177837,6574,52961,301491,42027,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
+#' )
+#' Plot.Mapa(
+#'   df       = PIB,
+#'   depto    = DIVIPOLA,
+#'   variable = Valor,
+#'   agregado = FALSE,
+#'   tipo     = "Deptos",
+#'   titulo   = "PIB \u00d7 DEPARTAMENTO",
+#'   cortes   = c(0, 500, 5000, 20000, 30000, Inf),
+#'   colores  = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
+#'   colBorde = "#3A0F2D",
+#'   estatico = TRUE,
+#'   textSize = 0,
+#'   estilo   = list(
+#'     Style  = "Intervalo", Theme = 7,
+#'     Legend = list(legend.position = "top", legend.direction = "horizontal"),
+#'     Labs   = list(subtitle = "A Precios Corrientes", caption = "Para el periodo de 2021P (en miles de millones de pesos)")
+#'   )
+#' )
+#' # ---------------------------------------------------------------------------
+#' AreaVichada <- tibble(
+#'   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)
+#' )
+#' Plot.Mapa(
+#'   df       = AreaVichada,
+#'   mpio     = MunCode,
+#'   variable = Area,
+#'   agregado = FALSE,
+#'   tipo     = "Mpios",
+#'   titulo   = "\u00c1REA DE LOS MUNICIPIOS DEL\nDEPARTAMENTO DE VICHADA",
+#'   naTo0    = FALSE,
+#'   centroideMapa = "VICHADA",
+#'   estatico = TRUE,
+#'   estilo   = list(
+#'     Style = "Calor", Theme = 9,
+#'     Labs  = list(caption = "(*) En Metros Cuadrados"),
+#'     Text  = list(color = "#011532", size = 3)
+#'   )
+#' )
 #'
 #' @export
 #'
@@ -198,25 +286,33 @@
 #' @importFrom methods missingArg
 #' @importFrom sp coordinates
 #' @importFrom sf st_point_on_surface st_as_sf
-Plot.Mapa <- function(depto, mpio,
-                      estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
-                      variable = NA, tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"),
-                      titulo, naTo0 = TRUE, colNA = "#EEEEEE",
-                      centroideMapa = "CUNDINAMARCA", zoomMapa = 6, baldosas,
-                      cortes, colores, showSedes = TRUE, colSedes, opacidad = 0.7,
-                      colBorde, compacto = TRUE, textSize = 10, limpio = FALSE) {
+Plot.Mapa <- function(
+    df, depto, mpio, variable, agregado = TRUE,
+    estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
+    tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"), titulo,
+    naTo0 = TRUE, colNA = "#EEEEEE", centroideMapa, zoomMapa = 6, baldosas,
+    cortes, colores, showSedes = TRUE, colSedes, opacidad = 0.7, colBorde,
+    compacto = TRUE, textSize = 10, limpio = FALSE, estatico = FALSE, estilo) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
-  if (missingArg(depto) || missingArg(mpio)) {
-    stop('\u00a1Por favor introduzca tanto el vector "depto" como el "mpio"!', call. = FALSE)
+  if (missingArg(df)) {
+    stop('\u00a1Por favor introduzca el dataframe que contiene la informaci\u00f3n necesaria!', call. = FALSE)
   }
-  if (length(depto) != length(mpio)) {
-    stop('\u00a1Las longitudes de los vectores ingresados ("depto" y "mpio") no coinciden, no se puede reciclar los valores por la naturaleza de estos!', call. = FALSE)
+  if (agregado) {
+    if (missingArg(depto) && missingArg(mpio)) {
+      stop('\u00a1Por favor introduzca tanto el nombre de la columna "depto" como el "mpio"!', call. = FALSE)
+    }
+    Statistic <- match.arg(estadistico)
+  } else {
+    if (missingArg(depto) && missingArg(mpio)) {
+      stop('\u00a1Por favor introduzca el nombre de la columna "depto" o "mpio"!', call. = FALSE)
+    }
+    Statistic <- "Max"
   }
 
-  Statistic <- match.arg(estadistico)
   if (Statistic == "Conteo") {
-    Datos <- tibble("Code_Dept" = depto, "Code_Mun" = mpio) %>% filter(!is.na(Code_Dept))
+    dataframe <- df |> select(codeDept := {{depto}}, codeMun := {{mpio}}) |>
+      filter(!is.na(codeDept))
     if (!missingArg(variable)) {
       warning(paste0(
         '\u00a1Para el estad\u00edstico "Conteo" no es necesario especificar una variable con la cual calcularse. Se omitir\u00e1 la variable',
@@ -226,15 +322,28 @@ Plot.Mapa <- function(depto, mpio,
   } else {
     if (missingArg(variable)) {
       stop(paste0("\u00a1Por favor ingrese una variable auxiliar con la cual se calcular\u00e1 el/la ", tolower(Statistic), "!"), call. = FALSE)
-    } else if (length(variable) != length(depto)) {
-      stop('\u00a1Las longitudes de los vectores ingresados ("depto" y "mpio") con la variable auxiliar no coinciden!', call. = FALSE)
-    } else if (!is.numeric(variable)) {
-      stop("\u00a1El vector ingresado como variable contiene valores no num\u00e9ricos!", call. = FALSE)
+    } else if (!is.numeric(df |> select({{variable}}) |> pull())) {
+      stop("\u00a1La variable auxiliar ingresada contiene valores no num\u00e9ricos!", call. = FALSE)
     }
-    Datos <- tibble("Code_Dept" = depto, "Code_Mun" = mpio, "Variable" = variable) %>% filter(!is.na(Code_Dept))
+    if (agregado) {
+      dataframe <- df |>
+        select(codeDept := {{depto}}, codeMun := {{mpio}}, Variable := {{variable}}) |>
+        filter(!is.na(codeDept))
+    } else {
+      if (missingArg(depto)) {
+        dataframe <- df |>
+          select(codeDept := {{mpio}}, codeMun := {{mpio}}, Variable := {{variable}}) |>
+          filter(!is.na(codeMun))
+      }
+      if (missingArg(mpio)) {
+        dataframe <- df |>
+          select(codeDept := {{depto}}, codeMun := {{depto}}, Variable := {{variable}}) |>
+          filter(!is.na(codeDept))
+      }
+    }
   }
 
-  tipo <- tolower(tipo); centroideMapa <- toupper(centroideMapa)
+  tipo <- tolower(tipo)
   if (tipo %NotIN% c("deptos", "sinompios", "mpios", "deptompio")) {
     stop('\u00a1Por favor introduzca un tipo de mapa correcto! Las opciones son: "Deptos", "SiNoMpios", "Mpios" y "DeptoMpio"', call. = FALSE)
   }
@@ -274,70 +383,72 @@ Plot.Mapa <- function(depto, mpio,
     "\n\t -- Por ejemplo, si los cortes son c(0, 50, Inf) necesitar\u00e1 2 colores para dichos intervalos."
   )
 
-  # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+  # ----------------------------------------------------------------------------
   Msj <- 'Map created by <a href="https://github.com/JeisonAlarcon">Jeison Alarc\u00f3n</a> &mdash; Data source: &copy; <a href="http://estadisticas.unal.edu.co/home/">DNPE</a>'
-  # Code_Mun != 25001 -> Cundinamarca no tiene capital, pues Bogotá D.C. está en otro departamento.
-  Capitales <- Cabeceras %>% filter(Code_Mun %% 1000 == 1, Code_Mun != 25001)
+  # codeMun != 25001 -> Cundinamarca no tiene capital, pues Bogotá D.C. está en otro departamento.
+  Capitales <- Cabeceras |> filter(Code_Mun %% 1000 == 1, Code_Mun != 25001)
 
   # Hace referencia al n* con el cual se calculará la estadística, no al n total que puede incluir NA's.
   #   ■ Para el caso del conteo es diferente, pues para calcular este no se requiere de ninguna variable auxiliar.
   if (naTo0) {
-    GroupBy_Dept <- Datos %>% group_by(Code_Dept) %>% replace(., is.na(.), 0)
-    GroupBy_Mpio <- Datos %>% group_by(Code_Mun)  %>% replace(., is.na(.), 0)
+    GroupBy_Dept <- dataframe |> group_by(codeDept) %>% replace(., is.na(.), 0)
+    GroupBy_Mpio <- dataframe |> group_by(codeMun)  %>% replace(., is.na(.), 0)
 
-    Conteo_ByDept <- GroupBy_Dept %>% summarise("n" = n())
-    Conteo_ByMun  <- GroupBy_Mpio %>% summarise("n" = n())
+    Conteo_ByDept <- GroupBy_Dept |> summarise("n" = n())
+    Conteo_ByMun  <- GroupBy_Mpio |> summarise("n" = n())
   } else {
-    GroupBy_Dept <- Datos %>% group_by(Code_Dept)
-    GroupBy_Mpio <- Datos %>% group_by(Code_Mun)
+    GroupBy_Dept <- dataframe |> group_by(codeDept)
+    GroupBy_Mpio <- dataframe |> group_by(codeMun)
     if (Statistic != "Conteo") {
-      Conteo_ByDept <- GroupBy_Dept %>% summarise("n" = sum(!is.na(Variable)))
-      Conteo_ByMun  <- GroupBy_Mpio %>% summarise("n" = sum(!is.na(Variable)))
+      Conteo_ByDept <- GroupBy_Dept |> summarise("n" = sum(!is.na(Variable)))
+      Conteo_ByMun  <- GroupBy_Mpio |> summarise("n" = sum(!is.na(Variable)))
     } else {
-      Conteo_ByDept <- GroupBy_Dept %>% summarise("n" = n())
-      Conteo_ByMun  <- GroupBy_Mpio %>% summarise("n" = n())
+      Conteo_ByDept <- GroupBy_Dept |> summarise("n" = n())
+      Conteo_ByMun  <- GroupBy_Mpio |> summarise("n" = n())
     }
   }
 
-  Datos_ByDept <- switch(Statistic,
-    Conteo   = GroupBy_Dept %>% summarise("Statistic" = n()),
-    Promedio = GroupBy_Dept %>% summarise("Statistic" = mean(Variable  , na.rm = TRUE)),
-    Mediana  = GroupBy_Dept %>% summarise("Statistic" = median(Variable, na.rm = TRUE)),
-    Varianza = GroupBy_Dept %>% summarise("Statistic" = var(Variable   , na.rm = TRUE)),
-    SD       = GroupBy_Dept %>% summarise("Statistic" = sd(Variable    , na.rm = TRUE)),
-    CV       = GroupBy_Dept %>% summarise("Statistic" = cv(Variable    , na.rm = TRUE)),
-    Min      = GroupBy_Dept %>% summarise("Statistic" = min(Variable   , na.rm = TRUE)),
-    Max      = GroupBy_Dept %>% summarise("Statistic" = max(Variable   , na.rm = TRUE))
+  Datos_ByDept <- switch(
+    Statistic,
+    Conteo   = GroupBy_Dept |> summarise("Statistic" = n()),
+    Promedio = GroupBy_Dept |> summarise("Statistic" = mean(Variable  , na.rm = TRUE)),
+    Mediana  = GroupBy_Dept |> summarise("Statistic" = median(Variable, na.rm = TRUE)),
+    Varianza = GroupBy_Dept |> summarise("Statistic" = var(Variable   , na.rm = TRUE)),
+    SD       = GroupBy_Dept |> summarise("Statistic" = sd(Variable    , na.rm = TRUE)),
+    CV       = GroupBy_Dept |> summarise("Statistic" = cv(Variable    , na.rm = TRUE)),
+    Min      = GroupBy_Dept |> summarise("Statistic" = min(Variable   , na.rm = TRUE)),
+    Max      = GroupBy_Dept |> summarise("Statistic" = max(Variable   , na.rm = TRUE))
   )
-  Datos_ByMun <- switch(Statistic,
-    Conteo   = GroupBy_Mpio %>% summarise("Statistic" = n()),
-    Promedio = GroupBy_Mpio %>% summarise("Statistic" = mean(Variable  , na.rm = TRUE)),
-    Mediana  = GroupBy_Mpio %>% summarise("Statistic" = median(Variable, na.rm = TRUE)),
-    Varianza = GroupBy_Mpio %>% summarise("Statistic" = var(Variable   , na.rm = TRUE)),
-    SD       = GroupBy_Mpio %>% summarise("Statistic" = sd(Variable    , na.rm = TRUE)),
-    CV       = GroupBy_Mpio %>% summarise("Statistic" = cv(Variable    , na.rm = TRUE)),
-    Min      = GroupBy_Mpio %>% summarise("Statistic" = min(Variable   , na.rm = TRUE)),
-    Max      = GroupBy_Mpio %>% summarise("Statistic" = max(Variable   , na.rm = TRUE))
+  Datos_ByMun <- switch(
+    Statistic,
+    Conteo   = GroupBy_Mpio |> summarise("Statistic" = n()),
+    Promedio = GroupBy_Mpio |> summarise("Statistic" = mean(Variable  , na.rm = TRUE)),
+    Mediana  = GroupBy_Mpio |> summarise("Statistic" = median(Variable, na.rm = TRUE)),
+    Varianza = GroupBy_Mpio |> summarise("Statistic" = var(Variable   , na.rm = TRUE)),
+    SD       = GroupBy_Mpio |> summarise("Statistic" = sd(Variable    , na.rm = TRUE)),
+    CV       = GroupBy_Mpio |> summarise("Statistic" = cv(Variable    , na.rm = TRUE)),
+    Min      = GroupBy_Mpio |> summarise("Statistic" = min(Variable   , na.rm = TRUE)),
+    Max      = GroupBy_Mpio |> summarise("Statistic" = max(Variable   , na.rm = TRUE))
   )
 
-  # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+  # --------------------------------------------------------------------------
   # Carga del Departamentos
   Polygons_Depto <- Depto_Final
-  Polygons_Depto@data$Statistic <- Polygons_Depto@data %>%
-    left_join(Datos_ByDept, by = "Code_Dept") %>% select(Statistic) %>%
-    pull() %>% round(3)
-  Polygons_Depto@data$n <- Polygons_Depto@data %>%
-    left_join(Conteo_ByDept, by = "Code_Dept") %>% select(n) %>%
-    pull() %>% round(3)
+  Polygons_Depto@data$Statistic <- Polygons_Depto@data |>
+    left_join(Datos_ByDept, by = join_by(Code_Dept  == codeDept))  |>
+    select(Statistic) |> pull() |> round(3)
+  Polygons_Depto@data$n <- Polygons_Depto@data |>
+    left_join(Conteo_ByDept, by = join_by(Code_Dept  == codeDept)) |>
+    select(n) |> pull() |> round(3)
 
   # Carga de Municipios
   Polygons_Mpio <- Mpio_Final
-  Polygons_Mpio@data$Statistic <- Polygons_Mpio@data %>%
-    left_join(Datos_ByMun, by = "Code_Mun") %>% select(Statistic) %>%
-    pull() %>% round(3)
-  Polygons_Mpio@data$n <- Polygons_Mpio@data %>%
-    left_join(Conteo_ByMun, by = "Code_Mun") %>% select(n) %>%
-    pull() %>% round(3)
+  Polygons_Mpio@data$Statistic <- Polygons_Mpio@data |>
+    left_join(Datos_ByMun, by = join_by(Code_Mun == codeMun))  |>
+    select(Statistic) |> pull() |> round(3)
+  Polygons_Mpio@data$n <- Polygons_Mpio@data |>
+    left_join(Conteo_ByMun, by = join_by(Code_Mun == codeMun)) |>
+    select(n) |> pull() |> round(3)
 
   if (naTo0) {
     Polygons_Depto@data$Statistic <- Poly_Dept_ShowStatistic <- Polygons_Depto@data$Statistic %>% replace(., is.na(.), 0)
@@ -358,371 +469,303 @@ Plot.Mapa <- function(depto, mpio,
   }
 
   # Corrección de algunos municipios cuyo nombre es homónimo de otro.
-  Homonimos <- Polygons_Mpio@data %>%
-    group_by(Municipio) %>% summarise(veces = n()) %>% filter(veces > 1)
+  Homonimos <- Polygons_Mpio@data |>
+    group_by(Municipio) |> summarise(veces = n()) |> filter(veces > 1)
 
-  Polygons_Mpio@data <- Polygons_Mpio@data %>%
-    mutate(Municipio = if_else(condition = Municipio %in% Homonimos$Municipio,
-                               true  = paste(Municipio, substring(Departamento, 1, 3)),
-                               false = Municipio
-                               )
-           )
+  Polygons_Mpio@data <- Polygons_Mpio@data |>
+    mutate(Municipio = if_else(
+      condition = Municipio %in% Homonimos$Municipio,
+      true  = paste(Municipio, substring(Departamento, 1, 3)),
+      false = Municipio
+    )
+    )
 
-  # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
-  # Ubicación de los centroides correspondientes a cada departamento (extraídos del objeto 'Polygons_Depto' y no de 'Capitales')
-  #   ■ El centroide de Colombia corresponde al centroide del departamento de Cundinamarca
-  NumDept <- length(Polygons_Depto); Coordenadas <- sp::coordinates(Polygons_Depto)
-  Centroides_Deptos <- data.frame("Departamento" = Polygons_Depto@data$Departamento, "Lon" = Coordenadas[,1], "Lat" = Coordenadas[,2])
+  # ----------------------------------------------------------------------------
+  if (!estatico) {
 
-  NumMpios    <- length(Polygons_Mpio)
-  #   ■ Corrección del centroide de los municipios, pues en algunos casos éste se sale del polígono
-  Coordenadas <- suppressWarnings(sf::st_point_on_surface(sf::st_as_sf(Polygons_Mpio)))
-  Coordenadas <- data.frame(sf::st_coordinates(Coordenadas))
-  Centroides_Mpios <- tibble("Municipio" = Polygons_Mpio@data$Municipio, "Lon" = Coordenadas$X, "Lat" = Coordenadas$Y)
+    centroideMapa <- ifelse(missingArg(centroideMapa), "CUNDINAMARCA", toupper(centroideMapa))
+    # ..........................................................................
+    # Ubicación de los centroides correspondientes a cada departamento (extraídos del objeto 'Polygons_Depto' y no de 'Capitales')
+    #   ■ El centroide de Colombia corresponde al centroide del departamento de Cundinamarca
+    NumDept <- length(Polygons_Depto); Coordenadas <- sp::coordinates(Polygons_Depto)
+    Centroides_Deptos <- data.frame("Departamento" = Polygons_Depto@data$Departamento, "Lon" = Coordenadas[,1], "Lat" = Coordenadas[,2])
 
-  Centroide_Col <- Centroides_Deptos %>% filter(Departamento == centroideMapa)
+    NumMpios    <- length(Polygons_Mpio)
+    #   ■ Corrección del centroide de los municipios, pues en algunos casos éste se sale del polígono
+    Coordenadas <- suppressWarnings(sf::st_point_on_surface(sf::st_as_sf(Polygons_Mpio)))
+    Coordenadas <- data.frame(sf::st_coordinates(Coordenadas))
+    Centroides_Mpios <- tibble("Municipio" = Polygons_Mpio@data$Municipio, "Lon" = Coordenadas$X, "Lat" = Coordenadas$Y)
 
-  # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
-  # Filtrar sedes de la Universidad Nacional de Colombia
-  Sedes <- Cabeceras %>%
-    filter(Code_Mun %in% c(5001, 11001, 17001, 20621, 52835, 76520, 81001, 88001, 91001)) %>%
-    mutate(Sede = c("Medell\u00edn", "Bogot\u00e1", "Manizales", "De La Paz", "Tumaco", "Palmira",  "Orinoqu\u00eda", "Caribe", "Amazonas"))
-  Icons_Sedes <- makeAwesomeIcon(markerColor = Icons_Col, iconColor = "white", fontFamily = "Leonardian", text = "un")
+    Centroide_Col <- Centroides_Deptos |> filter(Departamento == centroideMapa)
 
-  # Extracción de la segregación y el periodo en cuestión del título ingresado
-  TitleSplit <- strsplit(titulo, "\\s+"); Segregacion <- TitleSplit[[1]][1]; Periodo <- TitleSplit[[1]][2]
-  TitleDepto <- paste0("<center>", Segregacion, " por<br/>departamento<br/>", Periodo, "</center>")
-  TitleMpio  <- paste0("<center>", Segregacion, " por<br/>municipio<br/>"   , Periodo, "</center>")
+    # ..........................................................................
+    # Filtrar sedes de la Universidad Nacional de Colombia
+    Sedes <- Cabeceras |>
+      filter(Code_Mun %in% c(5001, 11001, 17001, 20621, 52835, 76520, 81001, 88001, 91001)) |>
+      mutate(Sede = c("Medell\u00edn", "Bogot\u00e1", "Manizales", "De La Paz", "Tumaco", "Palmira",  "Orinoqu\u00eda", "Caribe", "Amazonas"))
+    Icons_Sedes <- makeAwesomeIcon(markerColor = Icons_Col, iconColor = "white", fontFamily = "Leonardian", text = "un")
 
-  # Labels
-  Labels_Sedes <- sprintf("<strong>%s %s</strong>", "Sede", Sedes$Sede) %>% lapply(htmltools::HTML)
-  if (Statistic != "Conteo") {
-    Labels_Deptos <- sprintf(
-      paste0("<strong> %s </strong> <br>", Statistic, ": ", Comodin, " <br> n: ", Comodin),
-      Polygons_Depto@data$Departamento, Poly_Dept_ShowStatistic, Poly_Dept_ShowN
-    ) %>%
-      lapply(htmltools::HTML)
-    Labels_Mpios <- sprintf(
-      paste0("<strong> %s </strong> (%s) <br>", Statistic, ": ", Comodin, " <br> n: ", Comodin),
-      Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento,
-      Poly_Mpio_ShowStatistic, Poly_Mpio_ShowN
-    ) %>%
-      lapply(htmltools::HTML)
-  } else {
-    Labels_Deptos <- sprintf(
-      paste0("<strong> %s </strong> <br>", Comodin, " ", tolower(Segregacion)),
-      Polygons_Depto@data$Departamento, Poly_Dept_ShowStatistic
-    ) %>%
-      lapply(htmltools::HTML)
-    Labels_Mpios <- sprintf(
-      paste0("<strong> %s </strong> (%s) <br>", Comodin, " ", tolower(Segregacion)),
-      Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento, Poly_Mpio_ShowStatistic
-    ) %>%
-      lapply(htmltools::HTML)
-  }
+    # Extracción de la segregación y el periodo en cuestión del título ingresado
+    TitleSplit <- strsplit(titulo, "\\s+"); Segregacion <- TitleSplit[[1]][1]; Periodo <- TitleSplit[[1]][2]
+    TitleDepto <- paste0("<center>", Segregacion, " por<br/>departamento<br/>", Periodo, "</center>")
+    TitleMpio  <- paste0("<center>", Segregacion, " por<br/>municipio<br/>"   , Periodo, "</center>")
 
-  # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
-  if (tipo == "deptos") {
-
-    # MAPA POR DEPARTAMENTOS
-    if (missingArg(colBorde)) { colBorde <- "#5A0028" }
-    if (!(missingArg(cortes) && missingArg(colores))) {
-      if (length(colores) != length(cortes)-1L) {
-        stop(Mensaje, call. = FALSE)
-      } else { Colors <- colores; Cortes <- cortes }
+    # Labels
+    Labels_Sedes <- sprintf("<strong>%s %s</strong>", "Sede", Sedes$Sede) |> lapply(htmltools::HTML)
+    if (Statistic != "Conteo") {
+      Labels_Deptos <- sprintf(
+        paste0("<strong> %s </strong> <br>", Statistic, ": ", Comodin, " <br> n: ", Comodin),
+        Polygons_Depto@data$Departamento, Poly_Dept_ShowStatistic, Poly_Dept_ShowN
+      ) |>
+        lapply(htmltools::HTML)
+      Labels_Mpios <- sprintf(
+        paste0("<strong> %s </strong> (%s) <br>", Statistic, ": ", Comodin, " <br> n: ", Comodin),
+        Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento,
+        Poly_Mpio_ShowStatistic, Poly_Mpio_ShowN
+      ) |>
+        lapply(htmltools::HTML)
     } else {
-      Colors <- c("#E1F5C4", "#EDE574", "#F9D423", "#FC913A", "#FF4E50")
-      Cortes <- c(0, 20, 50, 200, 1000, Inf)
-    }
-    pal  <- colorBin(Colors, bins = Cortes, na.color = colNA)
-
-    Mapa <- leaflet(data = Polygons_Depto) %>% addTiles(attribution = Msj)
-    for (i in 1:length(Baldosas)) {
-      Mapa <- Mapa %>% addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
-    }
-
-    Mapa <- Mapa %>%
-      # Definiendo el centro del mapa.
-      setView(lat = Centroide_Col$Lat, lng = Centroide_Col$Lon, zoom = zoomMapa) %>%
-      # Adición de grupos de control de capas.
-      addLayersControl(baseGroups = Baldosas.names, options = layersControlOptions(collapsed = compacto)) %>%
-      # Adición de los polígonos, su relleno y etiquetas con el nombre y número de graduados.
-      addPolygons(
-        stroke = TRUE, fillColor = ~pal(Statistic), weight = 2, opacity = opacidad,
-        color = "#005A32", dashArray = "", fillOpacity = opacidad,
-        highlightOptions = list(weight = 4, color = colBorde, dashArray = "", fillOpacity = opacidadClic, bringToFront = TRUE),
-        label = Labels_Deptos, labelOptions = labelOptions(
-          style = list("font-weight" = "normal", padding = "3px 8px"),
-          textsize = "12px", direction = "auto"
-        )
-      ) %>%
-      addLegend(position = "bottomright", pal = pal, values = ~Statistic, opacity = opacidadClic,
-                labFormat = labelFormat(prefix = "[", suffix = ")"), title = titulo
-                ) %>%
-      # Adición de los textos indicando el departamento y su respectivo municipio capital.
-      addLabelOnlyMarkers(
-        lng = Centroides_Deptos$Lon, lat = Centroides_Deptos$Lat,
-        label = paste0(sapply(Centroides_Deptos$Departamento, str_to_title)),
-        group = "lupa", labelOptions = labelOptions(
-          noHide = TRUE, direction = "top", textOnly = TRUE, textsize = textDeptos
-        )
-      ) %>%
-      addLabelOnlyMarkers(
-        lng = Capitales$Longitud, lat = Capitales$Latitud,
-        label = paste0(sapply(Capitales$Municipio, str_to_title)),
-        group = "lupa", labelOptions = labelOptions(
-          noHide = TRUE, textOnly = TRUE, textsize = textMpios
-        )
-      ) %>%
-      # Adición del botón de control de búsqueda (lupa).
-      addSearchFeatures(targetGroups = "lupa", options = searchFeaturesOptions(
-        zoom = 8, openPopup = TRUE, textErr = "Ubicaci\u00f3n No Encontrada",
-        textCancel = "Cancelar", textPlaceholder = "Buscar...",
-        position = "topleft", hideMarkerOnCollapse = FALSE
-        )
-      ) %>%
-      # Adición de los marcadores circulares para las capitales de los departamentos.
-      addCircleMarkers(
-        lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
-        color = "#D95F02", fill = TRUE, fillColor = "orangelight", fillOpacity = 0.9
-      )
-
-  } else if (tipo == "sinompios") {
-
-    # MAPA POR MUNICIPIO (SI/NO)
-    if (missingArg(colBorde)) { colBorde <- "#16ABAB" }
-    if (!missingArg(cortes)) {
-      warning(paste0("\u00a1Usted ha ingresado alg\u00fan valor en el argumento 'cortes' y ha seleccionado el tipo de mapa 'SiNoMpios'!",
-                     "\n\t Por lo cual se omitir\u00e1 el valor ingresado, pues este tipo de mapa no permite un cambio en los cortes, pues es un intervalo binario."),
-              call. = FALSE)
-    }
-    if (!missingArg(colores)) {
-      if (length(colores) != 2L) {
-        stop("\u00a1La longitud del argumento 'colores' es diferente a 2! Este mapa es binario por lo cual necesita especificar solamente 2 colores.", call. = FALSE)
-      } else { colBinary <- colores }
-    } else { colBinary <- c("#FDAE61", "#A6D96A") }
-    Pal_Binary <- colorBin(palette = colBinary, bins = c(0, 1, 35000), na.color = colNA)
-
-    Mapa <- leaflet(data = Polygons_Mpio) %>% addTiles(attribution = Msj)
-    for (i in 1:length(Baldosas)) {
-      Mapa <- Mapa %>% addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
+      Labels_Deptos <- sprintf(
+        paste0("<strong> %s </strong> <br>", Comodin, " ", tolower(Segregacion)),
+        Polygons_Depto@data$Departamento, Poly_Dept_ShowStatistic
+      ) |>
+        lapply(htmltools::HTML)
+      Labels_Mpios <- sprintf(
+        paste0("<strong> %s </strong> (%s) <br>", Comodin, " ", tolower(Segregacion)),
+        Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento, Poly_Mpio_ShowStatistic
+      ) |>
+        lapply(htmltools::HTML)
     }
 
-    Mapa <- Mapa %>%
-      setView(lat = Centroide_Col$Lat, lng = Centroide_Col$Lon, zoom = zoomMapa) %>%
-      addLayersControl(baseGroups = Baldosas.names, options = layersControlOptions(collapsed = compacto)) %>%
-      addPolygons(
-        stroke = TRUE, fillColor = ~Pal_Binary(Statistic), weight = 1,
-        opacity = opacidad, color = "gray", dashArray = "3", fillOpacity = opacidad,
-        highlightOptions = list(
-          weight = 4, color = colBorde, dashArray = "",
-          fillOpacity = opacidadClic, bringToFront = TRUE
-        ),
-        label = Labels_Mpios, labelOptions = labelOptions(
-          style = list("font-weight" = "normal", padding = "3px 8px"),
-          textsize = "12px", direction = "auto"
-        )
-      ) %>%
-      addPolylines(data = Polygons_Depto, stroke = TRUE, color = "white", weight = 2, smoothFactor = 0.05) %>%
-      addLegend(
-        position = "bottomright", values = ~Statistic, bins = c(0, 1, 35000), colors = colBinary, opacity = opacidadClic,
-        labels = c(paste0("0 ", Segregacion), paste0("1 o m\u00e1s ", Segregacion)), title = titulo
-      ) %>%
-      addLabelOnlyMarkers(
-        lng = Centroides_Deptos$Lon, lat = Centroides_Deptos$Lat,
-        label = paste0(sapply(Centroides_Deptos$Departamento, str_to_title)),
-        group = "lupa", labelOptions = labelOptions(noHide = TRUE, direction = "top", textOnly = TRUE, textsize = textDeptos)
-      ) %>%
-      addLabelOnlyMarkers(
-        lng = Centroides_Mpios$Lon, lat = Centroides_Mpios$Lat,
-        label = paste0(sapply(Centroides_Mpios$Municipio, str_to_title)),
-        group = "lupa", labelOptions = labelOptions(noHide = FALSE)
-      ) %>%
-      addSearchFeatures(targetGroups = "lupa", options = searchFeaturesOptions(
-        zoom = 10, openPopup = TRUE, textErr = "Ubicaci\u00f3n No Encontrada",
-        textCancel = "Cancelar", textPlaceholder = "Buscar...",
-        position = "topleft", hideMarkerOnCollapse = FALSE
-        )
-      ) %>%
-      addCircleMarkers(
-        lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
-        color = "#377EB8", fill = TRUE, fillColor = "purplelight", fillOpacity = 0.9
-      )
+    if (tipo == "deptos") {
 
-  } else if (tipo == "mpios") {
-
-    # MAPA TOTAL DE GRADUADOS POR MUNICIPIO
-    if (missingArg(colBorde)) { colBorde <- "#AB1616" }
-    if (!(missingArg(cortes) && missingArg(colores))) {
-      if (length(colores) != length(cortes)-1L) {
-        stop(Mensaje, call. = FALSE)
-      } else { Colors <- colores; Cortes <- cortes }
-    } else {
-      Colors <- c("#B9FFDC", "#CFFFAF", "#FFEA80", "#FFA652", "#ED6753")
-      Cortes <- c(0, 1, 3, 10, 100, Inf)
-    }
-    pal  <- colorBin(Colors, domain = Polygons_Mpio@data$Statistic, bins = Cortes, na.color = colNA)
-
-    Mapa <- leaflet(data = Polygons_Mpio) %>% addTiles(attribution = Msj)
-    for (i in 1:length(Baldosas)) {
-      Mapa <- Mapa %>% addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
-    }
-
-    Mapa <- Mapa %>%
-      setView(lat = Centroide_Col$Lat, lng = Centroide_Col$Lon, zoom = zoomMapa) %>%
-      addLayersControl(baseGroups = Baldosas.names, options = layersControlOptions(collapsed = compacto)) %>%
-      addPolygons(
-        stroke = TRUE, fillColor = ~pal(Statistic), weight = 1, opacity = opacidad,
-        color = "gray", dashArray = "3", fillOpacity = opacidad,
-        highlightOptions = list(
-          weight = 4, color = colBorde, dashArray = "",
-          fillOpacity = opacidadClic, bringToFront = TRUE
-        ),
-        label = Labels_Mpios, labelOptions = labelOptions(
-          style = list("font-weight" = "normal", padding = "3px 8px"),
-          textsize = "12px", direction = "auto"
-        )
-      ) %>%
-      addPolylines(data = Polygons_Depto, stroke = TRUE, color = "#252525", weight = 2, smoothFactor = 0.05) %>%
-      addLegend(position = "bottomright", pal = pal, values = ~Statistic, opacity = opacidadClic,
-                labFormat = labelFormat(prefix = "[", suffix = ")"), title = titulo
-                ) %>%
-      addLabelOnlyMarkers(
-        lng = Centroides_Deptos$Lon, lat = Centroides_Deptos$Lat,
-        label = paste0(sapply(Centroides_Deptos$Departamento, str_to_title)),
-        group = "lupa", labelOptions = labelOptions(noHide = TRUE, direction = "top", textOnly = TRUE, textsize = textDeptos)
-      ) %>%
-      addLabelOnlyMarkers(
-        lng = Centroides_Mpios$Lon, lat = Centroides_Mpios$Lat,
-        label = paste0(sapply(Centroides_Mpios$Municipio, str_to_title)),
-        group = "lupa", labelOptions = labelOptions(noHide = FALSE)
-      ) %>%
-      addSearchFeatures(targetGroups = "lupa", options = searchFeaturesOptions(
-        zoom = 10, openPopup = TRUE, textErr = "Ubicaci\u00f3n No Encontrada",
-        textCancel = "Cancelar", textPlaceholder = "Buscar...",
-        position = "topleft", hideMarkerOnCollapse = FALSE
-        )
-      ) %>%
-      addCircleMarkers(
-        lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
-        color = "#377EB8", fill = TRUE, fillColor = "purplelight", fillOpacity = 0.9
-      )
-
-  } else {
-
-    # MAPA COMBINADO DEPARTAMENTO-MUNICIPIO
-    if (missingArg(colBorde)) { colBorde <- "#5A0028" }
-    if (!(missingArg(cortes) && missingArg(colores))) {
-      if ( (length(colores$Deptos) != length(cortes$Deptos)-1L) || (length(colores$Mpios) != length(cortes$Mpios)-1L) ) {
-        stop(Mensaje, call. = FALSE)
+      # MAPA POR DEPARTAMENTOS
+      if (missingArg(colBorde)) { colBorde <- "#5A0028" }
+      if (!(missingArg(cortes) && missingArg(colores))) {
+        if (length(colores) != length(cortes)-1L) {
+          stop(Mensaje, call. = FALSE)
+        } else { Colors <- colores; Cortes <- cortes }
       } else {
-        Colors_Deptos <- colores$Deptos; Cortes_Deptos <- cortes$Deptos
-        Colors_Mpios  <- colores$Mpios ; Cortes_Mpios  <- cortes$Mpios
+        Colors <- c("#E1F5C4", "#EDE574", "#F9D423", "#FC913A", "#FF4E50")
+        Cortes <- c(0, 20, 50, 200, 1000, Inf)
       }
-    } else {
-      Colors_Deptos <- c("#E1F5C4", "#EDE574", "#F9D423", "#FC913A", "#FF4E50")
-      Cortes_Deptos <- c(0, 20, 50, 200, 1000, Inf)
-      Colors_Mpios  <- c("#B9FFDC", "#CFFFAF", "#FFEA80", "#FFA652", "#ED6753")
-      Cortes_Mpios  <- c(0, 1, 3, 10, 100, Inf)
-    }
-    Pal_Deptos <- colorBin(palette = Colors_Deptos, bins = Cortes_Deptos, na.color = colNA)
-    Pal_Mpios  <- colorBin(palette = Colors_Mpios, domain = Polygons_Mpio@data$Statistic, bins = Cortes_Mpios, na.color = colNA)
+      pal  <- colorBin(Colors, bins = Cortes, na.color = colNA)
 
-    Mapa <- leaflet(data = Polygons_Mpio) %>% addTiles(attribution = Msj)
-    for (i in 1:length(Baldosas)) {
-      Mapa <- Mapa %>% addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
-    }
+      Mapa <- leaflet(data = Polygons_Depto) |> addTiles(attribution = Msj)
+      for (i in 1:length(Baldosas)) {
+        Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
+      }
 
-    Mapa <- Mapa %>%
-      setView(lat = Centroide_Col$Lat, lng = Centroide_Col$Lon, zoom = zoomMapa) %>%
-      addLayersControl(
-        baseGroups = Baldosas.names, overlayGroups = "Mostrar<br/>Departamentos",
-        options = layersControlOptions(collapsed = compacto, autoZindex = TRUE)
-      ) %>%
-      addPolygons(
-        stroke = TRUE, fillColor = ~Pal_Mpios(Statistic), weight = 1,
-        opacity = opacidad, color = "gray", dashArray = "3", fillOpacity = opacidad,
-        highlightOptions = list(
-          weight = 4, color = colBorde, dashArray = "",
-          fillOpacity = opacidadClic, bringToFront = TRUE
-        ),
-        label = Labels_Mpios, group = "Municipios", labelOptions = labelOptions(
-          style = list("font-weight" = "normal", padding = "3px 8px"),
-          textsize = "12px", direction = "auto"
-        )
-      ) %>%
-      addPolygons(
-        data = Polygons_Depto, stroke = TRUE, fillColor = ~Pal_Deptos(Statistic),
-        weight = 2, opacity = opacidad, color = "#005A32", dashArray = "",
-        fillOpacity = opacidad, highlightOptions = list(
-          weight = 4, color = "#5A0028", dashArray = "",
-          fillOpacity = opacidadClic, bringToFront = TRUE
-        ),
-        label = Labels_Deptos, group = "Mostrar<br/>Departamentos",
-        labelOptions = labelOptions(
-          style = list("font-weight" = "normal", padding = "3px 8px"),
-          textsize = "12px", direction = "auto"
-        )
-      ) %>%
-      showGroup("Municipios") %>%
-      hideGroup("Mostrar<br/>Departamentos") %>%
-      addPolylines(data = Polygons_Depto, stroke = TRUE, color = "#005A32", weight = 2, smoothFactor = 0.05, group = "Municipios") %>%
-      addLegend(position = "bottomright", pal = Pal_Mpios , values = ~Statistic, opacity = opacidadClic, labFormat = labelFormat(prefix = "[", suffix = ")"), title = TitleMpio) %>%
-      addLegend(position = "bottomright", pal = Pal_Deptos, values = ~Statistic, opacity = opacidadClic, labFormat = labelFormat(prefix = "[", suffix = ")"), title = TitleDepto) %>%
-      addLabelOnlyMarkers(
-        lng = Centroides_Deptos$Lon, lat = Centroides_Deptos$Lat,
-        label = paste0(sapply(Centroides_Deptos$Departamento, str_to_title)),
-        group = "lupa", labelOptions = labelOptions(noHide = TRUE, direction = "top", textOnly = TRUE, textsize = textDeptos)
-      ) %>%
-      addLabelOnlyMarkers(
-        lng = Capitales$Longitud, lat = Capitales$Latitud,
-        label = paste0(sapply(Capitales$Municipio, str_to_title)),
-        labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE, textsize = textMpios)
-      ) %>%
-      addLabelOnlyMarkers(
-        lng = Centroides_Mpios$Lon, lat = Centroides_Mpios$Lat,
-        label = paste0(sapply(Centroides_Mpios$Municipio, str_to_title)),
-        group = "lupa", labelOptions = labelOptions(noHide = FALSE)
-      ) %>%
-      addSearchFeatures(targetGroups = "lupa", options = searchFeaturesOptions(
-        zoom = 10, openPopup = TRUE, textErr = "Ubicaci\u00f3n No Encontrada",
-        textCancel = "Cancelar", textPlaceholder = "Buscar...",
-        position = "topleft", hideMarkerOnCollapse = FALSE
-        )
-      ) %>%
-      addCircleMarkers(
-        lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
-        color = "#D95F02", fill = TRUE, fillColor = "orangelight", fillOpacity = 0.9, group = "Municipios"
-      ) %>%
-      addCircleMarkers(
-        lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
-        color = "#D95F02", fill = TRUE, fillColor = "orangelight", fillOpacity = 0.9, group = "Mostrar<br/>Departamentos"
-      )
-  }
-
-  if (showSedes) {
-    if (tipo %in% c("deptos", "sinompios", "mpios")) {
-      Mapa <- Mapa %>%
+      Mapa <- Mapa |>
+        # Definiendo el centro del mapa.
+        setView(lat = Centroide_Col$Lat, lng = Centroide_Col$Lon, zoom = zoomMapa) |>
         # Adición de grupos de control de capas.
-        addLayersControl(baseGroups = Baldosas.names, overlayGroups = "Mostrar<br/>sedes UNAL",
-                         options = layersControlOptions(collapsed = compacto)
-                         ) %>%
-        # Adición de los marcadores de iconos para las distintas sedes de presencia nacional de la UNAL, y deseleccionándola por defecto.
-        addAwesomeMarkers(
-          lng = Sedes$Longitud, lat = Sedes$Latitud, group = "Mostrar<br/>sedes UNAL",
-          icon = Icons_Sedes, label = Labels_Sedes, labelOptions = labelOptions(
-            style = list("font-weight" = "large", padding = "3px 8px"),
-            textsize = "15px", direction = "auto"
+        addLayersControl(baseGroups = Baldosas.names, options = layersControlOptions(collapsed = compacto)) |>
+        # Adición de los polígonos, su relleno y etiquetas con el nombre y número de graduados.
+        addPolygons(
+          stroke = TRUE, fillColor = ~pal(Statistic), weight = 2, opacity = opacidad,
+          color = "#005A32", dashArray = "", fillOpacity = opacidad,
+          highlightOptions = list(weight = 4, color = colBorde, dashArray = "", fillOpacity = opacidadClic, bringToFront = TRUE),
+          label = Labels_Deptos, labelOptions = labelOptions(
+            style = list("font-weight" = "normal", padding = "3px 8px"),
+            textsize = "12px", direction = "auto"
           )
-        ) %>%
-        hideGroup("Mostrar<br/>sedes UNAL")
+        ) |>
+        addLegend(position = "bottomright", pal = pal, values = ~Statistic, opacity = opacidadClic,
+                  labFormat = labelFormat(prefix = "[", suffix = ")"), title = titulo
+        ) |>
+        # Adición de los textos indicando el departamento y su respectivo municipio capital.
+        addLabelOnlyMarkers(
+          lng = Centroides_Deptos$Lon, lat = Centroides_Deptos$Lat,
+          label = paste0(sapply(Centroides_Deptos$Departamento, str_to_title)),
+          group = "lupa", labelOptions = labelOptions(
+            noHide = TRUE, direction = "top", textOnly = TRUE, textsize = textDeptos
+          )
+        ) |>
+        addLabelOnlyMarkers(
+          lng = Capitales$Longitud, lat = Capitales$Latitud,
+          label = paste0(sapply(Capitales$Municipio, str_to_title)),
+          group = "lupa", labelOptions = labelOptions(
+            noHide = TRUE, textOnly = TRUE, textsize = textMpios
+          )
+        ) |>
+        # Adición del botón de control de búsqueda (lupa).
+        addSearchFeatures(targetGroups = "lupa", options = searchFeaturesOptions(
+          zoom = 8, openPopup = TRUE, textErr = "Ubicaci\u00f3n No Encontrada",
+          textCancel = "Cancelar", textPlaceholder = "Buscar...",
+          position = "topleft", hideMarkerOnCollapse = FALSE
+        )
+        ) |>
+        # Adición de los marcadores circulares para las capitales de los departamentos.
+        addCircleMarkers(
+          lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
+          color = "#D95F02", fill = TRUE, fillColor = "orangelight", fillOpacity = 0.9
+        )
+
+    } else if (tipo == "sinompios") {
+
+      # MAPA POR MUNICIPIO (SI/NO)
+      if (missingArg(colBorde)) { colBorde <- "#16ABAB" }
+      if (!missingArg(cortes)) {
+        warning(paste0("\u00a1Usted ha ingresado alg\u00fan valor en el argumento 'cortes' y ha seleccionado el tipo de mapa 'SiNoMpios'!",
+                       "\n\t Por lo cual se omitir\u00e1 el valor ingresado, pues este tipo de mapa no permite un cambio en los cortes, pues es un intervalo binario."),
+                call. = FALSE)
+      }
+      if (!missingArg(colores)) {
+        if (length(colores) != 2L) {
+          stop("\u00a1La longitud del argumento 'colores' es diferente a 2! Este mapa es binario por lo cual necesita especificar solamente 2 colores.", call. = FALSE)
+        } else { colBinary <- colores }
+      } else { colBinary <- c("#FDAE61", "#A6D96A") }
+      Pal_Binary <- colorBin(palette = colBinary, bins = c(0, 1, 35000), na.color = colNA)
+
+      Mapa <- leaflet(data = Polygons_Mpio) |> addTiles(attribution = Msj)
+      for (i in 1:length(Baldosas)) {
+        Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
+      }
+
+      Mapa <- Mapa |>
+        setView(lat = Centroide_Col$Lat, lng = Centroide_Col$Lon, zoom = zoomMapa) |>
+        addLayersControl(baseGroups = Baldosas.names, options = layersControlOptions(collapsed = compacto)) |>
+        addPolygons(
+          stroke = TRUE, fillColor = ~Pal_Binary(Statistic), weight = 1,
+          opacity = opacidad, color = "gray", dashArray = "3", fillOpacity = opacidad,
+          highlightOptions = list(
+            weight = 4, color = colBorde, dashArray = "",
+            fillOpacity = opacidadClic, bringToFront = TRUE
+          ),
+          label = Labels_Mpios, labelOptions = labelOptions(
+            style = list("font-weight" = "normal", padding = "3px 8px"),
+            textsize = "12px", direction = "auto"
+          )
+        ) |>
+        addPolylines(data = Polygons_Depto, stroke = TRUE, color = "white", weight = 2, smoothFactor = 0.05) |>
+        addLegend(
+          position = "bottomright", values = ~Statistic, bins = c(0, 1, 35000), colors = colBinary, opacity = opacidadClic,
+          labels = c(paste0("0 ", Segregacion), paste0("1 o m\u00e1s ", Segregacion)), title = titulo
+        ) |>
+        addLabelOnlyMarkers(
+          lng = Centroides_Deptos$Lon, lat = Centroides_Deptos$Lat,
+          label = paste0(sapply(Centroides_Deptos$Departamento, str_to_title)),
+          group = "lupa", labelOptions = labelOptions(noHide = TRUE, direction = "top", textOnly = TRUE, textsize = textDeptos)
+        ) |>
+        addLabelOnlyMarkers(
+          lng = Centroides_Mpios$Lon, lat = Centroides_Mpios$Lat,
+          label = paste0(sapply(Centroides_Mpios$Municipio, str_to_title)),
+          group = "lupa", labelOptions = labelOptions(noHide = FALSE)
+        ) |>
+        addSearchFeatures(targetGroups = "lupa", options = searchFeaturesOptions(
+          zoom = 10, openPopup = TRUE, textErr = "Ubicaci\u00f3n No Encontrada",
+          textCancel = "Cancelar", textPlaceholder = "Buscar...",
+          position = "topleft", hideMarkerOnCollapse = FALSE
+        )
+        ) |>
+        addCircleMarkers(
+          lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
+          color = "#377EB8", fill = TRUE, fillColor = "purplelight", fillOpacity = 0.9
+        )
+
+    } else if (tipo == "mpios") {
+
+      # MAPA TOTAL DE GRADUADOS POR MUNICIPIO
+      if (missingArg(colBorde)) { colBorde <- "#AB1616" }
+      if (!(missingArg(cortes) && missingArg(colores))) {
+        if (length(colores) != length(cortes)-1L) {
+          stop(Mensaje, call. = FALSE)
+        } else { Colors <- colores; Cortes <- cortes }
+      } else {
+        Colors <- c("#B9FFDC", "#CFFFAF", "#FFEA80", "#FFA652", "#ED6753")
+        Cortes <- c(0, 1, 3, 10, 100, Inf)
+      }
+      pal  <- colorBin(Colors, domain = Polygons_Mpio@data$Statistic, bins = Cortes, na.color = colNA)
+
+      Mapa <- leaflet(data = Polygons_Mpio) |> addTiles(attribution = Msj)
+      for (i in 1:length(Baldosas)) {
+        Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
+      }
+
+      Mapa <- Mapa |>
+        setView(lat = Centroide_Col$Lat, lng = Centroide_Col$Lon, zoom = zoomMapa) |>
+        addLayersControl(baseGroups = Baldosas.names, options = layersControlOptions(collapsed = compacto)) |>
+        addPolygons(
+          stroke = TRUE, fillColor = ~pal(Statistic), weight = 1, opacity = opacidad,
+          color = "gray", dashArray = "3", fillOpacity = opacidad,
+          highlightOptions = list(
+            weight = 4, color = colBorde, dashArray = "",
+            fillOpacity = opacidadClic, bringToFront = TRUE
+          ),
+          label = Labels_Mpios, labelOptions = labelOptions(
+            style = list("font-weight" = "normal", padding = "3px 8px"),
+            textsize = "12px", direction = "auto"
+          )
+        ) |>
+        addPolylines(data = Polygons_Depto, stroke = TRUE, color = "#252525", weight = 2, smoothFactor = 0.05) |>
+        addLegend(position = "bottomright", pal = pal, values = ~Statistic, opacity = opacidadClic,
+                  labFormat = labelFormat(prefix = "[", suffix = ")"), title = titulo
+        ) |>
+        addLabelOnlyMarkers(
+          lng = Centroides_Deptos$Lon, lat = Centroides_Deptos$Lat,
+          label = paste0(sapply(Centroides_Deptos$Departamento, str_to_title)),
+          group = "lupa", labelOptions = labelOptions(noHide = TRUE, direction = "top", textOnly = TRUE, textsize = textDeptos)
+        ) |>
+        addLabelOnlyMarkers(
+          lng = Centroides_Mpios$Lon, lat = Centroides_Mpios$Lat,
+          label = paste0(sapply(Centroides_Mpios$Municipio, str_to_title)),
+          group = "lupa", labelOptions = labelOptions(noHide = FALSE)
+        ) |>
+        addSearchFeatures(targetGroups = "lupa", options = searchFeaturesOptions(
+          zoom = 10, openPopup = TRUE, textErr = "Ubicaci\u00f3n No Encontrada",
+          textCancel = "Cancelar", textPlaceholder = "Buscar...",
+          position = "topleft", hideMarkerOnCollapse = FALSE
+        )
+        ) |>
+        addCircleMarkers(
+          lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
+          color = "#377EB8", fill = TRUE, fillColor = "purplelight", fillOpacity = 0.9
+        )
+
     } else {
-      Mapa <- Mapa %>%
+
+      # MAPA COMBINADO DEPARTAMENTO-MUNICIPIO
+      if (missingArg(colBorde)) { colBorde <- "#5A0028" }
+      if (!(missingArg(cortes) && missingArg(colores))) {
+        if ( (length(colores$Deptos) != length(cortes$Deptos)-1L) || (length(colores$Mpios) != length(cortes$Mpios)-1L) ) {
+          stop(Mensaje, call. = FALSE)
+        } else {
+          Colors_Deptos <- colores$Deptos; Cortes_Deptos <- cortes$Deptos
+          Colors_Mpios  <- colores$Mpios ; Cortes_Mpios  <- cortes$Mpios
+        }
+      } else {
+        Colors_Deptos <- c("#E1F5C4", "#EDE574", "#F9D423", "#FC913A", "#FF4E50")
+        Cortes_Deptos <- c(0, 20, 50, 200, 1000, Inf)
+        Colors_Mpios  <- c("#B9FFDC", "#CFFFAF", "#FFEA80", "#FFA652", "#ED6753")
+        Cortes_Mpios  <- c(0, 1, 3, 10, 100, Inf)
+      }
+      Pal_Deptos <- colorBin(palette = Colors_Deptos, bins = Cortes_Deptos, na.color = colNA)
+      Pal_Mpios  <- colorBin(palette = Colors_Mpios, domain = Polygons_Mpio@data$Statistic, bins = Cortes_Mpios, na.color = colNA)
+
+      Mapa <- leaflet(data = Polygons_Mpio) |> addTiles(attribution = Msj)
+      for (i in 1:length(Baldosas)) {
+        Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
+      }
+
+      Mapa <- Mapa |>
+        setView(lat = Centroide_Col$Lat, lng = Centroide_Col$Lon, zoom = zoomMapa) |>
         addLayersControl(
-          baseGroups = Baldosas.names,
-          overlayGroups = c("Mostrar<br/>Departamentos", "Mostrar<br/>sedes UNAL"),
+          baseGroups = Baldosas.names, overlayGroups = "Mostrar<br/>Departamentos",
           options = layersControlOptions(collapsed = compacto, autoZindex = TRUE)
-        ) %>%
+        ) |>
+        addPolygons(
+          stroke = TRUE, fillColor = ~Pal_Mpios(Statistic), weight = 1,
+          opacity = opacidad, color = "gray", dashArray = "3", fillOpacity = opacidad,
+          highlightOptions = list(
+            weight = 4, color = colBorde, dashArray = "",
+            fillOpacity = opacidadClic, bringToFront = TRUE
+          ),
+          label = Labels_Mpios, group = "Municipios", labelOptions = labelOptions(
+            style = list("font-weight" = "normal", padding = "3px 8px"),
+            textsize = "12px", direction = "auto"
+          )
+        ) |>
         addPolygons(
           data = Polygons_Depto, stroke = TRUE, fillColor = ~Pal_Deptos(Statistic),
           weight = 2, opacity = opacidad, color = "#005A32", dashArray = "",
@@ -735,34 +778,250 @@ Plot.Mapa <- function(depto, mpio,
             style = list("font-weight" = "normal", padding = "3px 8px"),
             textsize = "12px", direction = "auto"
           )
-        ) %>%
-        showGroup("Municipios") %>%
-        hideGroup("Mostrar<br/>Departamentos") %>%
+        ) |>
+        showGroup("Municipios") |>
+        hideGroup("Mostrar<br/>Departamentos") |>
+        addPolylines(data = Polygons_Depto, stroke = TRUE, color = "#005A32", weight = 2, smoothFactor = 0.05, group = "Municipios") |>
+        addLegend(position = "bottomright", pal = Pal_Mpios , values = ~Statistic, opacity = opacidadClic, labFormat = labelFormat(prefix = "[", suffix = ")"), title = TitleMpio) |>
+        addLegend(position = "bottomright", pal = Pal_Deptos, values = ~Statistic, opacity = opacidadClic, labFormat = labelFormat(prefix = "[", suffix = ")"), title = TitleDepto) |>
+        addLabelOnlyMarkers(
+          lng = Centroides_Deptos$Lon, lat = Centroides_Deptos$Lat,
+          label = paste0(sapply(Centroides_Deptos$Departamento, str_to_title)),
+          group = "lupa", labelOptions = labelOptions(noHide = TRUE, direction = "top", textOnly = TRUE, textsize = textDeptos)
+        ) |>
+        addLabelOnlyMarkers(
+          lng = Capitales$Longitud, lat = Capitales$Latitud,
+          label = paste0(sapply(Capitales$Municipio, str_to_title)),
+          labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE, textsize = textMpios)
+        ) |>
+        addLabelOnlyMarkers(
+          lng = Centroides_Mpios$Lon, lat = Centroides_Mpios$Lat,
+          label = paste0(sapply(Centroides_Mpios$Municipio, str_to_title)),
+          group = "lupa", labelOptions = labelOptions(noHide = FALSE)
+        ) |>
+        addSearchFeatures(targetGroups = "lupa", options = searchFeaturesOptions(
+          zoom = 10, openPopup = TRUE, textErr = "Ubicaci\u00f3n No Encontrada",
+          textCancel = "Cancelar", textPlaceholder = "Buscar...",
+          position = "topleft", hideMarkerOnCollapse = FALSE
+        )
+        ) |>
+        addCircleMarkers(
+          lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
+          color = "#D95F02", fill = TRUE, fillColor = "orangelight", fillOpacity = 0.9, group = "Municipios"
+        ) |>
         addCircleMarkers(
           lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
           color = "#D95F02", fill = TRUE, fillColor = "orangelight", fillOpacity = 0.9, group = "Mostrar<br/>Departamentos"
-        ) %>%
-        addAwesomeMarkers(
-          lng = Sedes$Longitud, lat = Sedes$Latitud, group = "Mostrar<br/>sedes UNAL",
-          icon = Icons_Sedes, label = Labels_Sedes, labelOptions = labelOptions(
-            style = list("font-weight" = "large", padding = "3px 8px"),
-            textsize = "15px", direction = "auto"
-          )
-        ) %>%
-        hideGroup("Mostrar<br/>sedes UNAL")
+        )
     }
-  }
-  if (!limpio) {
-    TextJS <- paste0("function(btn, map){ map.setView(L.latLng(", Centroide_Col$Lat, ", ", Centroide_Col$Lon, "), ", zoomMapa, "); }")
-    Mapa <- Mapa %>%
-      # Adición del minimapa para ayuda en la navegación.
-      addMiniMap(position = "bottomleft", zoomAnimation = TRUE, toggleDisplay = TRUE, autoToggleDisplay = TRUE) %>%
-      # Adición de botones simples para ver en pantalla completa, restablecer el zoom y localización.
-      addFullscreenControl(position = "topleft", pseudoFullscreen = FALSE) %>%
-      addEasyButton(easyButton(icon = "fa-globe", title = "Retornar", onClick = JS(TextJS))) %>%
-      addEasyButton(easyButton(icon = "fa-crosshairs", title = "Ub\u00edcame", onClick = JS("function(btn, map){ map.locate({setView: true}); }"))) %>%
-      # Adicción de la barra de escala.
-      addScaleBar(position = "bottomleft", options = scaleBarOptions(metric = TRUE, imperial = FALSE))
+
+    if (showSedes) {
+      if (tipo %in% c("deptos", "sinompios", "mpios")) {
+        Mapa <- Mapa |>
+          # Adición de grupos de control de capas.
+          addLayersControl(baseGroups = Baldosas.names, overlayGroups = "Mostrar<br/>sedes UNAL",
+                           options = layersControlOptions(collapsed = compacto)
+          ) |>
+          # Adición de los marcadores de iconos para las distintas sedes de presencia nacional de la UNAL, y deseleccionándola por defecto.
+          addAwesomeMarkers(
+            lng = Sedes$Longitud, lat = Sedes$Latitud, group = "Mostrar<br/>sedes UNAL",
+            icon = Icons_Sedes, label = Labels_Sedes, labelOptions = labelOptions(
+              style = list("font-weight" = "large", padding = "3px 8px"),
+              textsize = "15px", direction = "auto"
+            )
+          ) |>
+          hideGroup("Mostrar<br/>sedes UNAL")
+      } else {
+        Mapa <- Mapa |>
+          addLayersControl(
+            baseGroups = Baldosas.names,
+            overlayGroups = c("Mostrar<br/>Departamentos", "Mostrar<br/>sedes UNAL"),
+            options = layersControlOptions(collapsed = compacto, autoZindex = TRUE)
+          ) |>
+          addPolygons(
+            data = Polygons_Depto, stroke = TRUE, fillColor = ~Pal_Deptos(Statistic),
+            weight = 2, opacity = opacidad, color = "#005A32", dashArray = "",
+            fillOpacity = opacidad, highlightOptions = list(
+              weight = 4, color = "#5A0028", dashArray = "",
+              fillOpacity = opacidadClic, bringToFront = TRUE
+            ),
+            label = Labels_Deptos, group = "Mostrar<br/>Departamentos",
+            labelOptions = labelOptions(
+              style = list("font-weight" = "normal", padding = "3px 8px"),
+              textsize = "12px", direction = "auto"
+            )
+          ) |>
+          showGroup("Municipios") |>
+          hideGroup("Mostrar<br/>Departamentos") |>
+          addCircleMarkers(
+            lng = Capitales$Longitud, lat = Capitales$Latitud, radius = 2, stroke = TRUE,
+            color = "#D95F02", fill = TRUE, fillColor = "orangelight", fillOpacity = 0.9, group = "Mostrar<br/>Departamentos"
+          ) |>
+          addAwesomeMarkers(
+            lng = Sedes$Longitud, lat = Sedes$Latitud, group = "Mostrar<br/>sedes UNAL",
+            icon = Icons_Sedes, label = Labels_Sedes, labelOptions = labelOptions(
+              style = list("font-weight" = "large", padding = "3px 8px"),
+              textsize = "15px", direction = "auto"
+            )
+          ) |>
+          hideGroup("Mostrar<br/>sedes UNAL")
+      }
+    }
+    if (!limpio) {
+      TextJS <- paste0("function(btn, map){ map.setView(L.latLng(", Centroide_Col$Lat, ", ", Centroide_Col$Lon, "), ", zoomMapa, "); }")
+      Mapa <- Mapa |>
+        # Adición del minimapa para ayuda en la navegación.
+        addMiniMap(position = "bottomleft", zoomAnimation = TRUE, toggleDisplay = TRUE, autoToggleDisplay = TRUE) |>
+        # Adición de botones simples para ver en pantalla completa, restablecer el zoom y localización.
+        addFullscreenControl(position = "topleft", pseudoFullscreen = FALSE) |>
+        addEasyButton(easyButton(icon = "fa-globe", title = "Retornar", onClick = JS(TextJS))) |>
+        addEasyButton(easyButton(icon = "fa-crosshairs", title = "Ub\u00edcame", onClick = JS("function(btn, map){ map.locate({setView: true}); }"))) |>
+        # Adicción de la barra de escala.
+        addScaleBar(position = "bottomleft", options = scaleBarOptions(metric = TRUE, imperial = FALSE))
+    }
+  } else {
+    if (tipo == "deptos") {
+      COL_Final_SF <- sf::st_as_sf(Polygons_Depto); varText <- "Departamento"
+    } else {
+      COL_Final_SF <- sf::st_as_sf(Polygons_Mpio) ; varText <- "Municipio"
+    }
+
+    LineWidth <- ifelse(missingArg(estilo) || is.null(estilo$anchoBorde), 0.5, estilo$anchoBorde)
+    LineColor <- ifelse(missingArg(colBorde), "#999999", colBorde)
+    labelX    <- ifelse(missingArg(estilo) || is.null(estilo$labelX), "Longitud", estilo$labelX)
+    labelY    <- ifelse(missingArg(estilo) || is.null(estilo$labelY), "Latitud" , estilo$labelY)
+    if (missingArg(estilo) || is.null(estilo$xlim)) { Xlim <- NULL } else { Xlim <- estilo$xlim }
+    if (missingArg(estilo) || is.null(estilo$ylim)) { Ylim <- NULL } else { Ylim <- estilo$ylim }
+    if (missingArg(estilo) || is.null(estilo$Legend)) {
+      ParmsLegend <- list(legend.position = "right", legend.direction = "vertical")
+    } else { ParmsLegend <- estilo$Legend }
+    if (missingArg(estilo) || is.null(estilo$Labs)) {
+      ParmsLabs <- list(subtitle = NULL, caption = NULL, tag = NULL)
+    } else { ParmsLabs <- estilo$Labs }
+
+    if (!(missingArg(estilo) || is.null(estilo$Theme))) {
+      ThemeGG <- switch(
+        estilo$Theme,
+        "1"  = theme_light(),
+        "2"  = theme_bw(),
+        "3"  = theme_classic(),
+        "4"  = theme_linedraw(),
+        "5"  = theme_gray(),
+        "6"  = ggthemes::theme_hc(),
+        "7"  = ggthemes::theme_pander(),
+        "8"  = ggthemes::theme_gdocs(),
+        "9"  = ggthemes::theme_fivethirtyeight(),
+        "10" = ggthemes::theme_economist(),
+        "11" = ggthemes::theme_solarized(),
+        "12" = hrbrthemes::theme_ipsum(),
+        "13" = hrbrthemes::theme_ipsum_ps(),
+        "14" = hrbrthemes::theme_ft_rc(),
+        "15" = ggtech::theme_tech(theme = "airbnb"),
+        "16" = ggtech::theme_tech(theme = "google"),
+        "17" = ggtech::theme_tech(theme = "X23andme")
+      )
+    } else { ThemeGG <- theme_DNPE() }
+
+    if (is.na(estilo$Style)) {
+      cortesCute <- waiver()
+      if (missingArg(colores)) {
+        nLevels <- COL_Final_SF |> select({{variable}}) |>
+          as.data.frame() |> select({{variable}}) |> pull() |> n_distinct()
+        colores <- rainbow(nLevels, alpha = 0.7)
+      }
+    } else {
+      if (tolower(estilo$Style) == "intervalo") {
+        if (!(missingArg(cortes) && missingArg(colores))) {
+          if (length(colores) != length(cortes)-1L) {
+            stop(Mensaje, call. = FALSE)
+          }
+        } else {
+          colores <- c("#E1F5C4", "#EDE574", "#F9D423", "#FC913A", "#FF4E50")
+          cortes  <- c(0, 20, 50, 200, 1000, Inf)
+        }
+
+        cortesCute <- prettyNum(cortes[-1], big.mark = ",")
+        NewVar     <- cut(
+          COL_Final_SF |> select(Statistic) |> as.data.frame() |> select(Statistic) |> pull(),
+          breaks = cortes, dig.lab = 5
+        )
+        COL_Final_SF <- COL_Final_SF |> mutate(Statistic := NewVar)
+      } else if (tolower(estilo$Style) == "sino") {
+        if (!missingArg(cortes)) {
+          warning(
+            paste0(
+              "\u00a1Usted ha ingresado alg\u00fan valor en el argumento 'cortes' y ha seleccionado el tipo de mapa 'SiNo'!",
+              "\n\t Por lo cual se omitir\u00e1 el valor ingresado, pues este tipo de mapa no permite un cambio en los cortes, pues es un intervalo binario."
+            ), call. = FALSE
+          )
+        }
+        if (!missingArg(colores)) {
+          if (length(colores) != 2L) {
+            stop('\u00a1La longitud del argumento "colores" es diferente a 2! Este mapa es binario por lo cual necesita especificar solamente 2 colores.', call. = FALSE)
+          }
+        } else { colores <- c("#FDAE61", "#A6D96A") }
+
+        cortesCute <- waiver()
+        NewVar     <- if_else(
+          COL_Final_SF |> select(Statistic) |> as.data.frame() |>
+            select(Statistic) |> pull() > 0,
+          "1 o m\u00e1s .", "0 ."
+        )
+        COL_Final_SF <- COL_Final_SF |> mutate(Statistic := NewVar)
+      }
+    }
+
+    dots_geom_sf <- list(mapping = aes(fill = Statistic), linewidth = LineWidth, color = LineColor)
+
+
+    if (!missingArg(centroideMapa)) {
+      centroideMapa <- toupper(centroideMapa)
+      COL_Final_SF  <- COL_Final_SF |> filter(Departamento == centroideMapa)
+    }
+
+    Mapa <- ggplot(data = COL_Final_SF) +
+      do.call(geom_sf, dots_geom_sf) +
+      labs(
+        title = titulo, subtitle = ParmsLabs$subtitle, x = labelX, y = labelY,
+        caption = ParmsLabs$caption, tag = ParmsLabs$tag
+      ) +
+      coord_sf(expand = FALSE, xlim = Xlim, ylim = Ylim) +
+      ThemeGG + do.call(ggplot2::theme, ParmsLegend)
+
+    if (is.na(estilo$Style) || tolower(estilo$Style) == "intervalo" || tolower(estilo$Style) == "sino") {
+      Mapa <- Mapa +
+        scale_fill_manual(
+          values = alpha(colores, opacidad),
+          labels = cortesCute,
+          drop   = FALSE,
+          na.value = colNA,
+          guide = guide_legend(
+            direction = "horizontal",
+            keyheight = 0.5,
+            keywidth  = 2.5,
+            title.position = "top",
+            title.hjust = 0.5,
+            label.hjust = 0.5,
+            nrow = 1,
+            byrow = TRUE,
+            reverse = FALSE,
+            label.position = "bottom"
+          )
+        )
+    } else if (tolower(estilo$Style) == "calor") {
+      Mapa <- Mapa + scale_fill_viridis_c(option = 'C', trans = "sqrt", alpha = opacidad, na.value = colNA)
+    }
+
+    if (textSize != 0) {
+      if (missingArg(estilo) || is.null(estilo$Text)) {
+        ParmsText <- list(color = "#282828", size = 1.5)
+      } else { ParmsText <- estilo$Text }
+      dots_geom_text <- append(list(aes(label = !!sym(varText)), check_overlap = TRUE), ParmsText)
+      Mapa <- Mapa + do.call(geom_sf_text, dots_geom_text)
+    }
+
+    if (!(missingArg(estilo) || is.null(estilo$scaleX))) { Mapa <- Mapa + scale_x_continuous(breaks = estilo$scaleX) }
+    if (!(missingArg(estilo) || is.null(estilo$scaleY))) { Mapa <- Mapa + scale_y_continuous(breaks = estilo$scaleY) }
   }
   return(Mapa)
 }

@@ -124,7 +124,9 @@ de los polígonos del mapa. El valor por defecto es \code{0.5}.
 respectivo. El valor por defecto es \code{"Longitud"} y \code{"Latitud"} respectivamente.
 \item \code{xlim}, \code{ylim}: Vector numérico que especifica los límites de los ejes respectivos.
 \item \code{Legend}: Igual uso que \code{gg.Legend} en \code{\link[=Plot.Series]{Plot.Series()}}
-\item \code{Labs}: Igual uso que \code{gg.Texto} en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{Labs}: Igual uso que \code{gg.Texto} en \code{\link[=Plot.Series]{Plot.Series()}}. Con la adición del
+argumento \code{fill}, el cual especifica el título de leyenda. El valor por
+defecto es \code{"Statistic"}. Si es \code{NULL}, se omitirá dicho título.
 \item \code{Theme}: Igual uso que \code{gg.Tema} en \code{\link[=Plot.Series]{Plot.Series()}}
 \item \code{Style}: Cadena de caracteres que indica el tipo de mapa a graficar.
 Los valores permitidos son \code{"Intervalo"}, \code{"SiNo"}, \code{"Calor"} y \code{NA}

@@ -11,8 +11,10 @@ Plot.Mapa(
   mpio,
   variable,
   agregado = TRUE,
+  zoomIslas = FALSE,
   estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
   tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"),
+  SiNoLegend,
   titulo,
   naTo0 = TRUE,
   colNA = "#EEEEEE",
@@ -55,6 +57,13 @@ con los microdatos. Por el contrario, si se especifica en \code{FALSE} quiere
 decir que cada fila es única y se cuenta con el estadístico ya calculado,
 además de poder ingresar únicamente uno de los argumentos \code{depto} o \code{mpio}.}
 
+\item{zoomIslas}{Valor booleano que indica si desea realizar un zoom al
+archipiélago de San Andrés, Providencia y Santa catalina. El valor a retornar
+no será un único plot sino una lista compuesta por dos figuras, una para el
+mapa sin las islas y otro únicamente con ellas, para que usted realice
+posteriormente la unión de ambos. Aplica únicamente para el caso estático y
+su valor por defecto es \code{FALSE}.}
+
 \item{estadistico}{Cadena de caracteres que indica el estadístico a graficar
 en el mapa. Los valores permitidos son \code{"Conteo"} (\emph{valor predeterminado}),
 \code{"Promedio"}, \code{"Mediana"}, \code{"Varianza"}, \code{"SD"}, \code{"CV"}, \code{"Min"} y \code{"Max"}.}
@@ -62,6 +71,10 @@ en el mapa. Los valores permitidos son \code{"Conteo"} (\emph{valor predetermina
 \item{tipo}{Cadena de caracteres que indica el tipo de mapa a graficar. Los
 valores permitidos son "Deptos", "SiNoMpios", "Mpios" y "DeptoMpio"
 (\emph{valor predeterminado}). Se emparejará parcialmente.}
+
+\item{SiNoLegend}{Vector de caracteres de longitud 2 que permite editar las
+opciones de la etiqueta de la leyenda de los mapas \code{"SiNoMpios"}. El valor
+por defecto es \verb{("0", "1 o más")}.}
 
 \item{titulo}{Cadena de caracteres indicando la segregación que presenta el
 mapa y el periodo al que hace referencia éste, separados por un espacio, por
@@ -161,7 +174,9 @@ de los polígonos del mapa. El valor por defecto es \code{0.5}.
 respectivo. El valor por defecto es \code{"Longitud"} y \code{"Latitud"} respectivamente.
 \item \code{xlim}, \code{ylim}: Vector numérico que especifica los límites de los ejes respectivos.
 \item \code{Legend}: Igual uso que \code{gg.Legend} en \code{\link[=Plot.Series]{Plot.Series()}}
-\item \code{Labs}: Igual uso que \code{gg.Texto} en \code{\link[=Plot.Series]{Plot.Series()}}
+\item \code{Labs}: Igual uso que \code{gg.Texto} en \code{\link[=Plot.Series]{Plot.Series()}}. Con la adición del
+argumento \code{fill}, el cual especifica el título de leyenda. El valor por
+defecto es \code{"Statistic"}. Si es \code{NULL}, se omitirá dicho título.
 \item \code{Theme}: Igual uso que \code{gg.Tema} en \code{\link[=Plot.Series]{Plot.Series()}}
 \item \code{Style}: Cadena de caracteres que indica el tipo de mapa a graficar.
 Los valores permitidos son \code{"Intervalo"}, \code{"SiNo"}, \code{"Calor"} y \code{NA}
@@ -291,7 +306,7 @@ Plot.Mapa(
     scaleX = seq(-82, -64, by = 1), scaleY = seq(-4, 14, by = 1)
   )
 )
-\dontshow{if (require("tibble")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("tibble") && require("cowplot")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # library(tibble)
 PIB <- tibble(
@@ -299,23 +314,31 @@ PIB <- tibble(
   Valor    = c(883,177837,6574,52961,301491,42027,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
 )
 Plot.Mapa(
-  df       = PIB,
-  depto    = DIVIPOLA,
-  variable = Valor,
-  agregado = FALSE,
-  tipo     = "Deptos",
-  titulo   = "PIB \u00d7 DEPARTAMENTO",
-  cortes   = c(0, 500, 5000, 20000, 30000, Inf),
-  colores  = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
-  colBorde = "#3A0F2D",
-  estatico = TRUE,
-  textSize = 0,
-  estilo   = list(
-    Style  = "Intervalo", Theme = 7,
-    Legend = list(legend.position = "top", legend.direction = "horizontal"),
-    Labs   = list(subtitle = "A Precios Corrientes", caption = "Para el periodo de 2021P (en miles de millones de pesos)")
+  df        = PIB,
+  depto     = DIVIPOLA,
+  variable  = Valor,
+  agregado  = FALSE,
+  zoomIslas = TRUE,
+  tipo      = "Deptos",
+  titulo    = "PIB \u00d7 DEPARTAMENTO",
+  cortes    = c(0, 500, 5000, 20000, 30000, Inf),
+  colores   = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
+  colBorde  = "#3A0F2D",
+  estatico  = TRUE,
+  textSize  = 0,
+  estilo    = list(
+    Style   = "Intervalo", Theme = 7,
+    Legend  = list(legend.position = "bottom", legend.direction = "horizontal"),
+    Labs    = list(fill = "PIB", subtitle = "A Precios Corrientes",
+                   caption = "Para el periodo de 2021P (en miles de millones de pesos)"
+    )
   )
-)
+) -> listMaps
+# library(cowplot)
+ggdraw() +
+  draw_plot(listMaps$MapaCOL) +
+  draw_plot(listMaps$MapaSanAndres, x = .28, y = .58, width = .15, height = .35)
+# ggsave("PlotMapa.png", width = 12, height = 8, dpi = 550)
 # ---------------------------------------------------------------------------
 AreaVichada <- tibble(
   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)

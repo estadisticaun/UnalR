@@ -28,12 +28,21 @@
 #'   con los microdatos. Por el contrario, si se especifica en `FALSE` quiere
 #'   decir que cada fila es única y se cuenta con el estadístico ya calculado,
 #'   además de poder ingresar únicamente uno de los argumentos `depto` o `mpio`.
+#' @param zoomIslas Valor booleano que indica si desea realizar un zoom al
+#'   archipiélago de San Andrés, Providencia y Santa catalina. El valor a retornar
+#'   no será un único plot sino una lista compuesta por dos figuras, una para el
+#'   mapa sin las islas y otro únicamente con ellas, para que usted realice
+#'   posteriormente la unión de ambos. Aplica únicamente para el caso estático y
+#'   su valor por defecto es `FALSE`.
 #' @param estadistico Cadena de caracteres que indica el estadístico a graficar
 #'   en el mapa. Los valores permitidos son `"Conteo"` (*valor predeterminado*),
 #'   `"Promedio"`, `"Mediana"`, `"Varianza"`, `"SD"`, `"CV"`, `"Min"` y `"Max"`.
 #' @param tipo Cadena de caracteres que indica el tipo de mapa a graficar. Los
 #'   valores permitidos son "Deptos", "SiNoMpios", "Mpios" y "DeptoMpio"
 #'   (*valor predeterminado*). Se emparejará parcialmente.
+#' @param SiNoLegend Vector de caracteres de longitud 2 que permite editar las
+#'   opciones de la etiqueta de la leyenda de los mapas `"SiNoMpios"`. El valor
+#'   por defecto es `("0", "1 o más")`.
 #' @param titulo Cadena de caracteres indicando la segregación que presenta el
 #'   mapa y el periodo al que hace referencia éste, separados por un espacio, por
 #'   ejemplo, "Admitidos 2021-I".
@@ -111,7 +120,9 @@
 #'     respectivo. El valor por defecto es `"Longitud"` y `"Latitud"` respectivamente.
 #'   * `xlim`, `ylim`: Vector numérico que especifica los límites de los ejes respectivos.
 #'   * `Legend`: Igual uso que `gg.Legend` en [Plot.Series()]
-#'   * `Labs`: Igual uso que `gg.Texto` en [Plot.Series()]
+#'   * `Labs`: Igual uso que `gg.Texto` en [Plot.Series()]. Con la adición del
+#'     argumento `fill`, el cual especifica el título de leyenda. El valor por
+#'     defecto es `"Statistic"`. Si es `NULL`, se omitirá dicho título.
 #'   * `Theme`: Igual uso que `gg.Tema` en [Plot.Series()]
 #'   * `Style`: Cadena de caracteres que indica el tipo de mapa a graficar.
 #'     Los valores permitidos son `"Intervalo"`, `"SiNo"`, `"Calor"` y `NA`
@@ -228,7 +239,7 @@
 #'     scaleX = seq(-82, -64, by = 1), scaleY = seq(-4, 14, by = 1)
 #'   )
 #' )
-#' @examplesIf require("tibble")
+#' @examplesIf require("tibble") && require("cowplot")
 #' # ---------------------------------------------------------------------------
 #' # library(tibble)
 #' PIB <- tibble(
@@ -236,23 +247,31 @@
 #'   Valor    = c(883,177837,6574,52961,301491,42027,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
 #' )
 #' Plot.Mapa(
-#'   df       = PIB,
-#'   depto    = DIVIPOLA,
-#'   variable = Valor,
-#'   agregado = FALSE,
-#'   tipo     = "Deptos",
-#'   titulo   = "PIB \u00d7 DEPARTAMENTO",
-#'   cortes   = c(0, 500, 5000, 20000, 30000, Inf),
-#'   colores  = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
-#'   colBorde = "#3A0F2D",
-#'   estatico = TRUE,
-#'   textSize = 0,
-#'   estilo   = list(
-#'     Style  = "Intervalo", Theme = 7,
-#'     Legend = list(legend.position = "top", legend.direction = "horizontal"),
-#'     Labs   = list(subtitle = "A Precios Corrientes", caption = "Para el periodo de 2021P (en miles de millones de pesos)")
+#'   df        = PIB,
+#'   depto     = DIVIPOLA,
+#'   variable  = Valor,
+#'   agregado  = FALSE,
+#'   zoomIslas = TRUE,
+#'   tipo      = "Deptos",
+#'   titulo    = "PIB \u00d7 DEPARTAMENTO",
+#'   cortes    = c(0, 500, 5000, 20000, 30000, Inf),
+#'   colores   = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
+#'   colBorde  = "#3A0F2D",
+#'   estatico  = TRUE,
+#'   textSize  = 0,
+#'   estilo    = list(
+#'     Style   = "Intervalo", Theme = 7,
+#'     Legend  = list(legend.position = "bottom", legend.direction = "horizontal"),
+#'     Labs    = list(fill = "PIB", subtitle = "A Precios Corrientes",
+#'                    caption = "Para el periodo de 2021P (en miles de millones de pesos)"
+#'     )
 #'   )
-#' )
+#' ) -> listMaps
+#' # library(cowplot)
+#' ggdraw() +
+#'   draw_plot(listMaps$MapaCOL) +
+#'   draw_plot(listMaps$MapaSanAndres, x = .28, y = .58, width = .15, height = .35)
+#' # ggsave("PlotMapa.png", width = 12, height = 8, dpi = 550)
 #' # ---------------------------------------------------------------------------
 #' AreaVichada <- tibble(
 #'   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)
@@ -287,9 +306,9 @@
 #' @importFrom sp coordinates
 #' @importFrom sf st_point_on_surface st_as_sf
 Plot.Mapa <- function(
-    df, depto, mpio, variable, agregado = TRUE,
+    df, depto, mpio, variable, agregado = TRUE, zoomIslas = FALSE,
     estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
-    tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"), titulo,
+    tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"), SiNoLegend, titulo,
     naTo0 = TRUE, colNA = "#EEEEEE", centroideMapa, zoomMapa = 6, baldosas,
     cortes, colores, showSedes = TRUE, colSedes, opacidad = 0.7, colBorde,
     compacto = TRUE, textSize = 10, limpio = FALSE, estatico = FALSE, estilo) {
@@ -321,9 +340,9 @@ Plot.Mapa <- function(
     }
   } else {
     if (missingArg(variable)) {
-      stop(paste0("\u00a1Por favor ingrese una variable auxiliar con la cual se calcular\u00e1 el/la ", tolower(Statistic), "!"), call. = FALSE)
+      stop(paste0('\u00a1Por favor ingrese una variable auxiliar con la cual se calcular\u00e1 el/la ', tolower(Statistic), '!'), call. = FALSE)
     } else if (!is.numeric(df |> select({{variable}}) |> pull())) {
-      stop("\u00a1La variable auxiliar ingresada contiene valores no num\u00e9ricos!", call. = FALSE)
+      stop('\u00a1La variable auxiliar ingresada contiene valores no num\u00e9ricos!', call. = FALSE)
     }
     if (agregado) {
       dataframe <- df |>
@@ -349,7 +368,7 @@ Plot.Mapa <- function(
   }
   if (!missingArg(titulo)) {
     if (!is.character(titulo)) {
-      stop("\u00a1El argumento 'titulo' debe ser una cadena de texto!", call. = FALSE)
+      stop('\u00a1El argumento "titulo" debe ser una cadena de texto!', call. = FALSE)
     }
   } else { titulo <- "\u00bf ?" }
   if (missingArg(baldosas)) {
@@ -358,32 +377,36 @@ Plot.Mapa <- function(
   } else { Baldosas <- Baldosas.names <- baldosas }
   if (!missingArg(colSedes)) {
     if (length(colSedes) != 9L) {
-      stop(paste0("\u00a1El n\u00famero de colores ingresados en el vector 'colSedes' no corresponde con el n\u00famero de sedes presentes!",
-                  "\n\t - Ingrese un vector con 9 colores correspondientes a las sedes:",
-                  "\n\t -- Medell\u00edn, Bogot\u00e1, Manizales, De La Paz, Tumaco, Palmira, Orinoqu\u00eda, Caribe y Amazonas, respectivamente."), call. = FALSE)
+      stop(
+        paste0(
+          '\u00a1El n\u00famero de colores ingresados en el vector "colSedes" no corresponde con el n\u00famero de sedes presentes!',
+          '\n\t - Ingrese un vector con 9 colores correspondientes a las sedes:',
+          '\n\t -- Medell\u00edn, Bogot\u00e1, Manizales, De La Paz, Tumaco, Palmira, Orinoqu\u00eda, Caribe y Amazonas, respectivamente.'
+        ), call. = FALSE
+      )
     } else { Icons_Col <- colSedes }
   } else { Icons_Col <- c("orange", "green", "darkblue", "purple", "gray", "darkpurple", "lightred", "red", "blue") }
   if (!(is.numeric(zoomMapa) && is.numeric(opacidad) && is.numeric(textSize))) {
-    stop("\u00a1Los argumentos 'zoomMapa', 'opacidad' y 'textSize' deben ser un valor num\u00e9rico!", call. = FALSE)
+    stop('\u00a1Los argumentos "zoomMapa", "opacidad" y "textSize" deben ser un valor num\u00e9rico!', call. = FALSE)
   }
   opacidadClic <- ifelse(opacidad != 1, opacidad+0.2, opacidad)
   textDeptos   <- paste0(textSize+2, "px"); textMpios <- paste0(textSize, "px")
   if (!missing(colBorde)) {
     if (!is.character(colBorde)) {
-      stop("\u00a1El argumento 'colBorde' debe ser un car\u00e1cter que indique un color con el nombre ('red'), c\u00f3digo hexadecimal ('#FF0000') o RGB (rgb(255, 0, 0))!", call. = FALSE)
+      stop('\u00a1El argumento "colBorde" debe ser un car\u00e1cter que indique un color con el nombre ("red"), c\u00f3digo hexadecimal ("#FF0000") o RGB (rgb(255, 0, 0))!', call. = FALSE)
     }
   }
   if (!(is.logical(naTo0) && is.logical(showSedes) && is.logical(compacto) && is.logical(limpio))) {
-    stop("\u00a1Los argumentos 'naTo0', 'showSedes', 'compacto' y 'limpio' deben ser un booleano (TRUE o FALSE)!", call. = FALSE)
+    stop('\u00a1Los argumentos "naTo0", "showSedes", "compacto" y "limpio" deben ser un booleano (TRUE o FALSE)!', call. = FALSE)
   }
 
   Mensaje <- paste0(
-    "\u00a1El argumento 'colores' no tiene la longitud correcta respecto al argumento 'cortes' ingresado, o viceversa!",
-    "\n\t - Recuerde que si realiza (n) cortes necesita (n-1) colores para cada intervalo creado.",
-    "\n\t -- Por ejemplo, si los cortes son c(0, 50, Inf) necesitar\u00e1 2 colores para dichos intervalos."
+    '\u00a1El argumento "colores" no tiene la longitud correcta respecto al argumento "cortes" ingresado, o viceversa!',
+    '\n\t - Recuerde que si realiza (n) cortes necesita (n-1) colores para cada intervalo creado.',
+    '\n\t -- Por ejemplo, si los cortes son c(0, 50, Inf) necesitar\u00e1 2 colores para dichos intervalos.'
   )
 
-  # ----------------------------------------------------------------------------
+  # ============================================================================
   Msj <- 'Map created by <a href="https://github.com/JeisonAlarcon">Jeison Alarc\u00f3n</a> &mdash; Data source: &copy; <a href="http://estadisticas.unal.edu.co/home/">DNPE</a>'
   # codeMun != 25001 -> Cundinamarca no tiene capital, pues Bogotá D.C. está en otro departamento.
   Capitales <- Cabeceras |> filter(Code_Mun %% 1000 == 1, Code_Mun != 25001)
@@ -431,7 +454,7 @@ Plot.Mapa <- function(
     Max      = GroupBy_Mpio |> summarise("Statistic" = max(Variable   , na.rm = TRUE))
   )
 
-  # --------------------------------------------------------------------------
+  # ============================================================================
   # Carga del Departamentos
   Polygons_Depto <- Depto_Final
   Polygons_Depto@data$Statistic <- Polygons_Depto@data |>
@@ -477,10 +500,20 @@ Plot.Mapa <- function(
       condition = Municipio %in% Homonimos$Municipio,
       true  = paste(Municipio, substring(Departamento, 1, 3)),
       false = Municipio
+      )
     )
-    )
-
   # ----------------------------------------------------------------------------
+  if (tipo == "sinompios") {
+    if (!missingArg(SiNoLegend)) {
+      if (length(SiNoLegend) != 2L) {
+        stop('\u00a1La longitud del argumento "SiNoLegend" debe ser un vector con 2 componentes!', call. = FALSE)
+      }
+      YN_Legend <- SiNoLegend
+    } else {
+      YN_Legend <- c("0 ", "1 o m\u00e1s ")
+    }
+  }
+  # ============================================================================
   if (!estatico) {
 
     centroideMapa <- ifelse(missingArg(centroideMapa), "CUNDINAMARCA", toupper(centroideMapa))
@@ -607,13 +640,16 @@ Plot.Mapa <- function(
       # MAPA POR MUNICIPIO (SI/NO)
       if (missingArg(colBorde)) { colBorde <- "#16ABAB" }
       if (!missingArg(cortes)) {
-        warning(paste0("\u00a1Usted ha ingresado alg\u00fan valor en el argumento 'cortes' y ha seleccionado el tipo de mapa 'SiNoMpios'!",
-                       "\n\t Por lo cual se omitir\u00e1 el valor ingresado, pues este tipo de mapa no permite un cambio en los cortes, pues es un intervalo binario."),
-                call. = FALSE)
+        warning(
+          paste0(
+            '\u00a1Usted ha ingresado alg\u00fan valor en el argumento "cortes" y ha seleccionado el tipo de mapa "SiNoMpios"!',
+            '\n\t Por lo cual se omitir\u00e1 el valor ingresado, pues este tipo de mapa no permite un cambio en los cortes, pues es un intervalo binario.'
+          ), call. = FALSE
+        )
       }
       if (!missingArg(colores)) {
         if (length(colores) != 2L) {
-          stop("\u00a1La longitud del argumento 'colores' es diferente a 2! Este mapa es binario por lo cual necesita especificar solamente 2 colores.", call. = FALSE)
+          stop('\u00a1La longitud del argumento "colores" es diferente a 2! Este mapa es binario por lo cual necesita especificar solamente 2 colores.', call. = FALSE)
         } else { colBinary <- colores }
       } else { colBinary <- c("#FDAE61", "#A6D96A") }
       Pal_Binary <- colorBin(palette = colBinary, bins = c(0, 1, 35000), na.color = colNA)
@@ -641,7 +677,7 @@ Plot.Mapa <- function(
         addPolylines(data = Polygons_Depto, stroke = TRUE, color = "white", weight = 2, smoothFactor = 0.05) |>
         addLegend(
           position = "bottomright", values = ~Statistic, bins = c(0, 1, 35000), colors = colBinary, opacity = opacidadClic,
-          labels = c(paste0("0 ", Segregacion), paste0("1 o m\u00e1s ", Segregacion)), title = titulo
+          labels = c(paste0(YN_Legend[1], Segregacion), paste0(YN_Legend[2], Segregacion)), title = titulo
         ) |>
         addLabelOnlyMarkers(
           lng = Centroides_Deptos$Lon, lat = Centroides_Deptos$Lat,
@@ -896,7 +932,7 @@ Plot.Mapa <- function(
       ParmsLegend <- list(legend.position = "right", legend.direction = "vertical")
     } else { ParmsLegend <- estilo$Legend }
     if (missingArg(estilo) || is.null(estilo$Labs)) {
-      ParmsLabs <- list(subtitle = NULL, caption = NULL, tag = NULL)
+      ParmsLabs <- list(fill = "Statistic", subtitle = NULL, caption = NULL, tag = NULL)
     } else { ParmsLabs <- estilo$Labs }
 
     if (!(missingArg(estilo) || is.null(estilo$Theme))) {
@@ -940,7 +976,7 @@ Plot.Mapa <- function(
           cortes  <- c(0, 20, 50, 200, 1000, Inf)
         }
 
-        cortesCute <- prettyNum(cortes[-1], big.mark = ",")
+        cortesCute <- prettyNum(cortes[-1], big.mark = ".", decimal.mark = ",", scientific = FALSE)
         NewVar     <- cut(
           COL_Final_SF |> select(Statistic) |> as.data.frame() |> select(Statistic) |> pull(),
           breaks = cortes, dig.lab = 5
@@ -950,8 +986,8 @@ Plot.Mapa <- function(
         if (!missingArg(cortes)) {
           warning(
             paste0(
-              "\u00a1Usted ha ingresado alg\u00fan valor en el argumento 'cortes' y ha seleccionado el tipo de mapa 'SiNo'!",
-              "\n\t Por lo cual se omitir\u00e1 el valor ingresado, pues este tipo de mapa no permite un cambio en los cortes, pues es un intervalo binario."
+              '\u00a1Usted ha ingresado alg\u00fan valor en el argumento "cortes" y ha seleccionado el tipo de mapa "SiNo"!',
+              '\n\t Por lo cual se omitir\u00e1 el valor ingresado, pues este tipo de mapa no permite un cambio en los cortes, pues es un intervalo binario.'
             ), call. = FALSE
           )
         }
@@ -965,7 +1001,7 @@ Plot.Mapa <- function(
         NewVar     <- if_else(
           COL_Final_SF |> select(Statistic) |> as.data.frame() |>
             select(Statistic) |> pull() > 0,
-          "1 o m\u00e1s .", "0 ."
+          YN_Legend[1], YN_Legend[2]
         )
         COL_Final_SF <- COL_Final_SF |> mutate(Statistic := NewVar)
       }
@@ -983,7 +1019,7 @@ Plot.Mapa <- function(
       do.call(geom_sf, dots_geom_sf) +
       labs(
         title = titulo, subtitle = ParmsLabs$subtitle, x = labelX, y = labelY,
-        caption = ParmsLabs$caption, tag = ParmsLabs$tag
+        caption = ParmsLabs$caption, tag = ParmsLabs$tag, fill = ParmsLabs$fill
       ) +
       coord_sf(expand = FALSE, xlim = Xlim, ylim = Ylim) +
       ThemeGG + do.call(ggplot2::theme, ParmsLegend)
@@ -1009,7 +1045,8 @@ Plot.Mapa <- function(
           )
         )
     } else if (tolower(estilo$Style) == "calor") {
-      Mapa <- Mapa + scale_fill_viridis_c(option = 'C', trans = "sqrt", alpha = opacidad, na.value = colNA)
+      Mapa <- Mapa +
+        scale_fill_viridis_c(option = "C", trans = "sqrt", alpha = opacidad, na.value = colNA, labels = scales::label_comma())
     }
 
     if (textSize != 0) {
@@ -1022,6 +1059,31 @@ Plot.Mapa <- function(
 
     if (!(missingArg(estilo) || is.null(estilo$scaleX))) { Mapa <- Mapa + scale_x_continuous(breaks = estilo$scaleX) }
     if (!(missingArg(estilo) || is.null(estilo$scaleY))) { Mapa <- Mapa + scale_y_continuous(breaks = estilo$scaleY) }
+  }
+
+  # ============================================================================
+  if (zoomIslas) {
+    thisCall <- match.call(expand.dots = TRUE)
+    thisCall$zoomIslas <- FALSE
+    thisCall$centroideMapa <- "ARCHIPI\u00c9LAGO DE SAN ANDR\u00c9S, PROVIDENCIA Y SANTA CATALINA"
+    # thisCall[[1]] <- as.name("Plot.Mapa")
+    Mapa_ADZ <- eval.parent(thisCall)
+    Mapa_ADZ <- Mapa_ADZ + guides(fill = "none") +
+      labs(title = NULL, subtitle = NULL, x = NULL, y = NULL,
+           caption = NULL, tag = NULL, fill = NULL) +
+      theme(
+        legend.background = element_blank(),
+        plot.background   = element_blank(),
+        panel.background  = element_blank(),
+        panel.border      = element_blank(),
+        panel.grid.major  = element_blank(),
+        panel.grid.minor  = element_blank(),
+        axis.text.x       = element_blank(),
+        axis.text.y       = element_blank(),
+        axis.ticks.x      = element_blank(),
+        axis.ticks.y      = element_blank()
+      )
+    return(list(MapaCOL = Mapa, MapaSanAndres = Mapa_ADZ))
   }
   return(Mapa)
 }

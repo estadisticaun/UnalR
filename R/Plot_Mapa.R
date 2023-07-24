@@ -131,6 +131,7 @@
 #'     de los polígonos. Para más información, consulte la función [geom_sf_text()][ggplot2::geom_sf_text()].
 #'   * `scaleX`, `scaleY`: Vector numérico que especifica los puntos o cortes a
 #'     graficar en dicho eje. Sacado de la función [scale_x_continuous()][ggplot2::scale_x_continuous()].
+#' @param ... Abc.
 #'
 #' @details
 #' Los vectores `depto` y `mpio` introducidos hacen referencia a atributos atómicos,
@@ -217,61 +218,72 @@
 #'     ),
 #'     showSedes     = FALSE
 #'   )
-#' @examples
 #' # ---------------------------------------------------------------------------
+#' @examplesIf require("cowplot")
 #' # Ejemplo usando el caso estático (ggplot2)
 #' Plot.Mapa(
-#'   df       = df,
-#'   depto    = COD_DEP_NAC,
-#'   mpio     = COD_CIU_NAC,
-#'   tipo     = "Deptos",
-#'   naTo0    = FALSE,
-#'   colNA    = "#543619",
-#'   titulo   = "N\u00daM. DE GRADUADOS \u00d7 DEPARTAMENTO",
-#'   cortes   = c(0, 10, 20, 50, 500, Inf),
-#'   colores  =  c("#6812F2", "#8FCE00", "#F6ED0D", "#EE6115", "#EC2525"),
-#'   opacidad = 0.6,
-#'   estatico = TRUE,
-#'   estilo   = list(
-#'     Style = "Intervalo", anchoBorde = 0.5, Theme = 2,
-#'     Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
-#'     Labs   = list(subtitle = "A\u00f1o 2021", caption = "(*) Lugar de Nacimiento", tag = "\u00ae"),
-#'     scaleX = seq(-82, -64, by = 1), scaleY = seq(-4, 14, by = 1)
-#'   )
-#' )
-#' @examplesIf require("tibble") && require("cowplot")
-#' # ---------------------------------------------------------------------------
-#' # library(tibble)
-#' PIB <- tibble(
-#'   DIVIPOLA = c(91,05,81,08,11,13,15,17,18,85,19,20,27,23,25,94,95,41,44,47,50,52,54,86,63,66,88,68,70,73,76,97,99),
-#'   Valor    = c(883,177837,6574,52961,301491,42027,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
-#' )
-#' Plot.Mapa(
-#'   df        = PIB,
-#'   depto     = DIVIPOLA,
-#'   variable  = Valor,
-#'   agregado  = FALSE,
+#'   df        = df,
+#'   depto     = COD_DEP_NAC,
+#'   mpio      = COD_CIU_NAC,
 #'   zoomIslas = TRUE,
-#'   tipo      = "Deptos",
-#'   titulo    = "PIB \u00d7 DEPARTAMENTO",
-#'   cortes    = c(0, 500, 5000, 20000, 30000, Inf),
-#'   colores   = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
-#'   colBorde  = "#3A0F2D",
+#'   tipo      = "Mpios",
+#'   titulo    = "N\u00daM. DE GRADUADOS \u00d7 MUNICIPIO",
+#'   colNA     = "#4ACB46",
+#'   cortes    = c(0, 1, 10, Inf),
+#'   colores   = c("#009CC8", "#EE6115", "#EC2525"),
+#'   opacidad  = 0.6,
 #'   estatico  = TRUE,
-#'   textSize  = 0,
 #'   estilo    = list(
-#'     Style   = "Intervalo", Theme = 7,
-#'     Legend  = list(legend.position = "bottom", legend.direction = "horizontal"),
-#'     Labs    = list(fill = "PIB", subtitle = "A Precios Corrientes",
-#'                    caption = "Para el periodo de 2021P (en miles de millones de pesos)"
-#'     )
+#'     Style = "Intervalo", Theme = 2, anchoBorde = 0.5,
+#'     Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
+#'     Labs   = list(subtitle = "A\u00f1o 2021", caption = "(*) Lugar de Nacimiento", tag = "\u00ae")
 #'   )
 #' ) -> listMaps
 #' # library(cowplot)
+#' # |    Tema    |             Mapa             |   y  | width |
+#' # |:----------:|:----------------------------:|:----:|:-----:|
+#' # | 1:6, 10:11 |          San Andrés          | 0.36 |  0.06 |
+#' # |            | Providencia y Santa Catalina | 0.39 | 0.055 |
+#' # |      9     |             ■ ■ ■            | 0.36 |  0.07 |
+#' # |            |             º º º            | 0.39 | 0.065 |
+#' # |    12:14   |             ■ ■ ■            | 0.33 |  0.11 |
+#' # |            |             º º º            | 0.36 |  0.10 |
 #' ggdraw() +
-#'   draw_plot(listMaps$MapaCOL) +
-#'   draw_plot(listMaps$MapaSanAndres, x = .28, y = .58, width = .15, height = .35)
-#' # ggsave("PlotMapa.png", width = 12, height = 8, dpi = 550)
+#'   draw_plot(listMaps$M_COL) +
+#'   draw_plot(listMaps$M_SanAndres  , x = 0.27, y = 0.36, width = 0.060) +
+#'   draw_plot(listMaps$M_Providencia, x = 0.33, y = 0.39, width = 0.055)
+#' # ggsave("COL.png", width = 12, height = 10, dpi = 550)
+#' # ---------------------------------------------------------------------------
+#' @examplesIf require("tibble")
+#' # library(tibble)
+#' PIB <- tibble(
+#'   DIVIPOLA = c(91,05,81,08,11,13,15,17,18,85,19,20,27,23,25,94,95,41,44,47,50,52,54,86,63,66,88,68,70,73,76,97,99),
+#'   Valor    = c(883,177837,6574,52961,301491,NA,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
+#' )
+#' Plot.Mapa(
+#'   df       = PIB,
+#'   depto    = DIVIPOLA,
+#'   variable = Valor,
+#'   agregado = FALSE,
+#'   tipo     = "Deptos",
+#'   naTo0    = FALSE,
+#'   colNA    = "#543619",
+#'   titulo   = "PIB \u00d7 DEPARTAMENTO",
+#'   cortes   = c(0, 500, 5000, 20000, 30000, Inf),
+#'   colores  = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
+#'   colBorde = "#3A0F2D",
+#'   estatico = TRUE,
+#'   textSize = 0,
+#'   estilo   = list(
+#'     Style = "Intervalo", Theme = 7,
+#'     Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
+#'     Labs = list(
+#'       fill = "PIB", subtitle = "A Precios Corrientes",
+#'       caption = "Para el periodo de 2021P (en miles de millones de pesos)"
+#'     ),
+#'     scaleX = seq(-82, -64, by = 1), scaleY = seq(-4, 14, by = 1)
+#'   )
+#' )
 #' # ---------------------------------------------------------------------------
 #' AreaVichada <- tibble(
 #'   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)
@@ -311,7 +323,7 @@ Plot.Mapa <- function(
     tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"), SiNoLegend, titulo,
     naTo0 = TRUE, colNA = "#EEEEEE", centroideMapa, zoomMapa = 6, baldosas,
     cortes, colores, showSedes = TRUE, colSedes, opacidad = 0.7, colBorde,
-    compacto = TRUE, textSize = 10, limpio = FALSE, estatico = FALSE, estilo) {
+    compacto = TRUE, textSize = 10, limpio = FALSE, estatico = FALSE, estilo, ...) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (missingArg(df)) {
@@ -500,7 +512,7 @@ Plot.Mapa <- function(
       condition = Municipio %in% Homonimos$Municipio,
       true  = paste(Municipio, substring(Departamento, 1, 3)),
       false = Municipio
-      )
+    )
     )
   # ----------------------------------------------------------------------------
   if (tipo == "sinompios") {
@@ -1013,6 +1025,11 @@ Plot.Mapa <- function(
     if (!missingArg(centroideMapa)) {
       centroideMapa <- toupper(centroideMapa)
       COL_Final_SF  <- COL_Final_SF |> filter(Departamento == centroideMapa)
+      if (!missing(...)) {
+        COL_Final_SF  <- COL_Final_SF |> filter(Municipio == ...)
+      }
+    } else {
+      COL_Final_SF  <- COL_Final_SF |> filter(Departamento != "ARCHIPI\u00c9LAGO DE SAN ANDR\u00c9S, PROVIDENCIA Y SANTA CATALINA")
     }
 
     Mapa <- ggplot(data = COL_Final_SF) +
@@ -1066,24 +1083,44 @@ Plot.Mapa <- function(
     thisCall <- match.call(expand.dots = TRUE)
     thisCall$zoomIslas <- FALSE
     thisCall$centroideMapa <- "ARCHIPI\u00c9LAGO DE SAN ANDR\u00c9S, PROVIDENCIA Y SANTA CATALINA"
+    thisCall$`...` <- "SAN ANDR\u00c9S ARC"
     # thisCall[[1]] <- as.name("Plot.Mapa")
-    Mapa_ADZ <- eval.parent(thisCall)
-    Mapa_ADZ <- Mapa_ADZ + guides(fill = "none") +
-      labs(title = NULL, subtitle = NULL, x = NULL, y = NULL,
-           caption = NULL, tag = NULL, fill = NULL) +
-      theme(
-        legend.background = element_blank(),
-        plot.background   = element_blank(),
-        panel.background  = element_blank(),
-        panel.border      = element_blank(),
-        panel.grid.major  = element_blank(),
-        panel.grid.minor  = element_blank(),
-        axis.text.x       = element_blank(),
-        axis.text.y       = element_blank(),
-        axis.ticks.x      = element_blank(),
-        axis.ticks.y      = element_blank()
-      )
-    return(list(MapaCOL = Mapa, MapaSanAndres = Mapa_ADZ))
+    Mapa_ADZ1 <- eval.parent(thisCall)
+    thisCall$`...` <- "PROVIDENCIA ARC"
+    Mapa_ADZ2 <- eval.parent(thisCall)
+
+    # Mapa_ADZ <- cowplot::plot_grid(
+    Mapa_ADZ1 <- Mapa_ADZ1 + guides(fill = "none") +
+        labs(title = NULL, subtitle = NULL, x = NULL, y = NULL,
+             caption = NULL, tag = NULL, fill = NULL) +
+        theme(
+          legend.background = element_blank(),
+          plot.background   = element_blank(),
+          panel.background  = element_blank(),
+          panel.border      = element_blank(),
+          panel.grid.major  = element_blank(),
+          panel.grid.minor  = element_blank(),
+          axis.text.x       = element_blank(),
+          axis.text.y       = element_blank(),
+          axis.ticks.x      = element_blank(),
+          axis.ticks.y      = element_blank()
+        )
+    Mapa_ADZ2 <- Mapa_ADZ2 + guides(fill = "none") +
+        labs(title = NULL, subtitle = NULL, x = NULL, y = NULL,
+             caption = NULL, tag = NULL, fill = NULL) +
+        theme(
+          legend.background = element_blank(),
+          plot.background   = element_blank(),
+          panel.background  = element_blank(),
+          panel.border      = element_blank(),
+          panel.grid.major  = element_blank(),
+          panel.grid.minor  = element_blank(),
+          axis.text.x       = element_blank(),
+          axis.text.y       = element_blank(),
+          axis.ticks.x      = element_blank(),
+          axis.ticks.y      = element_blank()
+        )
+    return(list(M_COL = Mapa, M_SanAndres = Mapa_ADZ1, M_Providencia = Mapa_ADZ2))
   }
   return(Mapa)
 }

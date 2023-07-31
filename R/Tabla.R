@@ -1,13 +1,25 @@
 #' Cree fácilmente un widget para visualización de tablas HTML usando el paquete `DT`
 #'
-#' Esta función está diseñada para facilitar la creación de tablas para informes
-#' y publicaciones, produciendo un widget HTML para visualizar un data frame
+#' Esta función está diseñada para facilitar/simplificar la creación/producción de tablas para informes, presentaciones y
+#' publicaciones, produciendo un widget HTML para visualizar un data frame
 #' utilizando el paquete `DT`. La forma en que esta función maneja las cosas por
 #' usted significa que a menudo no tiene que preocuparse por los pequeños detalles
 #' para obtener un resultado impresionante y listo para usar.
 #'
-#' @param datos Un data frame.
-#' @param categoria Una variable categórica dentro del data frame ingresado en `datos`.
+#' @param df Un data frame.
+#' @param rows Una variable categórica dentro del data frame ingresado en `datos`.
+#' @param pivotCat X.
+#' @param pivotVar X.
+#' @param columnNames Vector de caracteres que especifica los nombres de las columnas
+#'   de la tabla a retornar. Si no se introduce algún valor se tomará el mismo
+#'   nombre de las columnas presentes en `datos`.
+#' @param filtros Si es `FALSE` (*valor predeterminado*) no se habilitará/aplicará
+#'   los filtros por columna. Establézcalo en `TRUE` si desea generar filtros de
+#'   columna automáticamente.
+#' @param colFilters Vector numérico que especifica las columnas a las cuales les
+#'   desea agregar la opción de poder filtrar. Si no se introduce algún valor todas
+#'   las columnas tendrán habilitada la opción de poder filtrar.
+#' @param estadistico X.
 #' @param encabezado Cadena de caracteres que describe los distintos niveles de
 #'   la variable `categoria`.
 #' @param leyenda Cadena de caracteres que describe información adicional de la
@@ -31,15 +43,11 @@
 #' @param colorHead Cadena de caracteres que indica el color de fondo de la cabecera
 #'   de la tabla. Puede indicar el color con el nombre (`"red"`), código hexadecimal
 #'   (`"#FF0000"`) o RGB (`rgb(1, 0, 0)`). El valor por defecto es "blanco" (`"#FFFFFF"`).
-#' @param colorear Si es `TRUE` indica que desea poner color a la tabla de forma
-#'   automática, aplicando color a la fuente del periodo y añadiendo un color de
-#'   fondo para los años (*de acuerdo con una paleta predefinida*). El valor por
-#'   defecto es `FALSE`.
-#' @param estilo Una lista compuesta por dos parámetros.
-#'   * `PaletaYear`: Vector de caracteres que especifica los colores de fondo para
-#'     los años.
-#'   * `PaletaSemestre`: Vector de caracteres que especifica los colores de fuente
-#'     para los periodos (\emph{semestres}).
+#' @param estilo Una lista compuesta por listas las cuales en su interior contiene
+#'   argumentos válidos de la función [formatStyle()][DT:: formatStyle()], esto
+#'   con la finalidad de que pueda aplicar estilos CSS a la tabla, tales como color
+#'   de la fuente, color de fondo, tamaño de fuente, etc. Puede encontrar mayor
+#'   información de los argumentos disponibles \href{https://rstudio.github.io/DT/functions.html}{aquí}.
 #'
 #' @details
 #' Esta función se basa enteramente del paquete `DT`, el cual proporciona una
@@ -48,20 +56,117 @@
 #' de filtrado, paginación, clasificación y muchas otras características en las
 #' tablas.
 #'
+#' Esta función se basa enteramente del paquete `DT`, el cual proporciona una interfaz
+#' para `R` a la biblioteca `DataTables` de `JavaScript`. Los data frames de `R`
+#' se pueden mostrar como tablas en páginas HTML, proporcionando opciones de
+#' filtrado, paginación, clasificación y muchas otras características en las tablas.
+#'
+#' Al establecer `filtros = FALSE` no elimina ni modifica el filtro global
+#' (*cuadro de búsqueda en la parte superior derecha*).
+#'
+#' Para el argumento `colFilters` recuerde que la numeración inicia en 0, es decir,
+#' la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesivamente.
+#'
 #' @returns
 #' Retorna la tabla creada mediante `DT` la cual pertenece a la clase "datatables"
 #' y "htmlwidget".
 #'
-#' @examples
-#' misColores <- rainbow(length(unique(ejConsolidadoGrad$YEAR)), alpha = 0.5, rev = TRUE)
+#' @examplesIf all(require("DT"), require("dplyr"), require("tidyr"))
+#' # library(DT); library(dplyr); library(tidyr)
+#' # Example of R Combinations with Dot (".") and Pipe (%>%) Operator
+#' # UnalR::Agregar(
+#' #   formula    = SEDE_NOMBRE_ADM ~ YEAR + SEMESTRE,
+#' #   frecuencia = list("Year" = 2009:2022, "Period" = 1:2),
+#' #   datos      = UnalData::Graduados, ask = FALSE
+#' #   ) |>
+#' #   select(-Variable) |>
+#' #   rename(Year = YEAR, Semester = SEMESTRE, Cat = Clase) %>%
+#' #   Tabla(
+#' #     ., rows = vars(Year, Semester), pivotCat = Cat, pivotVar = Total
+#' #   )
 #' Tabla(
-#'   datos      = ejConsolidadoGrad,
-#'   categoria  = "SEDE_NOMBRE_ADM",
-#'   encabezado = "TOTAL DE ESTUDIANTES POR SEDE DE GRADUACI\u00d3N",
-#'   leyenda    = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
-#'   tituloPdf  = "ESTUDIANTES GRADUADOS POR SEDE",
-#'   colorHead  = "#8CC63F",
-#'   estilo     = list(PaletaYear = misColores, PaletaSemestre = c("#EB0095", "#9D45FD"))
+#'   df = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |> dplyr::select(-Variable),
+#'   rows     = vars(YEAR, SEMESTRE),
+#'   pivotCat = Clase,
+#'   pivotVar = Total,
+#'   columnNames = c("Año", "Semestre", "Total"),
+#'   encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
+#'   leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
+#'   tituloPdf   = "ESTUDIANTES GRADUADOS POR SEDE",
+#'   colorHead   = "#8CC63F",
+#'   estilo      = list(
+#'     list(
+#'       columns = "YEAR", target = "cell", fontWeight = "normal",
+#'       backgroundColor = styleEqual(unique(ejConsolidadoGrad$YEAR), rainbow(13, alpha = 0.5, rev = TRUE))
+#'     ),
+#'     list(
+#'       columns = "SEMESTRE", target = "cell", fontWeight = "bold",
+#'       color = styleEqual(unique(ejConsolidadoGrad$SEMESTRE), c("#EB0095", "#9D45FD"))
+#'     )
+#'   )
+#' )
+#' # ---------------------------------------------------------------------------
+#' VariosYears <- ejConsolidadoSaberPro2019         |>
+#'   mutate(YEAR = replace(YEAR, YEAR==2019, 2020)) |>
+#'   bind_rows(ejConsolidadoSaberPro2019)           |>
+#'   filter(Variable == "sede") |> select(-Variable, -desv)
+#'
+#' Msj <- "\u00c9sta es una descripci\u00f3n de la tabla diferente al valor por default."
+#' Tabla(
+#'   df          = VariosYears,
+#'   rows        = vars(YEAR, Clase, n),
+#'   pivotCat    = Componente,
+#'   pivotVar    = Total,
+#'   columnNames = c("Año", "Sede", "n", "M\u00e1ximo"),
+#'   estadistico = "Max",
+#'   encabezado  = "PUNTAJES \u00d7 SEDE",
+#'   leyenda     = Msj,
+#'   colorHead   = "#F9CA00",
+#'   estilo      = list(
+#'     list(
+#'       columns = "YEAR", target = "cell", fontWeight = "normal",
+#'       backgroundColor = styleEqual(unique(VariosYears$YEAR), c("#AEF133", "#19EE9F"))
+#'     ),
+#'     list(
+#'       columns = "Clase", target = "cell", fontWeight = "bold",
+#'       color = styleEqual(unique(VariosYears$Clase), c("#42C501", "#7E10DE", "#FF6700", "#0096F2"))
+#'     )
+#'   )
+#' )
+#' # ---------------------------------------------------------------------------
+#' Tabla(df = datasets::mtcars)
+#'
+#' df <- ejGraduados |>
+#'   filter(TIPO_NIVEL == "Pregrado") |>
+#'   group_by(YEAR, SEMESTRE, DEP_NAC, CIU_NAC, SEXO, CAT_EDAD, ESTRATO, PROGRAMA) |>
+#'   summarise(Total = n(), .groups = "drop") |>
+#'   mutate(across(where(is.character), \(x) replace_na(x, replace = "SIN INFO")))
+#'
+#' Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
+#' Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
+#' Tabla(
+#'   df             = df,
+#'   columnNames    = Nombres,
+#'   filtros        = TRUE,
+#'   colFilters     = 0:3,
+#'   encabezado     = Titulo,
+#'   leyenda        = "N\u00famero de graduados de pregrado por lugar de procedencia.",
+#'   tituloPdf      = "Este es un t\u00edtulo provisional para el PDF",
+#'   mensajePdf     = "Este es un mensaje provisional para el PDF",
+#'   ajustarNiveles = TRUE,
+#'   colorHead      = "#4CFF49",
+#'   estilo         = list(
+#'     list(
+#'       columns = "YEAR", target = "cell", fontWeight = "bold",
+#'       backgroundColor = styleEqual(unique(df$YEAR), c("#FF6400", "#01CDFE", "#FF0532"))
+#'     ),
+#'     list(
+#'       columns = "SEMESTRE", target = "cell", fontWeight = "bold",
+#'       color = styleEqual(unique(df$SEMESTRE), c("#3D3397", "#AE0421"))
+#'     ),
+#'     list(columns = "DEP_NAC", color = "#FFFFFF", backgroundColor = "#4D1B7B"),
+#'     list(columns = "CIU_NAC", color = "#FFFFFF", backgroundColor = "#F59E11")
+#'   )
 #' )
 #'
 #' @export
@@ -74,29 +179,26 @@
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices colorRampPalette
 Tabla <- function(
-    datos, categoria, encabezado = "Encabezados de los Niveles de la Categor\u00eda",
-    leyenda = NULL, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
-    scrollX = TRUE, colorHead = "#FFFFFF", colorear = FALSE, estilo) {
+    df, rows, pivotCat, pivotVar, columnNames, filtros = FALSE, colFilters,
+    estadistico = c("Suma", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
+    encabezado = "Encabezados de los Niveles de la Categor\u00eda",
+    leyenda, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
+    scrollX = TRUE, colorHead = "#FFFFFF", estilo) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
-  if(any(missingArg(datos), missingArg(categoria))) {
-    stop("\u00a1Por favor introduzca un conjunto de datos y una categor\u00eda dentro de la columna 'Variable'!", call. = FALSE)
-  }
-  categoria <- toupper(categoria)
-  if (!(categoria %in% datos$Variable)) {
-    stop("\u00a1Por favor introduzca una categor\u00eda que se encuentra dentro de la columna 'Variable'!", call. = FALSE)
-  }
-  if (!all(is.logical(ajustarNiveles), is.logical(scrollX), is.logical(colorear))) {
-    stop("\u00a1Los argumentos 'ajustarNiveles', 'scrollX' y 'colorear' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
+  if (!all(is.logical(filtros), is.logical(ajustarNiveles), is.logical(scrollX))) {
+    stop("\u00a1Los argumentos 'filtros', 'ajustarNiveles' y 'scrollX' deben ser un booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!is.character(colorHead)) {
     stop("\u00a1El argumento 'colorHead' debe ser un car\u00e1cter que indique un color con el nombre ('red'), c\u00f3digo hexadecimal ('#FF0000') o RGB (rgb(1, 0, 0))!", call. = FALSE)
   }
   if (missingArg(tituloPdf)) { tituloPdf <- encabezado }
-  if (is.null(leyenda) == FALSE) {
-    leyenda <- htmltools::tags$caption(style = 'caption-side: bottom; text-align: center;',
-                                       "Tabla : ", htmltools::em(leyenda)
-                                       )
+  if (missingArg(leyenda)) {
+    Leyenda <- htmltools::tags$caption(style = 'caption-side: bottom; text-align: center;',
+                                       "Nota: ", htmltools::em("Los valores presentados entre par\u00e9ntesis hacen referencia a la desviaci\u00f3n est\u00e1ndar."),
+                                       htmltools::br(htmltools::em("(*) hace referencia al total de estudiantes evaluados.")))
+  } else {
+    Leyenda <- htmltools::tags$caption(style = 'caption-side: bottom; text-align: center;', "Nota: ", htmltools::em(leyenda))
   }
   AjusteNiveles <- ifelse(ajustarNiveles == TRUE, "compact nowrap hover row-border", "display")
 
@@ -104,55 +206,110 @@ Tabla <- function(
   th <- function(...) { htmltools::tag("th", ...) }
   tr <- function(...) { htmltools::tag("tr", ...) }
 
+  # ----------------------------------------------------------------------------
   # CREACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA TABLA
-  DataFrame <- datos |>
-    # Convertir a columnas las observaciones dispersas en múltiples filas
-    filter(Variable == categoria) |>
-    pivot_wider(names_from = Clase, values_from = Total) |>
-    select(-Variable) |>
-    # Creación de la columna Total Global (Total por Fila/Semestre)
-    left_join(
-      datos |>
-        filter(Variable == categoria) |>
-        group_by(YEAR, SEMESTRE) |>
-        summarise(TotalGlobal = sum(Total, na.rm = TRUE))
-    ) |>
-    mutate(YEAR = factor(YEAR), SEMESTRE = factor(SEMESTRE))
-  Categorias <- datos |>
-    filter(Variable == categoria) |>
-    group_by(Clase) |> distinct(Clase)
-  # Custom Table Container (Nombre de los Encabezados)
-  sketch = htmltools::withTags(table(
-    class = "display",
-    thead(
-      tr(
-        th(rowspan = 2, "A\u00f1o"),
-        th(rowspan = 2, "Periodo"),
-        th(colspan = n_groups(Categorias), encabezado),
-        th(rowspan = 2, "Total")
-      ),
-      tr( lapply(Categorias |> pull(), th) )
-    )
-  ))
+  if (all(missingArg(rows), missingArg(pivotCat), missingArg(pivotVar))) {
+    DataFrame <- df %>% mutate_all(., as.factor)
+    colNames  <- colnames(df)
 
+    if (filtros) {
+      Filtros <- list(position = "top", clear = TRUE, plain = FALSE)
+
+      if (missingArg(colFilters)) {
+        dots <- list()
+      } else {
+        if (max(colFilters) >= length(colNames) || min(colFilters) < 0) {
+          stop("\u00a1El vector ingresado para seleccionar las columnas con filtro debe estar entre [0, n-1] donde n representa el total de columnas!", call. = FALSE)
+        } else {
+          U    <- 0:(length(colNames) - 1)
+          dots <- list(targets = setdiff(U, colFilters), searchable = FALSE)
+        }
+      }
+    } else {
+      if (!missingArg(colFilters)) {
+        warning("\u00a1El valor para el argumento 'colFilters' que ha ingresado queda deshabilitado debido a que 'filtros = FALSE'!", call. = FALSE)
+      }
+      Filtros <- "none"; dots <- list()
+    }
+
+    colsDefs <- list(
+      list(className = "dt-center", targets = 0:(length(colNames) - 1)),
+      dots, list(width = "65px", targets = 0)
+    )
+
+    sketch <- htmltools::withTags(table(
+      class = "display",
+      thead(
+        tr(
+          th(colspan = length(colNames), encabezado)
+        ),
+        tr(lapply(colNames, th))
+      )
+    ))
+  } else {
+    # Creación de la Tabla Pivoteada de Acuerdo con los Parámetros Ingresados
+    DataFrame <- df |> pivot_wider(names_from = {{ pivotCat }}, values_from = {{ pivotVar }})
+    nCat      <- df |> group_by({{ pivotCat }}) |> distinct({{ pivotCat }})
+    Statistic <- match.arg(estadistico)
+    Groups    <- df |> group_by(!!!rows, .drop = FALSE)
+    addGlobal <- switch(
+      Statistic,
+      Suma     = Groups |> summarise("Statistic" = sum({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
+      Promedio = Groups |> summarise("Statistic" = mean({{ pivotVar }}  , na.rm = TRUE), .groups = "drop"),
+      Mediana  = Groups |> summarise("Statistic" = median({{ pivotVar }}, na.rm = TRUE), .groups = "drop"),
+      Varianza = Groups |> summarise("Statistic" = var({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
+      SD       = Groups |> summarise("Statistic" = sd({{ pivotVar }}    , na.rm = TRUE), .groups = "drop"),
+      CV       = Groups |> summarise("Statistic" = cv({{ pivotVar }}    , na.rm = TRUE), .groups = "drop"),
+      Min      = Groups |> summarise("Statistic" = min({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
+      Max      = Groups |> summarise("Statistic" = max({{ pivotVar }}   , na.rm = TRUE), .groups = "drop")
+    )
+    # Creación de la Columna Total Global (Total x Fila)
+    DataFrame <- DataFrame |> left_join(addGlobal)
+    colsDefs <- list(
+      list(className = "dt-center", targets = 0:(n_groups(nCat)+2)),
+      list(width = "65px", targets = 0)
+    )
+    DataFrame <- DataFrame |> mutate_at(rows, factor)
+    # Custom Table Container (Nombre de los Encabezados)
+    Txt <- ""
+    if (!missingArg(columnNames)) {
+      for (i in 1:(length(columnNames)-1)) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "', columnNames[i], '"), ')) }
+      lastCol <- tail(columnNames, n = 1)
+    } else {
+      for (i in 1:length(rows)) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "Col', i, '"), ')) }
+      lastCol <- "Total"
+    }
+    TxtFinal <- paste0(
+      'htmltools::withTags(table(class = "display",
+        thead(
+          tr(',
+      Txt,
+      'th(colspan = n_groups(nCat), encabezado),
+            th(rowspan = 2, "', lastCol , '")
+          ),
+          tr( lapply(nCat |> pull(), th) )
+        )
+       ))'
+    )
+    sketch  <- eval(parse(text = TxtFinal))
+    Filtros <- "none"
+  }
+  # print(sketch)
   # CREACIÓN DE LA TABLA A RETORNAR
   TablaFinal <- datatable(
     DataFrame,
     class      = AjusteNiveles,
     rownames   = FALSE,
     container  = sketch,
-    caption    = leyenda,
+    caption    = Leyenda,
     escape     = FALSE,
-    filter     = list(position = "top", clear = TRUE, plain = FALSE),
+    filter     = Filtros,
     extensions = c("Buttons", "KeyTable"),
     options    = list(
       autoWidth  = TRUE,
-      columnDefs = list(
-        list(className = "dt-center", targets = 0:(n_groups(Categorias)+2)),
-        list(width = "65px", targets = 0)
-      ),
+      columnDefs = colsDefs,
       pageLength = 8,
-      order = list(list(0, "desc"), list(1, "desc")),
+      order = list(list(0, "desc"), list(1, "asc")),
       dom   = "Bfrtip",
       keys  = TRUE,
       searchHighlight = TRUE,
@@ -196,27 +353,31 @@ Tabla <- function(
     )
   )
 
-  if (all(colorear, missingArg(estilo))) {
-    TablaFinal <- TablaFinal |>
-      formatStyle(
-        "YEAR", target = "cell", fontWeight = "bold",
-        backgroundColor = styleEqual( unique(DataFrame$YEAR), colorRampPalette(brewer.pal(12, "Set3"))(nlevels(DataFrame$YEAR)) )
-      ) |>
-      formatStyle(
-        "SEMESTRE", target = "cell", fontWeight = "bold",
-        color = styleEqual( unique(DataFrame$SEMESTRE), c("#E72837", "#0A7DBF") )
-      )
-  } else if (!missingArg(estilo)) {
-    TablaFinal <- TablaFinal |>
-      formatStyle(
-        "YEAR", target = "cell", fontWeight = "bold",
-        backgroundColor = styleEqual( unique(DataFrame$YEAR), estilo$PaletaYear )
-      ) |>
-      formatStyle(
-        "SEMESTRE", target = "cell", fontWeight = "bold",
-        color = styleEqual( unique(DataFrame$SEMESTRE), estilo$PaletaSemestre )
-      )
+  if (!missingArg(estilo)) {
+    for (i in 1:length(estilo)) {
+      Temp <- do.call(formatStyle, append(list(table = TablaFinal), estilo[[i]]))
+      TablaFinal <- Temp
+    }
   }
-
+  # if (!missingArg(estilo)) {
+  #   formatCols <- function(table, varTXT, list) {
+  #     if (is.null(list$color)) { colorFinal <- NULL } else {
+  #       colorFinal <- styleEqual(unique(DataFrame[[varTXT]]), list$color)
+  #     }
+  #     if (is.null(list$background)) { backgFinal <- NULL } else {
+  #       backgFinal <- styleEqual(unique(DataFrame[[varTXT]]), list$background)
+  #     }
+  #     return(
+  #       formatStyle(
+  #         table = table, varTXT, target = "cell", fontWeight = list$font,
+  #         color = colorFinal, backgroundColor = backgFinal
+  #       )
+  #     )
+  #   }
+  #   listVars <- as.character(substitute(rows))[-1]
+  #   for (i in 1:length(listVars)) {
+  #     TablaFinal <- TablaFinal |> formatCols(varTXT = listVars[i], list = estilo[[i]])
+  #   }
+  # }
   return(TablaFinal)
 }

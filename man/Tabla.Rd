@@ -5,23 +5,46 @@
 \title{Cree fácilmente un widget para visualización de tablas HTML usando el paquete \code{DT}}
 \usage{
 Tabla(
-  datos,
-  categoria,
+  df,
+  rows,
+  pivotCat,
+  pivotVar,
+  columnNames,
+  filtros = FALSE,
+  colFilters,
+  estadistico = c("Suma", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
   encabezado = "Encabezados de los Niveles de la Categoría",
-  leyenda = NULL,
+  leyenda,
   tituloPdf = NULL,
   mensajePdf = "",
   ajustarNiveles = TRUE,
   scrollX = TRUE,
   colorHead = "#FFFFFF",
-  colorear = FALSE,
   estilo
 )
 }
 \arguments{
-\item{datos}{Un data frame.}
+\item{df}{Un data frame.}
 
-\item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
+\item{rows}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
+
+\item{pivotCat}{X.}
+
+\item{pivotVar}{X.}
+
+\item{columnNames}{Vector de caracteres que especifica los nombres de las columnas
+de la tabla a retornar. Si no se introduce algún valor se tomará el mismo
+nombre de las columnas presentes en \code{datos}.}
+
+\item{filtros}{Si es \code{FALSE} (\emph{valor predeterminado}) no se habilitará/aplicará
+los filtros por columna. Establézcalo en \code{TRUE} si desea generar filtros de
+columna automáticamente.}
+
+\item{colFilters}{Vector numérico que especifica las columnas a las cuales les
+desea agregar la opción de poder filtrar. Si no se introduce algún valor todas
+las columnas tendrán habilitada la opción de poder filtrar.}
+
+\item{estadistico}{X.}
 
 \item{encabezado}{Cadena de caracteres que describe los distintos niveles de
 la variable \code{categoria}.}
@@ -53,26 +76,19 @@ desplazamiento de los encabezados debido a un conflicto interno.}
 de la tabla. Puede indicar el color con el nombre (\code{"red"}), código hexadecimal
 (\code{"#FF0000"}) o RGB (\code{rgb(1, 0, 0)}). El valor por defecto es "blanco" (\code{"#FFFFFF"}).}
 
-\item{colorear}{Si es \code{TRUE} indica que desea poner color a la tabla de forma
-automática, aplicando color a la fuente del periodo y añadiendo un color de
-fondo para los años (\emph{de acuerdo con una paleta predefinida}). El valor por
-defecto es \code{FALSE}.}
-
-\item{estilo}{Una lista compuesta por dos parámetros.
-\itemize{
-\item \code{PaletaYear}: Vector de caracteres que especifica los colores de fondo para
-los años.
-\item \code{PaletaSemestre}: Vector de caracteres que especifica los colores de fuente
-para los periodos (\emph{semestres}).
-}}
+\item{estilo}{Una lista compuesta por listas las cuales en su interior contiene
+argumentos válidos de la función \link[DT:formatCurrency]{formatStyle()}, esto
+con la finalidad de que pueda aplicar estilos CSS a la tabla, tales como color
+de la fuente, color de fondo, tamaño de fuente, etc. Puede encontrar mayor
+información de los argumentos disponibles \href{https://rstudio.github.io/DT/functions.html}{aquí}.}
 }
 \value{
 Retorna la tabla creada mediante \code{DT} la cual pertenece a la clase "datatables"
 y "htmlwidget".
 }
 \description{
-Esta función está diseñada para facilitar la creación de tablas para informes
-y publicaciones, produciendo un widget HTML para visualizar un data frame
+Esta función está diseñada para facilitar/simplificar la creación/producción de tablas para informes, presentaciones y
+publicaciones, produciendo un widget HTML para visualizar un data frame
 utilizando el paquete \code{DT}. La forma en que esta función maneja las cosas por
 usted significa que a menudo no tiene que preocuparse por los pequeños detalles
 para obtener un resultado impresionante y listo para usar.
@@ -83,17 +99,115 @@ interfaz para \code{R} a la biblioteca \code{DataTables} de \code{JavaScript}. L
 de \code{R} se pueden mostrar como tablas en páginas HTML, proporcionando opciones
 de filtrado, paginación, clasificación y muchas otras características en las
 tablas.
+
+Esta función se basa enteramente del paquete \code{DT}, el cual proporciona una interfaz
+para \code{R} a la biblioteca \code{DataTables} de \code{JavaScript}. Los data frames de \code{R}
+se pueden mostrar como tablas en páginas HTML, proporcionando opciones de
+filtrado, paginación, clasificación y muchas otras características en las tablas.
+
+Al establecer \code{filtros = FALSE} no elimina ni modifica el filtro global
+(\emph{cuadro de búsqueda en la parte superior derecha}).
+
+Para el argumento \code{colFilters} recuerde que la numeración inicia en 0, es decir,
+la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesivamente.
 }
 \examples{
-misColores <- rainbow(length(unique(ejConsolidadoGrad$YEAR)), alpha = 0.5, rev = TRUE)
+\dontshow{if (all(require("DT"), require("dplyr"), require("tidyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(DT); library(dplyr); library(tidyr)
+# Example of R Combinations with Dot (".") and Pipe (\%>\%) Operator
+# UnalR::Agregar(
+#   formula    = SEDE_NOMBRE_ADM ~ YEAR + SEMESTRE,
+#   frecuencia = list("Year" = 2009:2022, "Period" = 1:2),
+#   datos      = UnalData::Graduados, ask = FALSE
+#   ) |>
+#   select(-Variable) |>
+#   rename(Year = YEAR, Semester = SEMESTRE, Cat = Clase) \%>\%
+#   Tabla(
+#     ., rows = vars(Year, Semester), pivotCat = Cat, pivotVar = Total
+#   )
 Tabla(
-  datos      = ejConsolidadoGrad,
-  categoria  = "SEDE_NOMBRE_ADM",
-  encabezado = "TOTAL DE ESTUDIANTES POR SEDE DE GRADUACI\u00d3N",
-  leyenda    = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
-  tituloPdf  = "ESTUDIANTES GRADUADOS POR SEDE",
-  colorHead  = "#8CC63F",
-  estilo     = list(PaletaYear = misColores, PaletaSemestre = c("#EB0095", "#9D45FD"))
+  df = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |> dplyr::select(-Variable),
+  rows     = vars(YEAR, SEMESTRE),
+  pivotCat = Clase,
+  pivotVar = Total,
+  columnNames = c("Año", "Semestre", "Total"),
+  encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
+  leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
+  tituloPdf   = "ESTUDIANTES GRADUADOS POR SEDE",
+  colorHead   = "#8CC63F",
+  estilo      = list(
+    list(
+      columns = "YEAR", target = "cell", fontWeight = "normal",
+      backgroundColor = styleEqual(unique(ejConsolidadoGrad$YEAR), rainbow(13, alpha = 0.5, rev = TRUE))
+    ),
+    list(
+      columns = "SEMESTRE", target = "cell", fontWeight = "bold",
+      color = styleEqual(unique(ejConsolidadoGrad$SEMESTRE), c("#EB0095", "#9D45FD"))
+    )
+  )
 )
+# ---------------------------------------------------------------------------
+VariosYears <- ejConsolidadoSaberPro2019         |>
+  mutate(YEAR = replace(YEAR, YEAR==2019, 2020)) |>
+  bind_rows(ejConsolidadoSaberPro2019)           |>
+  filter(Variable == "sede") |> select(-Variable, -desv)
 
+Msj <- "\u00c9sta es una descripci\u00f3n de la tabla diferente al valor por default."
+Tabla(
+  df          = VariosYears,
+  rows        = vars(YEAR, Clase, n),
+  pivotCat    = Componente,
+  pivotVar    = Total,
+  columnNames = c("Año", "Sede", "n", "M\u00e1ximo"),
+  estadistico = "Max",
+  encabezado  = "PUNTAJES \u00d7 SEDE",
+  leyenda     = Msj,
+  colorHead   = "#F9CA00",
+  estilo      = list(
+    list(
+      columns = "YEAR", target = "cell", fontWeight = "normal",
+      backgroundColor = styleEqual(unique(VariosYears$YEAR), c("#AEF133", "#19EE9F"))
+    ),
+    list(
+      columns = "Clase", target = "cell", fontWeight = "bold",
+      color = styleEqual(unique(VariosYears$Clase), c("#42C501", "#7E10DE", "#FF6700", "#0096F2"))
+    )
+  )
+)
+# ---------------------------------------------------------------------------
+Tabla(df = datasets::mtcars)
+
+df <- ejGraduados |>
+  filter(TIPO_NIVEL == "Pregrado") |>
+  group_by(YEAR, SEMESTRE, DEP_NAC, CIU_NAC, SEXO, CAT_EDAD, ESTRATO, PROGRAMA) |>
+  summarise(Total = n(), .groups = "drop") |>
+  mutate(across(where(is.character), \(x) replace_na(x, replace = "SIN INFO")))
+
+Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
+Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
+Tabla(
+  df             = df,
+  columnNames    = Nombres,
+  filtros        = TRUE,
+  colFilters     = 0:3,
+  encabezado     = Titulo,
+  leyenda        = "N\u00famero de graduados de pregrado por lugar de procedencia.",
+  tituloPdf      = "Este es un t\u00edtulo provisional para el PDF",
+  mensajePdf     = "Este es un mensaje provisional para el PDF",
+  ajustarNiveles = TRUE,
+  colorHead      = "#4CFF49",
+  estilo         = list(
+    list(
+      columns = "YEAR", target = "cell", fontWeight = "bold",
+      backgroundColor = styleEqual(unique(df$YEAR), c("#FF6400", "#01CDFE", "#FF0532"))
+    ),
+    list(
+      columns = "SEMESTRE", target = "cell", fontWeight = "bold",
+      color = styleEqual(unique(df$SEMESTRE), c("#3D3397", "#AE0421"))
+    ),
+    list(columns = "DEP_NAC", color = "#FFFFFF", backgroundColor = "#4D1B7B"),
+    list(columns = "CIU_NAC", color = "#FFFFFF", backgroundColor = "#F59E11")
+  )
+)
+\dontshow{\}) # examplesIf}
 }

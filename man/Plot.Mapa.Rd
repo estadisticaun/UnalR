@@ -249,9 +249,9 @@ Plot.Mapa(
     Mpios  = c("#E7F15D", "#ACBD37", "#E15E32", "#A82743", "#5C323E")
   )
 )
-# ---------------------------------------------------------------------------
 \dontshow{\}) # examplesIf}
 \dontshow{if (require("dplyr") && require("magrittr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
 # library(dplyr); library(magrittr)
 ejSaberPro2020 \%>\%
   select(
@@ -287,9 +287,9 @@ ejSaberPro2020 \%>\%
     ),
     showSedes     = FALSE
   )
-# ---------------------------------------------------------------------------
 \dontshow{\}) # examplesIf}
 \dontshow{if (require("cowplot")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 Plot.Mapa(
   df        = df,
@@ -309,7 +309,7 @@ Plot.Mapa(
     Labs   = list(subtitle = "A\u00f1o 2021", caption = "(*) Lugar de Nacimiento", tag = "\u00ae")
   )
 ) -> listMaps
-# library(cowplot)
+# library(cowplot); library(ggplot2)
 # |    Tema    |             Mapa             |   y  | width |
 # |:----------:|:----------------------------:|:----:|:-----:|
 # | 1:6, 10:11 |          San Andrés          | 0.36 |  0.06 |
@@ -322,39 +322,52 @@ ggdraw() +
   draw_plot(listMaps$M_COL) +
   draw_plot(listMaps$M_SanAndres  , x = 0.27, y = 0.36, width = 0.060) +
   draw_plot(listMaps$M_Providencia, x = 0.33, y = 0.39, width = 0.055)
-# ggsave("COL.png", width = 12, height = 10, dpi = 550)
-# ---------------------------------------------------------------------------
+# ggplot2::ggsave("COL.png", width = 12, height = 10, dpi = 550)
 \dontshow{\}) # examplesIf}
 \dontshow{if (require("tibble")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
 # library(tibble)
 PIB <- tibble(
   DIVIPOLA = c(91,05,81,08,11,13,15,17,18,85,19,20,27,23,25,94,95,41,44,47,50,52,54,86,63,66,88,68,70,73,76,97,99),
   Valor    = c(883,177837,6574,52961,301491,NA,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
 )
 Plot.Mapa(
-  df       = PIB,
-  depto    = DIVIPOLA,
-  variable = Valor,
-  agregado = FALSE,
-  tipo     = "Deptos",
-  naTo0    = FALSE,
-  colNA    = "#543619",
-  titulo   = "PIB \u00d7 DEPARTAMENTO",
-  cortes   = c(0, 500, 5000, 20000, 30000, Inf),
-  colores  = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
-  colBorde = "#3A0F2D",
-  estatico = TRUE,
-  textSize = 0,
-  estilo   = list(
+  df        = PIB,
+  depto     = DIVIPOLA,
+  variable  = Valor,
+  agregado  = FALSE,
+  zoomIslas = TRUE,
+  tipo      = "Deptos",
+  naTo0     = FALSE,
+  colNA     = "#543619",
+  titulo    = "PIB \u00d7 DEPARTAMENTO",
+  cortes    = c(0, 500, 5000, 20000, 30000, Inf),
+  colores   = c("#FED600", "#02D46E", "#006389", "#FA006E", "#FC553C"),
+  colBorde  = "#3A0F2D",
+  estatico  = TRUE,
+  textSize  = 0,
+  estilo    = list(
     Style = "Intervalo", Theme = 7,
     Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
     Labs = list(
       fill = "PIB", subtitle = "A Precios Corrientes",
       caption = "Para el periodo de 2021P (en miles de millones de pesos)"
-    ),
-    scaleX = seq(-82, -64, by = 1), scaleY = seq(-4, 14, by = 1)
+    )
+    # scaleX = seq(-82, -64, by = 1), scaleY = seq(-4, 14, by = 1)
   )
-)
+) -> listMaps
+# Caso 1:
+#   Dejando solamente la isla principal (San Andrés) y omitiendo las contiguas (Providencia y Santa Catalina)
+ggdraw() +
+  draw_plot(listMaps$M_COL) +
+  draw_plot(listMaps$M_SanAndres, x = 0.26, y = 0.8, width = 0.4)
+# ggsave("COL.png", width = 12, height = 10, dpi = 550)
+# Caso 2:
+#   Conservando todo el departamento y sus distancias reales (no se modifica su polígono espacial)
+ggdraw() +
+  draw_plot(listMaps$M_COL) +
+  draw_plot(listMaps$M_SanAndres, x = 0.27, y = 0.35, width = 0.08)
+# ggsave("COL.png", width = 12, height = 10, dpi = 550)
 # ---------------------------------------------------------------------------
 AreaVichada <- tibble(
   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)

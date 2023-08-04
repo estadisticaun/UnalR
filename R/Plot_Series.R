@@ -317,8 +317,12 @@ Plot.Series <- function(
     }
     yLim <- ylim
   } else { yLim <- NULL }
+  print(yLim)
+  print(yLim[1]); print(yLim[2])
+
   if (invertir) {
-    Invertir <- "reversed"; ggInvertir <- "reverse"; yLim <- rev(yLim)
+    Invertir <- "reversed"; ggInvertir <- "reverse"
+    if (libreria != "highcharter") { yLim <- rev(yLim) }
   } else {
     Invertir <- NULL      ; ggInvertir <- "identity"
   }

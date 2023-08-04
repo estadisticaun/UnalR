@@ -120,9 +120,13 @@ Agregar <- function(formula, frecuencia, datos, intervalo, textNA = "Sin Informa
   for (i in 1:length(Vars)) {
     Var <- Vars[i]
     # Convirtiendo los agentes en factores y haciendo explícitos los valores perdidos
-    Step1 <- datos |>
-      mutate(!!Var := fct_na_value_to_level(!!sym(Var), level = textNA)) |>
-      mutate_at(all_of(Tiempo), list(~ as.factor(.)))
+    anyNA <- datos |> select(!!Var) |> is.na() |> sum()
+    if (anyNA != 0) {
+      datos <- datos |> mutate(!!Var := fct_na_value_to_level(!!sym(Var), level = textNA))
+    } else {
+      datos <- datos |> mutate(!!Var := fct(!!sym(Var)))
+    }
+    Step1 <- datos |> mutate_at(all_of(Tiempo), list(~ as.factor(.)))
 
     # Almacenamos los valores únicos que contiene el factor de la variable de interés
     UniqueFactor <- Step1 |> select(!!Var) |> pull() |> fct_unique()

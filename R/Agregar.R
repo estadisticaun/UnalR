@@ -124,7 +124,7 @@ Agregar <- function(formula, frecuencia, datos, intervalo, textNA = "Sin Informa
     if (anyNA != 0) {
       datos <- datos |> mutate(!!Var := fct_na_value_to_level(!!sym(Var), level = textNA))
     } else {
-      datos <- datos |> mutate(!!Var := fct(!!sym(Var)))
+      datos <- datos |> mutate_if(is.character, as.factor)
     }
     Step1 <- datos |> mutate_at(all_of(Tiempo), list(~ as.factor(.)))
 

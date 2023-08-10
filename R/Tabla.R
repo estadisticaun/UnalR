@@ -194,11 +194,10 @@ Tabla <- function(
   }
   if (missingArg(tituloPdf)) { tituloPdf <- encabezado }
   if (missingArg(leyenda)) {
-    Leyenda <- htmltools::tags$caption(style = 'caption-side: bottom; text-align: center;',
-                                       "Nota: ", htmltools::em("Los valores presentados entre par\u00e9ntesis hacen referencia a la desviaci\u00f3n est\u00e1ndar."),
-                                       htmltools::br(htmltools::em("(*) hace referencia al total de estudiantes evaluados.")))
+    # htmltools::br(htmltools::em(""))
+    Leyenda <- NULL
   } else {
-    Leyenda <- htmltools::tags$caption(style = 'caption-side: bottom; text-align: center;', "Nota: ", htmltools::em(leyenda))
+    Leyenda <- htmltools::tags$caption(style = 'caption-side: bottom; text-align: center;', htmltools::em(leyenda))
   }
   AjusteNiveles <- ifelse(ajustarNiveles == TRUE, "compact nowrap hover row-border", "display")
 
@@ -247,6 +246,11 @@ Tabla <- function(
       )
     ))
   } else {
+    # Ajuste para que independientemente del número de variables a agrupar no se repitan filas
+    #   @ Pues la celda correspondiente no puede ser <dbl [n]> sino un valor numérico
+    df <- df |>
+      group_by(!!!vars(!!!rows, {{pivotCat}}), .drop = FALSE) |>
+      summarise({{ pivotVar }} := sum({{ pivotVar }}, na.rm = TRUE), .groups = "drop")
     # Creación de la Tabla Pivoteada de Acuerdo con los Parámetros Ingresados
     DataFrame <- df |> pivot_wider(names_from = {{ pivotCat }}, values_from = {{ pivotVar }})
     nCat      <- df |> group_by({{ pivotCat }}) |> distinct({{ pivotCat }})

@@ -270,7 +270,7 @@ Tabla <- function(
     # Creación de la Columna Total Global (Total x Fila)
     DataFrame <- DataFrame |> left_join(addGlobal)
     colsDefs <- list(
-      list(className = "dt-center", targets = 0:(n_groups(nCat)+2)),
+      list(className = "dt-center", targets = 0:(n_groups(nCat)+length(rows))),
       list(width = "65px", targets = 0)
     )
     DataFrame <- DataFrame |> mutate_at(rows, factor)

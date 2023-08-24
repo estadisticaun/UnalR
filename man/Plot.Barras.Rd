@@ -16,9 +16,11 @@ Plot.Barras(
   ordinal = FALSE,
   colores,
   titulo = "",
-  labelEje = "Número de",
+  labelX = "",
+  labelY = "Número de",
+  labelEje,
   addPeriodo = TRUE,
-  textInfo = labelEje,
+  textInfo = labelY,
   libreria = c("highcharter", "plotly"),
   estilo = NULL,
   estatico = FALSE
@@ -58,6 +60,11 @@ argumento \code{categoria}. Si no se introduce algún vector se usará la paleta
 
 \item{titulo}{Cadena de caracteres indicando el título principal del plot.}
 
+\item{labelX}{Cadena de caracteres indicando la etiqueta del eje \code{X}. Por
+defecto se emplea el rótulo "Periodo".}
+
+\item{labelY}{Cadena de caracteres indicando la etiqueta del eje \code{Y}.}
+
 \item{labelEje}{Cadena de caracteres indicando la etiqueta del eje \code{X} o \code{Y}
 (\emph{dependiendo de la orientación del gráfico}). Por defecto se emplea el rótulo
 \code{"Número de "}.}
@@ -69,7 +76,7 @@ una cadena de caracteres indicando entre paréntesis el "año-periodo" insertado
 \item{textInfo}{Cadena de caracteres que especifica el texto que se escribe
 dentro de la caja de información al posar el cursor en alguna barra en el
 gráfico, producido por \code{Highcharter}, el valor por defecto es igual al de
-\code{labelEje}.}
+\code{labelX}.}
 
 \item{libreria}{Cadena de caracteres que indica el paquete con el cual se realizará
 el plot. Los valores permitidos son \code{"highcharter"} (\emph{valor predeterminado})
@@ -177,7 +184,7 @@ Plot.Barras(
   ordinal      = TRUE,
   colores      = RColorBrewer::brewer.pal(5, "Spectral"),
   titulo       = "GRADUADOS DE ACUERDO CON EL NIVEL DE FORMACI\u00d3N",
-  labelEje     = "Frecuencia Relativa<br>(\% de graduados)",
+  labelY       = "Frecuencia Relativa<br>(\% de graduados)",
   addPeriodo   = TRUE,
   textInfo     = "Porcentaje de Graduados",
   libreria     = "highcharter",
@@ -193,7 +200,7 @@ Plot.Barras(
   ordinal   = FALSE,
   colores   = RColorBrewer::brewer.pal(5, "Set2"),
   titulo    = Txt,
-  labelEje  = "N\u00famero de Graduados",
+  labelY    = "N\u00famero de Graduados",
   libreria  = "plotly",
   estilo    = list(
     ply.Credits = list(x = 0.45, y = 1.1, text = Msj), ply.Legend = FALSE
@@ -208,7 +215,7 @@ Plot.Barras(
   ordinal   = FALSE,
   colores   = RColorBrewer::brewer.pal(5, "Set1"),
   titulo    = gsub("DE GR", "DE\nGR", Txt),
-  labelEje  = "N\u00famero de Graduados",
+  labelY    = "N\u00famero de Graduados",
   estatico  = TRUE,
   estilo    = list(
     gg.Tema  = 10,

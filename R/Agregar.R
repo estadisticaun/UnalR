@@ -132,13 +132,13 @@ Agregar <- function(formula, frecuencia, datos, intervalo, textNA = "Sin Informa
     UniqueFactor <- Step1 |> select(!!Var) |> pull() |> fct_unique()
     # Almacenamos las combinaciones existentes del tramo de tiempo
     UniqueTimes <- Step1 |> unite("X", all_of(Tiempo), sep = "-") |>
-      distinct(X) |> pull()
+      distinct(X) |> pull() |> sort()
 
     # Creación del agregado
     Step2 <- Step1 |>
-      group_by(!!!syms(c(Tiempo, Var)), .drop = FALSE) |>
-      summarise("Total" = n()) |> rename("Clase" = all_of(Var)) |>
-      mutate("Variable" = Var) |> relocate(Variable) |>
+      summarise(Total = n(), .by = c(!!!syms(c(Tiempo, Var))))  |>
+      rename("Clase" = all_of(Var)) |> mutate("Variable" = Var) |>
+      relocate(Variable) |>
       # ■ Volviendo a la clase original del tiempo en cuestión
       mutate_at(all_of(Tiempo), list(~ as.numeric(as.character(.))))
 
@@ -235,5 +235,6 @@ Agregar <- function(formula, frecuencia, datos, intervalo, textNA = "Sin Informa
     }
     tibbleAgregado <- bind_rows(tibbleAgregado, Agregado)
   }
+  if (length(Vars)>1) { tibbleAgregado <- tibbleAgregado |> mutate(Clase = as.character(Clase)) }
   return(tibbleAgregado)
 }

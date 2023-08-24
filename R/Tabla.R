@@ -8,8 +8,11 @@
 #'
 #' @param df Un data frame.
 #' @param rows Una variable categórica dentro del data frame ingresado en `datos`.
-#' @param pivotCat X.
-#' @param pivotVar X.
+#' @param pivotCat Variable categórica que contiene los niveles/factores que desea
+#'   pivotear como columnas. Si omite este parámetro se da por hecho que no desea
+#'   pivotear nada sino graficar tal cual su data frame
+#' @param pivotVar Variable numérica que contiene los valores que desea colocar
+#'   en cada celda al realizar el pivotaje.
 #' @param columnNames Vector de caracteres que especifica los nombres de las columnas
 #'   de la tabla a retornar. Si no se introduce algún valor se tomará el mismo
 #'   nombre de las columnas presentes en `datos`.
@@ -48,6 +51,23 @@
 #'   con la finalidad de que pueda aplicar estilos CSS a la tabla, tales como color
 #'   de la fuente, color de fondo, tamaño de fuente, etc. Puede encontrar mayor
 #'   información de los argumentos disponibles \href{https://rstudio.github.io/DT/functions.html}{aquí}.
+#'   * `Tema`: Modifica el tema con el cual se creará la tabla Los posibles
+#'     valores son un número entero entre \eqn{[1, 14]} el cual hace referencia
+#'     a diferentes temas disponibles para `gt`/`gtExtras` (los primeros 6 se
+#'     obtienen con `opt_stylize(style = i, color = "gray")`, `gt_theme_538`,
+#'     `gt_theme_dark`, `gt_theme_dot_matrix`, `gt_theme_espn`, `gt_theme_excel`,
+#'     `gt_theme_guardian`, `gt_theme_nytimes` y `gt_theme_pff` respectivamente).
+#'   * `Titulo`: Cadena de caracteres indicando el título principal de la tabla.
+#'   * `Padding`: Vector numérico de longitud 2, que tiene como primera coordenada
+#'     el padding vertical, es decir si aumenta o disminuye el relleno vertical.
+#'     Y como segunda coordenada el padding horizontal.
+#'   * `Color`: Lista compuesta de listas, en la cual cada una de ellas detalla,
+#'     qué columna se va a afectar y con qué colores de relleno, es decir,
+#'     `list(columns = Columna , backgroundColor = Colores)`.
+#'
+#' @param estatico Si es `FALSE` (*valor predeterminado*) la tabla a retornar será
+#'   dinámica (*usando la librería* `DT`), en caso contrario se retornará una tabla
+#'   estática construida con `gt` y `gtExtras`.
 #'
 #' @details
 #' Esta función se basa enteramente del paquete `DT`, el cual proporciona una
@@ -86,10 +106,11 @@
 #' #   )
 #' Tabla(
 #'   df = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |> dplyr::select(-Variable),
-#'   rows     = vars(YEAR, SEMESTRE),
-#'   pivotCat = Clase,
-#'   pivotVar = Total,
+#'   rows        = vars(YEAR, SEMESTRE),
+#'   pivotCat    = Clase,
+#'   pivotVar    = Total,
 #'   columnNames = c("Año", "Semestre", "Total"),
+#'   estadistico = "Suma",
 #'   encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
 #'   leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
 #'   tituloPdf   = "ESTUDIANTES GRADUADOS POR SEDE",
@@ -169,9 +190,118 @@
 #'   )
 #' )
 #'
+#' @examplesIf all(FALSE)
+#' # library(gt); library(gtExtras)
+#' # ---------------------------------------------------------------------------
+#' # Ejemplo usando el caso estático (gt)
+#' tableGT <- Tabla(
+#'   df          = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
+#'   rows        = vars(YEAR),
+#'   pivotCat    = Clase,
+#'   pivotVar    = Total,
+#'   encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
+#'   leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
+#'   colorHead   = "#8CC63F",
+#'   estatico    = TRUE,
+#'   estilo      = list(
+#'     Tema = 11, Padding = c(0, 0.5), Titulo = "Summary Table:",
+#'     Color = list(
+#'       list(columns = "YEAR"     , backgroundColor = rainbow(12, alpha = 0.5, rev = TRUE)),
+#'       list(columns = "Palmira"  , backgroundColor = "ggsci::red_material"),
+#'       list(columns = "Manizales", backgroundColor = "viridis")
+#'     )
+#'   )
+#' )
+#' # ---------------------------------------------------------------------------
+#' # Ejemplo usando algunos parámetros adicionales de personalización de gt/gtExtras
+#' #   (para ver el alcance que puede tener)
+#' tableGT <-
+#'   Tabla(
+#'     df = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
+#'     rows        = vars(YEAR, SEMESTRE),
+#'     pivotCat    = Clase,
+#'     pivotVar    = Total,
+#'     estadistico = "Suma",
+#'     encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
+#'     leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
+#'     colorHead   = "#AA0000",
+#'     estatico    = TRUE,
+#'     estilo      = list(
+#'       Tema = 14, Padding = c(0, 0.5), Titulo = "SUMMARY TABLE",
+#'       Color = list(
+#'         list(columns = "YEAR"     , backgroundColor = rainbow(12, alpha = 0.5, rev = TRUE)),
+#'         list(columns = "SEMESTRE" , backgroundColor = c("#EB0095", "#9D45FD"))
+#'       )
+#'     )
+#'   )
+#'
+#' Win <- "<span style=\"color:green\">&#128170;</span>"
+#' Loss <- "<span style=\"color:red\">&#128165;</span>"
+#' tableGT |>
+#'   # __________________ INSERTANDO UN PIE DE PÁGINA ADICIONAL ___________________
+#'   tab_source_note(source_note = "Source: Dirección Nacional de Planeación y Estadística (DNPE).") |>
+#'   # ___________________ CREANDO UN GRUPO/COLECCIÓN DE FILAS ____________________
+#'   tab_row_group(label = "< 2010"       , rows = 1:2)   |>
+#'   tab_row_group(label = "[2010 - 2019]", rows = 3:22)  |>
+#'   tab_row_group(label = ">= 2020"      , rows = 23:25) |>
+#'   # __________ MODIFICANDO LA ALINEACIÓN DE CADA UNA DE LAS COLUMNAS ___________
+#'   cols_align(align = "center", columns = Amazonía:Tumaco)  |>
+#'   cols_align(align = "left"  , columns = where(is.factor)) |>
+#'   # ___________________ COLOREANDO LAS CELDAS DE UNA COLUMNA ___________________
+#'   data_color(
+#'     columns = Statistic,
+#'     method  = "bin",
+#'     bins    = c(0, 3000, 4500, 10000),
+#'     palette = c("#F44336", "#34AEC6", "#76CF44")
+#'   ) |>
+#'   # ___________ MODIFICANDO ASPECTOS GENERALES/GLOBALES DE LA TABLA ____________
+#'   tab_options(
+#'     heading.align = "right", heading.background.color = "#490948",
+#'     table.font.size = px(12), heading.title.font.size = px(16)
+#'   ) |>
+#'   # ______________ CAMBIANDO EL FORMATO DE LOS VALORES NUMÉRICOS _______________
+#'   fmt_currency(columns = c(Orinoquía:Palmira), currency = "USD") |>
+#'   fmt_percent(columns = Tumaco, decimals = 1) |>
+#'   # _ AÑADIENDO ALGUNOS DE LOS ESTILOS PERSONALIZADOS DISPONIBLES A LAS CELDAS _
+#'   tab_style(
+#'     style = cell_fill(color = "#C90076"), locations = cells_column_spanners()
+#'   ) |>
+#'   tab_style(
+#'     style = list(cell_text(color = "#A5FD45", style = "italic")),
+#'     locations = cells_body(columns = SEMESTRE, rows = SEMESTRE == "1")
+#'   ) |>
+#'   tab_style_body(
+#'     style = cell_text(color = "#0CEAC0", weight = "bold"),
+#'     columns = Amazonía,
+#'     fn = function(x) between(x, 5, 20)
+#'   ) |>
+#'   text_transform(
+#'     fn = function(x) paste(x, Win),
+#'     locations = cells_body(columns = "Caribe", rows = Bogotá > 3*Medellín)
+#'   ) |>
+#'   text_transform(
+#'     fn = function(x) paste(x, Loss),
+#'     locations = cells_body(columns = "Caribe", rows = Bogotá <  3*Medellín)
+#'   ) |>
+#'   # __________________________ MODIFICANDO LA FUENTE ___________________________
+#'   opt_table_font(
+#'     # font = google_font(name = "Merriweather"),
+#'     stack = "rounded-sans",
+#'     weight = "bolder"
+#'   ) |>
+#'   # ____________ OPCIONES ADICIONALES CON LIBRERÍAS COMPLEMENTARIAS ____________
+#'   gtExtras::gt_highlight_rows(rows = 18, fill = "#FEEF05", font_weight = "bold") |>
+#'   gtExtras::gt_add_divider(Bogotá, color = "#F94D00", style = "dotted", weight = px(4)) |>
+#'   gtExtras::gt_plt_bar_pct(Medellín, fill = "#2A8A9C", background = "#0DC8A7", scaled = FALSE)
+#'
+#' # Use el siguiente comando si desea guardar la tabla estática obtenida:
+#' # gtsave(tableGT, "TablaResumen.html") # O .tex, docx
+#'
 #' @export
 #'
 #' @import DT
+#' @import gt
+#' @import gtExtras
 #' @import dplyr
 #' @importFrom htmltools withTags tag
 #' @importFrom tidyr pivot_wider
@@ -182,8 +312,8 @@ Tabla <- function(
     df, rows, pivotCat, pivotVar, columnNames, filtros = FALSE, colFilters,
     estadistico = c("Suma", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
     encabezado = "Encabezados de los Niveles de la Categor\u00eda",
-    leyenda, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
-    scrollX = TRUE, colorHead = "#FFFFFF", estilo) {
+    leyenda = "", tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
+    scrollX = TRUE, colorHead = "#FFFFFF", estilo, estatico = FALSE) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (!all(is.logical(filtros), is.logical(ajustarNiveles), is.logical(scrollX))) {
@@ -236,6 +366,7 @@ Tabla <- function(
       dots, list(width = "65px", targets = 0)
     )
 
+    flagGeneral <- TRUE
     sketch <- htmltools::withTags(table(
       class = "display",
       thead(
@@ -254,21 +385,27 @@ Tabla <- function(
     # Creación de la Tabla Pivoteada de Acuerdo con los Parámetros Ingresados
     DataFrame <- df |> pivot_wider(names_from = {{ pivotCat }}, values_from = {{ pivotVar }})
     nCat      <- df |> group_by({{ pivotCat }}) |> distinct({{ pivotCat }})
-    Statistic <- match.arg(estadistico)
-    Groups    <- df |> group_by(!!!rows, .drop = FALSE)
-    addGlobal <- switch(
-      Statistic,
-      Suma     = Groups |> summarise("Statistic" = sum({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
-      Promedio = Groups |> summarise("Statistic" = mean({{ pivotVar }}  , na.rm = TRUE), .groups = "drop"),
-      Mediana  = Groups |> summarise("Statistic" = median({{ pivotVar }}, na.rm = TRUE), .groups = "drop"),
-      Varianza = Groups |> summarise("Statistic" = var({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
-      SD       = Groups |> summarise("Statistic" = sd({{ pivotVar }}    , na.rm = TRUE), .groups = "drop"),
-      CV       = Groups |> summarise("Statistic" = cv({{ pivotVar }}    , na.rm = TRUE), .groups = "drop"),
-      Min      = Groups |> summarise("Statistic" = min({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
-      Max      = Groups |> summarise("Statistic" = max({{ pivotVar }}   , na.rm = TRUE), .groups = "drop")
-    )
-    # Creación de la Columna Total Global (Total x Fila)
-    DataFrame <- DataFrame |> left_join(addGlobal)
+
+    if(!missingArg(estadistico)) {
+      Statistic <- match.arg(estadistico)
+      Groups    <- df |> group_by(!!!rows, .drop = FALSE)
+      addGlobal <- switch(
+        Statistic,
+        Suma     = Groups |> summarise("Statistic" = sum({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
+        Promedio = Groups |> summarise("Statistic" = mean({{ pivotVar }}  , na.rm = TRUE), .groups = "drop"),
+        Mediana  = Groups |> summarise("Statistic" = median({{ pivotVar }}, na.rm = TRUE), .groups = "drop"),
+        Varianza = Groups |> summarise("Statistic" = var({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
+        SD       = Groups |> summarise("Statistic" = sd({{ pivotVar }}    , na.rm = TRUE), .groups = "drop"),
+        CV       = Groups |> summarise("Statistic" = cv({{ pivotVar }}    , na.rm = TRUE), .groups = "drop"),
+        Min      = Groups |> summarise("Statistic" = min({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
+        Max      = Groups |> summarise("Statistic" = max({{ pivotVar }}   , na.rm = TRUE), .groups = "drop")
+      )
+      # Creación de la Columna Total Global (Total x Fila)
+      addGlobal <- addGlobal |> mutate(Statistic = round(Statistic, 2))
+      DataFrame <- DataFrame |> left_join(addGlobal)
+      nameFlag  <- TRUE
+    } else { nameFlag  <- FALSE }
+
     colsDefs <- list(
       list(className = "dt-center", targets = 0:(n_groups(nCat)+length(rows))),
       list(width = "65px", targets = 0)
@@ -278,110 +415,164 @@ Tabla <- function(
     Txt <- ""
     if (!missingArg(columnNames)) {
       for (i in 1:(length(columnNames)-1)) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "', columnNames[i], '"), ')) }
-      lastCol <- tail(columnNames, n = 1)
+      if (nameFlag) { lastCol <- tail(columnNames, n = 1) }
     } else {
       for (i in 1:length(rows)) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "Col', i, '"), ')) }
-      lastCol <- "Total"
+      if (nameFlag) { lastCol <- "Total" }
     }
+
+    if (nameFlag) {
+      txtStatistic <- paste0('th(rowspan = 2, "', lastCol , '")')
+    } else {
+      txtStatistic <- ""
+    }
+
     TxtFinal <- paste0(
       'htmltools::withTags(table(class = "display",
         thead(
           tr(',
       Txt,
-      'th(colspan = n_groups(nCat), encabezado),
-            th(rowspan = 2, "', lastCol , '")
-          ),
+      ' th(colspan = n_groups(nCat), encabezado), ',
+      txtStatistic,
+      '),
           tr( lapply(nCat |> pull(), th) )
         )
        ))'
     )
     sketch  <- eval(parse(text = TxtFinal))
-    Filtros <- "none"
+    Filtros <- "none"; flagGeneral <- FALSE
   }
   # print(sketch)
+  # ----------------------------------------------------------------------------
   # CREACIÓN DE LA TABLA A RETORNAR
-  TablaFinal <- datatable(
-    DataFrame,
-    class      = AjusteNiveles,
-    rownames   = FALSE,
-    container  = sketch,
-    caption    = Leyenda,
-    escape     = FALSE,
-    filter     = Filtros,
-    extensions = c("Buttons", "KeyTable"),
-    options    = list(
-      autoWidth  = TRUE,
-      columnDefs = colsDefs,
-      pageLength = 8,
-      order = list(list(0, "desc"), list(1, "asc")),
-      dom   = "Bfrtip",
-      keys  = TRUE,
-      searchHighlight = TRUE,
-      scrollX = scrollX,
-      initComplete = JS(
-        "function(settings, json) {",
-        "$(this.api().table().header()).css({'background-color':", paste0("'", colorHead, "'"), ", 'color': '#000000'});","}"),
-      language = list(
-        processing     = "Procesando...",
-        lengthMenu     = "Mostrar _MENU_ registros",
-        zeroRecords    = "No se encontraron resultados",
-        emptyTable     = "Ning\u00fan dato disponible en esta tabla",
-        info           = "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-        infoEmpty      = "Mostrando registros del 0 al 0 de un total de 0 registros",
-        infoFiltered   = "(filtrado de un total de _MAX_ registros)",
-        infoPostFix    = "",
-        search         = "Buscar:",
-        url            = "",
-        infoThousands  = ",",
-        loadingRecords = "Cargando...",
-        paginate = list(
-          first    = "Primero",
-          last     = "\u00daltimo",
-          `next`   = "Siguiente",
-          previous = "Anterior"
+  if (!estatico) {
+    TablaFinal <- datatable(
+      DataFrame,
+      class      = AjusteNiveles,
+      rownames   = FALSE,
+      container  = sketch,
+      caption    = Leyenda,
+      escape     = FALSE,
+      filter     = Filtros,
+      extensions = c("Buttons", "KeyTable"),
+      options    = list(
+        autoWidth  = TRUE,
+        columnDefs = colsDefs,
+        pageLength = 8,
+        order = list(list(0, "desc"), list(1, "asc")),
+        dom   = "Bfrtip",
+        keys  = TRUE,
+        searchHighlight = TRUE,
+        scrollX = scrollX,
+        initComplete = JS(
+          "function(settings, json) {",
+          "$(this.api().table().header()).css({'background-color':", paste0("'", colorHead, "'"), ", 'color': '#000000'});","}"),
+        language = list(
+          processing     = "Procesando...",
+          lengthMenu     = "Mostrar _MENU_ registros",
+          zeroRecords    = "No se encontraron resultados",
+          emptyTable     = "Ning\u00fan dato disponible en esta tabla",
+          info           = "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          infoEmpty      = "Mostrando registros del 0 al 0 de un total de 0 registros",
+          infoFiltered   = "(filtrado de un total de _MAX_ registros)",
+          infoPostFix    = "",
+          search         = "Buscar:",
+          url            = "",
+          infoThousands  = ",",
+          loadingRecords = "Cargando...",
+          paginate = list(
+            first    = "Primero",
+            last     = "\u00daltimo",
+            `next`   = "Siguiente",
+            previous = "Anterior"
+          ),
+          aria = list(
+            sortAscending  = "Activar para ordenar la columna de manera ascendente",
+            sortDescending = "Activar para ordenar la columna de manera descendente"
+          )
         ),
-        aria = list(
-          sortAscending  = "Activar para ordenar la columna de manera ascendente",
-          sortDescending = "Activar para ordenar la columna de manera descendente"
-        )
-      ),
-      buttons = list(
-        list(extend = "copy", text = "Copiar"), "csv", "excel",
-        list(extend = "pdf", pageSize = "A4", filename = "pdf",
-             message = mensajePdf, title = tituloPdf
-        ),
-        list(extend = "print", text = "Imprimir", pageSize = "A4",
-             message = mensajePdf, title = tituloPdf
+        buttons = list(
+          list(extend = "copy", text = "Copiar"), "csv", "excel",
+          list(extend = "pdf", pageSize = "A4", filename = "pdf",
+               message = mensajePdf, title = tituloPdf
+          ),
+          list(extend = "print", text = "Imprimir", pageSize = "A4",
+               message = mensajePdf, title = tituloPdf
+          )
         )
       )
     )
-  )
 
-  if (!missingArg(estilo)) {
-    for (i in 1:length(estilo)) {
-      Temp <- do.call(formatStyle, append(list(table = TablaFinal), estilo[[i]]))
-      TablaFinal <- Temp
+    if (!missingArg(estilo)) {
+      for (i in 1:length(estilo)) {
+        Temp <- do.call(formatStyle, append(list(table = TablaFinal), estilo[[i]]))
+        TablaFinal <- Temp
+      }
+    }
+    # if (!missingArg(estilo)) {
+    #   formatCols <- function(table, varTXT, list) {
+    #     if (is.null(list$color)) { colorFinal <- NULL } else {
+    #       colorFinal <- styleEqual(unique(DataFrame[[varTXT]]), list$color)
+    #     }
+    #     if (is.null(list$background)) { backgFinal <- NULL } else {
+    #       backgFinal <- styleEqual(unique(DataFrame[[varTXT]]), list$background)
+    #     }
+    #     return(
+    #       formatStyle(
+    #         table = table, varTXT, target = "cell", fontWeight = list$font,
+    #         color = colorFinal, backgroundColor = backgFinal
+    #       )
+    #     )
+    #   }
+    #   listVars <- as.character(substitute(rows))[-1]
+    #   for (i in 1:length(listVars)) {
+    #     TablaFinal <- TablaFinal |> formatCols(varTXT = listVars[i], list = estilo[[i]])
+    #   }
+    # }
+  } else {
+    TablaFinal <- gt(data = DataFrame) |>
+      tab_source_note(source_note = leyenda) |>
+      fmt_number(columns = everything(), decimals = 0, use_seps = TRUE)
+
+    if (!(missingArg(estilo) || is.null(estilo$Tema))) {
+      TablaFinal <- switch(
+        estilo$Tema,
+        "1"  = opt_stylize(TablaFinal, style = 1, color = "gray"),
+        "2"  = opt_stylize(TablaFinal, style = 2, color = "gray"),
+        "3"  = opt_stylize(TablaFinal, style = 3, color = "gray"),
+        "4"  = opt_stylize(TablaFinal, style = 4, color = "gray"),
+        "5"  = opt_stylize(TablaFinal, style = 5, color = "gray"),
+        "6"  = opt_stylize(TablaFinal, style = 6, color = "gray"),
+        "7"  = gtExtras::gt_theme_538(TablaFinal),
+        "8"  = gtExtras::gt_theme_dark(TablaFinal),
+        "9"  = gtExtras::gt_theme_dot_matrix(TablaFinal),
+        "10" = gtExtras::gt_theme_espn(TablaFinal),
+        "11" = gtExtras::gt_theme_excel(TablaFinal),
+        "12" = gtExtras::gt_theme_guardian(TablaFinal),
+        "13" = gtExtras::gt_theme_nytimes(TablaFinal),
+        "14" = gtExtras::gt_theme_pff(TablaFinal)
+      )
+    }
+
+    if (!(missingArg(estilo) || is.null(estilo$Titulo))) {
+      TablaFinal <- TablaFinal |> tab_header(title = estilo$Titulo)
+    }
+    if (!(missingArg(estilo) || is.null(estilo$Padding))) {
+      TablaFinal <- TablaFinal |>
+        opt_vertical_padding(scale = estilo$Padding[1]) |>
+        opt_horizontal_padding(scale = estilo$Padding[2])
+    }
+    if (!flagGeneral) {
+      TablaFinal <- TablaFinal |> tab_spanner(label = encabezado, columns = c(nCat |> pull()))
+    }
+    TablaFinal <- TablaFinal |> tab_options(column_labels.background.color = colorHead)
+    if (!(missingArg(estilo) || is.null(estilo$Color))) {
+      for (i in 1:length(estilo$Color)) {
+        parms <- estilo$Color[[i]]
+        TablaFinal <- TablaFinal |> data_color(columns = parms$columns, palette = parms$backgroundColor)
+      }
     }
   }
-  # if (!missingArg(estilo)) {
-  #   formatCols <- function(table, varTXT, list) {
-  #     if (is.null(list$color)) { colorFinal <- NULL } else {
-  #       colorFinal <- styleEqual(unique(DataFrame[[varTXT]]), list$color)
-  #     }
-  #     if (is.null(list$background)) { backgFinal <- NULL } else {
-  #       backgFinal <- styleEqual(unique(DataFrame[[varTXT]]), list$background)
-  #     }
-  #     return(
-  #       formatStyle(
-  #         table = table, varTXT, target = "cell", fontWeight = list$font,
-  #         color = colorFinal, backgroundColor = backgFinal
-  #       )
-  #     )
-  #   }
-  #   listVars <- as.character(substitute(rows))[-1]
-  #   for (i in 1:length(listVars)) {
-  #     TablaFinal <- TablaFinal |> formatCols(varTXT = listVars[i], list = estilo[[i]])
-  #   }
-  # }
+
   return(TablaFinal)
 }

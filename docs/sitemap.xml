@@ -13,19 +13,10 @@
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
     <loc>/news/index.html</loc>
   </url>
   <url>
     <loc>/reference/Agregar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Consolidado.html</loc>
-  </url>
-  <url>
-    <loc>/reference/CountryCode.html</loc>
   </url>
   <url>
     <loc>/reference/ejConsolidadoGrad.html</loc>
@@ -46,13 +37,7 @@
     <loc>/reference/ejSaberPro2020.html</loc>
   </url>
   <url>
-    <loc>/reference/Graduados.html</loc>
-  </url>
-  <url>
     <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ISO3166.html</loc>
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
@@ -89,9 +74,6 @@
   </url>
   <url>
     <loc>/reference/read_example.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SaberPro.html</loc>
   </url>
   <url>
     <loc>/reference/StaticPlot.html</loc>

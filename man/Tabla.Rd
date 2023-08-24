@@ -14,13 +14,14 @@ Tabla(
   colFilters,
   estadistico = c("Suma", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
   encabezado = "Encabezados de los Niveles de la Categoría",
-  leyenda,
+  leyenda = "",
   tituloPdf = NULL,
   mensajePdf = "",
   ajustarNiveles = TRUE,
   scrollX = TRUE,
   colorHead = "#FFFFFF",
-  estilo
+  estilo,
+  estatico = FALSE
 )
 }
 \arguments{
@@ -28,9 +29,12 @@ Tabla(
 
 \item{rows}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
-\item{pivotCat}{X.}
+\item{pivotCat}{Variable categórica que contiene los niveles/factores que desea
+pivotear como columnas. Si omite este parámetro se da por hecho que no desea
+pivotear nada sino graficar tal cual su data frame}
 
-\item{pivotVar}{X.}
+\item{pivotVar}{Variable numérica que contiene los valores que desea colocar
+en cada celda al realizar el pivotaje.}
 
 \item{columnNames}{Vector de caracteres que especifica los nombres de las columnas
 de la tabla a retornar. Si no se introduce algún valor se tomará el mismo
@@ -80,7 +84,26 @@ de la tabla. Puede indicar el color con el nombre (\code{"red"}), código hexade
 argumentos válidos de la función \link[DT:formatCurrency]{formatStyle()}, esto
 con la finalidad de que pueda aplicar estilos CSS a la tabla, tales como color
 de la fuente, color de fondo, tamaño de fuente, etc. Puede encontrar mayor
-información de los argumentos disponibles \href{https://rstudio.github.io/DT/functions.html}{aquí}.}
+información de los argumentos disponibles \href{https://rstudio.github.io/DT/functions.html}{aquí}.
+\itemize{
+\item \code{Tema}: Modifica el tema con el cual se creará la tabla Los posibles
+valores son un número entero entre \eqn{[1, 14]} el cual hace referencia
+a diferentes temas disponibles para \code{gt}/\code{gtExtras} (los primeros 6 se
+obtienen con \code{opt_stylize(style = i, color = "gray")}, \code{gt_theme_538},
+\code{gt_theme_dark}, \code{gt_theme_dot_matrix}, \code{gt_theme_espn}, \code{gt_theme_excel},
+\code{gt_theme_guardian}, \code{gt_theme_nytimes} y \code{gt_theme_pff} respectivamente).
+\item \code{Titulo}: Cadena de caracteres indicando el título principal de la tabla.
+\item \code{Padding}: Vector numérico de longitud 2, que tiene como primera coordenada
+el padding vertical, es decir si aumenta o disminuye el relleno vertical.
+Y como segunda coordenada el padding horizontal.
+\item \code{Color}: Lista compuesta de listas, en la cual cada una de ellas detalla,
+qué columna se va a afectar y con qué colores de relleno, es decir,
+\code{list(columns = Columna , backgroundColor = Colores)}.
+}}
+
+\item{estatico}{Si es \code{FALSE} (\emph{valor predeterminado}) la tabla a retornar será
+dinámica (\emph{usando la librería} \code{DT}), en caso contrario se retornará una tabla
+estática construida con \code{gt} y \code{gtExtras}.}
 }
 \value{
 Retorna la tabla creada mediante \code{DT} la cual pertenece a la clase "datatables"
@@ -127,10 +150,11 @@ la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesiva
 #   )
 Tabla(
   df = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |> dplyr::select(-Variable),
-  rows     = vars(YEAR, SEMESTRE),
-  pivotCat = Clase,
-  pivotVar = Total,
+  rows        = vars(YEAR, SEMESTRE),
+  pivotCat    = Clase,
+  pivotVar    = Total,
   columnNames = c("Año", "Semestre", "Total"),
+  estadistico = "Suma",
   encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
   leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
   tituloPdf   = "ESTUDIANTES GRADUADOS POR SEDE",
@@ -209,5 +233,112 @@ Tabla(
     list(columns = "CIU_NAC", color = "#FFFFFF", backgroundColor = "#F59E11")
   )
 )
+\dontshow{\}) # examplesIf}
+\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(gt); library(gtExtras)
+# ---------------------------------------------------------------------------
+# Ejemplo usando el caso estático (gt)
+tableGT <- Tabla(
+  df          = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
+  rows        = vars(YEAR),
+  pivotCat    = Clase,
+  pivotVar    = Total,
+  encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
+  leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
+  colorHead   = "#8CC63F",
+  estatico    = TRUE,
+  estilo      = list(
+    Tema = 11, Padding = c(0, 0.5), Titulo = "Summary Table:",
+    Color = list(
+      list(columns = "YEAR"     , backgroundColor = rainbow(12, alpha = 0.5, rev = TRUE)),
+      list(columns = "Palmira"  , backgroundColor = "ggsci::red_material"),
+      list(columns = "Manizales", backgroundColor = "viridis")
+    )
+  )
+)
+# ---------------------------------------------------------------------------
+# Ejemplo usando algunos parámetros adicionales de personalización de gt/gtExtras
+#   (para ver el alcance que puede tener)
+tableGT <-
+  Tabla(
+    df = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
+    rows        = vars(YEAR, SEMESTRE),
+    pivotCat    = Clase,
+    pivotVar    = Total,
+    estadistico = "Suma",
+    encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
+    leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
+    colorHead   = "#AA0000",
+    estatico    = TRUE,
+    estilo      = list(
+      Tema = 14, Padding = c(0, 0.5), Titulo = "SUMMARY TABLE",
+      Color = list(
+        list(columns = "YEAR"     , backgroundColor = rainbow(12, alpha = 0.5, rev = TRUE)),
+        list(columns = "SEMESTRE" , backgroundColor = c("#EB0095", "#9D45FD"))
+      )
+    )
+  )
+
+Win <- "<span style=\"color:green\">&#128170;</span>"
+Loss <- "<span style=\"color:red\">&#128165;</span>"
+tableGT |>
+  # __________________ INSERTANDO UN PIE DE PÁGINA ADICIONAL ___________________
+  tab_source_note(source_note = "Source: Dirección Nacional de Planeación y Estadística (DNPE).") |>
+  # ___________________ CREANDO UN GRUPO/COLECCIÓN DE FILAS ____________________
+  tab_row_group(label = "< 2010"       , rows = 1:2)   |>
+  tab_row_group(label = "[2010 - 2019]", rows = 3:22)  |>
+  tab_row_group(label = ">= 2020"      , rows = 23:25) |>
+  # __________ MODIFICANDO LA ALINEACIÓN DE CADA UNA DE LAS COLUMNAS ___________
+  cols_align(align = "center", columns = Amazonía:Tumaco)  |>
+  cols_align(align = "left"  , columns = where(is.factor)) |>
+  # ___________________ COLOREANDO LAS CELDAS DE UNA COLUMNA ___________________
+  data_color(
+    columns = Statistic,
+    method  = "bin",
+    bins    = c(0, 3000, 4500, 10000),
+    palette = c("#F44336", "#34AEC6", "#76CF44")
+  ) |>
+  # ___________ MODIFICANDO ASPECTOS GENERALES/GLOBALES DE LA TABLA ____________
+  tab_options(
+    heading.align = "right", heading.background.color = "#490948",
+    table.font.size = px(12), heading.title.font.size = px(16)
+  ) |>
+  # ______________ CAMBIANDO EL FORMATO DE LOS VALORES NUMÉRICOS _______________
+  fmt_currency(columns = c(Orinoquía:Palmira), currency = "USD") |>
+  fmt_percent(columns = Tumaco, decimals = 1) |>
+  # _ AÑADIENDO ALGUNOS DE LOS ESTILOS PERSONALIZADOS DISPONIBLES A LAS CELDAS _
+  tab_style(
+    style = cell_fill(color = "#C90076"), locations = cells_column_spanners()
+  ) |>
+  tab_style(
+    style = list(cell_text(color = "#A5FD45", style = "italic")),
+    locations = cells_body(columns = SEMESTRE, rows = SEMESTRE == "1")
+  ) |>
+  tab_style_body(
+    style = cell_text(color = "#0CEAC0", weight = "bold"),
+    columns = Amazonía,
+    fn = function(x) between(x, 5, 20)
+  ) |>
+  text_transform(
+    fn = function(x) paste(x, Win),
+    locations = cells_body(columns = "Caribe", rows = Bogotá > 3*Medellín)
+  ) |>
+  text_transform(
+    fn = function(x) paste(x, Loss),
+    locations = cells_body(columns = "Caribe", rows = Bogotá <  3*Medellín)
+  ) |>
+  # __________________________ MODIFICANDO LA FUENTE ___________________________
+  opt_table_font(
+    # font = google_font(name = "Merriweather"),
+    stack = "rounded-sans",
+    weight = "bolder"
+  ) |>
+  # ____________ OPCIONES ADICIONALES CON LIBRERÍAS COMPLEMENTARIAS ____________
+  gtExtras::gt_highlight_rows(rows = 18, fill = "#FEEF05", font_weight = "bold") |>
+  gtExtras::gt_add_divider(Bogotá, color = "#F94D00", style = "dotted", weight = px(4)) |>
+  gtExtras::gt_plt_bar_pct(Medellín, fill = "#2A8A9C", background = "#0DC8A7", scaled = FALSE)
+
+# Use el siguiente comando si desea guardar la tabla estática obtenida:
+# gtsave(tableGT, "TablaResumen.html") # O .tex, docx
 \dontshow{\}) # examplesIf}
 }

@@ -21,7 +21,7 @@
 #' @param textInfo Cadena de caracteres que especifica el texto que se escribe
 #'   dentro de la caja de información al posar el cursor en alguna barra en el
 #'   gráfico, producido por `Highcharter`, el valor por defecto es igual al de
-#'   `labelEje`.
+#'   `labelX`.
 #' @param estilo Lista compuesta por varios parámetros, los cuales van a ser usados
 #'   de acuerdo con la librería especificada para graficar el plot y cuyo objetivo
 #'   es personalizar pequeños detalles de ésta.
@@ -57,7 +57,7 @@
 #'   ordinal      = TRUE,
 #'   colores      = RColorBrewer::brewer.pal(5, "Spectral"),
 #'   titulo       = "GRADUADOS DE ACUERDO CON EL NIVEL DE FORMACI\u00d3N",
-#'   labelEje     = "Frecuencia Relativa<br>(% de graduados)",
+#'   labelY       = "Frecuencia Relativa<br>(% de graduados)",
 #'   addPeriodo   = TRUE,
 #'   textInfo     = "Porcentaje de Graduados",
 #'   libreria     = "highcharter",
@@ -73,7 +73,7 @@
 #'   ordinal   = FALSE,
 #'   colores   = RColorBrewer::brewer.pal(5, "Set2"),
 #'   titulo    = Txt,
-#'   labelEje  = "N\u00famero de Graduados",
+#'   labelY    = "N\u00famero de Graduados",
 #'   libreria  = "plotly",
 #'   estilo    = list(
 #'     ply.Credits = list(x = 0.45, y = 1.1, text = Msj), ply.Legend = FALSE
@@ -88,7 +88,7 @@
 #'   ordinal   = FALSE,
 #'   colores   = RColorBrewer::brewer.pal(5, "Set1"),
 #'   titulo    = gsub("DE GR", "DE\nGR", Txt),
-#'   labelEje  = "N\u00famero de Graduados",
+#'   labelY    = "N\u00famero de Graduados",
 #'   estatico  = TRUE,
 #'   estilo    = list(
 #'     gg.Tema  = 10,
@@ -112,10 +112,11 @@
 #' @importFrom scales percent label_percent
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
+#' @importFrom lifecycle deprecate_warn
 Plot.Barras <- function(
     datos, categoria, ano, periodo, freqRelativa = FALSE, ylim, vertical = TRUE,
-    ordinal = FALSE, colores, titulo = "", labelEje = "N\u00famero de",
-    addPeriodo = TRUE, textInfo = labelEje, libreria = c("highcharter", "plotly"),
+    ordinal = FALSE, colores, titulo = "", labelX = "", labelY = "N\u00famero de",
+    labelEje, addPeriodo = TRUE, textInfo = labelY, libreria = c("highcharter", "plotly"),
     estilo = NULL, estatico = FALSE
     ) {
 
@@ -136,8 +137,18 @@ Plot.Barras <- function(
     }
     yLim <- ylim
   } else { yLim <- NULL }
-  if (!all(is.character(titulo), is.character(labelEje), is.character(textInfo))) {
-    stop("\u00a1Los argumentos 'titulo', 'labelEje' y 'textInfo' deben ser una cadena de texto!", call. = FALSE)
+  if (!all(is.character(titulo), is.character(labelX), is.character(labelY), is.character(textInfo))) {
+    stop("\u00a1Los argumentos 'titulo', 'labelX', 'labelY' y 'textInfo' deben ser una cadena de texto!", call. = FALSE)
+  }
+  # Adición temporal (para dar un periodo de adaptación antes de la eliminación del argumento)
+  if (!missing(labelEje)) {
+    lifecycle::deprecate_warn(
+      when = "1.0.0",
+      what = "Plot.Barras(labelEje)",
+      with = "Plot.Barras(labelY)",
+      details = "Please replace the use of argument 'labelEje' with 'labelY'. Before the argument is removed."
+    )
+    labelY <- labelEje
   }
   if (!estatico) {
     if (missingArg(libreria)) {
@@ -242,11 +253,15 @@ Plot.Barras <- function(
         hc_plotOptions(bar = PlotOptions, column = PlotOptions) |>
         hc_xAxis(
           categories = TablaFinal$Clase,
+          title = list(text = labelX, style = list(
+            fontWeight = "bold", color = "black", fontSize = "18px"
+            )
+          ),
           labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
         ) |>
         hc_yAxis(
           min = yLim[1], max = yLim[2],
-          title = list(text = labelEje, style = list(
+          title = list(text = labelY, style = list(
             fontWeight = "bold", color = "black", fontSize = "18px"
             )
           ),
@@ -302,8 +317,8 @@ Plot.Barras <- function(
           marker = list(color = colores, line = list(color = "#3A4750", width = 1.5))
         ) |>
           layout(
-            title = Title, xaxis = list(title = ""),
-            yaxis = list(title = labelEje, ticksuffix = sufijoY, range = yLim),
+            title = Title, xaxis = list(title = labelX),
+            yaxis = list(title = labelY, ticksuffix = sufijoY, range = yLim),
             showlegend = ShowLeyenda, autosize = TRUE, margin = Margen
           )
       } else {
@@ -320,8 +335,8 @@ Plot.Barras <- function(
           marker = list(color = colores, line = list(color = "#3A4750", width = 1.5))
         ) |>
           layout(
-            title = Title, xaxis = list(title = labelEje, ticksuffix = sufijoY),
-            yaxis = list(title = ""), showlegend = ShowLeyenda, autosize = TRUE, margin = Margen
+            title = Title, xaxis = list(title = labelY, ticksuffix = sufijoY),
+            yaxis = list(title = labelX), showlegend = ShowLeyenda, autosize = TRUE, margin = Margen
           )
       }
 
@@ -337,6 +352,8 @@ Plot.Barras <- function(
         config(locale = "es")
     }
   } else {
+    # This Trick Update the Factor Levels (necesario para que el argumento 'ordinal' funcione)
+    TablaFinal <- TablaFinal |> mutate(Clase = factor(Clase, levels = Clase))
     if (!(missingArg(estilo) || is.null(estilo$gg.Tema))) {
       ThemeGG <- switch(
         estilo$gg.Tema,
@@ -385,7 +402,7 @@ Plot.Barras <- function(
     PlotBarras <- ggplot(data = TablaFinal, aes(x = Clase, y = Y, fill = Clase)) +
       do.call(geom_bar, ParmsBar) +
       labs(
-        title = titulo, subtitle = ParmsLabs$subtitle, x = NULL, y = br2addline(labelEje),
+        title = titulo, subtitle = ParmsLabs$subtitle, x = labelX, y = br2addline(labelY),
         caption = ParmsLabs$caption, tag = ParmsLabs$tag
       ) +
       scale_fill_manual(values = MyColors) +
@@ -397,7 +414,8 @@ Plot.Barras <- function(
         do.call(scale_y_continuous, list(limits = yLim, labels = scales::label_percent(scale = 1)))
     } else {
       PlotBarras <- PlotBarras +
-        do.call(geom_text, append(geomText, list(aes(label = Y))))
+        do.call(geom_text, append(geomText, list(aes(label = Y)))) +
+        do.call(scale_y_continuous, list(limits = yLim))
     }
 
     if (!vertical) { PlotBarras <- PlotBarras + coord_flip() }

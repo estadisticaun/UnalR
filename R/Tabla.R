@@ -189,6 +189,25 @@
 #'     list(columns = "CIU_NAC", color = "#FFFFFF", backgroundColor = "#F59E11")
 #'   )
 #' )
+#' @examplesIf all(require("tibble"))
+#' # library(tibble)
+#' # ---------------------------------------------------------------------------
+#' # Ejemplo Usando Directamente un Consolidado de Microdatos (Compose functions with Agregar)
+#' set.seed(2023)
+#' AcademyAwards <- tibble(
+#'   year     = sample(1939:1945, 100, TRUE),
+#'   season   = sample(1:2, 100, TRUE),
+#'   category = sample(c("Best Picture", "Best Director", "Best Actor", "Best Actress", "Best Sound"), 100, TRUE),
+#'   location = sample(c("Roosevelt Hotel", "Dolby Theatre", "NBC Century Theatre"), 100, TRUE)
+#' )
+#' Agregar(
+#'   formula = category + location ~ year + season,
+#'   frecuencia = list("Year" = 1939:1945, "Period" = 1:2),
+#'   ask = FALSE, datos = AcademyAwards
+#' ) %>%
+#'   Tabla(., pivotCat = "location", columnNames = c("Year", "Season"),
+#'         encabezado = "LOCATION OF CEREMONIES", scrollX = FALSE
+#'   )
 #'
 #' @examplesIf all(FALSE)
 #' # library(gt); library(gtExtras)
@@ -377,6 +396,14 @@ Tabla <- function(
       )
     ))
   } else {
+    # Ajuste para detectar cuando lo que se ingresa es un agregado y omitir sintaxis
+    if (all(missingArg(rows), !missingArg(pivotCat), missingArg(pivotVar))) {
+      df <- df |> filter(Variable == pivotCat) |> select(-Variable)
+      rows     <- setdiff(colnames(df), c("Clase", "Total"))
+      rows     <- vars(!!!syms(rows))
+      pivotCat <- sym("Clase")
+      pivotVar <- sym("Total")
+    }
     # Ajuste para que independientemente del número de variables a agrupar no se repitan filas
     #   @ Pues la celda correspondiente no puede ser <dbl [n]> sino un valor numérico
     df <- df |>
@@ -405,17 +432,17 @@ Tabla <- function(
       DataFrame <- DataFrame |> left_join(addGlobal)
       nameFlag  <- TRUE
     } else { nameFlag  <- FALSE }
-
     colsDefs <- list(
-      list(className = "dt-center", targets = 0:(n_groups(nCat)+length(rows))),
-      list(width = "65px", targets = 0)
+      list(className = "dt-center", targets = 0:(n_groups(nCat)+length(rows)-1)),
+      list(width = "20px", targets = 0)
     )
     DataFrame <- DataFrame |> mutate_at(rows, factor)
     # Custom Table Container (Nombre de los Encabezados)
-    Txt <- ""
+    Txt <- ""; j = 0
     if (!missingArg(columnNames)) {
-      for (i in 1:(length(columnNames)-1)) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "', columnNames[i], '"), ')) }
-      if (nameFlag) { lastCol <- tail(columnNames, n = 1) }
+      if (nameFlag) { lastCol <- tail(columnNames, n = 1); j = 1 }
+      for (i in 1:(length(columnNames)-j)) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "', columnNames[i], '"), ')) }
+
     } else {
       for (i in 1:length(rows)) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "Col', i, '"), ')) }
       if (nameFlag) { lastCol <- "Total" }
@@ -530,6 +557,16 @@ Tabla <- function(
     #   }
     # }
   } else {
+    if (!missingArg(columnNames)) {
+      originalCols <- colnames(DataFrame)
+      if (nameFlag) {
+        colnames(DataFrame)[1:length(rows)] <- columnNames[1:(length(columnNames)-1)]
+        colnames(DataFrame)[length(colnames(DataFrame))] <- tail(columnNames, n = 1)
+      } else {
+        colnames(DataFrame)[1:length(rows)] <- columnNames
+      }
+    }
+
     TablaFinal <- gt(data = DataFrame) |>
       tab_source_note(source_note = leyenda) |>
       fmt_number(columns = everything(), decimals = 0, use_seps = TRUE)
@@ -563,7 +600,8 @@ Tabla <- function(
         opt_horizontal_padding(scale = estilo$Padding[2])
     }
     if (!flagGeneral) {
-      TablaFinal <- TablaFinal |> tab_spanner(label = encabezado, columns = c(nCat |> pull()))
+      TablaFinal <- TablaFinal %>%
+        tab_spanner(label = encabezado, columns = one_of(nCat |> pull() |> as.character()))
     }
     TablaFinal <- TablaFinal |> tab_options(column_labels.background.color = colorHead)
     if (!(missingArg(estilo) || is.null(estilo$Color))) {

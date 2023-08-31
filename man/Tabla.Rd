@@ -234,6 +234,26 @@ Tabla(
   )
 )
 \dontshow{\}) # examplesIf}
+\dontshow{if (all(require("tibble"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library(tibble)
+# ---------------------------------------------------------------------------
+# Ejemplo Usando Directamente un Consolidado de Microdatos (Compose functions with Agregar)
+set.seed(2023)
+AcademyAwards <- tibble(
+  year     = sample(1939:1945, 100, TRUE),
+  season   = sample(1:2, 100, TRUE),
+  category = sample(c("Best Picture", "Best Director", "Best Actor", "Best Actress", "Best Sound"), 100, TRUE),
+  location = sample(c("Roosevelt Hotel", "Dolby Theatre", "NBC Century Theatre"), 100, TRUE)
+)
+Agregar(
+  formula = category + location ~ year + season,
+  frecuencia = list("Year" = 1939:1945, "Period" = 1:2),
+  ask = FALSE, datos = AcademyAwards
+) \%>\%
+  Tabla(., pivotCat = "location", columnNames = c("Year", "Season"),
+        encabezado = "LOCATION OF CEREMONIES", scrollX = FALSE
+  )
+\dontshow{\}) # examplesIf}
 \dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # library(gt); library(gtExtras)
 # ---------------------------------------------------------------------------

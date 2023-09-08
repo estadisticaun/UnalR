@@ -103,7 +103,7 @@ Plot.Drilldown <- function(
     df2 <- ungroup(datos) |> filter(Variable == varSecundaria, !is.na(Clase)) |>
       group_by(Clase) |> summarise(Total = sum(Total)) |> arrange(desc(Total))
   } else {
-    titulo <- ifelse(!missingArg(titulo) && addPeriodo, paste0(titulo, " (PERIODO ", ano, "-", periodo, ")"), titulo)
+    titulo <- ifelse(!missingArg(titulo) && addPeriodo, paste0(titulo, " (Periodo ", ano, "-", periodo, ")"), titulo)
     df <- ungroup(datos) |>
       filter(Variable == varPrincipal, !is.na(Clase), YEAR == ano, SEMESTRE == periodo) |>
       arrange(desc(Total)) |> select(-Variable, -YEAR, -SEMESTRE) |>

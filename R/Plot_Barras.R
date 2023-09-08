@@ -168,7 +168,7 @@ Plot.Barras <- function(
   categorias <- DataFrame |> select(Clase) |> distinct() |> pull()
 
   if (!(missingArg(ano) || missingArg(periodo))) {
-    titulo <- ifelse(!missingArg(titulo) && addPeriodo, paste0(titulo, " (PERIODO ", ano, "-", periodo, ")"), titulo)
+    titulo <- ifelse(!missingArg(titulo) && addPeriodo, paste0(titulo, " (Periodo ", ano, "-", periodo, ")"), titulo)
     TablaFinal <- DataFrame |> filter(YEAR == ano, SEMESTRE == periodo)
   } else {
     if (missingArg(ano) && missingArg(periodo)) {

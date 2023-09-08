@@ -9,6 +9,7 @@ Plot.Boxplot(
   variable,
   grupo1,
   grupo2,
+  vertical = TRUE,
   outliers = TRUE,
   jitter = FALSE,
   violin = FALSE,
@@ -35,6 +36,9 @@ Plot.Boxplot(
 
 \item{grupo2}{Otra variable categórica dentro del data frame ingresado en \code{datos}
 por si se desea segregar por otra clase el grupo principal.}
+
+\item{vertical}{Si es \code{TRUE} (\emph{valor predeterminado}) indicará que la orientación
+del gráfico será vertical.}
 
 \item{outliers}{Si es \code{TRUE} (\emph{valor predeterminado}) se mostrarán los puntos
 correspondientes a los datos atípicos, defínalo en \code{FALSE} si desea ocultar

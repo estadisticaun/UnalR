@@ -409,6 +409,7 @@ Tabla <- function(
     df <- df |>
       group_by(!!!vars(!!!rows, {{pivotCat}}), .drop = FALSE) |>
       summarise({{ pivotVar }} := sum({{ pivotVar }}, na.rm = TRUE), .groups = "drop")
+      # summarise({{ pivotVar }} := sum({{ pivotVar }}), na.rm = TRUE, .by = c(!!!vars(!!!rows, {{pivotCat}})))
     # Creación de la Tabla Pivoteada de Acuerdo con los Parámetros Ingresados
     DataFrame <- df |> pivot_wider(names_from = {{ pivotCat }}, values_from = {{ pivotVar }})
     nCat      <- df |> group_by({{ pivotCat }}) |> distinct({{ pivotCat }})

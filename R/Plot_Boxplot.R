@@ -13,6 +13,8 @@
 #' @param grupo1 Una variable categórica dentro del data frame ingresado en `datos`.
 #' @param grupo2 Otra variable categórica dentro del data frame ingresado en `datos`
 #'   por si se desea segregar por otra clase el grupo principal.
+#' @param vertical Si es `TRUE` (*valor predeterminado*) indicará que la orientación
+#'   del gráfico será vertical.
 #' @param outliers Si es `TRUE` (*valor predeterminado*) se mostrarán los puntos
 #'   correspondientes a los datos atípicos, defínalo en `FALSE` si desea ocultar
 #'   dichos puntos.
@@ -229,17 +231,17 @@
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
 Plot.Boxplot <- function(
-    datos, variable, grupo1, grupo2, outliers = TRUE, jitter = FALSE, violin = FALSE,
-    numericalVars, ylim, colores, sizeOutlier = 0, colOutlier = "#08306B",
-    titulo = "", labelX = "Periodo", labelY = "", textBox = "",
-    libreria = c("highcharter", "plotly"), estilo = NULL, estatico = FALSE) {
+    datos, variable, grupo1, grupo2, vertical = TRUE, outliers = TRUE,
+    jitter = FALSE, violin = FALSE, numericalVars, ylim, colores, sizeOutlier = 0,
+    colOutlier = "#08306B", titulo = "", labelX = "Periodo", labelY = "",
+    textBox = "", libreria = c("highcharter", "plotly"), estilo = NULL, estatico = FALSE) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (missingArg(datos) || missingArg(variable) || missingArg(grupo1)) {
     stop("\u00a1Por favor introduzca un conjunto de datos, una variable num\u00e9rica y un grupo con los cuales se graficar\u00e1!", call. = FALSE)
   }
-  if (!all(is.logical(outliers), is.logical(jitter), is.logical(violin), is.logical(estatico))) {
-    stop("\u00a1Los argumentos 'outliers', 'jitter', 'violin' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
+  if (!all(is.logical(vertical), is.logical(outliers), is.logical(jitter), is.logical(violin), is.logical(estatico))) {
+    stop("\u00a1Los argumentos 'vertical', 'outliers', 'jitter', 'violin' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!all(is.character(titulo), is.character(labelX), is.character(labelY), is.character(textBox))) {
     stop("\u00a1Los argumentos 'titulo', 'labelX', 'labelY' y 'textBox' deben ser una cadena de texto!", call. = FALSE)
@@ -274,6 +276,13 @@ Plot.Boxplot <- function(
   }
   VarWidth <- ifelse(!(missingArg(estilo) || is.null(estilo$gg.VarWidth)), estilo$gg.VarWidth, FALSE)
 
+  datos  <- datos |> mutate({{ grupo1 }} := factor({{ grupo1 }}))
+  if (vertical) {
+    miniDots <- list( data = datos, x = rlang::enquo(grupo1), y = rlang::enquo(variable) )
+  } else {
+    miniDots <- list( data = datos, y = rlang::enquo(grupo1), x = rlang::enquo(variable) )
+  }
+
   if (!missingArg(grupo2)) {
     Levels <- datos |> select({{ grupo2 }}) |> distinct() |> pull()
     if (!(missingArg(colores) || length(colores) == length(Levels))) {
@@ -302,6 +311,7 @@ Plot.Boxplot <- function(
       )
     } else { dfBoxPlot <- Intento }
 
+    datos  <- datos |> mutate({{ grupo2 }} := factor({{ grupo2 }}))
     ggBase <- list(
       datos, aes(x = {{ grupo1 }}, y = {{ variable }}, fill = {{ grupo2 }})
     )
@@ -310,18 +320,18 @@ Plot.Boxplot <- function(
     TypeGroup <- "group"
     if (!violin) {
       Dots <- list(
-        data = datos, x = rlang::enquo(grupo1), y = rlang::enquo(variable), type = "box",
-        color = rlang::enquo(grupo2), colors = colores, boxpoints = Puntos, pointpos = 0,
-        jitter = 0.4, marker = list(color = colOutlier, size = 2 + sizeOutlier)
+        type = "box", color = rlang::enquo(grupo2), colors = colores, boxpoints = Puntos,
+        pointpos = 0, jitter = 0.4, marker = list(color = colOutlier, size = 2 + sizeOutlier)
       )
+      Dots <- append(miniDots, Dots)
       tempBoxPlot <- do.call(ggplot, ggBase) +
         do.call(geom_boxplot, append(list(na.rm = TRUE, varwidth = VarWidth), atipicos))
     } else {
       Dots <- list(
-        data = datos, x = rlang::enquo(grupo1), y = rlang::enquo(variable),
         type = "violin", color = rlang::enquo(grupo2), colors = colores,
         box = list(visible = FALSE), meanline = list(visible = TRUE)
       )
+      Dots <- append(miniDots, Dots)
       tempBoxPlot <- do.call(ggplot, ggBase) + geom_violin(na.rm = TRUE)
     }
   } else {
@@ -349,19 +359,19 @@ Plot.Boxplot <- function(
     TypeGroup <- NULL
     if (!violin) {
       Dots <- list(
-        data = datos, x = rlang::enquo(grupo1), y = rlang::enquo(variable),
         type = "box", color = rlang::enquo(grupo1), colors = colores,
         name = textBox, showlegend = FALSE, boxpoints = Puntos, pointpos = 0, jitter = 0.4,
         marker = list(color = colOutlier, size = 2 + sizeOutlier)
       )
+      Dots <- append(miniDots, Dots)
       tempBoxPlot <- do.call(ggplot, ggBase) +
         do.call(geom_boxplot, append(list(na.rm = TRUE, varwidth = VarWidth), atipicos))
     } else {
       Dots <- list(
-        data = datos, x = rlang::enquo(grupo1), y = rlang::enquo(variable),
         type = "violin", color = rlang::enquo(grupo1), colors = colores, name = textBox,
         showlegend = FALSE, box = list(visible = FALSE), meanline = list(visible = TRUE)
       )
+      Dots <- append(miniDots, Dots)
       tempBoxPlot <- do.call(ggplot, ggBase) + geom_violin(na.rm = TRUE)
     }
   }
@@ -386,8 +396,9 @@ Plot.Boxplot <- function(
         )
       } else { ThemeHC <- hc_theme_flat() }
 
-      PlotBoxPlot <- highchart()   |>
-        hc_chart(type = "boxplot") |>
+      Orientacion <- ifelse(vertical, "column", "bar")
+      PlotBoxPlot <- highchart()     |>
+        hc_chart(type = Orientacion) |>
         hc_xAxis(
           type = "category", title = list(
             text = labelX, offset = 70, style = list(
@@ -502,6 +513,8 @@ Plot.Boxplot <- function(
         separatethousands = TRUE
       )
 
+      if (!vertical) { c <- Xaxis; Xaxis <- Yaxis; Yaxis <- c }
+
       PlotBoxPlot <- do.call(plot_ly, Dots) |>
         layout(
           boxmode = TypeGroup, violinmode = TypeGroup, title = Title,
@@ -571,6 +584,8 @@ Plot.Boxplot <- function(
       JitSize  <- ifelse(!(missingArg(estilo) || is.null(estilo$gg.JitSize)) , estilo$gg.JitSize, 0.4)
       PlotBoxPlot <- PlotBoxPlot + geom_jitter(width = JitWidth, size = JitSize, color = colOutlier)
     }
+
+    if (!vertical) { PlotBoxPlot <- PlotBoxPlot + coord_flip() }
   }
 
   return(PlotBoxPlot)

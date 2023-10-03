@@ -5,7 +5,7 @@
 \title{Cree un mapa dinámico y flexible para visualizar datos geográficos de países}
 \usage{
 Plot.Mundo(
-  df,
+  datos,
   paises,
   variable,
   grupo,
@@ -13,6 +13,7 @@ Plot.Mundo(
   titulo,
   naTo0 = TRUE,
   colNA = "#EEEEEE",
+  centroideMapa,
   zoomMapa = 2,
   baldosas,
   cortes,
@@ -27,9 +28,9 @@ Plot.Mundo(
 )
 }
 \arguments{
-\item{df}{Un data frame, no un vector numérico.}
+\item{datos}{Un data frame, no un vector numérico.}
 
-\item{paises}{Una variable dentro del data frame ingresado en \code{df}, que
+\item{paises}{Una variable dentro del data frame ingresado en \code{datos}, que
 contiene los códigos de los países, de acuerdo con la codificación
 ISO3166, ya sea el nombre o el código alpha2 o alpha3.}
 
@@ -55,6 +56,10 @@ leyenda "Sin Información".}
 
 \item{colNA}{Cadena de caracteres indicando el color que tendrá la categoría
 \code{NA} (\emph{si esta se presenta}). El valor por defecto es un gris muy claro.}
+
+\item{centroideMapa}{Cadena de caracteres indicando el país que servirá de
+centroide al momento de graficar el mapa. El valor por defecto es "MEXICO".
+Se emparejará parcialmente.}
 
 \item{zoomMapa}{Valor numérico que indica el nivel de zoom del mapa
 (\emph{usado por la función} \link[leaflet:map-methods]{setView()}). El valor por
@@ -154,14 +159,15 @@ popular para mapas interactivos.
 \examples{
 LATAM <- data.frame(Country = c("Chile", "Venezuela", "Colombia", "Argentina", "Brazil"), PIB = c(1, 10, 100, 1000, 10000)*1:5)
 Plot.Mundo(
-  df       = LATAM,
+  datos    = LATAM,
   paises   = Country,
   variable = PIB,
   tipo     = "Pais",
   titulo   = "PIB 2023-Q1",
   naTo0    = FALSE,
   colNA    = "#3DBC25",
-  zoomMapa = 4,
+  centroideMapa = "Peru",
+  zoomMapa = 3,
   cortes   = c(0, 10, 100, 1000, 10000, Inf),
   colores  = c("#DFA86A", "#FFBB00", "#FF5100", "#F20034", "#76009D"),
   opacidad = 0.5,
@@ -172,11 +178,12 @@ Plot.Mundo(
 )
 # ---------------------------------------------------------------------------
 Plot.Mundo(
-  df       = LATAM,
+  datos    = LATAM,
   paises   = Country,
   variable = PIB,
   tipo     = "SiNoPais",
   titulo   = "PIB 2023-Q1",
+  centroideMapa = "Senegal",
   colores  = c("#45C9FF", "#FF153F"),
   opacidad = 0.6,
   colBorde = "#3DBC25",
@@ -192,7 +199,7 @@ LATAM <- data.frame(
   Bolivariano = c("Sí", "Sí", "Sí", "Sí", "Sí", "Sí", "No", "No", "No", "No")
 )
 Plot.Mundo(
-  df       = LATAM,
+  datos    = LATAM,
   paises   = Pais,
   variable = Bolivariano,
   tipo     = "Pais",
@@ -203,7 +210,7 @@ Plot.Mundo(
 )
 # ---------------------------------------------------------------------------
 Plot.Mundo(
-  df       = LATAM,
+  datos    = LATAM,
   paises   = Pais,
   variable = PIB,
   # grupo  = Bolivariano,
@@ -221,7 +228,7 @@ Plot.Mundo(
     scaleY     = seq(-60, 14, by = 5),
     anchoBorde = 1,
     Theme = 6, Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
-    Labs = list(subtitle = "Para suramérica en el 2023", caption = "Datos simulados para el ejemplo ilustrativo", tag = "\u00ae")
+    Labs = list(subtitle = "Para Suram\u00e9rica en el 2023", caption = "Datos simulados para el ejemplo ilustrativo", tag = "\u00ae")
   )
 )
 # ---------------------------------------------------------------------------
@@ -230,7 +237,7 @@ Territories <- data.frame(
   Area    = rep(10^(5:0), 2)
 )
 Plot.Mundo(
-  df       = Territories,
+  datos    = Territories,
   paises   = Country,
   variable = Area,
   tipo     = "Pais",
@@ -250,7 +257,7 @@ Plot.Mundo(
 # ---------------------------------------------------------------------------
 COL <- data.frame(Pais = "CO", IDH = 100000)
 Plot.Mundo(
-  df       = COL,
+  datos    = COL,
   paises   = Pais,
   variable = IDH,
   tipo     = "Pais",

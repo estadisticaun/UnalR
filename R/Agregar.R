@@ -5,6 +5,7 @@
 #' consolidado final con el cual trabaja la mayoría de las funciones gráficas
 #' disponibles en `UnalR`.
 #'
+#' @param datos Un data frame con los microdatos.
 #' @param formula Fórmula en la que el primer componente especificado (*antes
 #'   del \eqn{\sim}*) hace referencia a la(s) variable(s) de interés, y el segundo
 #'   componente (*luego del \eqn{\sim}*) a la(s) variable(s) temporales por las
@@ -13,7 +14,6 @@
 #' @param frecuencia Vector o lista (*dependiendo de la cantidad de variables
 #'   temporales especificadas*) numérica con los periodos que debería tener cada
 #'   una de éstas.
-#' @param datos Un data frame con los microdatos.
 #' @param intervalo Vector o lista (*dependiendo de la cantidad de variables
 #'   temporales especificadas*) numérica que contiene los períodos de inicio y
 #'   fin con los cuales se quiere realizar el filtro.
@@ -97,7 +97,7 @@
 #' @importFrom utils menu
 #' @importFrom methods is
 #' @importFrom forcats fct_unique fct_na_value_to_level
-Agregar <- function(formula, frecuencia, datos, intervalo, textNA = "Sin Informaci\u00f3n", ask = TRUE) {
+Agregar <- function(datos, formula, frecuencia, intervalo, textNA = "Sin Informaci\u00f3n", ask = FALSE) {
 
   if (!is(formula, class2 = "formula")) {
     stop("\u00a1La f\u00f3rmula ingresada no pertenece a la clase 'formula'!", call. = FALSE)

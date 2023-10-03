@@ -11,12 +11,13 @@
 #' popular para mapas interactivos.
 #'
 #' @inheritParams Plot.Series
-#' @param df Un data frame, no un vector numérico.
-#' @param depto Una variable numérica dentro del data frame ingresado en `df`,
+#' @param datos Un data frame, no un vector numérico.
+#' @param df Argument deprecated, use `datos` instead.
+#' @param depto Una variable numérica dentro del data frame ingresado en `datos`,
 #'   que contiene los códigos de los departamentos, de acuerdo con la codificación
 #'   de la División Político-Administrativa de Colombia (*DIVIPOLA*) dispuesta
 #'   por el `DANE`.
-#' @param mpio Una variable numérica dentro del data frame ingresado en `df`,
+#' @param mpio Una variable numérica dentro del data frame ingresado en `datos`,
 #'   que contiene los códigos de los municipios, de acuerdo con la codificación
 #'   de la División Político-Administrativa de Colombia (*DIVIPOLA*) dispuesta
 #'   por el `DANE`.
@@ -149,7 +150,7 @@
 #'     COD_DEP_NAC, COD_CIU_NAC, DEP_NAC, CIU_NAC, LON_CIU_NAC, LAT_CIU_NAC
 #'   )
 #' Plot.Mapa(
-#'   df       = df,
+#'   datos    = df,
 #'   depto    = COD_DEP_NAC,
 #'   mpio     = COD_CIU_NAC,
 #'   tipo     = "SiNoMpios",
@@ -168,7 +169,7 @@
 #' )
 #' # ---------------------------------------------------------------------------
 #' Plot.Mapa(
-#'   df     = df,
+#'   datos  = df,
 #'   depto  = COD_DEP_NAC,
 #'   mpio   = COD_CIU_NAC,
 #'   tipo   = "DeptoMpio",
@@ -198,7 +199,7 @@
 #'     ScoreRazCuant = PUNT_RAZO_CUANT
 #'   ) %$%
 #'   Plot.Mapa(
-#'     df            = .,
+#'     datos         = .,
 #'     depto         = Code_Dept,
 #'     mpio          = Code_Mun,
 #'     estadistico   = "Mediana",
@@ -222,7 +223,7 @@
 #' # ---------------------------------------------------------------------------
 #' # Ejemplo usando el caso estático (ggplot2)
 #' Plot.Mapa(
-#'   df        = df,
+#'   datos     = df,
 #'   depto     = COD_DEP_NAC,
 #'   mpio      = COD_CIU_NAC,
 #'   zoomIslas = TRUE,
@@ -261,7 +262,7 @@
 #'   Valor    = c(883,177837,6574,52961,301491,NA,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
 #' )
 #' Plot.Mapa(
-#'   df        = PIB,
+#'   datos     = PIB,
 #'   depto     = DIVIPOLA,
 #'   variable  = Valor,
 #'   agregado  = FALSE,
@@ -302,7 +303,7 @@
 #'   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)
 #' )
 #' Plot.Mapa(
-#'   df       = AreaVichada,
+#'   datos    = AreaVichada,
 #'   mpio     = MunCode,
 #'   variable = Area,
 #'   agregado = FALSE,
@@ -330,8 +331,9 @@
 #' @importFrom methods missingArg
 #' @importFrom sp coordinates
 #' @importFrom sf st_point_on_surface st_as_sf
+#' @importFrom lifecycle deprecate_warn
 Plot.Mapa <- function(
-    df, depto, mpio, variable, agregado = TRUE, zoomIslas = FALSE,
+    datos, df, depto, mpio, variable, agregado = TRUE, zoomIslas = FALSE,
     estadistico = c("Conteo", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
     tipo = c("Deptos", "SiNoMpios", "Mpios", "DeptoMpio"), SiNoLegend, titulo,
     naTo0 = TRUE, colNA = "#EEEEEE", centroideMapa, zoomMapa = 6, baldosas,
@@ -339,8 +341,18 @@ Plot.Mapa <- function(
     compacto = TRUE, textSize = 10, limpio = FALSE, estatico = FALSE, estilo, ...) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
-  if (missingArg(df)) {
+  if (missingArg(datos)) {
     stop('\u00a1Por favor introduzca el dataframe que contiene la informaci\u00f3n necesaria!', call. = FALSE)
+  }
+  # Adición temporal (para dar un periodo de adaptación antes de la eliminación del argumento)
+  if (!missing(df)) {
+    lifecycle::deprecate_warn(
+      when = "1.0.0",
+      what = "Plot.Mapa(df)",
+      with = "Plot.Mapa(datos)",
+      details = "Please replace the use of argument 'df' with 'datos'. Before the argument is removed."
+    )
+    datos <- df
   }
   if (agregado) {
     if (missingArg(depto) && missingArg(mpio)) {
@@ -355,7 +367,7 @@ Plot.Mapa <- function(
   }
 
   if (Statistic == "Conteo") {
-    dataframe <- df |> select(codeDept := {{depto}}, codeMun := {{mpio}}) |>
+    dataframe <- datos |> select(codeDept := {{depto}}, codeMun := {{mpio}}) |>
       filter(!is.na(codeDept))
     if (!missingArg(variable)) {
       warning(paste0(
@@ -366,21 +378,21 @@ Plot.Mapa <- function(
   } else {
     if (missingArg(variable)) {
       stop(paste0('\u00a1Por favor ingrese una variable auxiliar con la cual se calcular\u00e1 el/la ', tolower(Statistic), '!'), call. = FALSE)
-    } else if (!is.numeric(df |> select({{variable}}) |> pull())) {
+    } else if (!is.numeric(datos |> select({{variable}}) |> pull())) {
       stop('\u00a1La variable auxiliar ingresada contiene valores no num\u00e9ricos!', call. = FALSE)
     }
     if (agregado) {
-      dataframe <- df |>
+      dataframe <- datos |>
         select(codeDept := {{depto}}, codeMun := {{mpio}}, Variable := {{variable}}) |>
         filter(!is.na(codeDept))
     } else {
       if (missingArg(depto)) {
-        dataframe <- df |>
+        dataframe <- datos |>
           select(codeDept := {{mpio}}, codeMun := {{mpio}}, Variable := {{variable}}) |>
           filter(!is.na(codeMun))
       }
       if (missingArg(mpio)) {
-        dataframe <- df |>
+        dataframe <- datos |>
           select(codeDept := {{depto}}, codeMun := {{depto}}, Variable := {{variable}}) |>
           filter(!is.na(codeDept))
       }

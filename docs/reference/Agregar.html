@@ -72,18 +72,22 @@ disponibles en <code>UnalR</code>.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Agregar</span><span class="op">(</span></span>
+<span>  <span class="va">datos</span>,</span>
 <span>  <span class="va">formula</span>,</span>
 <span>  <span class="va">frecuencia</span>,</span>
-<span>  <span class="va">datos</span>,</span>
 <span>  <span class="va">intervalo</span>,</span>
 <span>  textNA <span class="op">=</span> <span class="st">"Sin Información"</span>,</span>
-<span>  ask <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  ask <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="argumentos">
     <h2>Argumentos</h2>
-    <dl><dt>formula</dt>
+    <dl><dt>datos</dt>
+<dd><p>Un data frame con los microdatos.</p></dd>
+
+
+<dt>formula</dt>
 <dd><p>Fórmula en la que el primer componente especificado (<em>antes
 del \(\sim\)</em>) hace referencia a la(s) variable(s) de interés, y el segundo
 componente (<em>luego del \(\sim\)</em>) a la(s) variable(s) temporales por las
@@ -95,10 +99,6 @@ cuales se quiere agrupar (<em>separadas por cualquier operador como
 <dd><p>Vector o lista (<em>dependiendo de la cantidad de variables
 temporales especificadas</em>) numérica con los periodos que debería tener cada
 una de éstas.</p></dd>
-
-
-<dt>datos</dt>
-<dd><p>Un data frame con los microdatos.</p></dd>
 
 
 <dt>intervalo</dt>

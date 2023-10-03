@@ -6,6 +6,7 @@
 el paquete \code{Leaflet}}
 \usage{
 Plot.Mapa(
+  datos,
   df,
   depto,
   mpio,
@@ -36,14 +37,16 @@ Plot.Mapa(
 )
 }
 \arguments{
-\item{df}{Un data frame, no un vector numérico.}
+\item{datos}{Un data frame, no un vector numérico.}
 
-\item{depto}{Una variable numérica dentro del data frame ingresado en \code{df},
+\item{df}{Argument deprecated, use \code{datos} instead.}
+
+\item{depto}{Una variable numérica dentro del data frame ingresado en \code{datos},
 que contiene los códigos de los departamentos, de acuerdo con la codificación
 de la División Político-Administrativa de Colombia (\emph{DIVIPOLA}) dispuesta
 por el \code{DANE}.}
 
-\item{mpio}{Una variable numérica dentro del data frame ingresado en \code{df},
+\item{mpio}{Una variable numérica dentro del data frame ingresado en \code{datos},
 que contiene los códigos de los municipios, de acuerdo con la codificación
 de la División Político-Administrativa de Colombia (\emph{DIVIPOLA}) dispuesta
 por el \code{DANE}.}
@@ -217,7 +220,7 @@ df <- ejGraduados |> filter(YEAR == 2021) |>
     COD_DEP_NAC, COD_CIU_NAC, DEP_NAC, CIU_NAC, LON_CIU_NAC, LAT_CIU_NAC
   )
 Plot.Mapa(
-  df       = df,
+  datos    = df,
   depto    = COD_DEP_NAC,
   mpio     = COD_CIU_NAC,
   tipo     = "SiNoMpios",
@@ -236,7 +239,7 @@ Plot.Mapa(
 )
 # ---------------------------------------------------------------------------
 Plot.Mapa(
-  df     = df,
+  datos  = df,
   depto  = COD_DEP_NAC,
   mpio   = COD_CIU_NAC,
   tipo   = "DeptoMpio",
@@ -267,7 +270,7 @@ ejSaberPro2020 \%>\%
     ScoreRazCuant = PUNT_RAZO_CUANT
   ) \%$\%
   Plot.Mapa(
-    df            = .,
+    datos         = .,
     depto         = Code_Dept,
     mpio          = Code_Mun,
     estadistico   = "Mediana",
@@ -292,7 +295,7 @@ ejSaberPro2020 \%>\%
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 Plot.Mapa(
-  df        = df,
+  datos     = df,
   depto     = COD_DEP_NAC,
   mpio      = COD_CIU_NAC,
   zoomIslas = TRUE,
@@ -332,7 +335,7 @@ PIB <- tibble(
   Valor    = c(883,177837,6574,52961,301491,NA,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
 )
 Plot.Mapa(
-  df        = PIB,
+  datos     = PIB,
   depto     = DIVIPOLA,
   variable  = Valor,
   agregado  = FALSE,
@@ -373,7 +376,7 @@ AreaVichada <- tibble(
   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)
 )
 Plot.Mapa(
-  df       = AreaVichada,
+  datos    = AreaVichada,
   mpio     = MunCode,
   variable = Area,
   agregado = FALSE,

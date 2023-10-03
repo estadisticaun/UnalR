@@ -6,15 +6,17 @@
 por las variables temporales que considere necesarias}
 \usage{
 Agregar(
+  datos,
   formula,
   frecuencia,
-  datos,
   intervalo,
   textNA = "Sin Información",
-  ask = TRUE
+  ask = FALSE
 )
 }
 \arguments{
+\item{datos}{Un data frame con los microdatos.}
+
 \item{formula}{Fórmula en la que el primer componente especificado (\emph{antes
 del \eqn{\sim}}) hace referencia a la(s) variable(s) de interés, y el segundo
 componente (\emph{luego del \eqn{\sim}}) a la(s) variable(s) temporales por las
@@ -24,8 +26,6 @@ cuales se quiere agrupar (\emph{separadas por cualquier operador como
 \item{frecuencia}{Vector o lista (\emph{dependiendo de la cantidad de variables
 temporales especificadas}) numérica con los periodos que debería tener cada
 una de éstas.}
-
-\item{datos}{Un data frame con los microdatos.}
 
 \item{intervalo}{Vector o lista (\emph{dependiendo de la cantidad de variables
 temporales especificadas}) numérica que contiene los períodos de inicio y

@@ -5,6 +5,7 @@
 \title{Cree fácilmente un widget para visualización de tablas HTML usando el paquete \code{DT}}
 \usage{
 Tabla(
+  datos,
   df,
   rows,
   pivotCat,
@@ -25,7 +26,9 @@ Tabla(
 )
 }
 \arguments{
-\item{df}{Un data frame.}
+\item{datos}{Un data frame.}
+
+\item{df}{Argument deprecated, use \code{datos} instead.}
 
 \item{rows}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
@@ -139,9 +142,9 @@ la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesiva
 # library(DT); library(dplyr); library(tidyr)
 # Example of R Combinations with Dot (".") and Pipe (\%>\%) Operator
 # UnalR::Agregar(
+#   datos      = UnalData::Graduados,
 #   formula    = SEDE_NOMBRE_ADM ~ YEAR + SEMESTRE,
-#   frecuencia = list("Year" = 2009:2022, "Period" = 1:2),
-#   datos      = UnalData::Graduados, ask = FALSE
+#   frecuencia = list("Year" = 2009:2022, "Period" = 1:2)
 #   ) |>
 #   select(-Variable) |>
 #   rename(Year = YEAR, Semester = SEMESTRE, Cat = Clase) \%>\%
@@ -149,7 +152,7 @@ la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesiva
 #     ., rows = vars(Year, Semester), pivotCat = Cat, pivotVar = Total
 #   )
 Tabla(
-  df = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |> dplyr::select(-Variable),
+  datos       = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |> dplyr::select(-Variable),
   rows        = vars(YEAR, SEMESTRE),
   pivotCat    = Clase,
   pivotVar    = Total,
@@ -178,7 +181,7 @@ VariosYears <- ejConsolidadoSaberPro2019         |>
 
 Msj <- "\u00c9sta es una descripci\u00f3n de la tabla diferente al valor por default."
 Tabla(
-  df          = VariosYears,
+  datos       = VariosYears,
   rows        = vars(YEAR, Clase, n),
   pivotCat    = Componente,
   pivotVar    = Total,
@@ -199,7 +202,7 @@ Tabla(
   )
 )
 # ---------------------------------------------------------------------------
-Tabla(df = datasets::mtcars)
+Tabla(datos = datasets::mtcars)
 
 df <- ejGraduados |>
   filter(TIPO_NIVEL == "Pregrado") |>
@@ -210,7 +213,7 @@ df <- ejGraduados |>
 Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
 Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
 Tabla(
-  df             = df,
+  datos          = df,
   columnNames    = Nombres,
   filtros        = TRUE,
   colFilters     = 0:3,
@@ -246,9 +249,9 @@ AcademyAwards <- tibble(
   location = sample(c("Roosevelt Hotel", "Dolby Theatre", "NBC Century Theatre"), 100, TRUE)
 )
 Agregar(
-  formula = category + location ~ year + season,
-  frecuencia = list("Year" = 1939:1945, "Period" = 1:2),
-  ask = FALSE, datos = AcademyAwards
+  datos      = AcademyAwards,
+  formula    = category + location ~ year + season,
+  frecuencia = list("Year" = 1939:1945, "Period" = 1:2)
 ) \%>\%
   Tabla(., pivotCat = "location", columnNames = c("Year", "Season"),
         encabezado = "LOCATION OF CEREMONIES", scrollX = FALSE
@@ -259,7 +262,7 @@ Agregar(
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (gt)
 tableGT <- Tabla(
-  df          = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
+  datos       = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
   rows        = vars(YEAR),
   pivotCat    = Clase,
   pivotVar    = Total,
@@ -281,7 +284,7 @@ tableGT <- Tabla(
 #   (para ver el alcance que puede tener)
 tableGT <-
   Tabla(
-    df = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
+    datos       = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
     rows        = vars(YEAR, SEMESTRE),
     pivotCat    = Clase,
     pivotVar    = Total,

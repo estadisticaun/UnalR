@@ -6,7 +6,8 @@
 #' usted significa que a menudo no tiene que preocuparse por los pequeños detalles
 #' para obtener un resultado impresionante y listo para usar.
 #'
-#' @param df Un data frame.
+#' @param datos Un data frame.
+#' @param df Argument deprecated, use `datos` instead.
 #' @param rows Una variable categórica dentro del data frame ingresado en `datos`.
 #' @param pivotCat Variable categórica que contiene los niveles/factores que desea
 #'   pivotear como columnas. Si omite este parámetro se da por hecho que no desea
@@ -95,9 +96,9 @@
 #' # library(DT); library(dplyr); library(tidyr)
 #' # Example of R Combinations with Dot (".") and Pipe (%>%) Operator
 #' # UnalR::Agregar(
+#' #   datos      = UnalData::Graduados,
 #' #   formula    = SEDE_NOMBRE_ADM ~ YEAR + SEMESTRE,
-#' #   frecuencia = list("Year" = 2009:2022, "Period" = 1:2),
-#' #   datos      = UnalData::Graduados, ask = FALSE
+#' #   frecuencia = list("Year" = 2009:2022, "Period" = 1:2)
 #' #   ) |>
 #' #   select(-Variable) |>
 #' #   rename(Year = YEAR, Semester = SEMESTRE, Cat = Clase) %>%
@@ -105,7 +106,7 @@
 #' #     ., rows = vars(Year, Semester), pivotCat = Cat, pivotVar = Total
 #' #   )
 #' Tabla(
-#'   df = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |> dplyr::select(-Variable),
+#'   datos       = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |> dplyr::select(-Variable),
 #'   rows        = vars(YEAR, SEMESTRE),
 #'   pivotCat    = Clase,
 #'   pivotVar    = Total,
@@ -134,7 +135,7 @@
 #'
 #' Msj <- "\u00c9sta es una descripci\u00f3n de la tabla diferente al valor por default."
 #' Tabla(
-#'   df          = VariosYears,
+#'   datos       = VariosYears,
 #'   rows        = vars(YEAR, Clase, n),
 #'   pivotCat    = Componente,
 #'   pivotVar    = Total,
@@ -155,7 +156,7 @@
 #'   )
 #' )
 #' # ---------------------------------------------------------------------------
-#' Tabla(df = datasets::mtcars)
+#' Tabla(datos = datasets::mtcars)
 #'
 #' df <- ejGraduados |>
 #'   filter(TIPO_NIVEL == "Pregrado") |>
@@ -166,7 +167,7 @@
 #' Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
 #' Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
 #' Tabla(
-#'   df             = df,
+#'   datos          = df,
 #'   columnNames    = Nombres,
 #'   filtros        = TRUE,
 #'   colFilters     = 0:3,
@@ -201,9 +202,9 @@
 #'   location = sample(c("Roosevelt Hotel", "Dolby Theatre", "NBC Century Theatre"), 100, TRUE)
 #' )
 #' Agregar(
-#'   formula = category + location ~ year + season,
-#'   frecuencia = list("Year" = 1939:1945, "Period" = 1:2),
-#'   ask = FALSE, datos = AcademyAwards
+#'   datos      = AcademyAwards,
+#'   formula    = category + location ~ year + season,
+#'   frecuencia = list("Year" = 1939:1945, "Period" = 1:2)
 #' ) %>%
 #'   Tabla(., pivotCat = "location", columnNames = c("Year", "Season"),
 #'         encabezado = "LOCATION OF CEREMONIES", scrollX = FALSE
@@ -214,7 +215,7 @@
 #' # ---------------------------------------------------------------------------
 #' # Ejemplo usando el caso estático (gt)
 #' tableGT <- Tabla(
-#'   df          = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
+#'   datos       = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
 #'   rows        = vars(YEAR),
 #'   pivotCat    = Clase,
 #'   pivotVar    = Total,
@@ -236,7 +237,7 @@
 #' #   (para ver el alcance que puede tener)
 #' tableGT <-
 #'   Tabla(
-#'     df = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
+#'     datos       = UnalR::ejConsolidadoGrad |> filter(Variable == "SEDE_NOMBRE_ADM"),
 #'     rows        = vars(YEAR, SEMESTRE),
 #'     pivotCat    = Clase,
 #'     pivotVar    = Total,
@@ -328,13 +329,23 @@
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices colorRampPalette
 Tabla <- function(
-    df, rows, pivotCat, pivotVar, columnNames, filtros = FALSE, colFilters,
+    datos, df, rows, pivotCat, pivotVar, columnNames, filtros = FALSE, colFilters,
     estadistico = c("Suma", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
     encabezado = "Encabezados de los Niveles de la Categor\u00eda",
     leyenda = "", tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
     scrollX = TRUE, colorHead = "#FFFFFF", estilo, estatico = FALSE) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
+  # Adición temporal (para dar un periodo de adaptación antes de la eliminación del argumento)
+  if (!missing(df)) {
+    lifecycle::deprecate_warn(
+      when = "1.0.0",
+      what = "Tabla(df)",
+      with = "Tabla(datos)",
+      details = "Please replace the use of argument 'df' with 'datos'. Before the argument is removed."
+    )
+    datos <- df
+  }
   if (!all(is.logical(filtros), is.logical(ajustarNiveles), is.logical(scrollX))) {
     stop("\u00a1Los argumentos 'filtros', 'ajustarNiveles' y 'scrollX' deben ser un booleano (TRUE o FALSE)!", call. = FALSE)
   }
@@ -357,8 +368,8 @@ Tabla <- function(
   # ----------------------------------------------------------------------------
   # CREACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA TABLA
   if (all(missingArg(rows), missingArg(pivotCat), missingArg(pivotVar))) {
-    DataFrame <- df %>% mutate_all(., as.factor)
-    colNames  <- colnames(df)
+    DataFrame <- datos %>% mutate_all(., as.factor)
+    colNames  <- colnames(datos)
 
     if (filtros) {
       Filtros <- list(position = "top", clear = TRUE, plain = FALSE)
@@ -381,7 +392,7 @@ Tabla <- function(
     }
 
     colsDefs <- list(
-      list(className = "dt-center", targets = 0:(length(colNames) - 1)),
+      list(className = "dt-center", targets = "_all"),
       dots, list(width = "65px", targets = 0)
     )
 
@@ -398,25 +409,25 @@ Tabla <- function(
   } else {
     # Ajuste para detectar cuando lo que se ingresa es un agregado y omitir sintaxis
     if (all(missingArg(rows), !missingArg(pivotCat), missingArg(pivotVar))) {
-      df <- df |> filter(Variable == pivotCat) |> select(-Variable)
-      rows     <- setdiff(colnames(df), c("Clase", "Total"))
+      datos <- datos |> filter(Variable == pivotCat) |> select(-Variable)
+      rows     <- setdiff(colnames(datos), c("Clase", "Total"))
       rows     <- vars(!!!syms(rows))
       pivotCat <- sym("Clase")
       pivotVar <- sym("Total")
     }
     # Ajuste para que independientemente del número de variables a agrupar no se repitan filas
     #   @ Pues la celda correspondiente no puede ser <dbl [n]> sino un valor numérico
-    df <- df |>
+    datos <- datos |>
       group_by(!!!vars(!!!rows, {{pivotCat}}), .drop = FALSE) |>
       summarise({{ pivotVar }} := sum({{ pivotVar }}, na.rm = TRUE), .groups = "drop")
       # summarise({{ pivotVar }} := sum({{ pivotVar }}), na.rm = TRUE, .by = c(!!!vars(!!!rows, {{pivotCat}})))
     # Creación de la Tabla Pivoteada de Acuerdo con los Parámetros Ingresados
-    DataFrame <- df |> pivot_wider(names_from = {{ pivotCat }}, values_from = {{ pivotVar }})
-    nCat      <- df |> group_by({{ pivotCat }}) |> distinct({{ pivotCat }})
+    DataFrame <- datos |> pivot_wider(names_from = {{ pivotCat }}, values_from = {{ pivotVar }})
+    nCat      <- datos |> group_by({{ pivotCat }}) |> distinct({{ pivotCat }})
 
     if(!missingArg(estadistico)) {
       Statistic <- match.arg(estadistico)
-      Groups    <- df |> group_by(!!!rows, .drop = FALSE)
+      Groups    <- datos |> group_by(!!!rows, .drop = FALSE)
       addGlobal <- switch(
         Statistic,
         Suma     = Groups |> summarise("Statistic" = sum({{ pivotVar }}   , na.rm = TRUE), .groups = "drop"),
@@ -434,7 +445,7 @@ Tabla <- function(
       nameFlag  <- TRUE
     } else { nameFlag  <- FALSE }
     colsDefs <- list(
-      list(className = "dt-center", targets = 0:(n_groups(nCat)+length(rows)-1)),
+      list(className = "dt-center", targets = "_all"),
       list(width = "20px", targets = 0)
     )
     DataFrame <- DataFrame |> mutate_at(rows, factor)
@@ -460,7 +471,7 @@ Tabla <- function(
         thead(
           tr(',
       Txt,
-      ' th(colspan = n_groups(nCat), encabezado), ',
+      ' th(colspan = n_groups(nCat), encabezado, class = "dt-center"), ',
       txtStatistic,
       '),
           tr( lapply(nCat |> pull(), th) )

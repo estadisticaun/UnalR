@@ -51,6 +51,7 @@ reference:
         - Plot.Treemap
         - Plot.Apiladas
         - Plot.Drilldown
+        - Plot.Histograma
     - title: Auxiliares
       contents:
         - Agregar

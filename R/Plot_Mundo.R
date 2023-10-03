@@ -10,11 +10,14 @@
 #' popular para mapas interactivos.
 #'
 #' @inheritParams Plot.Mapa
-#' @param paises Una variable dentro del data frame ingresado en `df`, que
+#' @param paises Una variable dentro del data frame ingresado en `datos`, que
 #'   contiene los códigos de los países, de acuerdo con la codificación
 #'   ISO3166, ya sea el nombre o el código alpha2 o alpha3.
 #' @param grupo Variable auxiliar con la cual se segmentará los datos, para que
 #'   se grafique en un único plot divido en parcelas por dicha variable.
+#' @param centroideMapa Cadena de caracteres indicando el país que servirá de
+#'   centroide al momento de graficar el mapa. El valor por defecto es "MEXICO".
+#'   Se emparejará parcialmente.
 #'
 #' @returns
 #' Retorna el mapa (*objeto widget de HTML*) creado mediante `Leaflet`, el cual
@@ -23,14 +26,15 @@
 #' @examples
 #' LATAM <- data.frame(Country = c("Chile", "Venezuela", "Colombia", "Argentina", "Brazil"), PIB = c(1, 10, 100, 1000, 10000)*1:5)
 #' Plot.Mundo(
-#'   df       = LATAM,
+#'   datos    = LATAM,
 #'   paises   = Country,
 #'   variable = PIB,
 #'   tipo     = "Pais",
 #'   titulo   = "PIB 2023-Q1",
 #'   naTo0    = FALSE,
 #'   colNA    = "#3DBC25",
-#'   zoomMapa = 4,
+#'   centroideMapa = "Peru",
+#'   zoomMapa = 3,
 #'   cortes   = c(0, 10, 100, 1000, 10000, Inf),
 #'   colores  = c("#DFA86A", "#FFBB00", "#FF5100", "#F20034", "#76009D"),
 #'   opacidad = 0.5,
@@ -41,11 +45,12 @@
 #' )
 #' # ---------------------------------------------------------------------------
 #' Plot.Mundo(
-#'   df       = LATAM,
+#'   datos    = LATAM,
 #'   paises   = Country,
 #'   variable = PIB,
 #'   tipo     = "SiNoPais",
 #'   titulo   = "PIB 2023-Q1",
+#'   centroideMapa = "Senegal",
 #'   colores  = c("#45C9FF", "#FF153F"),
 #'   opacidad = 0.6,
 #'   colBorde = "#3DBC25",
@@ -61,7 +66,7 @@
 #'   Bolivariano = c("Sí", "Sí", "Sí", "Sí", "Sí", "Sí", "No", "No", "No", "No")
 #' )
 #' Plot.Mundo(
-#'   df       = LATAM,
+#'   datos    = LATAM,
 #'   paises   = Pais,
 #'   variable = Bolivariano,
 #'   tipo     = "Pais",
@@ -72,7 +77,7 @@
 #' )
 #' # ---------------------------------------------------------------------------
 #' Plot.Mundo(
-#'   df       = LATAM,
+#'   datos    = LATAM,
 #'   paises   = Pais,
 #'   variable = PIB,
 #'   # grupo  = Bolivariano,
@@ -90,7 +95,7 @@
 #'     scaleY     = seq(-60, 14, by = 5),
 #'     anchoBorde = 1,
 #'     Theme = 6, Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
-#'     Labs = list(subtitle = "Para suramérica en el 2023", caption = "Datos simulados para el ejemplo ilustrativo", tag = "\u00ae")
+#'     Labs = list(subtitle = "Para Suram\u00e9rica en el 2023", caption = "Datos simulados para el ejemplo ilustrativo", tag = "\u00ae")
 #'   )
 #' )
 #' # ---------------------------------------------------------------------------
@@ -99,7 +104,7 @@
 #'   Area    = rep(10^(5:0), 2)
 #' )
 #' Plot.Mundo(
-#'   df       = Territories,
+#'   datos    = Territories,
 #'   paises   = Country,
 #'   variable = Area,
 #'   tipo     = "Pais",
@@ -119,7 +124,7 @@
 #' # ---------------------------------------------------------------------------
 #' COL <- data.frame(Pais = "CO", IDH = 100000)
 #' Plot.Mundo(
-#'   df       = COL,
+#'   datos    = COL,
 #'   paises   = Pais,
 #'   variable = IDH,
 #'   tipo     = "Pais",
@@ -146,21 +151,22 @@
 #' @importFrom maps map
 #' @importFrom maptools map2SpatialPolygons
 #' @importFrom ggspatial annotation_north_arrow annotation_scale north_arrow_fancy_orienteering
+#' @importFrom lifecycle deprecate_warn
 Plot.Mundo <- function(
-    df, paises, variable, grupo, tipo = c("Pais", "SiNoPais"), titulo, naTo0 = TRUE,
-    colNA = "#EEEEEE", zoomMapa = 2, baldosas, cortes, colores, opacidad = 0.7,
+    datos, paises, variable, grupo, tipo = c("Pais", "SiNoPais"), titulo, naTo0 = TRUE,
+    colNA = "#EEEEEE", centroideMapa, zoomMapa = 2, baldosas, cortes, colores, opacidad = 0.7,
     colBorde, compacto = TRUE, textSize = 10, limpio = FALSE, estatico = FALSE, estilo) {
 
   options("rgdal_show_exportToProj4_warnings" = "none")
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
-  if (missingArg(df)) {
+  if (missingArg(datos)) {
     stop('\u00a1Por favor introduzca un DataFrame!', call. = FALSE)
   }
   if (missingArg(paises)) {
-    stop('\u00a1Por favor introduzca el nombre de una variable presente en "df" que contenga el nombre o c\u00f3digo del pa\u00eds!', call. = FALSE)
+    stop('\u00a1Por favor introduzca el nombre de una variable presente en "datos" que contenga el nombre o c\u00f3digo del pa\u00eds!', call. = FALSE)
   }
   if (missingArg(variable)) {
-    stop('\u00a1Por favor introduzca el nombre de una variable presente en "df" que contenga la variable num\u00e9rica o cualitativa!', call. = FALSE)
+    stop('\u00a1Por favor introduzca el nombre de una variable presente en "datos" que contenga la variable num\u00e9rica o cualitativa!', call. = FALSE)
   }
   tipo <- tolower(tipo)
   if (tipo %NotIN% c("pais", "sinopais")) {
@@ -179,11 +185,20 @@ Plot.Mundo <- function(
       stop('\u00a1El argumento "colBorde" debe ser un car\u00e1cter que indique un color con el nombre ("red"), c\u00f3digo hexadecimal ("#FF0000") o RGB (rgb(255, 0, 0))!', call. = FALSE)
     }
   }
+  IsAgregado <- datos |> summarise(n = n(), .by = {{paises}})
+  if (!all(IsAgregado$n == 1)) {
+    stop("\u00a1El dataframe ingresado no corresponde a un agregado!
+         \t -  Pues cada fila no corresponde a un registro \u00fanico.
+         \t -- Al agrupar por el argumento 'paises' se obtiene m\u00e1s de una fila x cada nivel",
+         call. = FALSE
+    )
+  }
   Mensaje <- paste0(
     '\u00a1El argumento "colores" no tiene la longitud correcta respecto al argumento "cortes" ingresado, o viceversa!',
     '\n\t - Recuerde que si realiza (n) cortes necesita (n-1) colores para cada intervalo creado.',
     '\n\t -- Por ejemplo, si los cortes son c(0, 50, Inf) necesitar\u00e1 2 colores para dichos intervalos.'
   )
+
   # ____________________________________________________________________________
   World <- maps::map("world", fill = TRUE, col = 1, plot = FALSE)
   World_IDs <- sapply(strsplit(World$names, ':'), function(x) x[1])
@@ -247,6 +262,46 @@ Plot.Mundo <- function(
   colnames(ISO_3166) <- c("Alfa2", "Alfa3", "Country")
   World_Final@data   <- World_Final@data |> left_join(ISO_3166, by = join_by(Country))
 
+  World_Final@data[World_Final@data$Country == 'Antigua', ]         <- c('Antigua', 'AG', 'ATG')
+  World_Final@data[World_Final@data$Country == 'Azores', ]          <- c('Azores', 'PT', 'PRT')
+  World_Final@data[World_Final@data$Country == 'Barbuda', ]         <- c('Barbuda', 'AG', 'ATG')
+  World_Final@data[World_Final@data$Country == 'Canary Islands', ]  <- c('Canary Islands', 'ES', 'ESP')
+  World_Final@data[World_Final@data$Country == 'Madeira Islands', ] <- c('Madeira Islands', 'PT', 'PRT')
+  World_Final@data[World_Final@data$Country == 'Namibia', ]         <- c('Namibia', NA, 'NAM')
+  World_Final@data[World_Final@data$Country == 'Nevis', ]           <- c('Nevis', 'KN', 'KNA')
+  World_Final@data[World_Final@data$Country == 'Saba', ]            <- c('Saba', 'BQ', 'BES')
+  World_Final@data[World_Final@data$Country == 'Saint Helena', ]    <- c('Saint Helena', 'SH', 'SHN')
+  World_Final@data[World_Final@data$Country == 'Saint Kitts', ]     <- c('Saint Kitts', 'KN', 'KNA')
+  World_Final@data[World_Final@data$Country == 'Saint Vincent', ]   <- c('Saint Vincent', 'VC', 'VCT')
+  World_Final@data[World_Final@data$Country == 'Sint Eustatius', ]  <- c('Sint Eustatius', 'BQ', 'BES')
+  World_Final@data[World_Final@data$Country == 'South Georgia', ]   <- c('South Georgia', 'GS', 'SGS')
+  World_Final@data[World_Final@data$Country == 'South Sandwich Islands', ] <- c('South Sandwich Islands', 'GS', 'SGS')
+  World_Final@data[World_Final@data$Country == 'Tobago', ]          <- c('Tobago', 'TT', 'TTO')
+  World_Final@data[World_Final@data$Country == 'Trinidad', ]        <- c('Trinidad', 'TT', 'TTO')
+
+  # Adicionando el continente de acuerdo con el Alpha3 -----------------------
+  Codes <- CountryCode |> select(ISO3 = ISO3_CODE, Continent = continent)
+  World_Final@data <- World_Final@data |> left_join(Codes, by = join_by(Alfa3 == ISO3))
+
+  World_Final@data[World_Final@data$Country == 'Antarctica', ]         <- c('Antarctica', 'AQ', 'ATA', 'Antarctica')
+  World_Final@data[World_Final@data$Country == 'Chagos Archipelago', ] <- c('Chagos Archipelago', 'IO', 'IOT', 'Africa')
+  World_Final@data[World_Final@data$Country == 'Cocos Islands', ]      <- c('Cocos Islands', 'CC', 'CCK', 'Asia')
+  World_Final@data[World_Final@data$Country == 'French Southern and Antarctic Lands', ] <- c('French Southern and Antarctic Lands', 'TF', 'ATF', 'Antarctica')
+  World_Final@data[World_Final@data$Country == 'Heard Island', ]       <- c('Heard Island', 'HM', 'HMD', 'Oceania')
+  World_Final@data[World_Final@data$Country == 'Kosovo', ]             <- c('Kosovo', 'XK', '???', 'Europe')
+  World_Final@data[World_Final@data$Country == 'Siachen Glacier', ]    <- c('Siachen Glacier', NA, NA, 'Asia')
+  World_Final@data[World_Final@data$Country == 'South Georgia', ]      <- c('South Georgia', 'GS', 'SGS', 'Antarctica')
+  World_Final@data[World_Final@data$Country == 'South Sandwich Islands', ] <- c('South Sandwich Islands', 'GS', 'SGS', 'Antarctica')
+
+  # Adicionando la información que se pasa como input --------------------------
+  if (all(str_length(datos |> select({{paises}}) |> pull()) == 3)) {
+    varJoin <- "Alfa3"
+  } else if (all(str_length(datos |> select({{paises}}) |> pull()) == 2)) {
+    varJoin <- "Alfa2"
+  } else {
+    varJoin <- "Country"
+  }
+
   if (!estatico) {
     if (missingArg(baldosas)) {
       Baldosas       <- c("CartoDB.Positron", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")
@@ -258,8 +313,9 @@ Plot.Mundo <- function(
     opacidadClic <- ifelse(opacidad != 1, opacidad+0.2, opacidad)
     textPaises   <- paste0(textSize+2, "px")
     # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
-    df <- df |> select(Country := {{paises}}, VarNumeric := {{variable}})
-    World_Final@data <- World_Final@data |> left_join(df, by = join_by(Country))
+
+    datos <- datos |> select(Country := {{paises}}, VarNumeric := {{variable}})
+    World_Final@data <- World_Final@data |> left_join(datos, by = join_by(!!sym(varJoin) == Country))
 
     Msj <- 'Map created by <a href="https://github.com/JeisonAlarcon">Jeison Alarc\u00f3n</a> &mdash; Data source: &copy; <a href="http://estadisticas.unal.edu.co/home/">DNPE</a>'
     if (naTo0) {
@@ -279,6 +335,16 @@ Plot.Mundo <- function(
     colnames(Centroides_World) <- c("Lon", "Lat", "Country")
     rownames(Centroides_World) <- NULL
 
+    listCountrys <- Centroides_World$Country
+    if (!missingArg(centroideMapa)) {
+      centroideMapa <- toupper(centroideMapa)
+      if (centroideMapa %NotIN% toupper(listCountrys)) {
+        stop(paste(c('\u00a1Por favor introduzca el nombre de un pa\u00eds correcto! Las opciones son:', toupper(listCountrys)), collapse = "\n\t \u25a0 "), call. = FALSE)
+      }
+    } else {
+      centroideMapa <- "MEXICO"
+    }
+    CentroWorld   <- Centroides_World |> filter(toupper(Country) == centroideMapa)
     # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
     # Extracción de la segregación y el periodo en cuestión del título ingresado
@@ -311,7 +377,7 @@ Plot.Mundo <- function(
 
       Mapa <- Mapa |>
         # Definiendo el centro del mapa.
-        setView(lat = -9.152804, lng = -74.38243, zoom = zoomMapa) |>
+        setView(lat = CentroWorld$Lat, lng = CentroWorld$Lon, zoom = zoomMapa) |>
         # Adición de grupos de control de capas.
         addLayersControl(baseGroups = Baldosas.names, options = layersControlOptions(collapsed = compacto)) |>
         # Adición de los polígonos, su relleno y etiquetas con el nombre y estadístico.
@@ -366,7 +432,7 @@ Plot.Mundo <- function(
       }
 
       Mapa <- Mapa |>
-        setView(lat = -9.152804, lng = -74.38243, zoom = zoomMapa) |>
+        setView(lat = CentroWorld$Lat, lng = CentroWorld$Lon, zoom = zoomMapa) |>
         addLayersControl(baseGroups = Baldosas.names, options = layersControlOptions(collapsed = compacto)) |>
         addPolygons(
           stroke = TRUE, fillColor = ~Pal_Binary(Statistic), weight = 1,
@@ -430,46 +496,8 @@ Plot.Mundo <- function(
     if (missingArg(estilo) || is.null(estilo$xlim)) { Xlim <- NULL } else { Xlim <- estilo$xlim }
     if (missingArg(estilo) || is.null(estilo$ylim)) { Ylim <- NULL } else { Ylim <- estilo$ylim }
 
-    World_Final@data[World_Final@data$Country == 'Antigua', ]         <- c('Antigua', 'AG', 'ATG')
-    World_Final@data[World_Final@data$Country == 'Azores', ]          <- c('Azores', 'PT', 'PRT')
-    World_Final@data[World_Final@data$Country == 'Barbuda', ]         <- c('Barbuda', 'AG', 'ATG')
-    World_Final@data[World_Final@data$Country == 'Canary Islands', ]  <- c('Canary Islands', 'ES', 'ESP')
-    World_Final@data[World_Final@data$Country == 'Madeira Islands', ] <- c('Madeira Islands', 'PT', 'PRT')
-    World_Final@data[World_Final@data$Country == 'Namibia', ]         <- c('Namibia', NA, 'NAM')
-    World_Final@data[World_Final@data$Country == 'Nevis', ]           <- c('Nevis', 'KN', 'KNA')
-    World_Final@data[World_Final@data$Country == 'Saba', ]            <- c('Saba', 'BQ', 'BES')
-    World_Final@data[World_Final@data$Country == 'Saint Helena', ]    <- c('Saint Helena', 'SH', 'SHN')
-    World_Final@data[World_Final@data$Country == 'Saint Kitts', ]     <- c('Saint Kitts', 'KN', 'KNA')
-    World_Final@data[World_Final@data$Country == 'Saint Vincent', ]   <- c('Saint Vincent', 'VC', 'VCT')
-    World_Final@data[World_Final@data$Country == 'Sint Eustatius', ]  <- c('Sint Eustatius', 'BQ', 'BES')
-    World_Final@data[World_Final@data$Country == 'South Georgia', ]   <- c('South Georgia', 'GS', 'SGS')
-    World_Final@data[World_Final@data$Country == 'South Sandwich Islands', ] <- c('South Sandwich Islands', 'GS', 'SGS')
-    World_Final@data[World_Final@data$Country == 'Tobago', ]          <- c('Tobago', 'TT', 'TTO')
-    World_Final@data[World_Final@data$Country == 'Trinidad', ]        <- c('Trinidad', 'TT', 'TTO')
 
-    # Adicionando el continente de acuerdo con el Alpha3 -----------------------
-    Codes <- CountryCode |> select(ISO3 = ISO3_CODE, Continent = continent)
-    World_Final@data <- World_Final@data |> left_join(Codes, by = join_by(Alfa3 == ISO3))
-
-    World_Final@data[World_Final@data$Country == 'Antarctica', ]         <- c('Antarctica', 'AQ', 'ATA', 'Antarctica')
-    World_Final@data[World_Final@data$Country == 'Chagos Archipelago', ] <- c('Chagos Archipelago', 'IO', 'IOT', 'Africa')
-    World_Final@data[World_Final@data$Country == 'Cocos Islands', ]      <- c('Cocos Islands', 'CC', 'CCK', 'Asia')
-    World_Final@data[World_Final@data$Country == 'French Southern and Antarctic Lands', ] <- c('French Southern and Antarctic Lands', 'TF', 'ATF', 'Antarctica')
-    World_Final@data[World_Final@data$Country == 'Heard Island', ]       <- c('Heard Island', 'HM', 'HMD', 'Oceania')
-    World_Final@data[World_Final@data$Country == 'Kosovo', ]             <- c('Kosovo', 'XK', '???', 'Europe')
-    World_Final@data[World_Final@data$Country == 'Siachen Glacier', ]    <- c('Siachen Glacier', NA, NA, 'Asia')
-    World_Final@data[World_Final@data$Country == 'South Georgia', ]      <- c('South Georgia', 'GS', 'SGS', 'Antarctica')
-    World_Final@data[World_Final@data$Country == 'South Sandwich Islands', ] <- c('South Sandwich Islands', 'GS', 'SGS', 'Antarctica')
-
-    # Adicionando la información que se pasa como input --------------------------
-    if (all(str_length(df |> select({{paises}}) |> pull()) == 3)) {
-      varJoin <- "Alfa3"
-    } else if (all(str_length(df |> select({{paises}}) |> pull()) == 2)) {
-      varJoin <- "Alfa2"
-    } else {
-      varJoin <- "Country"
-    }
-    World_Final@data <- World_Final@data |> left_join(df, by = join_by(!!sym(varJoin) == {{ paises }}))
+    World_Final@data <- World_Final@data |> left_join(datos, by = join_by(!!sym(varJoin) == {{ paises }}))
 
     # ----------------------------------------------------------------------------
     World_Final_SF     <- sf::st_as_sf(World_Final)

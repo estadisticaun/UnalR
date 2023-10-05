@@ -401,7 +401,7 @@ Tabla <- function(
       class = "display",
       thead(
         tr(
-          th(colspan = length(colNames), encabezado)
+          th(colspan = length(colNames), encabezado, class = "dt-center")
         ),
         tr(lapply(colNames, th))
       )

@@ -339,7 +339,9 @@ Plot.Mundo <- function(
     if (!missingArg(centroideMapa)) {
       centroideMapa <- toupper(centroideMapa)
       if (centroideMapa %NotIN% toupper(listCountrys)) {
+        op <- options(); options(warning.length = 8000L)
         stop(paste(c('\u00a1Por favor introduzca el nombre de un pa\u00eds correcto! Las opciones son:', toupper(listCountrys)), collapse = "\n\t \u25a0 "), call. = FALSE)
+        options(op)
       }
     } else {
       centroideMapa <- "MEXICO"
@@ -466,7 +468,7 @@ Plot.Mundo <- function(
     }
 
     if (!limpio) {
-      TextJS <- paste0("function(btn, map){ map.setView(L.latLng(", -9.152804, ", ", -74.38243, "), ", zoomMapa, "); }")
+      TextJS <- paste0("function(btn, map){ map.setView(L.latLng(", CentroWorld$Lat, ", ", CentroWorld$Lon, "), ", zoomMapa, "); }")
       Mapa <- Mapa |>
         # Adición del minimapa para ayuda en la navegación.
         addMiniMap(position = "bottomleft", zoomAnimation = TRUE, toggleDisplay = TRUE, autoToggleDisplay = TRUE) |>

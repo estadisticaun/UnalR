@@ -139,7 +139,6 @@
 #'
 #' @import leaflet
 #' @import dplyr
-#' @import rgeos
 #' @importFrom leaflet.extras addFullscreenControl addSearchFeatures searchFeaturesOptions
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_to_title str_length

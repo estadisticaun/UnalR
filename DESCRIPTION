@@ -48,7 +48,6 @@ Imports:
     sf,
     sp,
     maps,
-    rgeos,
     ggspatial,
     stringr,
     htmltools,

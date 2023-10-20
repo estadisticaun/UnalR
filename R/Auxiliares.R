@@ -94,3 +94,120 @@ theme_DNPE <- function() {
       plot.background   = element_blank()
     )
 }
+#' @importFrom stats na.omit
+.NAmat2xyList <- function(xy) {
+  NAs <- unclass(attr(na.omit(xy), "na.action"))
+  if ((length(NAs) == 1L) && (NAs == nrow(xy))) {
+    xy  <- xy[-nrow(xy)]
+    NAs <- NULL
+  }
+  diffNAs <- diff(NAs)
+  if (any(diffNAs == 1)) {
+    xy  <- xy[-(NAs[which(diffNAs == 1)] + 1), ]
+    NAs <- unclass(attr(na.omit(xy), "na.action"))
+  }
+  nParts <- length(NAs) + 1L
+  if (!is.null(NAs) && nrow(xy) == NAs[length(NAs)]) { nParts <- nParts - 1 }
+  res  <- vector(mode = "list", length = nParts)
+  from <- integer(nParts)
+  to <- integer(nParts)
+  from[1] <- 1
+  to[nParts] <- nrow(xy)
+  if (!is.null(NAs) && nrow(xy) == NAs[length(NAs)]) { to[nParts] <- to[nParts] - 1 }
+  if (nParts > 1) {
+    for (i in 2:nParts) {
+      to[(i-1)] <- NAs[(i-1)]-1
+      from[i]   <- NAs[(i-1)]+1
+    }
+  }
+  for (i in 1:nParts) { res[[i]] <- xy[from[i]:to[i],, drop = FALSE] }
+  res
+}
+.ringDirxy_gpc <- function (xy) {
+  a <- xy[, 1]
+  b <- xy[, 2]
+  nvx <- length(b)
+  if ((a[1] == a[nvx]) && (b[1] == b[nvx])) {
+    a <- a[-nvx]
+    b <- b[-nvx]
+    nvx <- nvx - 1
+  }
+  if (nvx < 3) { return(1) }
+
+  tX <- 0
+  dfYMax <- max(b)
+  ti <- 1
+  for (i in 1:nvx) {
+    if (b[i] == dfYMax && a[i] > tX)
+      ti <- i
+  }
+  if ((ti > 1) & (ti < nvx)) {
+    dx0 = a[ti - 1] - a[ti]
+    dx1 = a[ti + 1] - a[ti]
+    dy0 = b[ti - 1] - b[ti]
+    dy1 = b[ti + 1] - b[ti]
+  }
+  else if (ti == nvx) {
+    dx0 = a[ti - 1] - a[ti]
+    dx1 = a[1] - a[ti]
+    dy0 = b[ti - 1] - b[ti]
+    dy1 = b[1] - b[ti]
+  }
+  else {
+    dx1 = a[2] - a[1]
+    dx0 = a[nvx] - a[1]
+    dy1 = b[2] - b[1]
+    dy0 = b[nvx] - b[1]
+  }
+  v3 = ((dx0 * dy1) - (dx1 * dy0))
+  if (v3 > 0) {
+    return(as.integer(1))
+  } else {
+    return(as.integer(-1))
+  }
+}
+#' @importFrom methods slot
+#' @importFrom sp Polygon Polygons as.SpatialPolygons.PolygonsList
+map2SpatialPolygons <- function(map, IDs, proj4string = CRS(as.character(NA)), checkHoles = FALSE) {
+  #	require(maps)
+  if (missing(IDs)) { stop("IDs required") }
+  xyList <- .NAmat2xyList(cbind(map$x, map$y))
+  if (length(xyList) != length(IDs)) { stop("map and IDs differ in length") }
+  tab  <- table(factor(IDs))
+  n    <- length(tab)
+  IDss <- names(tab)
+  reg  <- match(IDs, IDss)
+  belongs <- lapply(1:n, function(x) which(x == reg))
+  # assemble the list of Srings
+  Srl <- vector(mode = "list", length = n)
+  drop_Polygons <- logical(length = n)
+  for (i in 1:n) {
+    nParts <- length(belongs[[i]])
+    srl <- vector(mode = "list", length = nParts)
+    ars <- logical(length = nParts)
+    for (j in 1:nParts) {
+      crds <- xyList[[belongs[[i]][j]]]
+      if (nrow(crds) == 2) { crds <- rbind(crds, crds[1,]) }
+      if (nrow(crds) == 3) { crds <- rbind(crds, crds[1,]) }
+      if (.ringDirxy_gpc(crds) == -1) { crds <- crds[nrow(crds):1,] }
+      srl[[j]] <- sp::Polygon(coords = crds, hole = FALSE)
+      ars[j] <- slot(srl[[j]], "area") > 0
+    }
+    srl <- srl[ars]
+    drop_Polygons[i] <- length(srl) <= 0L
+    if (!drop_Polygons[i]) {
+      Srl[[i]] <- sp::Polygons(srl, ID = IDss[i])
+      # if (checkHoles) Srl[[i]] <- checkPolygonsHoles(Srl[[i]])
+    }
+  }
+  if (sum(drop_Polygons) > 0) {
+    warning(
+      "map2SpatialPolygons: ", sum(drop_Polygons),
+      " zero-area Polygons object(s) omitted"
+    )
+  }
+  Srl <- Srl[!drop_Polygons]
+  if (length(Srl) <= 0L) { stop("map2SpatialPolygons: no Polygons output") }
+  res <- sp::as.SpatialPolygons.PolygonsList(Srl, proj4string = proj4string)
+  res
+}

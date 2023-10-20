@@ -149,7 +149,6 @@
 #' @importFrom sp coordinates CRS SpatialPolygonsDataFrame
 #' @importFrom sf st_as_sf st_centroid
 #' @importFrom maps map
-#' @importFrom maptools map2SpatialPolygons
 #' @importFrom ggspatial annotation_north_arrow annotation_scale north_arrow_fancy_orienteering
 #' @importFrom lifecycle deprecate_warn
 Plot.Mundo <- function(
@@ -202,7 +201,7 @@ Plot.Mundo <- function(
   # ____________________________________________________________________________
   World <- maps::map("world", fill = TRUE, col = 1, plot = FALSE)
   World_IDs <- sapply(strsplit(World$names, ':'), function(x) x[1])
-  World_sp  <- maptools::map2SpatialPolygons(
+  World_sp  <- map2SpatialPolygons(
     map = World, IDs = World_IDs, proj4string = sp::CRS("+proj=longlat +datum=WGS84")
   )
   World_df <- data.frame(Country = names(World_sp))
@@ -222,7 +221,7 @@ Plot.Mundo <- function(
   # Siachen Glacier NO Existe en ISO
 
   # Adicionando las abreviaciones de la ISO3166 --------------------------------
-  ISO_3166 <- ISO3166
+  ISO_3166 <- maps::iso3166
   ISO_3166 <- ISO_3166 |>
     mutate(
       ISOname = recode(

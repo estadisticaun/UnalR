@@ -112,6 +112,7 @@
 #' @import ggtech
 #' @import dplyr
 #' @importFrom methods missingArg
+#' @importFrom graphics hist
 Plot.Histograma <- function(
     datos, variable, color, bins, density = FALSE,
     titulo = "", xlim, ylim, labelX = NULL, labelY = "Conteo",

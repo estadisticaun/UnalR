@@ -325,6 +325,7 @@
 #' @import dplyr
 #' @importFrom htmltools withTags tag
 #' @importFrom tidyr pivot_wider
+#' @importFrom utils tail
 #' @importFrom methods missingArg
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices colorRampPalette

@@ -49,7 +49,6 @@ Imports:
     sp,
     maps,
     rgeos,
-    maptools,
     ggspatial,
     stringr,
     htmltools,

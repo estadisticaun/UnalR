@@ -45,30 +45,45 @@
 #' objeto retornado será un "htmlwidget" y dependiendo de la librería usada
 #' pertenecerá adicionalmente a la clase "highchart" o "plotly".
 #'
-#' @examples
+#' @examplesIf all(require("tibble"), require("dplyr"))
+#' # Ejemplo generalizado (sin uso de un consolidado como input)
+#' # library("tibble"); library("dplyr")
+#' set.seed(42)
+#' Blood <- tibble(
+#'   Group = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
+#'   RH    = sample(c("+", "-"), size = 200, replace = TRUE),
+#'   Prevalence = round(runif(200)*100)
+#' )
+#' Plot.Barras(
+#'   datos     = Blood,
+#'   valores   = Prevalence,
+#'   categoria = Group,
+#'   ordinal   = TRUE,
+#'   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
+#'   labelY    = "Prevalence"
+#' )
+#' @examplesIf require("dplyr")
+#' # ---------------------------------------------------------------------------
 #' Msj <- "Ac\u00e1 puede ir m\u00e1s informaci\u00f3n acerca del gr\u00e1fico."
 #' Plot.Barras(
-#'   datos        = ejConsolidadoGrad,
+#'   datos        = ejConsolidadoGrad |> filter(YEAR==2021, SEMESTRE==1),
 #'   categoria    = "NIVEL",
-#'   ano          = 2021,
-#'   periodo      = 1,
 #'   freqRelativa = TRUE,
 #'   vertical     = TRUE,
 #'   ordinal      = TRUE,
 #'   colores      = RColorBrewer::brewer.pal(5, "Spectral"),
-#'   titulo       = "GRADUADOS DE ACUERDO CON EL NIVEL DE FORMACI\u00d3N",
+#'   titulo       = "GRADUADOS DE ACUERDO CON EL NIVEL DE FORMACI\u00d3N (Periodo 2021-1)",
 #'   labelY       = "Frecuencia Relativa<br>(% de graduados)",
-#'   addPeriodo   = TRUE,
 #'   textInfo     = "Porcentaje de Graduados",
 #'   libreria     = "highcharter",
 #'   estilo       = list(hc.Tema = 2, hc.Credits = Msj)
 #' )
+#' # ---------------------------------------------------------------------------
 #' Txt <- "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL"
 #' Msj <- "A\u00f1o 2020, sin segregar por semestre (considerando ambos)."
 #' Plot.Barras(
-#'   datos     = ejConsolidadoGrad,
+#'   datos     = ejConsolidadoGrad |> filter(YEAR == 2020),
 #'   categoria = "NIVEL",
-#'   ano       = 2020,
 #'   vertical  = FALSE,
 #'   ordinal   = FALSE,
 #'   colores   = RColorBrewer::brewer.pal(5, "Set2"),
@@ -79,11 +94,11 @@
 #'     ply.Credits = list(x = 0.45, y = 1.1, text = Msj), ply.Legend = FALSE
 #'   )
 #' )
+#' # ---------------------------------------------------------------------------
 #' # Ejemplo usando el caso estático (ggplot2)
 #' Plot.Barras(
-#'   datos     = ejConsolidadoGrad,
+#'   datos     = ejConsolidadoGrad |> filter(YEAR == 2020),
 #'   categoria = "NIVEL",
-#'   ano       = 2020,
 #'   vertical  = FALSE,
 #'   ordinal   = FALSE,
 #'   colores   = RColorBrewer::brewer.pal(5, "Set1"),
@@ -96,7 +111,7 @@
 #'     gg.Texto = list(subtitle = gsub("A", "\nA", Msj),
 #'                     caption  = "Informaci\u00f3n Disponible desde 2009-1",
 #'                     tag      = "\u00ae"
-#'                    )
+#'     )
 #'   )
 #' )
 #'
@@ -114,22 +129,18 @@
 #' @importFrom grDevices rainbow
 #' @importFrom lifecycle deprecate_warn
 Plot.Barras <- function(
-    datos, categoria, ano, periodo, freqRelativa = FALSE, ylim, vertical = TRUE,
+    datos, valores, categoria, ano, periodo, freqRelativa = FALSE, ylim, vertical = TRUE,
     ordinal = FALSE, colores, titulo = "", labelX = "", labelY = "N\u00famero de",
-    labelEje, addPeriodo = TRUE, textInfo = labelY, libreria = c("highcharter", "plotly"),
+    labelEje, addPeriodo = FALSE, textInfo = labelY, libreria = c("highcharter", "plotly"),
     estilo = NULL, estatico = FALSE
-    ) {
+) {
 
-  # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
+  # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN --------------------------------------
   if (missingArg(datos) || missingArg(categoria)) {
     stop("\u00a1Por favor introduzca un conjunto de datos y una categor\u00eda dentro de la columna 'Variable'!", call. = FALSE)
   }
-  categoria <- toupper(categoria)
-  if (!(categoria %in% datos$Variable)) {
-    stop("\u00a1Por favor introduzca una categor\u00eda que se encuentra dentro de la columna 'Variable'!", call. = FALSE)
-  }
-  if (!all(is.logical(freqRelativa), is.logical(vertical), is.logical(ordinal), is.logical(addPeriodo), is.logical(estatico))) {
-    stop("\u00a1Los argumentos 'freqRelativa', 'vertical', 'ordinal', 'addPeriodo' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
+  if (!all(is.logical(freqRelativa), is.logical(vertical), is.logical(ordinal), is.logical(estatico))) {
+    stop("\u00a1Los argumentos 'freqRelativa', 'vertical', 'ordinal' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
   }
   if (!missingArg(ylim)) {
     if (!(is.numeric(ylim) && length(ylim) == 2)) {
@@ -162,27 +173,58 @@ Plot.Barras <- function(
     }
   }
 
-  # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA
-  DataFrame  <- ungroup(datos) |> filter(Variable == categoria) |>
-    select(-Variable) |> filter(is.na(Clase) != TRUE)
-  categorias <- DataFrame |> select(Clase) |> distinct() |> pull()
+  # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA ------------------
+  if (all(missingArg(valores), !missingArg(categoria))) {
+    if (!(toupper(categoria) %in% datos$Variable)) {
+      stop("\u00a1Por favor introduzca una categor\u00eda que se encuentre dentro de la columna 'Variable'!", call. = FALSE)
+    }
+    datos <- datos |> ungroup() |> filter(Variable == categoria, is.na(Clase) != TRUE)
+    categoria <- sym("Clase")
+    valores   <- sym("Total")
+  }
+  categorias <- datos |> select({{categoria}}) |> distinct() |> pull()
 
-  if (!(missingArg(ano) || missingArg(periodo))) {
-    titulo <- ifelse(!missingArg(titulo) && addPeriodo, paste0(titulo, " (Periodo ", ano, "-", periodo, ")"), titulo)
-    TablaFinal <- DataFrame |> filter(YEAR == ano, SEMESTRE == periodo)
-  } else {
-    if (missingArg(ano) && missingArg(periodo)) {
-      TablaFinal <- DataFrame
-    } else if (missingArg(ano)) {
-      TablaFinal <- DataFrame |> filter(SEMESTRE == periodo)
+  # Adición temporal (para dar un periodo de adaptación antes de la eliminación del argumento)
+  if (any(!missingArg(ano), !missingArg(periodo), !missingArg(addPeriodo))) {
+    if (!missingArg(ano)) {
+      lifecycle::deprecate_warn(
+        when = "1.0.1",
+        what = "Plot.Barras(ano)",
+        details = "Please remove the use of argument 'ano'. It's recommended to make the filter in the 'datos' input."
+      )
+    }
+    if (!missingArg(periodo)) {
+      lifecycle::deprecate_warn(
+        when = "1.0.1",
+        what = "Plot.Barras(periodo)",
+        details = "Please remove the use of argument 'periodo'. It's recommended to make the filter in the 'datos' input."
+      )
+    }
+    if (!missingArg(addPeriodo)) {
+      lifecycle::deprecate_warn(
+        when = "1.0.1",
+        what = "Plot.Barras(addPeriodo)",
+        details = "Please remove the use of argument 'addPeriodo'. It's recommended to add period in 'titulo'."
+      )
+    }
+    if (!(missingArg(ano) || missingArg(periodo))) {
+      titulo <- ifelse(!missingArg(titulo) && addPeriodo, paste0(titulo, " (Periodo ", ano, "-", periodo, ")"), titulo)
+      datos <- datos |> filter(YEAR == ano, SEMESTRE == periodo)
     } else {
-      TablaFinal <- DataFrame |> filter(YEAR == ano)
+      if (missingArg(ano) && missingArg(periodo)) {
+        datos <- datos
+      } else if (missingArg(ano)) {
+        datos <- datos
+      } else {
+        datos <- datos |> filter(YEAR == ano)
+      }
     }
   }
 
-  TablaFinal <- TablaFinal |> group_by(Clase) |>
-    summarise(Total = sum(Total), .groups = "drop") |>
+  TablaFinal <- datos |> group_by({{categoria}}) |>
+    summarise(Total = sum({{valores}}), .groups = "drop") |>
     mutate(Relativo = round(Total / sum(Total) * 100, 1))
+  TablaFinal <- TablaFinal |> rename(Clase := {{categoria}})
 
   if (!(missingArg(colores) || length(colores) == length(categorias))) {
     stop(paste0(
@@ -199,7 +241,7 @@ Plot.Barras <- function(
     MyColors   <- TablaFinal$Colores
   } else { MyColors <- colores }
 
-  # CREACIÓN DEL PLOT RETORNAR
+  # CREACIÓN DEL PLOT RETORNAR -------------------------------------------------
   if (!estatico) {
     if (libreria == "highcharter") {
       # SEGREGACIÓN DEL CONDICIONAL DE FRECUENCIA ABSOLUTA O RELATIVA
@@ -270,8 +312,8 @@ Plot.Barras <- function(
             )
           )
         ) |>
-        hc_exporting(enabled = TRUE, filename = paste0("PlotBarras_", categoria)) |>
-        hc_credits(enabled = TRUE, text = "DNPE", href = "http://estadisticas.unal.edu.co/home/") |>
+        hc_exporting(enabled = TRUE, filename = paste0("PlotBarras_", quo_name(enquo(categoria)))) |>
+        hc_credits(enabled = TRUE, text = "DNPE", href = "http://estadisticas.unal.edu.co/home/")  |>
         hc_add_theme(ThemeHC)
 
       if (!(missingArg(estilo) || is.null(estilo$hc.Credits))) {
@@ -294,12 +336,10 @@ Plot.Barras <- function(
 
       # SEGREGACIÓN DEL CONDICIONAL DE FRECUENCIA ABSOLUTA O RELATIVA
       if (freqRelativa) {
-        sufijoY <- "%"
-        comodin <- ""
+        sufijoY <- "%"; comodin <- ""
         TablaFinal <- TablaFinal |> rename_at(vars(Relativo, Total), ~c("varNum", "Extra"))
       } else {
-        sufijoY <- ""
-        comodin <- "%"
+        sufijoY <- ""; comodin <- "%"
         TablaFinal <- TablaFinal |> rename_at(vars(Total, Relativo), ~c("varNum", "Extra"))
       }
 
@@ -310,12 +350,12 @@ Plot.Barras <- function(
           EjeX <- "reorder(Clase, varNum)"; EjeY <- "varNum"
         }
         PlotBarras <- plot_ly(
-          TablaFinal,
-          x = ~eval(parse(text = EjeX)), y = ~eval(parse(text = EjeY)),
-          type = "bar", color = ~Clase, orientation = "v",
-          hovertemplate = ~paste0(varNum, sufijoY, " (", Extra, comodin, ")"),
-          marker = list(color = colores, line = list(color = "#3A4750", width = 1.5))
-        ) |>
+            TablaFinal,
+            x = ~eval(parse(text = EjeX)), y = ~eval(parse(text = EjeY)),
+            type = "bar", color = ~Clase, orientation = "v",
+            hovertemplate = ~paste0(varNum, sufijoY, " (", Extra, comodin, ")"),
+            marker = list(color = colores, line = list(color = "#3A4750", width = 1.5))
+          ) |>
           layout(
             title = Title, xaxis = list(title = labelX),
             yaxis = list(title = labelY, ticksuffix = sufijoY, range = yLim),
@@ -328,12 +368,12 @@ Plot.Barras <- function(
           EjeX <- "varNum"; EjeY <- "reorder(Clase, varNum)"
         }
         PlotBarras <- plot_ly(
-          TablaFinal,
-          x = ~eval(parse(text = EjeX)), y = ~eval(parse(text = EjeY)),
-          type = "bar", color = ~Clase, orientation = "h",
-          hovertemplate = ~paste0(varNum, sufijoY, " (", Extra, comodin, ")"),
-          marker = list(color = colores, line = list(color = "#3A4750", width = 1.5))
-        ) |>
+            TablaFinal,
+            x = ~eval(parse(text = EjeX)), y = ~eval(parse(text = EjeY)),
+            type = "bar", color = ~Clase, orientation = "h",
+            hovertemplate = ~paste0(varNum, sufijoY, " (", Extra, comodin, ")"),
+            marker = list(color = colores, line = list(color = "#3A4750", width = 1.5))
+          ) |>
           layout(
             title = Title, xaxis = list(title = labelY, ticksuffix = sufijoY),
             yaxis = list(title = labelX), showlegend = ShowLeyenda, autosize = TRUE, margin = Margen
@@ -394,9 +434,9 @@ Plot.Barras <- function(
       ParmsBar <- list(stat = "identity", width = 0.9)
     }
     if (!(missingArg(estilo) || is.null(estilo$gg.Texto))) {
-      ParmsLabs  <- estilo$gg.Texto
+      ParmsLabs <- estilo$gg.Texto
     } else {
-      ParmsLabs  <- list(subtitle = NULL, caption = NULL, tag = NULL)
+      ParmsLabs <- list(subtitle = NULL, caption = NULL, tag = NULL)
     }
 
     PlotBarras <- ggplot(data = TablaFinal, aes(x = Clase, y = Y, fill = Clase)) +
@@ -417,7 +457,6 @@ Plot.Barras <- function(
         do.call(geom_text, append(geomText, list(aes(label = Y)))) +
         do.call(scale_y_continuous, list(limits = yLim))
     }
-
     if (!vertical) { PlotBarras <- PlotBarras + coord_flip() }
   }
 

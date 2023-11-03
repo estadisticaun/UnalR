@@ -7,6 +7,7 @@ vertical y para variables nominales u ordinales con dos diferentes paquetes}
 \usage{
 Plot.Barras(
   datos,
+  valores,
   categoria,
   ano,
   periodo,
@@ -19,7 +20,7 @@ Plot.Barras(
   labelX = "",
   labelY = "Número de",
   labelEje,
-  addPeriodo = TRUE,
+  addPeriodo = FALSE,
   textInfo = labelY,
   libreria = c("highcharter", "plotly"),
   estilo = NULL,
@@ -29,15 +30,15 @@ Plot.Barras(
 \arguments{
 \item{datos}{Un data frame, no un objeto clase serie de tiempo o vector numérico.}
 
+\item{valores}{Variable numérica que contiene los valores que desea graficar.}
+
 \item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
-\item{ano}{Valor numérico que indica el año de interés para realizar el gráfico.
-Si solo se introduce el año, pero no el período, se calculará independiente
-del semestre (\emph{tomando ambos}).}
+\item{ano}{Argument deprecated. This Argument still exist but will be removed
+in the next version.}
 
-\item{periodo}{Valor numérico que indica el período o semestre de interés para
-realizar el gráfico. Si solo se introduce el período, pero no el año, se
-calculará con base en todos los años disponibles en \code{datos}.}
+\item{periodo}{Argument deprecated. This Argument still exist but will be removed
+in the next version.}
 
 \item{freqRelativa}{Si es \code{FALSE} (\emph{valor predeterminado}) la serie graficada
 representará las frecuencias absolutas (\emph{conteo}) más no las relativas (\emph{porcentaje}).}
@@ -69,9 +70,8 @@ defecto se emplea el rótulo "Periodo".}
 (\emph{dependiendo de la orientación del gráfico}). Por defecto se emplea el rótulo
 \code{"Número de "}.}
 
-\item{addPeriodo}{Si es \code{TRUE} (\emph{valor predeterminado ssi se introduce los
-argumentos \code{ano} y \code{periodo} simultáneamente}) concatenará al título introducido
-una cadena de caracteres indicando entre paréntesis el "año-periodo" insertado.}
+\item{addPeriodo}{Argument deprecated. This Argument still exist but will be
+removed in the next version.}
 
 \item{textInfo}{Cadena de caracteres que especifica el texto que se escribe
 dentro de la caja de información al posar el cursor en alguna barra en el
@@ -173,29 +173,46 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
+\dontshow{if (all(require("tibble"), require("dplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# Ejemplo generalizado (sin uso de un consolidado como input)
+# library("tibble"); library("dplyr")
+set.seed(42)
+Blood <- tibble(
+  Group = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
+  RH    = sample(c("+", "-"), size = 200, replace = TRUE),
+  Prevalence = round(runif(200)*100)
+)
+Plot.Barras(
+  datos     = Blood,
+  valores   = Prevalence,
+  categoria = Group,
+  ordinal   = TRUE,
+  colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
+  labelY    = "Prevalence"
+)
+\dontshow{\}) # examplesIf}
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
 Msj <- "Ac\u00e1 puede ir m\u00e1s informaci\u00f3n acerca del gr\u00e1fico."
 Plot.Barras(
-  datos        = ejConsolidadoGrad,
+  datos        = ejConsolidadoGrad |> filter(YEAR==2021, SEMESTRE==1),
   categoria    = "NIVEL",
-  ano          = 2021,
-  periodo      = 1,
   freqRelativa = TRUE,
   vertical     = TRUE,
   ordinal      = TRUE,
   colores      = RColorBrewer::brewer.pal(5, "Spectral"),
-  titulo       = "GRADUADOS DE ACUERDO CON EL NIVEL DE FORMACI\u00d3N",
+  titulo       = "GRADUADOS DE ACUERDO CON EL NIVEL DE FORMACI\u00d3N (Periodo 2021-1)",
   labelY       = "Frecuencia Relativa<br>(\% de graduados)",
-  addPeriodo   = TRUE,
   textInfo     = "Porcentaje de Graduados",
   libreria     = "highcharter",
   estilo       = list(hc.Tema = 2, hc.Credits = Msj)
 )
+# ---------------------------------------------------------------------------
 Txt <- "DISTRIBUCI\u00d3N DEL N\u00daMERO DE GRADUADOS POR NIVEL"
 Msj <- "A\u00f1o 2020, sin segregar por semestre (considerando ambos)."
 Plot.Barras(
-  datos     = ejConsolidadoGrad,
+  datos     = ejConsolidadoGrad |> filter(YEAR == 2020),
   categoria = "NIVEL",
-  ano       = 2020,
   vertical  = FALSE,
   ordinal   = FALSE,
   colores   = RColorBrewer::brewer.pal(5, "Set2"),
@@ -206,11 +223,11 @@ Plot.Barras(
     ply.Credits = list(x = 0.45, y = 1.1, text = Msj), ply.Legend = FALSE
   )
 )
+# ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 Plot.Barras(
-  datos     = ejConsolidadoGrad,
+  datos     = ejConsolidadoGrad |> filter(YEAR == 2020),
   categoria = "NIVEL",
-  ano       = 2020,
   vertical  = FALSE,
   ordinal   = FALSE,
   colores   = RColorBrewer::brewer.pal(5, "Set1"),
@@ -223,8 +240,8 @@ Plot.Barras(
     gg.Texto = list(subtitle = gsub("A", "\nA", Msj),
                     caption  = "Informaci\u00f3n Disponible desde 2009-1",
                     tag      = "\u00ae"
-                   )
+    )
   )
 )
-
+\dontshow{\}) # examplesIf}
 }

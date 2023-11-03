@@ -6,6 +6,8 @@
 \usage{
 Plot.Series(
   datos,
+  tiempo,
+  valores,
   categoria,
   freqRelativa = FALSE,
   invertir = FALSE,
@@ -21,6 +23,11 @@ Plot.Series(
 }
 \arguments{
 \item{datos}{Un data frame, no un objeto clase serie de tiempo o vector numérico.}
+
+\item{tiempo}{Lista de variable(s) tanto numéricas como categóricas que se
+concatenaran para crear un único periodo temporal (\emph{ordenado ascendentemente}).}
+
+\item{valores}{Variable numérica que contiene los valores que desea graficar.}
 
 \item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
@@ -129,6 +136,10 @@ Al usar el paquete \code{Highcharter} y usar las opciones de descarga, el nombre
 archivo descargado será la concatenación del plot graficado y la categoría usada,
 así, por ejemplo, si se graficó la serie de tiempo para la categoría "Sede" el
 nombre será \code{PlotSeries_Sede.png}.
+
+Tenga en cuenta que la librería \code{"dygraphs"} solo la podrá usar si dentro del
+argumento tiempo ingresa las dos variables (\code{YEAR}, \code{SEMESTRE}) para asemejar
+su estructura a los agregados clásicos. En caso contrario le arrojara un error.
 }
 \note{
 A continuación, se consolida en una tabla amigable el listado, uso y disposición
@@ -207,6 +218,31 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
+\dontshow{if (all(require("tibble"), require("dplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# library("tibble"); library("dplyr")
+set.seed(42)
+Blood <- tibble(
+  Year    = rep(2000:2001, each = 100),
+  Quarter = sample(c("I", "II", "III", "IV"), size = 200, replace = TRUE),
+  Week    = sample(c("1rt", "2nd", "3rd"), size = 200, replace = TRUE),
+  Group   = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
+  RH      = sample(c("+", "-"), size = 200, replace = TRUE),
+  Prevalence = round(runif(200)*100)
+)
+Plot.Series(
+  datos     = Blood,
+  tiempo    = vars(Year, Quarter, Week),
+  valores   = Prevalence,
+  categoria = RH
+)
+Plot.Series(
+  datos     = Blood,
+  tiempo    = vars(Year, Quarter),
+  valores   = Prevalence,
+  categoria = Group,
+  libreria  = "plotly"
+)
+# ---------------------------------------------------------------------------
 misColores <- c(
   "#29ABE2", # AZUL CLARO  | Amazonia
   "#8CC63F", # VERDE       | Bogota
@@ -255,7 +291,7 @@ Plot.Series(
   libreria  = "dygraphs",
   estilo    = list(dyg.LegendWidth = 650, dyg.Resaltar = TRUE)
 )
-
+\dontshow{\}) # examplesIf}
 \dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Agrupando para eliminar el semestre
@@ -298,7 +334,8 @@ fig1 <- Plot.Series(
     gg.Punto  = list(alpha = 0.2, shape = 21, size = 2, stroke = 5),
     gg.Texto  = list(
       subtitle = txtB, caption = "\t\t Informaci\u00f3n Disponible desde 2009-1", tag = "\u00ae"
-    )
+    ),
+    gg.Repel  = list(overlapping = TRUE, size = 6)
   )
 )
 # A continuación, se detalla el caso en el que quiera adicionar un logo a 'fig1'

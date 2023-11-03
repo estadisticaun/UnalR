@@ -6,17 +6,14 @@
 #' las cuales usan internamente `JavaScript`.
 #'
 #' @inheritParams Plot.Series
-#' @param ano Valor numérico que indica el año de interés para realizar el gráfico.
-#'   Si solo se introduce el año, pero no el período, se calculará independiente
-#'   del semestre (*tomando ambos*).
-#' @param periodo Valor numérico que indica el período o semestre de interés para
-#'   realizar el gráfico. Si solo se introduce el período, pero no el año, se
-#'   calculará con base en todos los años disponibles en `datos`.
+#' @param ano Argument deprecated. This Argument still exist but will be removed
+#'   in the next version.
+#' @param periodo Argument deprecated. This Argument still exist but will be removed
+#'   in the next version.
 #' @param label Cadena de caracteres indicando la etiqueta a la que hace referencia
-#'   el plot. Por defecto se emplea el rótulo `"Número de "`.
-#' @param addPeriodo Si es `TRUE` (*valor predeterminado ssi se introduce los
-#'   argumentos `ano` y `periodo` simultáneamente*) concatenará al título introducido
-#'   una cadena de caracteres indicando entre paréntesis el "año-periodo" insertado.
+#'   el plot.
+#' @param addPeriodo Argument deprecated. This Argument still exist but will be
+#'   removed in the next version.
 #' @param libreria Cadena de caracteres que indica el paquete con el cual se realizará
 #'   el plot. Los valores permitidos son `"highcharter"` (*valor predeterminado*)
 #'   y `"plotly"`. Los valores se emparejarán parcialmente.
@@ -46,25 +43,40 @@
 #' objeto retornado será un "htmlwidget" y dependiendo de la librería usada
 #' pertenecerá adicionalmente a la clase "highchart" o "plotly".
 #'
-#' @examples
+#' @examplesIf all(require("tibble"), require("dplyr"))
+#' # Ejemplo generalizado (sin uso de un consolidado como input)
+#' # library("tibble"); library("dplyr")
+#' set.seed(42)
+#' Blood <- tibble(
+#'   Group = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
+#'   RH    = sample(c("+", "-"), size = 200, replace = TRUE),
+#'   Prevalence = round(runif(200)*100)
+#' )
+#' Plot.Torta(
+#'   datos     = Blood,
+#'   valores   = Prevalence,
+#'   categoria = Group,
+#'   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
+#'   label     = "No. of Prevalence",
+#' )
+#' @examplesIf require("dplyr")
+#' # ---------------------------------------------------------------------------
 #' col <- c("#F15A24", "#8CC63F")
 #' Msj <- "Distribuci\u00f3n de estudiantes graduados en el primer periodo acad\u00e9mico del 2021."
 #' Txt <- "DISTRIBUCI\u00d3N DE GRADUADOS POR MODALIDAD DE FORMACI\u00d3N"
 #' Plot.Torta(
-#'   datos     = ejConsolidadoGrad,
+#'   datos     = ejConsolidadoGrad |> filter(YEAR==2021, SEMESTRE==1),
 #'   categoria = "TIPO_NIVEL",
-#'   ano       = 2021,
-#'   periodo   = 1,
 #'   colores   = col,
-#'   titulo    = Txt,
-#'   label     = "Graduados",
+#'   titulo    = paste(Txt, "(Periodo 2021-1)"),
+#'   label     = "N\u00famero de Graduados",
 #'   libreria  = "highcharter",
 #'   estilo    = list(
 #'     LegendTitle = "\u00c9sta es una descripci\u00f3n para la leyenda:",
 #'     hc.Tema = 7, hc.Credits = Msj
 #'   )
 #' )
-#'
+#' # ---------------------------------------------------------------------------
 #' Msj <- "Distribuci\u00f3n hist\u00f3rica de estudiantes graduados (desde el 2009-I al 2021-I)."
 #' Plot.Torta(
 #'   datos     = ejConsolidadoGrad,
@@ -86,18 +98,15 @@
 #' @import dplyr
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
+#' @importFrom lifecycle deprecate_warn
 Plot.Torta <- function(
-    datos, categoria, ano, periodo, colores, titulo = "", label = "",
-    addPeriodo = TRUE, libreria = c("highcharter", "plotly"), estilo = NULL
-    ) {
+    datos, valores, categoria, ano, periodo, colores, titulo = "", label = "",
+    addPeriodo = FALSE, libreria = c("highcharter", "plotly"), estilo = NULL
+) {
 
-  # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
+  # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN --------------------------------------
   if (missingArg(datos) || missingArg(categoria)) {
     stop("\u00a1Por favor introduzca un conjunto de datos y una categor\u00eda dentro de la columna 'Variable'!", call. = FALSE)
-  }
-  categoria <- toupper(categoria)
-  if (!(categoria %in% datos$Variable)) {
-    stop("\u00a1Por favor introduzca una categor\u00eda que se encuentra dentro de la columna 'Variable'!", call. = FALSE)
   }
   if (!all(is.character(titulo), is.character(label))) {
     stop("\u00a1Los argumentos 'titulo' y 'label' deben ser una cadena de texto!", call. = FALSE)
@@ -111,27 +120,59 @@ Plot.Torta <- function(
       stop("\u00a1Por favor introduzca el nombre de una librer\u00eda v\u00e1lida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
     }
   }
-  Etiqueta    <- paste("N\u00famero de", label)
   LegendTitle <- ifelse(is.null(estilo$LegendTitle), "", estilo$LegendTitle)
 
-  # CREACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA
-  DataFrame  <- ungroup(datos) |> filter(Variable == categoria) |> select(-Variable)
-  categorias <- DataFrame |> select(Clase) |> distinct() |> pull()
+  # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA ------------------
+  if (all(missingArg(valores), !missingArg(categoria))) {
+    if (!(toupper(categoria) %in% datos$Variable)) {
+      stop("\u00a1Por favor introduzca una categor\u00eda que se encuentre dentro de la columna 'Variable'!", call. = FALSE)
+    }
+    datos <- datos |> ungroup() |> filter(Variable == categoria, is.na(Clase) != TRUE)
+    categoria <- sym("Clase")
+    valores   <- sym("Total")
+  }
+  categorias <- datos |> select({{categoria}}) |> distinct() |> pull()
 
-  if (!(missingArg(ano) || missingArg(periodo))) {
-    titulo <- ifelse(!missingArg(titulo) && addPeriodo, paste0(titulo, " (Periodo ", ano, "-", periodo, ")"), titulo)
-    TablaFinal <- DataFrame |> filter(YEAR == ano, SEMESTRE == periodo)
-  } else {
-    if (missingArg(ano) && missingArg(periodo)) {
-      TablaFinal <- DataFrame |> group_by(Clase) |> summarise(Total = sum(Total))
-    } else if (missingArg(ano)) {
-      TablaFinal <- DataFrame |> filter(SEMESTRE == periodo) |>
-        group_by(Clase) |> summarise(Total = sum(Total))
+  # Adición temporal (para dar un periodo de adaptación antes de la eliminación del argumento)
+  if (any(!missingArg(ano), !missingArg(periodo), !missingArg(addPeriodo))) {
+    if (!missingArg(ano)) {
+      lifecycle::deprecate_warn(
+        when = "1.0.1",
+        what = "Plot.Torta(ano)",
+        details = "Please remove the use of argument 'ano'. It's recommended to make the filter in the 'datos' input."
+      )
+    }
+    if (!missingArg(periodo)) {
+      lifecycle::deprecate_warn(
+        when = "1.0.1",
+        what = "Plot.Torta(periodo)",
+        details = "Please remove the use of argument 'periodo'. It's recommended to make the filter in the 'datos' input."
+      )
+    }
+    if (!missingArg(addPeriodo)) {
+      lifecycle::deprecate_warn(
+        when = "1.0.1",
+        what = "Plot.Torta(addPeriodo)",
+        details = "Please remove the use of argument 'addPeriodo'. It's recommended to add period in 'titulo'."
+      )
+    }
+    if (!(missingArg(ano) || missingArg(periodo))) {
+      titulo <- ifelse(!missingArg(titulo) && addPeriodo, paste0(titulo, " (Periodo ", ano, "-", periodo, ")"), titulo)
+      datos <- datos |> filter(YEAR == ano, SEMESTRE == periodo)
     } else {
-      TablaFinal <- DataFrame |> filter(YEAR == ano) |>
-        group_by(Clase) |> summarise(Total = sum(Total))
+      if (missingArg(ano) && missingArg(periodo)) {
+        datos <- datos
+      } else if (missingArg(ano)) {
+        datos <- datos
+      } else {
+        datos <- datos |> filter(YEAR == ano)
+      }
     }
   }
+
+  TablaFinal <- datos |> group_by({{categoria}}) |>
+    summarise(Total = sum({{valores}}), .groups = "drop")
+  TablaFinal <- TablaFinal |> rename(Clase := {{categoria}})
 
   if (!(missingArg(colores) || length(colores) == length(categorias))) {
     stop(paste0(
@@ -160,7 +201,7 @@ Plot.Torta <- function(
     } else { ThemeHC <- hc_theme_flat() }
 
     PlotTorta <- TablaFinal |>
-      hchart(type = "pie", hcaes(x = Clase, y = Total), name = Etiqueta, showInLegend = TRUE) |>
+      hchart(type = "pie", hcaes(x = Clase, y = Total), name = label, showInLegend = TRUE) |>
       hc_title(text = titulo, style = list(fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE)) |>
       hc_plotOptions(pie = list(
         allowPointSelect = TRUE, colorByPoint = TRUE, colors = colores,
@@ -170,7 +211,7 @@ Plot.Torta <- function(
           )
         )
       ) |>
-      hc_exporting(enabled = TRUE, filename = paste0("PlotTorta_", categoria)) |>
+      hc_exporting(enabled = TRUE, filename = paste0("PlotTorta_", quo_name(enquo(categoria)))) |>
       hc_credits(enabled = TRUE, text = "DNPE", href = "http://estadisticas.unal.edu.co/home/") |>
       hc_legend(
         enabled = TRUE, align = "center", verticalAlign = "bottom",
@@ -192,21 +233,21 @@ Plot.Torta <- function(
 
     FamilyTitle <- list(family = "Open Sans", size = 24, color = "#333333")
     Title  <- list(text = paste0("<b>", titulo, "</b>"), font = FamilyTitle, y = 0.95)
-    Margen <- list(l = 50, r = 50, t = 110, b = 0) # l = left; r = right; t = top; b = bottom
+    Margen <- list(l = 50, r = 50, t = 110, b = 0)                  # l = left, r = right, t = top, b = bottom
 
     if (!missingArg(estilo) && estilo$ply.Legend == "inside") {
       PlotTorta <- plot_ly(TablaFinal,
-        labels = ~Clase, values = ~Total, type = "pie",
-        textposition = "inside", textinfo = "label+value+percent", # "label+percent"
-        insidetextfont = list(color = "#FFFFFF", size = 20), hoverinfo = "label+value",
-        insidetextorientation = "radial", # "horizontal", "radial", "tangential", "auto"
-        marker = list(colors = colores, line = list(color = "#000000", width = 1.5))
+          labels = ~Clase, values = ~Total, type = "pie",
+          textposition = "inside", textinfo = "label+value+percent",  # "label+percent"
+          insidetextfont = list(color = "#FFFFFF", size = 20), hoverinfo = "label+value",
+          insidetextorientation = "radial",                           # "horizontal", "radial", "tangential", "auto"
+          marker = list(colors = colores, line = list(color = "#000000", width = 1.5))
         ) |>
         layout(title = Title, showlegend = FALSE, autosize = TRUE, margin = Margen)
     } else {
       PlotTorta <- plot_ly(TablaFinal,
-        labels = ~Clase, values = ~Total, type = "pie", textinfo = "label+percent",
-        marker = list(colors = colores, line = list(color = "#FFFFFF", width = 1.5))
+          labels = ~Clase, values = ~Total, type = "pie", textinfo = "label+percent",
+          marker = list(colors = colores, line = list(color = "#FFFFFF", width = 1.5))
         ) |>
         layout(title = Title, showlegend = TRUE, autosize = TRUE, margin = Margen)
     }

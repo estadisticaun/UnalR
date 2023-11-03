@@ -61,6 +61,9 @@
 #' |        └        | _e.LegLoc_                 |                 |                 |                   |                  |        ×       |                  |                |                    |
 #'
 #' @param datos Un data frame, no un objeto clase serie de tiempo o vector numérico.
+#' @param tiempo Lista de variable(s) tanto numéricas como categóricas que se
+#'   concatenaran para crear un único periodo temporal (*ordenado ascendentemente*).
+#' @param valores Variable numérica que contiene los valores que desea graficar.
 #' @param categoria Una variable categórica dentro del data frame ingresado en `datos`.
 #' @param colores Cadena de caracteres indicando los colores con los cuales se
 #'   deben colorear cada una de las series correspondiente a cada nivel del
@@ -145,6 +148,10 @@
 #' así, por ejemplo, si se graficó la serie de tiempo para la categoría "Sede" el
 #' nombre será `PlotSeries_Sede.png`.
 #'
+#' Tenga en cuenta que la librería `"dygraphs"` solo la podrá usar si dentro del
+#' argumento tiempo ingresa las dos variables (`YEAR`, `SEMESTRE`) para asemejar
+#' su estructura a los agregados clásicos. En caso contrario le arrojara un error.
+#'
 #' @note
 #' A continuación, se consolida en una tabla amigable el listado, uso y disposición
 #' de todas las opciones para el parámetro `estilo`, dependiendo del tipo de gráfico
@@ -172,7 +179,32 @@
 #' será un "htmlwidget" y dependiendo de la librería usada pertenecerá adicionalmente
 #' a la clase "highchart", "plotly" o "dygraphs".
 #'
-#' @examples
+#' @examplesIf all(require("tibble"), require("dplyr"))
+# Ejemplo generalizado (sin uso de un consolidado como input)
+#' # library("tibble"); library("dplyr")
+#' set.seed(42)
+#' Blood <- tibble(
+#'   Year    = rep(2000:2001, each = 100),
+#'   Quarter = sample(c("I", "II", "III", "IV"), size = 200, replace = TRUE),
+#'   Week    = sample(c("1rt", "2nd", "3rd"), size = 200, replace = TRUE),
+#'   Group   = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
+#'   RH      = sample(c("+", "-"), size = 200, replace = TRUE),
+#'   Prevalence = round(runif(200)*100)
+#' )
+#' Plot.Series(
+#'   datos     = Blood,
+#'   tiempo    = vars(Year, Quarter, Week),
+#'   valores   = Prevalence,
+#'   categoria = RH
+#' )
+#' Plot.Series(
+#'   datos     = Blood,
+#'   tiempo    = vars(Year, Quarter),
+#'   valores   = Prevalence,
+#'   categoria = Group,
+#'   libreria  = "plotly"
+#' )
+#' # ---------------------------------------------------------------------------
 #' misColores <- c(
 #'   "#29ABE2", # AZUL CLARO  | Amazonia
 #'   "#8CC63F", # VERDE       | Bogota
@@ -263,8 +295,9 @@
 #'     gg.Linea  = list(linetype = 2, size = 0.1, arrow = grid::arrow()),
 #'     gg.Punto  = list(alpha = 0.2, shape = 21, size = 2, stroke = 5),
 #'     gg.Texto  = list(
-  #'       subtitle = txtB, caption = "\t\t Informaci\u00f3n Disponible desde 2009-1", tag = "\u00ae"
-#'     )
+#'       subtitle = txtB, caption = "\t\t Informaci\u00f3n Disponible desde 2009-1", tag = "\u00ae"
+#'     ),
+#'     gg.Repel  = list(overlapping = TRUE, size = 6)
 #'   )
 #' )
 #' # A continuación, se detalla el caso en el que quiera adicionar un logo a 'fig1'
@@ -292,21 +325,17 @@
 #' @importFrom tidyr pivot_wider pivot_longer
 #' @importFrom xts xts
 #' @importFrom zoo as.Date as.yearmon
+#' @importFrom ggrepel geom_text_repel
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
 Plot.Series <- function(
-    datos, categoria, freqRelativa = FALSE, invertir = FALSE, ylim, colores,
-    titulo = "", labelX = "Periodo", labelY = "",
+    datos, tiempo, valores, categoria, freqRelativa = FALSE, invertir = FALSE,
+    ylim, colores, titulo = "", labelX = "Periodo", labelY = "",
     libreria = c("highcharter", "plotly", "dygraphs"), estilo = NULL,
     estatico = FALSE) {
-
-  # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
+  # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN --------------------------------------
   if (missingArg(datos) || missingArg(categoria)) {
     stop("\u00a1Por favor introduzca un conjunto de datos y una categor\u00eda dentro de la columna 'Variable'!", call. = FALSE)
-  }
-  categoria <- toupper(categoria)
-  if (!(categoria %in% datos$Variable)) {
-    stop("\u00a1Por favor introduzca una categor\u00eda que se encuentre dentro de la columna 'Variable'!", call. = FALSE)
   }
   if (!all(is.logical(freqRelativa), is.logical(invertir), is.logical(estatico))) {
     stop("\u00a1Los argumentos 'freqRelativa', 'invertir' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
@@ -317,7 +346,6 @@ Plot.Series <- function(
     }
     yLim <- ylim
   } else { yLim <- NULL }
-
   if (invertir) {
     Invertir <- "reversed"; ggInvertir <- "reverse"
     if (libreria != "highcharter") { yLim <- rev(yLim) }
@@ -334,34 +362,57 @@ Plot.Series <- function(
     } else {
       libreria <- tolower(libreria)
       if (libreria %NotIN% c("highcharter", "plotly", "dygraphs")) {
-        stop("\u00a1Por favor introduzca el nombre de una librer\u00eda valida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
+        stop("\u00a1Por favor introduzca el nombre de una librer\u00eda v\u00e1lida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
       }
     }
   }
-  LegendTitle <- ifelse(is.null(estilo$LegendTitle), "", estilo$LegendTitle)
+  LegendTitle <- ifelse(is.null(estilo$LegendTitle), '', estilo$LegendTitle)
 
-  # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA
-  if ("SEMESTRE" %in% names(datos)) {
-    DataFrame <- datos |> ungroup() |> filter(Variable == categoria) |>
-      mutate(Fecha = paste(YEAR, SEMESTRE, sep = "-")) |>
-      select(-Variable, -YEAR, -SEMESTRE) |> relocate(Fecha)
-  } else {
-    DataFrame <- datos |> ungroup() |> filter(Variable == categoria) |>
-      mutate(Fecha = paste(YEAR)) |> select(-Variable, -YEAR) |> relocate(Fecha)
+  # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA ------------------
+  if (all(missingArg(tiempo), missingArg(valores), !missingArg(categoria))) {
+    if (!(toupper(categoria) %in% datos$Variable)) {
+      stop("\u00a1Por favor introduzca una categor\u00eda que se encuentre dentro de la columna 'Variable'!", call. = FALSE)
+    }
+    if("SEMESTRE" %in% names(datos)) { tiempo <- c("YEAR", "SEMESTRE") } else { tiempo <- "YEAR"}
+    datos <- datos |> ungroup() |> filter(Variable == categoria)
+    tiempo    <- vars(!!!syms(tiempo))
+    categoria <- sym("Clase")
+    valores   <- sym("Total")
   }
 
-  tableHoriz <- DataFrame |> pivot_wider(names_from = Clase, values_from = Total)
-  categorias <- DataFrame |> select(Clase) |> distinct() |> pull()
+  datosCheck <- datos |> group_by(!!!tiempo, {{categoria}}) |>
+    summarise({{valores}} := sum({{valores}}), .groups = "drop")
+  if (nrow(datosCheck) != nrow(datos)) {
+    msg <- "
+    \u00a1Ha ingresado un dataframe que no est\u00e1 de forma condensada, es decir,
+    para cada categor\u00eda existe m\u00e1s de un valor para un mismo punto del eje X!
+    Se sumar\u00e1 los valores por defectos para dichos puntos que gocen de +1 valor
+           "
+    warning(msg, call. = FALSE)
+    datos <- datosCheck
+  }
+  DataFrame <- datos |>
+    arrange(!!!tiempo) |> mutate(Fecha = paste(!!!tiempo, sep = "-")) |>
+    select(Fecha, {{categoria}}, {{valores}}) |> relocate(Fecha)
+
+  tableHoriz <- DataFrame |>
+    pivot_wider(
+      names_from = {{categoria}}, values_from = {{valores}},
+      values_fill = 0, values_fn = ~sum(.x, na.rm = TRUE)
+    )
+  categorias <- DataFrame |> select({{categoria}}) |> distinct() |> pull()
 
   if (length(categorias) == 1L) {
-    Relativo <- DataFrame |> mutate(Relativo = Total / Total * 100) |> select(-Total)
+    Relativo <- DataFrame |> mutate(Relativo = {{valores}} / {{valores}} * 100) |> select(!({{valores}}))
   } else {
-    Relativo <- tableHoriz |> select(-Fecha) |> PocentRelativo() |>
+    Relativo <- tableHoriz |> select(!Fecha) |> PocentRelativo() |>
       as_tibble() |> mutate(Fecha = tableHoriz$Fecha) |>
-      pivot_longer(cols = categorias, names_to = "Clase", values_to = "Relativo")
+      pivot_longer(cols = categorias, names_to = quo_name(enquo(categoria)), values_to = "Relativo")
   }
-  TablaFinal <- DataFrame |> inner_join(Relativo)
-
+  TablaFinal <- DataFrame |> inner_join(Relativo, by = join_by(Fecha, {{categoria}}))
+  TablaFinal <- TablaFinal |> rename(Clase := {{categoria}}, Total := {{valores}})
+  TablaFinal$Fecha <- forcats::as_factor(TablaFinal$Fecha)
+  # - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - .
   if (!(missingArg(colores) || length(colores) == length(categorias))) {
     stop(paste0(
       "\u00a1El n\u00famero de colores ingresados en el vector 'colores' no corresponde con el n\u00famero de categor\u00edas a colorear!",
@@ -371,7 +422,7 @@ Plot.Series <- function(
   }
   if (missingArg(colores)) { colores <- rainbow(length(categorias), alpha = 0.7) }
 
-  # CREACIÓN DEL PLOT A RETORNAR
+  # CREACIÓN DEL PLOT A RETORNAR -----------------------------------------------
   if (!estatico) {
     if (libreria == "highcharter") {
       # SEGREGACIÓN DEL CONDICIONAL DE FRECUENCIA ABSOLUTA O RELATIVA
@@ -412,6 +463,7 @@ Plot.Series <- function(
         hc_plotOptions(line = list(marker = list(enabled = FALSE, symbol = "square", radius = 1))) |>
         hc_title(text = titulo, style = list(fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE)) |>
         hc_xAxis(
+          categories = levels(TablaFinal$Fecha),
           title = list(text = labelX, offset = 70, style = list(fontWeight = "bold", fontSize = "18px", color = "black")),
           align = "center", lineColor = "#787878", opposite = FALSE,
           labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
@@ -426,14 +478,12 @@ Plot.Series <- function(
           labels = list(format = sufijoY, style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
         ) |>
         # https://github.com/jbkunst/highcharter/issues/331
-        hc_exporting(enabled = TRUE, filename = paste0("PlotSeries_", categoria)) |>
+        hc_exporting(enabled = TRUE, filename = paste0("PlotSeries_", quo_name(enquo(categoria)))) |>
         hc_legend(
           enabled = TRUE, align = "center", verticalAlign = "bottom", layout = "horizontal",
           title = list(text = LegendTitle, style = list(textDecoration = "underline")),
           x = 42, y = 0, itemStyle = list(
-            fontWeight = "bold",
-            color      = "black",
-            fontSize   = "18px"
+            fontWeight = "bold", color = "black", fontSize = "18px"
           )
         ) |>
         hc_tooltip(
@@ -448,10 +498,7 @@ Plot.Series <- function(
           hc_navigator(
             height = 15, margin = 5, maskFill = "rgba(255,16,46,0.6)",
             enabled = TRUE, series = list(
-              color     = "#999999",
-              lineWidth = 30,
-              type      = "areaspline",
-              fillColor = "#999999"
+              color = "#999999", lineWidth = 30, type = "areaspline", fillColor = "#999999"
             )
           ) |>
           hc_rangeSelector(
@@ -478,24 +525,25 @@ Plot.Series <- function(
       }
       Hovermode <- ifelse(!(missingArg(estilo) || is.null(estilo$ply.Interaction)), estilo$ply.Interaction, "x unified")
 
-      FreqRelativa <- Relativo |> pivot_wider(names_from = Clase, values_from = Relativo)
-      PlotSeries   <- plot_ly(data = tableHoriz)
+      FreqRelativa <- Relativo |> pivot_wider(names_from = {{categoria}}, values_from = Relativo)
+      X <- tableHoriz$Fecha; PlotSeries <- plot_ly()
       for (i in 1:length(categorias)) {
         if (freqRelativa) {
           strFormat <- "%{y} (%{text})"; sufijoY <- "%"
-          df_Temp <- data.frame(X = tableHoriz$Fecha, Y = FreqRelativa[[categorias[i]]], Text = tableHoriz[[categorias[i]]])
+          Y    <- FreqRelativa[[categorias[i]]]
+          Text <- tableHoriz[[categorias[i]]]
         } else {
           strFormat <- "%{y} (%{text:.2s}%)"; sufijoY <- ""
-          df_Temp <- data.frame(X = tableHoriz$Fecha, Y = tableHoriz[[categorias[i]]], Text = FreqRelativa[[categorias[i]]])
+          Y    <- tableHoriz[[categorias[i]]]
+          Text <- FreqRelativa[[categorias[i]]]
         }
-
-        PlotSeries <- add_trace(
-          PlotSeries, x = ~X, y = ~Y, data = df_Temp, text = ~Text,
-          name = categorias[i], type = "scatter", mode = "markers+lines",
-          line = list(color = colores[i], width = 3),
-          marker = list(color = colores[i], size = 6, line = list(width = 1.2, color = "#787878")),
-          hovertemplate = strFormat, textposition = "outside"
-        )
+        PlotSeries <- PlotSeries |>
+          add_trace(
+            x = X, y = Y, text = Text, name = categorias[i], type = "scatter",
+            mode = "markers+lines", line = list(color = colores[i], width = 3),
+            marker = list(color = colores[i], size = 6, line = list(width = 1.2, color = "#787878")),
+            hovertemplate = strFormat, textposition = "outside"
+          )
       }
       # Arial | Open Sans | Courier New, monospace
       FamilyAxis  <- list(family = "Old Standard TT, serif", size = 16, color = "#525252")
@@ -554,7 +602,7 @@ Plot.Series <- function(
     } else if (libreria == "dygraphs") {
       if (freqRelativa) {
         with0 <- FALSE
-        dygraphDF <- Relativo |> pivot_wider(names_from = Clase, values_from = Relativo)
+        dygraphDF <- Relativo |> pivot_wider(names_from = {{categoria}}, values_from = Relativo)
       } else {
         with0 <- TRUE
         dygraphDF <- tableHoriz
@@ -630,7 +678,14 @@ Plot.Series <- function(
       )
     } else { ThemeGG <- theme_DNPE() }
 
-    geomText <- list(position = position_dodge(width = 0), vjust = -0.5, size = 3)
+    if (!(missingArg(estilo) || is.null(estilo$gg.Repel))) {
+      listRepel <- estilo$gg.Repel
+      flagOverlapping <- ifelse(is.null(listRepel$overlapping), FALSE, listRepel$overlapping)
+      sizePoint       <- ifelse(is.null(listRepel$size), 3, listRepel$size)
+    } else {
+      flagOverlapping <- FALSE; sizePoint <- 3
+    }
+    geomText <- list(check_overlap = TRUE, position = position_dodge(width = 0), vjust = -0.5, size = sizePoint)
     scaleY   <- list(limits = yLim, trans = ggInvertir)
     if (freqRelativa) {
       TablaFinal <- TablaFinal |> rename_at(vars(Relativo, Total), ~ c("Y", "Extra"))
@@ -645,7 +700,7 @@ Plot.Series <- function(
     if (!(missingArg(estilo) || is.null(estilo$gg.Linea))) {
       ParmsLine  <- estilo$gg.Linea
     } else {
-      ParmsLine  <- list(linetype = "solid", size = 1)
+      ParmsLine  <- list(linetype = "solid", linewidth = 1)
     }
     if (!(missingArg(estilo) || is.null(estilo$gg.Punto))) {
       ParmsPoint <- estilo$gg.Punto
@@ -668,13 +723,23 @@ Plot.Series <- function(
       ThemeGG + do.call(theme, ParmsLegend)
 
     if (freqRelativa) {
-      PlotSeries <- PlotSeries +
-        do.call(geom_text, append(geomText, list(aes(label = scales::percent(Y, scale = 1))))) +
-        do.call(scale_y_continuous, append(scaleY, list(labels = scales::label_percent(scale = 1))))
+      if (flagOverlapping) {
+        PlotSeries <- PlotSeries +
+          do.call(ggrepel::geom_text_repel, list(aes(label = scales::percent(Y, scale = 1))))
+      } else {
+        PlotSeries <- PlotSeries +
+          do.call(geom_text, append(geomText, list(aes(label = scales::percent(Y, scale = 1)))))
+      }
+      PlotSeries <- PlotSeries + do.call(scale_y_continuous, append(scaleY, list(labels = scales::label_percent(scale = 1))))
     } else {
-      PlotSeries <- PlotSeries +
-        do.call(geom_text, append(geomText, list(aes(label = Y)))) +
-        do.call(scale_y_continuous, scaleY)
+      if (flagOverlapping) {
+        PlotSeries <- PlotSeries +
+          do.call(ggrepel::geom_text_repel, append(geomText, list(aes(label = Y))))
+      } else {
+        PlotSeries <- PlotSeries +
+          do.call(geom_text, append(geomText, list(aes(label = Y))))
+      }
+      PlotSeries <- PlotSeries + do.call(scale_y_continuous, scaleY)
     }
   }
 

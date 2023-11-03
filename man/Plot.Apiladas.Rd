@@ -22,13 +22,11 @@ Plot.Apiladas(
 
 \item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
-\item{ano}{Valor numérico que indica el año de interés para realizar el gráfico.
-Si solo se introduce el año, pero no el período, se calculará independiente
-del semestre (\emph{tomando ambos}).}
+\item{ano}{Argument deprecated. This Argument still exist but will be removed
+in the next version.}
 
-\item{periodo}{Valor numérico que indica el período o semestre de interés para
-realizar el gráfico. Si solo se introduce el período, pero no el año, se
-calculará con base en todos los años disponibles en \code{datos}.}
+\item{periodo}{Argument deprecated. This Argument still exist but will be removed
+in the next version.}
 
 \item{colores}{Cadena de caracteres indicando los colores con los cuales se
 deben colorear cada una de las series correspondiente a cada nivel del
@@ -37,9 +35,8 @@ argumento \code{categoria}. Si no se introduce algún vector se usará la paleta
 
 \item{titulo}{Cadena de caracteres indicando el título principal del plot.}
 
-\item{addPeriodo}{Si es \code{TRUE} (\emph{valor predeterminado ssi se introduce los
-argumentos \code{ano} y \code{periodo} simultáneamente}) concatenará al título introducido
-una cadena de caracteres indicando entre paréntesis el "año-periodo" insertado.}
+\item{addPeriodo}{Argument deprecated. This Argument still exist but will be
+removed in the next version.}
 
 \item{libreria}{Cadena de caracteres que indica el paquete con el cual se realizará
 el plot. Los valores permitidos son \code{"highcharter"} (\emph{valor predeterminado})

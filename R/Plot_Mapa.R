@@ -341,11 +341,11 @@ Plot.Mapa <- function(
     compacto = TRUE, textSize = 10, limpio = FALSE, estatico = FALSE, estilo, ...) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
-  if (missingArg(datos)) {
+  if (missingArg(datos) && missingArg(df)) {
     stop('\u00a1Por favor introduzca el dataframe que contiene la informaci\u00f3n necesaria!', call. = FALSE)
   }
   # Adición temporal (para dar un periodo de adaptación antes de la eliminación del argumento)
-  if (!missing(df)) {
+  if (missingArg(datos) && !missingArg(df)) {
     lifecycle::deprecate_warn(
       when = "1.0.0",
       what = "Plot.Mapa(df)",

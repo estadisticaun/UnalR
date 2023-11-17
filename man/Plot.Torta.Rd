@@ -2,7 +2,8 @@
 % Please edit documentation in R/Plot_Torta.R
 \name{Plot.Torta}
 \alias{Plot.Torta}
-\title{Cree un gráfico circular/torta/pie dinámico y flexible con dos diferentes paquetes}
+\title{Cree un gráfico circular/torta/pie dinámico/estático y flexible con dos
+diferentes paquetes}
 \usage{
 Plot.Torta(
   datos,
@@ -15,11 +16,12 @@ Plot.Torta(
   label = "",
   addPeriodo = FALSE,
   libreria = c("highcharter", "plotly"),
-  estilo = NULL
+  estilo = NULL,
+  estatico = FALSE
 )
 }
 \arguments{
-\item{datos}{Un data frame, no un objeto clase serie de tiempo o vector numérico.}
+\item{datos}{Un data frame, no un vector numérico.}
 
 \item{valores}{Variable numérica que contiene los valores que desea graficar.}
 
@@ -56,6 +58,10 @@ es personalizar pequeños detalles de ésta.
 \code{\link[=Plot.Series]{Plot.Series()}}
 \item \code{ply.Legend}: Igual uso que en \code{\link[=Plot.Barras]{Plot.Barras()}}
 }}
+
+\item{estatico}{Si es \code{FALSE} (\emph{valor predeterminado}) el gráfico a retornar
+será dinámico (\emph{dependiendo de la librería seleccionada}), en caso contrario
+se retornará un gráfico estático construido con \code{ggplot2}.}
 }
 \value{
 Retorna el diagrama circular (\emph{objeto widget de HTML}) creado. La clase del
@@ -63,10 +69,10 @@ objeto retornado será un "htmlwidget" y dependiendo de la librería usada
 pertenecerá adicionalmente a la clase "highchart" o "plotly".
 }
 \description{
-Esta función permite mostrar de forma interactiva una descripción compacta y
-general de una variable con sus respectivas categorías. Dicho diagrama se puede
-representar usando dos diferentes librerías que son \code{Highcharter} y \code{Plotly},
-las cuales usan internamente \code{JavaScript}.
+Esta función permite mostrar de forma interactiva (\emph{y estática}) una descripción
+compacta y general de una variable con sus respectivas categorías. Dicho diagrama
+se puede representar usando dos diferentes librerías que son \code{Highcharter} y
+\code{Plotly}, las cuales usan internamente \code{JavaScript}.
 }
 \details{
 Al usar el paquete \code{Highcharter} y usar las opciones de descarga, el nombre del
@@ -142,15 +148,30 @@ al especificar la librería y en qué función están presentes
 set.seed(42)
 Blood <- tibble(
   Group = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
-  RH    = sample(c("+", "-"), size = 200, replace = TRUE),
   Prevalence = round(runif(200)*100)
 )
 Plot.Torta(
-  datos     = Blood,
+  datos     = Blood     ,
   valores   = Prevalence,
-  categoria = Group,
+  categoria = Group     ,
   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
-  label     = "No. of Prevalence",
+  label     = "No. of Prevalence"
+)
+Plot.Torta(
+  datos     = Blood     ,
+  valores   = Prevalence,
+  categoria = Group     ,
+  colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
+  titulo    = "DISTRIBUTION OF BLOOD GROUPS",
+  estatico  = TRUE,
+  estilo = list(
+    gg.Tema  = 7, gg.Donut = TRUE,
+    gg.Texto = list(
+      subtitle = "Synthetic or fake data that resembles real-world data",
+      caption  = "* Data Simulation",
+      tag      = "\u00ae"
+    )
+  )
 )
 \dontshow{\}) # examplesIf}
 \dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

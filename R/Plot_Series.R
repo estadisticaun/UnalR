@@ -1,4 +1,5 @@
-#' Cree una serie de tiempo dinámica y flexible con tres diferentes paquetes
+#' Cree una serie de tiempo dinámica/estática y flexible con tres diferentes
+#' paquetes
 #'
 #' Esta función proporciona excelentes herramientas y opciones para la visualización
 #' de series de tiempo dinámicas con el objetivo de estudiar la evolución de una
@@ -195,7 +196,8 @@
 #'   datos     = Blood,
 #'   tiempo    = vars(Year, Quarter, Week),
 #'   valores   = Prevalence,
-#'   categoria = RH
+#'   categoria = RH,
+#'   labelX    = ""
 #' )
 #' Plot.Series(
 #'   datos     = Blood,
@@ -332,7 +334,8 @@ Plot.Series <- function(
     datos, tiempo, valores, categoria, freqRelativa = FALSE, invertir = FALSE,
     ylim, colores, titulo = "", labelX = "Periodo", labelY = "",
     libreria = c("highcharter", "plotly", "dygraphs"), estilo = NULL,
-    estatico = FALSE) {
+    estatico = FALSE
+) {
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN --------------------------------------
   if (missingArg(datos) || missingArg(categoria)) {
     stop("\u00a1Por favor introduzca un conjunto de datos y una categor\u00eda dentro de la columna 'Variable'!", call. = FALSE)
@@ -365,7 +368,7 @@ Plot.Series <- function(
         stop("\u00a1Por favor introduzca el nombre de una librer\u00eda v\u00e1lida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
       }
     }
-  }
+  } else { libreria <- NULL }
   LegendTitle <- ifelse(is.null(estilo$LegendTitle), '', estilo$LegendTitle)
 
   # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA ------------------
@@ -378,6 +381,8 @@ Plot.Series <- function(
     tiempo    <- vars(!!!syms(tiempo))
     categoria <- sym("Clase")
     valores   <- sym("Total")
+  } else {
+    if (any(class(try(class(tiempo), silent = TRUE)) == "try-error")) { tiempo <- vars({{tiempo}}) }
   }
 
   datosCheck <- datos |> group_by(!!!tiempo, {{categoria}}) |>
@@ -715,8 +720,9 @@ Plot.Series <- function(
 
     PlotSeries <- ggplot(data = TablaFinal, aes(x = Fecha, y = Y, group = Clase, color = Clase)) +
       do.call(geom_line, ParmsLine) + do.call(geom_point, ParmsPoint) +
-      labs(title = titulo, subtitle = ParmsLabs$subtitle, y = br2addline(labelY),
-           caption = ParmsLabs$caption, tag = ParmsLabs$tag, color = LegendTitle
+      labs(
+        x = labelX, y = br2addline(labelY), title = titulo, subtitle = ParmsLabs$subtitle,
+        caption = ParmsLabs$caption, tag = ParmsLabs$tag, color = LegendTitle
       ) +
       scale_x_discrete(guide = guide_axis(angle = 45)) +
       scale_color_manual(values = colores) +

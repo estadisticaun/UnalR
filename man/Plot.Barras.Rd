@@ -3,7 +3,7 @@
 \name{Plot.Barras}
 \alias{Plot.Barras}
 \title{Cree un gráfico de barras que muestre la información de forma horizontal o
-vertical y para variables nominales u ordinales con dos diferentes paquetes}
+vertical, para variables nominales u ordinales con dos diferentes paquetes}
 \usage{
 Plot.Barras(
   datos,
@@ -28,7 +28,7 @@ Plot.Barras(
 )
 }
 \arguments{
-\item{datos}{Un data frame, no un objeto clase serie de tiempo o vector numérico.}
+\item{datos}{Un data frame, no un vector numérico.}
 
 \item{valores}{Variable numérica que contiene los valores que desea graficar.}
 
@@ -104,12 +104,12 @@ objeto retornado será un "htmlwidget" y dependiendo de la librería usada
 pertenecerá adicionalmente a la clase "highchart" o "plotly".
 }
 \description{
-Esta función permite mostrar de forma interactiva un gráfico de barras verticales
-u horizontales cuya altura/longitud es proporcional al valor de la variable
-(\emph{categorías de una variable cualitativa}), lo anterior para ayudar a la creación
-de informes descriptivos y analíticos. Dicho diagrama se puede representar
-usando dos diferentes librerías que son \code{Highcharter} y \code{Plotly}, las cuales
-usan internamente \code{JavaScript}.
+Esta función permite mostrar de forma interactiva (\emph{y estática}) un gráfico
+de barras verticales u horizontales cuya altura/longitud es proporcional al
+valor de la variable (\emph{categorías de una variable cualitativa}), lo anterior
+para ayudar a la creación de informes descriptivos y analíticos. Dicho diagrama
+se puede representar usando dos diferentes librerías que son \code{Highcharter} y
+\code{Plotly}, las cuales usan internamente \code{JavaScript}.
 }
 \details{
 Al usar el paquete \code{Highcharter} y usar las opciones de descarga, el nombre
@@ -183,12 +183,20 @@ Blood <- tibble(
   Prevalence = round(runif(200)*100)
 )
 Plot.Barras(
-  datos     = Blood,
+  datos     = Blood     ,
   valores   = Prevalence,
-  categoria = Group,
-  ordinal   = TRUE,
+  categoria = Group     ,
+  ordinal   = TRUE      ,
   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
   labelY    = "Prevalence"
+)
+Plot.Barras(
+  datos     = Blood     ,
+  valores   = Prevalence,
+  categoria = Group     ,
+  colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
+  labelY    = "Prevalence",
+  libreria  = "plotly"
 )
 \dontshow{\}) # examplesIf}
 \dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

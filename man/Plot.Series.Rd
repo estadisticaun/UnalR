@@ -2,7 +2,8 @@
 % Please edit documentation in R/Plot_Series.R
 \name{Plot.Series}
 \alias{Plot.Series}
-\title{Cree una serie de tiempo dinámica y flexible con tres diferentes paquetes}
+\title{Cree una serie de tiempo dinámica/estática y flexible con tres diferentes
+paquetes}
 \usage{
 Plot.Series(
   datos,
@@ -233,7 +234,8 @@ Plot.Series(
   datos     = Blood,
   tiempo    = vars(Year, Quarter, Week),
   valores   = Prevalence,
-  categoria = RH
+  categoria = RH,
+  labelX    = ""
 )
 Plot.Series(
   datos     = Blood,

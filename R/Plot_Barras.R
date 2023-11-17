@@ -1,12 +1,12 @@
 #' Cree un gráfico de barras que muestre la información de forma horizontal o
-#' vertical y para variables nominales u ordinales con dos diferentes paquetes
+#' vertical, para variables nominales u ordinales con dos diferentes paquetes
 #'
-#' Esta función permite mostrar de forma interactiva un gráfico de barras verticales
-#' u horizontales cuya altura/longitud es proporcional al valor de la variable
-#' (*categorías de una variable cualitativa*), lo anterior para ayudar a la creación
-#' de informes descriptivos y analíticos. Dicho diagrama se puede representar
-#' usando dos diferentes librerías que son `Highcharter` y `Plotly`, las cuales
-#' usan internamente `JavaScript`.
+#' Esta función permite mostrar de forma interactiva (*y estática*) un gráfico
+#' de barras verticales u horizontales cuya altura/longitud es proporcional al
+#' valor de la variable (*categorías de una variable cualitativa*), lo anterior
+#' para ayudar a la creación de informes descriptivos y analíticos. Dicho diagrama
+#' se puede representar usando dos diferentes librerías que son `Highcharter` y
+#' `Plotly`, las cuales usan internamente `JavaScript`.
 #'
 #' @inheritParams Plot.Torta
 #' @inheritParams Plot.Series
@@ -55,12 +55,20 @@
 #'   Prevalence = round(runif(200)*100)
 #' )
 #' Plot.Barras(
-#'   datos     = Blood,
+#'   datos     = Blood     ,
 #'   valores   = Prevalence,
-#'   categoria = Group,
-#'   ordinal   = TRUE,
+#'   categoria = Group     ,
+#'   ordinal   = TRUE      ,
 #'   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
 #'   labelY    = "Prevalence"
+#' )
+#' Plot.Barras(
+#'   datos     = Blood     ,
+#'   valores   = Prevalence,
+#'   categoria = Group     ,
+#'   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
+#'   labelY    = "Prevalence",
+#'   libreria  = "plotly"
 #' )
 #' @examplesIf require("dplyr")
 #' # ---------------------------------------------------------------------------
@@ -171,7 +179,7 @@ Plot.Barras <- function(
         stop("\u00a1Por favor introduzca el nombre de una librer\u00eda valida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
       }
     }
-  }
+  } else { libreria <- NULL }
 
   # GENERACIÓN DEL DATAFRAME CON EL CUAL SE CREARÁ LA GRÁFICA ------------------
   if (all(missingArg(valores), !missingArg(categoria))) {
@@ -343,19 +351,18 @@ Plot.Barras <- function(
         TablaFinal <- TablaFinal |> rename_at(vars(Total, Relativo), ~c("varNum", "Extra"))
       }
 
+      Extra <- TablaFinal$Extra
       if (vertical) {
         if (ordinal) {
-          EjeX <- "Clase"; EjeY <- "varNum"
+          EjeX <- TablaFinal$Clase; EjeY <- TablaFinal$varNum
         } else {
-          EjeX <- "reorder(Clase, varNum)"; EjeY <- "varNum"
+          EjeX <- reorder(TablaFinal$Clase, TablaFinal$varNum); EjeY <- TablaFinal$varNum
         }
         PlotBarras <- plot_ly(
-            TablaFinal,
-            x = ~eval(parse(text = EjeX)), y = ~eval(parse(text = EjeY)),
-            type = "bar", color = ~Clase, orientation = "v",
-            hovertemplate = ~paste0(varNum, sufijoY, " (", Extra, comodin, ")"),
-            marker = list(color = colores, line = list(color = "#3A4750", width = 1.5))
-          ) |>
+          x = EjeX, y = EjeY, type = "bar", color = EjeX, orientation = "v",
+          hovertemplate = paste0(EjeY, sufijoY, " (", Extra, comodin, ")"),
+          marker = list(color = colores, line = list(color = "#3A4750", width = 1.5))
+        ) |>
           layout(
             title = Title, xaxis = list(title = labelX),
             yaxis = list(title = labelY, ticksuffix = sufijoY, range = yLim),
@@ -363,15 +370,14 @@ Plot.Barras <- function(
           )
       } else {
         if (ordinal) {
-          EjeX <- "varNum"; EjeY <- "Clase"
+          EjeX <- TablaFinal$varNum; EjeY <- TablaFinal$Clase
         } else {
-          EjeX <- "varNum"; EjeY <- "reorder(Clase, varNum)"
+          EjeX <- TablaFinal$varNum; EjeY <- reorder(TablaFinal$Clase, TablaFinal$varNum)
         }
         PlotBarras <- plot_ly(
             TablaFinal,
-            x = ~eval(parse(text = EjeX)), y = ~eval(parse(text = EjeY)),
-            type = "bar", color = ~Clase, orientation = "h",
-            hovertemplate = ~paste0(varNum, sufijoY, " (", Extra, comodin, ")"),
+            x = EjeX, y = EjeY, type = "bar", color = ~Clase, orientation = "h",
+            hovertemplate = paste0(EjeX, sufijoY, " (", Extra, comodin, ")"),
             marker = list(color = colores, line = list(color = "#3A4750", width = 1.5))
           ) |>
           layout(

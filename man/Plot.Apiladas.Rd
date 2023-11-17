@@ -2,16 +2,18 @@
 % Please edit documentation in R/Plot_Apiladas.R
 \name{Plot.Apiladas}
 \alias{Plot.Apiladas}
-\title{Cree un gráfico de barras apiladas dinámico y flexible}
+\title{Cree un gráfico de barras apiladas dinámico/estático y flexible}
 \usage{
 Plot.Apiladas(
   datos,
+  ejeX,
+  valores,
   categoria,
   ano,
   periodo,
+  addPeriodo = FALSE,
   colores,
   titulo = "",
-  addPeriodo = TRUE,
   libreria = c("highcharter", "plotly"),
   estilo = NULL,
   estatico = FALSE
@@ -19,6 +21,10 @@ Plot.Apiladas(
 }
 \arguments{
 \item{datos}{Un data frame, no un vector numérico.}
+
+\item{ejeX}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
+
+\item{valores}{Variable numérica que contiene los valores que desea graficar.}
 
 \item{categoria}{Una variable categórica dentro del data frame ingresado en \code{datos}.}
 
@@ -28,15 +34,15 @@ in the next version.}
 \item{periodo}{Argument deprecated. This Argument still exist but will be removed
 in the next version.}
 
+\item{addPeriodo}{Argument deprecated. This Argument still exist but will be
+removed in the next version.}
+
 \item{colores}{Cadena de caracteres indicando los colores con los cuales se
 deben colorear cada una de las series correspondiente a cada nivel del
 argumento \code{categoria}. Si no se introduce algún vector se usará la paleta
 \code{rainbow} por defecto.}
 
 \item{titulo}{Cadena de caracteres indicando el título principal del plot.}
-
-\item{addPeriodo}{Argument deprecated. This Argument still exist but will be
-removed in the next version.}
 
 \item{libreria}{Cadena de caracteres que indica el paquete con el cual se realizará
 el plot. Los valores permitidos son \code{"highcharter"} (\emph{valor predeterminado})
@@ -127,22 +133,37 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
+\dontshow{if (all(require("tibble"), require("dplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# Ejemplo generalizado (sin uso de un consolidado como input)
+# library("tibble"); library("dplyr")
+set.seed(42)
+Blood <- tibble(
+  Quarter = sample(c("I", "II", "III", "IV"), size = 200, replace = TRUE),
+  Group   = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
+  Prevalence = round(runif(200)*100)
+)
+Plot.Apiladas(
+  datos     = Blood     ,
+  ejeX      = Quarter   ,
+  valores   = Prevalence,
+  categoria = Group     ,
+  colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C")
+)
+\dontshow{\}) # examplesIf}
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
 Txt <- "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O"
 Msj <- "Se considera \u00fanicamente los valores obtenidos en el primer periodo acad\u00e9mico de cada a\u00f1o."
 Plot.Apiladas(
-  datos     = ejConsolidadoGrad,
+  datos     = ejConsolidadoGrad |> filter(YEAR \%in\% c(2018:2020), SEMESTRE == 1),
   categoria = "NIVEL",      # Pruebe también con alguna de -> unique(ejConsolidadoGrad$Variable)
-  ano       = c(2018:2020),
-  periodo   = 1,
   colores   = c("#FFA700", "#C10AA1", "#01CDFE", "#00FF44", "#FF0040"),
   titulo    = Txt,
   estilo    = list(LegendTitle = "NIVEL ACAD\u00c9MICO:", hc.Tema = 4, hc.Credits = Msj)
 )
 Plot.Apiladas(
-  datos     = ejConsolidadoGrad,
+  datos     = ejConsolidadoGrad |> filter(YEAR \%in\% c(2018:2020), SEMESTRE == 1),
   categoria = "AREAC_SNIES",
-  ano       = c(2018:2020),
-  periodo   = 1,
   colores   = c("#D2D4DC", "#FF8ABF", "#945BC2", "#D11879","#FF7F7F", "#FFA568", "#9CFF86", "#89D8FF"),
   titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL \u00c1REA DEL SNIES",
   libreria  = "plotly",
@@ -154,10 +175,8 @@ Plot.Apiladas(
 )
 # Ejemplo usando el caso estático (ggplot2)
 Plot.Apiladas(
-  datos     = ejConsolidadoGrad,
+  datos     = ejConsolidadoGrad |> filter(YEAR \%in\% c(2019:2021), SEMESTRE == 1),
   categoria = "NIVEL",
-  ano       = c(2019:2021),
-  periodo   = 1,
   colores   = c("#FFA700", "#C10AA1", "#01CDFE", "#00FF44", "#FF0040"),
   titulo    = gsub("L AC", "L\nAC", Txt),
   estatico  = TRUE,
@@ -171,5 +190,5 @@ Plot.Apiladas(
     )
   )
 )
-
+\dontshow{\}) # examplesIf}
 }

@@ -59,6 +59,8 @@ Retorna la tabla creada mediante \code{DT} la cual pertenece a la clase "datatab
 y "htmlwidget".
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Esta función simplifica la producción de tablas para presentaciones visualmente
 atractivas, pues está diseñada para facilitar la creación de tablas para informes
 y publicaciones produciendo un widget HTML para visualizar un data frame utilizando

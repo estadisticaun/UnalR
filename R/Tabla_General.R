@@ -1,5 +1,8 @@
 #' Cree fácilmente un widget para visualización de tablas HTML usando el paquete `DT`
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
 #' Esta función simplifica la producción de tablas para presentaciones visualmente
 #' atractivas, pues está diseñada para facilitar la creación de tablas para informes
 #' y publicaciones produciendo un widget HTML para visualizar un data frame utilizando

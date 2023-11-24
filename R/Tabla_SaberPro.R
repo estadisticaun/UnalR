@@ -1,6 +1,9 @@
 #' Cree fácilmente un widget para visualizar los resultados de la prueba Saber Pro
 #' en tablas HTML usando el paquete `DT`
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
 #' Esta función está diseñada para facilitar la creación de tablas para informes
 #' y publicaciones produciendo un widget HTML para visualizar un data frame utilizando
 #' el paquete `DT`. La forma en que esta función maneja las cosas por usted significa

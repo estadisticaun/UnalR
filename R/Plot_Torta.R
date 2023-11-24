@@ -67,8 +67,17 @@
 #'   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
 #'   titulo    = "DISTRIBUTION OF BLOOD GROUPS",
 #'   estatico  = TRUE,
+#'   estilo    = list(gg.Tema = 6)
+#' )
+#' Plot.Torta(
+#'   datos     = Blood     ,
+#'   valores   = Prevalence,
+#'   categoria = Group     ,
+#'   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
+#'   titulo    = "DISTRIBUTION OF BLOOD GROUPS",
+#'   estatico  = TRUE,
 #'   estilo = list(
-#'     gg.Tema  = 7, gg.Donut = TRUE,
+#'     gg.Tema  = 7, gg.Donut = TRUE, gg.Percent = FALSE,
 #'     gg.Texto = list(
 #'       subtitle = "Synthetic or fake data that resembles real-world data",
 #'       caption  = "* Data Simulation",
@@ -327,7 +336,6 @@ Plot.Torta <- function(
     PlotTorta <- ggplot(data = TablaFinal, aes(x = xHack, y = Prop, fill = Clase)) +
       geom_bar(width = 1, stat = "identity", color = "#000000") +
       coord_polar("y", start = 0) +
-      geom_text(aes(y = Lab_yPos, label = Prop), color = "#000000") +
       labs(
         x = NULL, y = NULL, title = titulo, subtitle = ParmsLabs$subtitle,
         caption = ParmsLabs$caption, tag = ParmsLabs$tag
@@ -339,11 +347,14 @@ Plot.Torta <- function(
         axis.text.y  = element_blank(),
         axis.ticks.y = element_blank()
       )
-
+    if (!(missingArg(estilo) || is.null(estilo$gg.Percent) || estilo$gg.Percent)) {
+      PlotTorta <- PlotTorta + geom_text(aes(y = Lab_yPos, label = Prop), color = "#000000")
+    } else {
+      PlotTorta <- PlotTorta + geom_text(aes(y = Lab_yPos, label = scales::percent(Prop, accuracy = 0.1)), color = "#000000")
+    }
     if (!(missingArg(estilo) || is.null(estilo$gg.Donut) || !estilo$gg.Donut)) {
       PlotTorta <- PlotTorta + xlim(0.5, 2.5)
     }
   }
-
   return(PlotTorta)
 }

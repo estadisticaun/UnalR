@@ -164,8 +164,17 @@ Plot.Torta(
   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
   titulo    = "DISTRIBUTION OF BLOOD GROUPS",
   estatico  = TRUE,
+  estilo    = list(gg.Tema = 6)
+)
+Plot.Torta(
+  datos     = Blood     ,
+  valores   = Prevalence,
+  categoria = Group     ,
+  colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C"),
+  titulo    = "DISTRIBUTION OF BLOOD GROUPS",
+  estatico  = TRUE,
   estilo = list(
-    gg.Tema  = 7, gg.Donut = TRUE,
+    gg.Tema  = 7, gg.Donut = TRUE, gg.Percent = FALSE,
     gg.Texto = list(
       subtitle = "Synthetic or fake data that resembles real-world data",
       caption  = "* Data Simulation",

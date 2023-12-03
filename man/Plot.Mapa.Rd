@@ -107,17 +107,18 @@ Los valores aceptados son los admitidos por la función
 defecto son \code{c("CartoDB.Positron", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")},
 algunos otros valores pueden ser:
 \itemize{
-\item "Stamen.Toner"
-\item "Stamen.TonerLite"
-\item "Stamen.TonerLines"
-\item "Stamen.Watercolor"
-\item "Stamen.TonerHybrid"
 \item "Esri.DeLorme"
 \item "Esri.WorldTerrain"
 \item "Esri.WorldShadedRelief"
 \item "Esri.WorldPhysical"
 \item "Esri.OceanBasemap"
 \item "Esri.WorldGrayCanvas"
+\item "Esri.WorldImagery"
+\item "Stamen.Toner"
+\item "Stamen.TonerLite"
+\item "Stamen.TonerLines"
+\item "Stamen.Watercolor"
+\item "Stamen.TonerHybrid"
 }
 
 La lista completa la puede consultar \href{http://leaflet-extras.github.io/leaflet-providers/preview/index.html}{aquí}}
@@ -226,8 +227,8 @@ Plot.Mapa(
   tipo     = "SiNoMpios",
   titulo   = "Graduados 2021-I",
   baldosas = c(
-    "Esri.WorldPhysical", "Esri.DeLorme", "Esri.WorldShadedRelief", "Esri.WorldTerrain",
-    "Stamen.Toner", "Stamen.TonerLite", "Stamen.TonerLines", "Esri.OceanBasemap"
+    "Esri.WorldPhysical", "Esri.DeLorme", "Esri.WorldShadedRelief",
+    "Esri.WorldTerrain", "Esri.OceanBasemap"
   ),
   colores  = c("#10F235", "#00BCB5"),
   colSedes = rep("green", 9),

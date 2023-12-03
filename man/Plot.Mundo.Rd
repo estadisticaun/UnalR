@@ -72,17 +72,18 @@ Los valores aceptados son los admitidos por la función
 defecto son \code{c("CartoDB.Positron", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")},
 algunos otros valores pueden ser:
 \itemize{
-\item "Stamen.Toner"
-\item "Stamen.TonerLite"
-\item "Stamen.TonerLines"
-\item "Stamen.Watercolor"
-\item "Stamen.TonerHybrid"
 \item "Esri.DeLorme"
 \item "Esri.WorldTerrain"
 \item "Esri.WorldShadedRelief"
 \item "Esri.WorldPhysical"
 \item "Esri.OceanBasemap"
 \item "Esri.WorldGrayCanvas"
+\item "Esri.WorldImagery"
+\item "Stamen.Toner"
+\item "Stamen.TonerLite"
+\item "Stamen.TonerLines"
+\item "Stamen.Watercolor"
+\item "Stamen.TonerHybrid"
 }
 
 La lista completa la puede consultar \href{http://leaflet-extras.github.io/leaflet-providers/preview/index.html}{aquí}}

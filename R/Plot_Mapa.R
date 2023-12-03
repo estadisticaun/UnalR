@@ -66,17 +66,18 @@
 #'   defecto son `c("CartoDB.Positron", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")`,
 #'   algunos otros valores pueden ser:
 #'
-#'   * "Stamen.Toner"
-#'   * "Stamen.TonerLite"
-#'   * "Stamen.TonerLines"
-#'   * "Stamen.Watercolor"
-#'   * "Stamen.TonerHybrid"
 #'   * "Esri.DeLorme"
 #'   * "Esri.WorldTerrain"
 #'   * "Esri.WorldShadedRelief"
 #'   * "Esri.WorldPhysical"
 #'   * "Esri.OceanBasemap"
 #'   * "Esri.WorldGrayCanvas"
+#'   * "Esri.WorldImagery"
+#'   * "Stamen.Toner"
+#'   * "Stamen.TonerLite"
+#'   * "Stamen.TonerLines"
+#'   * "Stamen.Watercolor"
+#'   * "Stamen.TonerHybrid"
 #'
 #'   La lista completa la puede consultar [aquí](http://leaflet-extras.github.io/leaflet-providers/preview/index.html)
 #' @param cortes Vector numérico indicando los cortes con los cuales se crearán
@@ -156,8 +157,8 @@
 #'   tipo     = "SiNoMpios",
 #'   titulo   = "Graduados 2021-I",
 #'   baldosas = c(
-#'     "Esri.WorldPhysical", "Esri.DeLorme", "Esri.WorldShadedRelief", "Esri.WorldTerrain",
-#'     "Stamen.Toner", "Stamen.TonerLite", "Stamen.TonerLines", "Esri.OceanBasemap"
+#'     "Esri.WorldPhysical", "Esri.DeLorme", "Esri.WorldShadedRelief",
+#'     "Esri.WorldTerrain", "Esri.OceanBasemap"
 #'   ),
 #'   colores  = c("#10F235", "#00BCB5"),
 #'   colSedes = rep("green", 9),

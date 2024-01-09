@@ -134,6 +134,7 @@
 #' @import dplyr
 #' @importFrom scales percent label_percent
 #' @importFrom methods missingArg
+#' @importFrom stats reorder
 #' @importFrom grDevices rainbow
 #' @importFrom lifecycle deprecate_warn
 Plot.Barras <- function(
@@ -290,24 +291,39 @@ Plot.Barras <- function(
           style = list(fontWeight = "bold", color = "black", fontSize = "18px")
         )
       )
-
-      PlotBarras <- highchart() |>
-        hc_add_series(
-          TablaFinal, type = Orientacion, hcaes(x = Clase, y = Y),
-          name = textInfo, showInLegend = FALSE
-        ) |>
+      if (nrow(TablaFinal) == 1L) {
+        TablaFinal$color <- colores
+        TablaFinal <- rename(TablaFinal, name = Clase, y = Y)
+        PlotBarras <- highchart() |> hc_chart(type = Orientacion) |>
+          hc_add_series(data = TablaFinal, name = textInfo, showInLegend = FALSE) |>
+          hc_xAxis(
+            categories = as.list(TablaFinal$name),
+            title = list(text = labelX, style = list(
+              fontWeight = "bold", color = "black", fontSize = "18px"
+              )
+            ),
+            labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
+          )
+      } else {
+        PlotBarras <- highchart() |>
+          hc_add_series(
+            TablaFinal, type = Orientacion, hcaes(x = Clase, y = Y),
+            name = textInfo, showInLegend = FALSE
+          ) |>
+          hc_xAxis(
+            categories = as.list(TablaFinal$Clase),
+            title = list(text = labelX, style = list(
+              fontWeight = "bold", color = "black", fontSize = "18px"
+              )
+            ),
+            labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
+          )
+      }
+      PlotBarras <- PlotBarras |>
+        hc_plotOptions(bar = PlotOptions, column = PlotOptions) |>
         hc_title(
           text = titulo,
           style = list(fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE)
-        ) |>
-        hc_plotOptions(bar = PlotOptions, column = PlotOptions) |>
-        hc_xAxis(
-          categories = TablaFinal$Clase,
-          title = list(text = labelX, style = list(
-            fontWeight = "bold", color = "black", fontSize = "18px"
-            )
-          ),
-          labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
         ) |>
         hc_yAxis(
           min = yLim[1], max = yLim[2],

@@ -233,17 +233,25 @@ Plot.Torta <- function(
         )
       } else { ThemeHC <- hc_theme_flat() }
 
-      PlotTorta <- TablaFinal |>
-        hchart(type = "pie", hcaes(x = Clase, y = Total), name = label, showInLegend = TRUE) |>
-        hc_title(text = titulo, style = list(fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE)) |>
-        hc_plotOptions(pie = list(
-          allowPointSelect = TRUE, colorByPoint = TRUE, colors = colores,
-          dataLabels = list(
-            enabled = TRUE, format = "<b>{point.name}</b>: {point.percentage:.1f} %",
-            style = list(fontWeight = "bold", color = "black", fontSize = "18px")
+      if (nrow(TablaFinal) == 1L) {
+        TablaFinal$color <- colores
+        TablaFinal <- rename(TablaFinal, name = Clase, y = Total)
+        PlotTorta  <- highchart() |> hc_chart(type = "pie") |>
+          hc_add_series(data = TablaFinal, name = label, showInLegend = TRUE)
+      } else {
+        PlotTorta <- TablaFinal |>
+          hchart(type = "pie", hcaes(x = Clase, y = Total), name = label, showInLegend = TRUE) |>
+          hc_plotOptions(pie = list(
+            allowPointSelect = TRUE, colorByPoint = TRUE, colors = colores,
+            dataLabels = list(
+              enabled = TRUE, format = "<b>{point.name}</b>: {point.percentage:.1f} %",
+              style = list(fontWeight = "bold", color = "black", fontSize = "18px")
+              )
             )
           )
-        ) |>
+      }
+      PlotTorta <- PlotTorta |>
+        hc_title(text = titulo, style = list(fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE)) |>
         hc_exporting(enabled = TRUE, filename = paste0("PlotTorta_", quo_name(enquo(categoria)))) |>
         hc_credits(enabled = TRUE, text = "DNPE", href = "http://estadisticas.unal.edu.co/home/") |>
         hc_legend(

@@ -88,6 +88,7 @@ para obtener un resultado impresionante y listo para usar.</p>
 <span>  mensajePdf <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  ajustarNiveles <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  scrollX <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  fillContainer <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  colorHead <span class="op">=</span> <span class="st">"#FFFFFF"</span>,</span>
 <span>  <span class="va">estilo</span>,</span>
 <span>  estatico <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -177,6 +178,11 @@ Scroller para el eje X. Tenga presente que cuando su df contiene muchas columnas
 es de utilidad (<em>pues no permite que se salga la tabla por ancho</em>), sin embargo,
 asegúrese de desactivarlo cuando presente pocas columnas, pues se verá un
 desplazamiento de los encabezados debido a un conflicto interno.</p></dd>
+
+
+<dt>fillContainer</dt>
+<dd><p>Valor booleano para indicar si desea que la tabla rellene
+automáticamente el elemento que lo contiene.</p></dd>
 
 
 <dt>colorHead</dt>

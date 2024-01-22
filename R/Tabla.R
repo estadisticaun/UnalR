@@ -44,6 +44,8 @@
 #'   es de utilidad (*pues no permite que se salga la tabla por ancho*), sin embargo,
 #'   asegúrese de desactivarlo cuando presente pocas columnas, pues se verá un
 #'   desplazamiento de los encabezados debido a un conflicto interno.
+#' @param fillContainer Valor booleano para indicar si desea que la tabla rellene
+#'   automáticamente el elemento que lo contiene.
 #' @param colorHead Cadena de caracteres que indica el color de fondo de la cabecera
 #'   de la tabla. Puede indicar el color con el nombre (`"red"`), código hexadecimal
 #'   (`"#FF0000"`) o RGB (`rgb(1, 0, 0)`). El valor por defecto es "blanco" (`"#FFFFFF"`).
@@ -332,9 +334,9 @@
 Tabla <- function(
     datos, df, rows, pivotCat, pivotVar, columnNames, filtros = FALSE, colFilters,
     estadistico = c("Suma", "Promedio", "Mediana", "Varianza", "SD", "CV", "Min", "Max"),
-    encabezado = "Encabezados de los Niveles de la Categor\u00eda",
-    leyenda = "", tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
-    scrollX = TRUE, colorHead = "#FFFFFF", estilo, estatico = FALSE) {
+    encabezado = "Encabezados de los Niveles de la Categor\u00eda", leyenda = "",
+    tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE, scrollX = TRUE,
+    fillContainer = NULL, colorHead = "#FFFFFF", estilo, estatico = FALSE) {
 
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   # Adición temporal (para dar un periodo de adaptación antes de la eliminación del argumento)
@@ -494,6 +496,7 @@ Tabla <- function(
       caption    = Leyenda,
       escape     = FALSE,
       filter     = Filtros,
+      fillContainer = fillContainer,
       extensions = c("Buttons", "KeyTable"),
       options    = list(
         autoWidth  = TRUE,

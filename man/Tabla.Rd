@@ -20,6 +20,7 @@ Tabla(
   mensajePdf = "",
   ajustarNiveles = TRUE,
   scrollX = TRUE,
+  fillContainer = NULL,
   colorHead = "#FFFFFF",
   estilo,
   estatico = FALSE
@@ -78,6 +79,9 @@ Scroller para el eje X. Tenga presente que cuando su df contiene muchas columnas
 es de utilidad (\emph{pues no permite que se salga la tabla por ancho}), sin embargo,
 asegúrese de desactivarlo cuando presente pocas columnas, pues se verá un
 desplazamiento de los encabezados debido a un conflicto interno.}
+
+\item{fillContainer}{Valor booleano para indicar si desea que la tabla rellene
+automáticamente el elemento que lo contiene.}
 
 \item{colorHead}{Cadena de caracteres que indica el color de fondo de la cabecera
 de la tabla. Puede indicar el color con el nombre (\code{"red"}), código hexadecimal

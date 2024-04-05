@@ -300,7 +300,7 @@ Plot.Treemap <- function(
         Caso <- "II"
         # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
         TreemapHC <- df |>
-          hchart("treemap", hcaes(x = X, value = n), name = textFreq,
+          hchart("treemap", hcaes(x = X, value = n, color = n), name = textFreq,
                  dataLabels = list(enabled = TRUE, format = "{point.name}<br/>{point.Porcentaje: .1f}%")
           )
         TreemapPy <- df %>%
@@ -338,6 +338,7 @@ Plot.Treemap <- function(
             hc_plotOptions(treemap = list(borderRadius = Borde))
         } else {
           PlotTreemap <- PlotTreemap |>
+            hc_colorAxis(stops = color_stops(colors = colores)) |>
             hc_plotOptions(treemap = list(colorByPoint = TRUE, colors = colores, borderRadius = Borde))
         }
 
@@ -446,7 +447,7 @@ Plot.Treemap <- function(
     fontsize.title  <- ifelse(
       missingArg(estilo) || is.null(estilo$gg.fontsize.title),
       14, estilo$gg.fontsize.title
-      )
+    )
     if (missingArg(estilo) || is.null(estilo$gg.fontsize.labels)) {
       fontsize.labels <- 11
     } else { fontsize.labels <- estilo$gg.fontsize.labels }
@@ -462,15 +463,15 @@ Plot.Treemap <- function(
     lowerbound.cex.labels <- ifelse(
       missingArg(estilo) || is.null(estilo$gg.lowerbound.cex.labels),
       0.4, estilo$gg.lowerbound.cex.labels
-      )
+    )
     force.print.labels    <- ifelse(
       missingArg(estilo) || is.null(estilo$gg.force.print.labels),
       FALSE, estilo$gg.force.print.labels
-      )
+    )
     overlap.labels <- ifelse(
       missingArg(estilo) || is.null(estilo$gg.overlap.labels),
       0.5, estilo$gg.overlap.labels
-      )
+    )
 
     PlotTreemap <- treemap(
       df, index = head(names(df), -1), vSize = "n", type = "index",

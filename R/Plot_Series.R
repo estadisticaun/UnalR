@@ -427,6 +427,13 @@ Plot.Series <- function(
   }
   if (missingArg(colores)) { colores <- rainbow(length(categorias), alpha = 0.7) }
 
+  if (is.null(levels(datos |> select({{categoria}}) |> pull()))) {
+    TablaFinal$Clase <- forcats::as_factor(TablaFinal$Clase)
+    TablaFinal$Clase <- fct_relevel(TablaFinal$Clase, sort)
+  } else {
+    TablaFinal$Clase <- fct_relevel(TablaFinal$Clase, levels(datos |> select({{categoria}}) |> pull()))
+  }
+
   # CREACIÓN DEL PLOT A RETORNAR -----------------------------------------------
   if (!estatico) {
     if (libreria == "highcharter") {
@@ -468,7 +475,7 @@ Plot.Series <- function(
         hc_plotOptions(line = list(marker = list(enabled = FALSE, symbol = "square", radius = 1))) |>
         hc_title(text = titulo, style = list(fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE)) |>
         hc_xAxis(
-          categories = levels(TablaFinal$Fecha),
+          categories = as.list(levels(TablaFinal$Fecha)),
           title = list(text = labelX, offset = 70, style = list(fontWeight = "bold", fontSize = "18px", color = "black")),
           align = "center", lineColor = "#787878", opposite = FALSE,
           labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))

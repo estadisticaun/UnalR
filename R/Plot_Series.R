@@ -328,6 +328,7 @@
 #' @importFrom xts xts
 #' @importFrom zoo as.Date as.yearmon
 #' @importFrom ggrepel geom_text_repel
+#' @importFrom forcats as_factor fct_relevel
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
 Plot.Series <- function(
@@ -429,9 +430,9 @@ Plot.Series <- function(
 
   if (is.null(levels(datos |> select({{categoria}}) |> pull()))) {
     TablaFinal$Clase <- forcats::as_factor(TablaFinal$Clase)
-    TablaFinal$Clase <- fct_relevel(TablaFinal$Clase, sort)
+    TablaFinal$Clase <- forcats::fct_relevel(TablaFinal$Clase, sort)
   } else {
-    TablaFinal$Clase <- fct_relevel(TablaFinal$Clase, levels(datos |> select({{categoria}}) |> pull()))
+    TablaFinal$Clase <- forcats::fct_relevel(TablaFinal$Clase, levels(datos |> select({{categoria}}) |> pull()))
   }
 
   # CREACIÓN DEL PLOT A RETORNAR -----------------------------------------------

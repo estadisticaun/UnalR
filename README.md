@@ -1,5 +1,9 @@
 # UnalR <a href='http://estadisticaun.github.io/UnalR'><img src='man/figures/Logo.png' align="right" height="134" /></a>
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/estadisticaun/UnalR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/estadisticaun/UnalR/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 El paquete `UnalR` proporciona métodos y herramientas para la gestión y disposición de estadísticas institucionales. Su objetivo principal es disponer, facilitar y optimizar la disposición de microdatos y la visualización de las cifras y estadísticas oficiales de la [Universidad Nacional de Colombia](https://unal.edu.co) las cuales se encuentran disponibles, dentro del [sistema de planeación](http://planeacion.unal.edu.co/home/) institucional, en el componente de [estadísticas oficiales](http://estadisticas.unal.edu.co/home/). Contiene una biblioteca de funciones gráficas, tanto estáticas como interactivas, que ofrece numerosos tipos de gráficos con una sintaxis altamente configurable y simple. Entre estos, encontramos la visualización de tablas `HTML`, series, gráficos de barras y circulares, mapas, boxplots, radar charts, treemaps, drilldown, etc. Todo lo anterior apoyado en bibliotecas de `JavaScript`.
 
 El paquete `UnalR` permanecerá en su estado actual y se mantendrá solo con correcciones de errores.

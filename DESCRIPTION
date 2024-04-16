@@ -68,14 +68,15 @@ Suggests:
     viridis,
     magick,
     rsvg,
-    cowplot
+    cowplot,
+    testthat (>= 3.0.0)
 Depends:
     R (>= 4.2.0)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-Remotes: 
+Remotes:
     rstudio/DT,
     JohnCoene/echarts4r,
     timelyportfolio/d3treeR,
@@ -83,3 +84,5 @@ Remotes:
     jrnold/ggthemes,
     hrbrmstr/hrbrthemes,
     jthomasmock/gtExtras
+Config/testthat/edition: 3
+Config/testthat/parallel: true

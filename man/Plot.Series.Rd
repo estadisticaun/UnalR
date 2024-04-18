@@ -111,9 +111,10 @@ Algunos valores aceptados para \code{legend.position} son \code{"none"}, \code{"
 \code{"top"}, \code{"right"}, \code{"bottom"} y \code{c(CoordX, CoordY)}. Para \code{legend.direction}
 solo se acepta \code{"vertical"} u \code{"horizontal"}.
 \item \code{gg.Linea}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_path]{geom_line()}).
-\item \code{gg.Punto}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_point]{geom_point()}).
+\item \code{gg.Punto}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_point]{geom_point()})
 \item \code{gg.Texto}: Una lista cuyos valores admitidos y usados son \code{subtitle},
 \code{caption} y \code{tag}.
+\item \code{gg.Repel}: Una lista de parámetros admitidos por la función \link[ggrepel:geom_text_repel]{geom_text_repel()})
 }}
 
 \item{estatico}{Si es \code{FALSE} (\emph{valor predeterminado}) el gráfico a retornar
@@ -151,7 +152,8 @@ de todas las opciones para el parámetro \code{estilo}, dependiendo del tipo de 
    │ \tab ▓ \tab  \tab ╠ \tab gg.Legend \cr
    │ \tab \emph{TRUE} \tab  \tab ╠ \tab gg.Linea \cr
    │ \tab ▓ \tab  \tab ╠ \tab gg.Punto \cr
-   │ \tab ▓ \tab  \tab ╚ \tab gg.Texto \cr
+   │ \tab ▓ \tab  \tab ╠ \tab gg.Texto \cr
+   │ \tab ▓ \tab  \tab ╚ \tab gg.Repel \cr
    │ \tab ░ \tab » \tab \emph{highcharter} \tab hc.Tema \cr
    \strong{estatico} \tab ░ \tab » \tab ┌ \tab hc.BoxInfo \cr
    │ \tab ░ \tab » \tab ├ \tab hc.Slider \cr
@@ -336,8 +338,7 @@ fig1 <- Plot.Series(
     gg.Punto  = list(alpha = 0.2, shape = 21, size = 2, stroke = 5),
     gg.Texto  = list(
       subtitle = txtB, caption = "\t\t Informaci\u00f3n Disponible desde 2009-1", tag = "\u00ae"
-    ),
-    gg.Repel  = list(overlapping = TRUE, size = 6)
+    )
   )
 )
 # A continuación, se detalla el caso en el que quiera adicionar un logo a 'fig1'
@@ -350,5 +351,30 @@ ggdraw() +
                          plot.background = element_blank()
                          )
   )
+\dontshow{\}) # examplesIf}
+\dontshow{if (all(require("ggplot2"), require("ggrepel"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# ---------------------------------------------------------------------------
+# A continuación, se detalla el caso en el que quiera anotaciones textuales repulsivas
+Plot.Series(
+  datos        = ejConsolidadoGrad,
+  categoria    = "SEDE_NOMBRE_ADM",
+  freqRelativa = FALSE,
+  invertir     = FALSE,
+  ylim         = c(100, 2000),
+  colores      = misColores,
+  titulo       = txtA,
+  labelY       = "N\u00famero de Graduados",
+  estatico     = TRUE,
+  estilo       = list(
+    gg.Tema  = 1,
+    gg.Repel = list(
+      direction = "both", seed = 42, nudge_y = 0.25,
+      arrow = arrow(length = unit(0.01, "npc")), segment.colour = "#4C716B",
+      box.padding   = 0.5 ,     # Espacio vacío que se debe respetar alrededor de la caja delimitadora
+      point.padding = 0.25,     # Espacio vacío que se debe respetar alrededor de cada punto
+      min.segment.length = 0.45 # Entre más bajo más flechas, entre más distancia menos flechas
+    )
+  )
+)
 \dontshow{\}) # examplesIf}
 }

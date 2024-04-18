@@ -136,9 +136,10 @@
 #'     `"top"`, `"right"`, `"bottom"` y `c(CoordX, CoordY)`. Para `legend.direction`
 #'     solo se acepta `"vertical"` u `"horizontal"`.
 #'   * `gg.Linea`: Una lista de parámetros admitidos por la función [geom_line()][ggplot2::geom_line()]).
-#'   * `gg.Punto`: Una lista de parámetros admitidos por la función [geom_point()][ggplot2::geom_point()]).
+#'   * `gg.Punto`: Una lista de parámetros admitidos por la función [geom_point()][ggplot2::geom_point()])
 #'   * `gg.Texto`: Una lista cuyos valores admitidos y usados son `subtitle`,
 #'     `caption` y `tag`.
+#'   * `gg.Repel`: Una lista de parámetros admitidos por la función [geom_text_repel()][ggrepel::geom_text_repel()])
 #' @param estatico Si es `FALSE` (*valor predeterminado*) el gráfico a retornar
 #'   será dinámico (*dependiendo de la librería seleccionada*), en caso contrario
 #'   se retornará un gráfico estático construido con `ggplot2`.
@@ -164,7 +165,8 @@
 #' |       │       |     ▓     |               |       ╠       | gg.Legend          |
 #' |       │       |   _TRUE_  |               |       ╠       | gg.Linea           |
 #' |       │       |     ▓     |               |       ╠       | gg.Punto           |
-#' |       │       |     ▓     |               |       ╚       | gg.Texto           |
+#' |       │       |     ▓     |               |       ╠       | gg.Texto           |
+#' |       │       |     ▓     |               |       ╚       | gg.Repel           |
 #' |       │       |     ░     |       »       | _highcharter_ | hc.Tema            |
 #' |  **estatico** |     ░     |       »       |       ┌       | hc.BoxInfo         |
 #' |       │       |     ░     |       »       |       ├       | hc.Slider          |
@@ -298,8 +300,7 @@
 #'     gg.Punto  = list(alpha = 0.2, shape = 21, size = 2, stroke = 5),
 #'     gg.Texto  = list(
 #'       subtitle = txtB, caption = "\t\t Informaci\u00f3n Disponible desde 2009-1", tag = "\u00ae"
-#'     ),
-#'     gg.Repel  = list(overlapping = TRUE, size = 6)
+#'     )
 #'   )
 #' )
 #' # A continuación, se detalla el caso en el que quiera adicionar un logo a 'fig1'
@@ -312,6 +313,31 @@
 #'                          plot.background = element_blank()
 #'                          )
 #'   )
+#'
+#' @examplesIf all(require("ggplot2"), require("ggrepel"))
+#' # ---------------------------------------------------------------------------
+#' # A continuación, se detalla el caso en el que quiera anotaciones textuales repulsivas
+#' Plot.Series(
+#'   datos        = ejConsolidadoGrad,
+#'   categoria    = "SEDE_NOMBRE_ADM",
+#'   freqRelativa = FALSE,
+#'   invertir     = FALSE,
+#'   ylim         = c(100, 2000),
+#'   colores      = misColores,
+#'   titulo       = txtA,
+#'   labelY       = "N\u00famero de Graduados",
+#'   estatico     = TRUE,
+#'   estilo       = list(
+#'     gg.Tema  = 1,
+#'     gg.Repel = list(
+#'       direction = "both", seed = 42, nudge_y = 0.25,
+#'       arrow = arrow(length = unit(0.01, "npc")), segment.colour = "#4C716B",
+#'       box.padding   = 0.5 ,     # Espacio vacío que se debe respetar alrededor de la caja delimitadora
+#'       point.padding = 0.25,     # Espacio vacío que se debe respetar alrededor de cada punto
+#'       min.segment.length = 0.45 # Entre más bajo más flechas, entre más distancia menos flechas
+#'     )
+#'   )
+#' )
 #'
 #' @export
 #'
@@ -691,15 +717,7 @@ Plot.Series <- function(
       )
     } else { ThemeGG <- theme_DNPE() }
 
-    if (!(missingArg(estilo) || is.null(estilo$gg.Repel))) {
-      listRepel <- estilo$gg.Repel
-      flagOverlapping <- ifelse(is.null(listRepel$overlapping), FALSE, listRepel$overlapping)
-      sizePoint       <- ifelse(is.null(listRepel$size), 3, listRepel$size)
-    } else {
-      flagOverlapping <- FALSE; sizePoint <- 3
-    }
-    geomText <- list(check_overlap = TRUE, position = position_dodge(width = 0), vjust = -0.5, size = sizePoint)
-    scaleY   <- list(limits = yLim, trans = ggInvertir)
+
     if (freqRelativa) {
       TablaFinal <- TablaFinal |> rename_at(vars(Relativo, Total), ~ c("Y", "Extra"))
     } else {
@@ -736,25 +754,36 @@ Plot.Series <- function(
       scale_color_manual(values = colores) +
       ThemeGG + do.call(theme, ParmsLegend)
 
+
+    scaleY   <- list(limits = yLim, trans = ggInvertir)
+    if (!(missingArg(estilo) || is.null(estilo$gg.Repel))) {
+      ParmsRepel <- estilo$gg.Repel
+      FlagRepel  <- TRUE
+    } else {
+      ParmsRepel <- list(check_overlap = TRUE, position = position_dodge(width = 0), vjust = -0.5, size = 3)
+      FlagRepel  <- FALSE
+    }
+
     if (freqRelativa) {
-      if (flagOverlapping) {
+      if (FlagRepel) {
         PlotSeries <- PlotSeries +
-          do.call(ggrepel::geom_text_repel, list(aes(label = scales::percent(Y, scale = 1))))
+          do.call(ggrepel::geom_text_repel, append(ParmsRepel, list(aes(label = scales::percent(Y, scale = 1)))))
       } else {
         PlotSeries <- PlotSeries +
-          do.call(geom_text, append(geomText, list(aes(label = scales::percent(Y, scale = 1)))))
+          do.call(geom_text, append(ParmsRepel, list(aes(label = scales::percent(Y, scale = 1)))))
       }
       PlotSeries <- PlotSeries + do.call(scale_y_continuous, append(scaleY, list(labels = scales::label_percent(scale = 1))))
     } else {
-      if (flagOverlapping) {
+      if (FlagRepel) {
         PlotSeries <- PlotSeries +
-          do.call(ggrepel::geom_text_repel, append(geomText, list(aes(label = Y))))
+          do.call(ggrepel::geom_text_repel, append(ParmsRepel, list(aes(label = Y))))
       } else {
         PlotSeries <- PlotSeries +
-          do.call(geom_text, append(geomText, list(aes(label = Y))))
+          do.call(geom_text, append(ParmsRepel, list(aes(label = Y))))
       }
       PlotSeries <- PlotSeries + do.call(scale_y_continuous, scaleY)
     }
+
   }
 
   return(PlotSeries)

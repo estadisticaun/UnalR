@@ -60,16 +60,17 @@ Imports:
     RColorBrewer,
     utils,
     methods,
-    lifecycle
+    lifecycle,
+    cli
 Suggests:
+    testthat (>= 3.0.0),
     readxl,
     tibble,
     pals,
     viridis,
     magick,
     rsvg,
-    cowplot,
-    testthat (>= 3.0.0)
+    cowplot
 Depends:
     R (>= 4.2.0)
 Encoding: UTF-8

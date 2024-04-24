@@ -228,6 +228,7 @@
 #' @import highcharter
 #' @import plotly
 #' @import dplyr
+#' @importFrom cli cli_h1 bg_yellow col_black cli_alert_info cli_alert cli_text cli_alert_success symbol
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
 Plot.Boxplot <- function(
@@ -283,7 +284,17 @@ Plot.Boxplot <- function(
     miniDots <- list( data = datos, y = rlang::enquo(grupo1), x = rlang::enquo(variable) )
   }
 
+  # BUG: Ordenando los niveles del eje X, para permitir que sean factores con niveles personalizados
+  if (is.null(levels(datos |> select({{grupo1}}) |> pull()))) {
+    datos <- datos |> mutate({{grupo1}} := forcats::as_factor({{grupo1}}))
+    datos <- datos |> mutate({{grupo1}} := forcats::fct_relevel({{grupo1}}, sort))
+  } else {
+    datos <- datos |>
+      mutate({{grupo1}} := forcats::fct_relevel({{grupo1}}, levels(datos |> select({{grupo1}}) |> pull())))
+  }
+
   if (!missingArg(grupo2)) {
+    datos  <- datos |> select({{ variable }}, {{ grupo1 }}, {{ grupo2 }})
     Levels <- datos |> select({{ grupo2 }}) |> distinct() |> pull()
     if (!(missingArg(colores) || length(colores) == length(Levels))) {
       stop(paste0(
@@ -310,6 +321,43 @@ Plot.Boxplot <- function(
         add_outliers = FALSE, color = colores
       )
     } else { dfBoxPlot <- Intento }
+
+    if (all(!estatico, libreria == "highcharter")) {
+      rm <- dfBoxPlot |> mutate(l = lengths(data))
+      if(length(unique(rm$l)) != 1) {
+        allGrid <- expand_grid(
+          G1 = datos |> select({{ grupo1 }}) |> distinct() |> pull(),
+          G2 = datos |> select({{ grupo2 }}) |> distinct() |> pull()
+        )
+        allGrid = allGrid |> rename({{grupo1}} := G1, {{grupo2}} := G2)
+        dataComplete <- left_join(allGrid, datos, by = join_by({{ grupo1 }}, {{ grupo2 }}))
+        varsInput <- datos |> select ( {{ grupo1 }}, {{ grupo2 }} ) |> colnames()
+        cli::cli_h1(cli::bg_yellow(cli::col_black("PRECAUCI\u00d3N")))
+        cli::cli_alert_info("Alerta: Inconsistencias encontradas en el dataframe ingresado.", wrap = TRUE)
+        cli::cli_alert("Su df no contiene informaci\u00f3n para todas las posibles combinaciones entre: {.val {varsInput}}.", wrap = TRUE)
+        cli::cli_text("{cli::symbol$star} Para que todo funcione correctamente con el paquete {.pkg highcharter} es necesario agregar:")
+        rowsAdd <- setdiff(dataComplete, datos)
+        print(rowsAdd)
+        cli::cli_alert_success("Se tuvo que agregar {nrow(rowsAdd)} fil{?a/as}.")
+
+        Intento <- try(data_to_boxplot(
+          data = dataComplete, variable = {{ variable }},
+          group_var = {{ grupo1 }}, group_var2 = {{ grupo2 }},
+          add_outliers = outliers, color = colores
+        ),
+        silent = TRUE
+        )
+        if (any(class(Intento) == "try-error")) {
+          dfBoxPlot <- data_to_boxplot(
+            data = dataComplete, variable = {{ variable }},
+            group_var = {{ grupo1 }}, group_var2 = {{ grupo2 }},
+            add_outliers = FALSE, color = colores
+          )
+        } else { dfBoxPlot <- Intento }
+
+      }
+      rm(allGrid, dataComplete, rm, rowsAdd)
+    }
 
     datos  <- datos |> mutate({{ grupo2 }} := factor({{ grupo2 }}))
     ggBase <- list(
@@ -376,7 +424,7 @@ Plot.Boxplot <- function(
     }
   }
 
-  # CREACIÓN DEL PLOT RETORNAR
+  # CREACIÓN DEL PLOT A RETORNAR -----------------------------------------------
   if (!estatico) {
     if (libreria == "highcharter") {
       Spanish.Highcharter()

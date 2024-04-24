@@ -4,6 +4,7 @@ utils::globalVariables(
     "Departamento", ".", "Municipio", "veces", "Estadistico", "X", "Y", "Anos",
     "Periodos", "Relativo",
     "Alfa2", "Alfa3", "Continent", "Country", "ISO3", "ISO3_CODE", "ISOname",
-    "VarNumeric", "a2", "continent", "xAxis", "percent_xAxis", "Prop", "Lab_yPos"
+    "VarNumeric", "a2", "continent", "xAxis", "percent_xAxis", "Prop", "Lab_yPos",
+    "data", "G1", "G2"
     )
 )

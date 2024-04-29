@@ -16,8 +16,8 @@ Description: Una herramienta rápida y consistente para la disposición de micro
     encontramos la visualización de tablas HTML, series, gráficos de barras y
     circulares, mapas, etc. Todo lo anterior apoyado en bibliotecas de JavaScript.
 License: GPL (>= 3) + file LICENSE
-URL: https://unal.edu.co, http://estadisticas.unal.edu.co/home/
-BugReports: https://github.com/estadisticaun
+URL: https://unal.edu.co, http://estadisticas.unal.edu.co/home/, https://github.com/estadisticaun/UnalR
+BugReports: https://github.com/estadisticaun/UnalR/issues
 Imports:
     DT (>= 0.28.1),
     highcharter (>= 0.9.4),

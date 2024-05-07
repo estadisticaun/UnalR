@@ -332,14 +332,15 @@ Plot.Boxplot <- function(
         allGrid = allGrid |> rename({{grupo1}} := G1, {{grupo2}} := G2)
         dataComplete <- left_join(allGrid, datos, by = join_by({{ grupo1 }}, {{ grupo2 }}))
         varsInput <- datos |> select ( {{ grupo1 }}, {{ grupo2 }} ) |> colnames()
-        cli::cli_h1(cli::bg_yellow(cli::col_black("PRECAUCI\u00d3N")))
-        cli::cli_alert_info("Alerta: Inconsistencias encontradas en el dataframe ingresado.", wrap = TRUE)
-        cli::cli_alert("Su df no contiene informaci\u00f3n para todas las posibles combinaciones entre: {.val {varsInput}}.", wrap = TRUE)
-        cli::cli_text("{cli::symbol$star} Para que todo funcione correctamente con el paquete {.pkg highcharter} es necesario agregar:")
-        rowsAdd <- setdiff(dataComplete, datos)
-        print(rowsAdd)
-        cli::cli_alert_success("Se tuvo que agregar {nrow(rowsAdd)} fil{?a/as}.")
-
+        message({
+          cli::cli_h1(cli::bg_yellow(cli::col_black("PRECAUCI\u00d3N")))
+          cli::cli_alert_info("Alerta: Inconsistencias encontradas en el dataframe ingresado.", wrap = TRUE)
+          cli::cli_alert("Su df no contiene informaci\u00f3n para todas las posibles combinaciones entre: {.val {varsInput}}.", wrap = TRUE)
+          cli::cli_text("{cli::symbol$star} Para que todo funcione correctamente con el paquete {.pkg highcharter} es necesario agregar:")
+          rowsAdd <- setdiff(dataComplete, datos)
+          print(rowsAdd)
+          cli::cli_alert_success("Se tuvo que agregar {nrow(rowsAdd)} fil{?a/as}.")
+        })
         Intento <- try(data_to_boxplot(
           data = dataComplete, variable = {{ variable }},
           group_var = {{ grupo1 }}, group_var2 = {{ grupo2 }},

@@ -338,8 +338,8 @@ Plot.Boxplot <- function(
           cli::cli_alert("Su df no contiene informaci\u00f3n para todas las posibles combinaciones entre: {.val {varsInput}}.", wrap = TRUE)
           cli::cli_text("{cli::symbol$star} Para que todo funcione correctamente con el paquete {.pkg highcharter} es necesario agregar:")
           rowsAdd <- setdiff(dataComplete, datos)
-          print(rowsAdd)
           cli::cli_alert_success("Se tuvo que agregar {nrow(rowsAdd)} fil{?a/as}.")
+          # print(rowsAdd)
         })
         Intento <- try(data_to_boxplot(
           data = dataComplete, variable = {{ variable }},

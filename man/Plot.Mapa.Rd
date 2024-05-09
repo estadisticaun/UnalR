@@ -332,8 +332,11 @@ ggdraw() +
 # ---------------------------------------------------------------------------
 # library(tibble)
 PIB <- tibble(
-  DIVIPOLA = c(91,05,81,08,11,13,15,17,18,85,19,20,27,23,25,94,95,41,44,47,50,52,54,86,63,66,88,68,70,73,76,97,99),
-  Valor    = c(883,177837,6574,52961,301491,NA,31208,19782,4718,17810,21244,23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
+  DIVIPOLA = c(91,05,81,08,11,13,15,17,18,85,19,20,27,23,25,94,95,
+               41,44,47,50,52,54,86,63,66,88,68,70,73,76,97,99),
+  Valor    = c(883,177837,6574,52961,301491,NA,31208,19782,4718,17810,21244,
+               23244,5069,20842,73592,443,943,19837,14503,16370,41923,18259,
+               18598,4253,9837,19531,1711,74737,9842,25143,116238,337,799)
 )
 Plot.Mapa(
   datos     = PIB,
@@ -361,7 +364,8 @@ Plot.Mapa(
   )
 ) -> listMaps
 # Caso 1:
-#   Dejando solamente la isla principal (San Andrés) y omitiendo las contiguas (Providencia y Santa Catalina)
+#   Dejando solamente la isla principal (San Andrés) y omitiendo
+#   las contiguas (Providencia y Santa Catalina)
 ggdraw() +
   draw_plot(listMaps$M_COL) +
   draw_plot(listMaps$M_SanAndres, x = 0.26, y = 0.8, width = 0.4)

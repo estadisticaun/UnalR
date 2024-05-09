@@ -158,7 +158,10 @@ librería \code{Leaflet}, la cual es la biblioteca \code{JavaScript} de código 
 popular para mapas interactivos.
 }
 \examples{
-LATAM <- data.frame(Country = c("Chile", "Venezuela", "Colombia", "Argentina", "Brazil"), PIB = c(1, 10, 100, 1000, 10000)*1:5)
+LATAM <- data.frame(
+  Country = c("Chile", "Venezuela", "Colombia", "Argentina", "Brazil"),
+  PIB = c(1, 10, 100, 1000, 10000)*1:5
+)
 Plot.Mundo(
   datos    = LATAM,
   paises   = Country,
@@ -195,7 +198,8 @@ Plot.Mundo(
 # ---------------------------------------------------------------------------
 set.seed(123)
 LATAM <- data.frame(
-  Pais = c("Bolivia", "Colombia", "Ecuador", "Panama", "Venezuela", "Peru", "Argentina", "Brazil", "Chile", "Uruguay"),
+  Pais = c("Bolivia", "Colombia", "Ecuador", "Panama", "Venezuela",
+           "Peru", "Argentina", "Brazil", "Chile", "Uruguay"),
   PIB  = runif(10, -10, 10),
   Bolivariano = c("Sí", "Sí", "Sí", "Sí", "Sí", "Sí", "No", "No", "No", "No")
 )
@@ -229,7 +233,10 @@ Plot.Mundo(
     scaleY     = seq(-60, 14, by = 5),
     anchoBorde = 1,
     Theme = 6, Legend = list(legend.position = "bottom", legend.direction = "horizontal"),
-    Labs = list(subtitle = "Para Suram\u00e9rica en el 2023", caption = "Datos simulados para el ejemplo ilustrativo", tag = "\u00ae")
+    Labs = list(subtitle = "Para Suram\u00e9rica en el 2023",
+                caption  = "Datos simulados para el ejemplo ilustrativo",
+                tag = "\u00ae"
+                )
   )
 )
 # ---------------------------------------------------------------------------

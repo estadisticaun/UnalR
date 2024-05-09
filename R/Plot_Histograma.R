@@ -96,7 +96,9 @@
 #'   estatico = TRUE,
 #'   estilo   = list(
 #'     gg.Tema    = 6,
-#'     gg.Hist    = list(binwidth = 10, color = "#144169", fill = "#FF4040", alpha = 0.5, linetype = "dashed"),
+#'     gg.Hist    = list(
+#'       binwidth = 10, fill = "#FF4040", color = "#144169", alpha = 0.5, linetype = "dashed"
+#'     ),
 #'     gg.Density = list(color = "#20B2AA", fill = "#40E0D0", alpha = 0.4, lwd = 1.1, linetype = 2),
 #'     gg.Texto   = list(subtitle = "\u00bb\u00bb\u00bb", tag = "\u00ae", caption  = Txt)
 #'   )

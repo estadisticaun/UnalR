@@ -156,7 +156,8 @@ la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesiva
 #     ., rows = vars(Year, Semester), pivotCat = Cat, pivotVar = Total
 #   )
 Tabla(
-  datos       = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |> dplyr::select(-Variable),
+  datos       = ejConsolidadoGrad |> dplyr::filter(Variable == "SEDE_NOMBRE_ADM") |>
+    dplyr::select(-Variable),
   rows        = vars(YEAR, SEMESTRE),
   pivotCat    = Clase,
   pivotVar    = Total,
@@ -169,7 +170,9 @@ Tabla(
   estilo      = list(
     list(
       columns = "YEAR", target = "cell", fontWeight = "normal",
-      backgroundColor = styleEqual(unique(ejConsolidadoGrad$YEAR), rainbow(13, alpha = 0.5, rev = TRUE))
+      backgroundColor = styleEqual(
+        unique(ejConsolidadoGrad$YEAR), rainbow(13, alpha = 0.5, rev = TRUE)
+      )
     ),
     list(
       columns = "SEMESTRE", target = "cell", fontWeight = "bold",
@@ -214,8 +217,13 @@ df <- ejGraduados |>
   summarise(Total = n(), .groups = "drop") |>
   mutate(across(where(is.character), \(x) replace_na(x, replace = "SIN INFO")))
 
-Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
-Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
+Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento",
+             "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total"
+             )
+Titulo  <- paste(
+  "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO ",
+  "DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
+)
 Tabla(
   datos          = df,
   columnNames    = Nombres,
@@ -249,7 +257,10 @@ set.seed(2023)
 AcademyAwards <- tibble(
   year     = sample(1939:1945, 100, TRUE),
   season   = sample(1:2, 100, TRUE),
-  category = sample(c("Best Picture", "Best Director", "Best Actor", "Best Actress", "Best Sound"), 100, TRUE),
+  category = sample(
+    c("Best Picture", "Best Director", "Best Actor", "Best Actress", "Best Sound"),
+    100, TRUE
+  ),
   location = sample(c("Roosevelt Hotel", "Dolby Theatre", "NBC Century Theatre"), 100, TRUE)
 )
 Agregar(
@@ -271,7 +282,10 @@ tableGT <- Tabla(
   pivotCat    = Clase,
   pivotVar    = Total,
   encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
-  leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
+  leyenda     = paste(
+    "Distribuci\u00f3n de estudiantes graduados ",
+    "(desde el 2009-I al 2021-I) por sede."
+  ),
   colorHead   = "#8CC63F",
   estatico    = TRUE,
   estilo      = list(
@@ -294,7 +308,10 @@ tableGT <-
     pivotVar    = Total,
     estadistico = "Suma",
     encabezado  = "TOTAL DE ESTUDIANTES \u00d7 SEDE DE GRADUACI\u00d3N",
-    leyenda     = "Distribuci\u00f3n de estudiantes graduados (desde el 2009-I al 2021-I) por sede.",
+    leyenda     = paste(
+      "Distribuci\u00f3n de estudiantes graduados ",
+      "(desde el 2009-I al 2021-I) por sede."
+    ),
     colorHead   = "#AA0000",
     estatico    = TRUE,
     estilo      = list(

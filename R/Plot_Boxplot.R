@@ -83,7 +83,7 @@
 #'   grupo1      = Serie,
 #'   outliers    = FALSE,
 #'   ylim        = c(0, 1000),
-#'   colores     = pals::jet(25),
+#'   colores     = pals::jet(30),
 #'   sizeOutlier = 1,
 #'   colOutlier  = "#FF3366",
 #'   titulo      = Txt,
@@ -95,7 +95,10 @@
 #'
 #' @examples
 #' # ---------------------------------------------------------------------------
-#' Msj2 <- "Aspirantes a pregrado (<i>cada periodo se encuentra segregado por el tipo de admisi\u00f3n</i>)"
+#' Msj2 <- paste(
+#'   "Aspirantes a pregrado",
+#'   "(<i>cada periodo se encuentra segregado por el tipo de admisi\u00f3n</i>)"
+#' )
 #' Plot.Boxplot(
 #'   datos    = ejMiniAspirantesPre,
 #'   variable = PTOTAL,
@@ -151,7 +154,7 @@
 #'          PUNT_LECT_CRIT, PUNT_COMP_CIUD, PUNT_COMU_ESCR
 #'          )
 #' Numericas <- vars(PUNT_RAZO_CUANT, PUNT_INGLES, PUNT_LECT_CRIT, PUNT_COMP_CIUD, PUNT_COMU_ESCR)
-#' # Numericas <- c("PUNT_RAZO_CUANT", "PUNT_INGLES", "PUNT_LECT_CRIT", "PUNT_COMP_CIUD", "PUNT_COMU_ESCR")
+#' # Numericas <- c("PUNT_RAZO_CUANT", "PUNT_INGLES", ... , "PUNT_COMU_ESCR")
 #' misColores <- c(
 #'   "#29ABE2", # AZUL CLARO  | Amazonia
 #'   "#8CC63F", # VERDE       | Bogota
@@ -180,7 +183,7 @@
 #'   variable   = PTOTAL,
 #'   grupo1     = Serie,
 #'   jitter     = TRUE,
-#'   colores    = pals::turbo(25),
+#'   colores    = pals::turbo(30),
 #'   colOutlier = "#CBB8FF",
 #'   titulo     = gsub("L E", "L\nE", Txt),
 #'   labelY     = "Puntaje",

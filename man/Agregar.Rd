@@ -57,10 +57,22 @@ df2 <- read_excel(read_example("TestConsolidado2.xlsx"))
 
 # Seleccione para cada dataset (A, B, C y D) una de las opciones que se le muestran
 # en consola (1, 2, 3 y 4) respectivamente.
-Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1) -> A
-Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1) -> B
-Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1) -> C
-Agregar(formula = TIPO_NIVEL ~ ANO + PERIODO, frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1) -> D
+Agregar(
+  formula = TIPO_NIVEL ~ ANO + PERIODO,
+  frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1
+) -> A
+Agregar(
+  formula = TIPO_NIVEL ~ ANO + PERIODO,
+  frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1
+) -> B
+Agregar(
+  formula = TIPO_NIVEL ~ ANO + PERIODO,
+  frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1
+) -> C
+Agregar(
+  formula = TIPO_NIVEL ~ ANO + PERIODO,
+  frecuencia = list("Year" = 2009:2013, "Period" = 1:3), df1
+) -> D
 all.equal(C, D)
 
 G <- Agregar(

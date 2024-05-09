@@ -44,12 +44,15 @@
 #' objeto retornado será un "htmlwidget" y adicionalmente pertenecerá a la clase
 #' "highchart".
 #'
-#' @examplesIf all(require("dplyr"), require("RColorBrewer"))
-#' # library(dplyr); library(RColorBrewer)
+#' @examplesIf require("dplyr")
+#' # library(dplyr)
 #' df <- ejMiniConsolidadoAsp |>
 #'   filter(Clase != "Sin Información", tolower(Clase) != "no aplica")
 #' text <- "DISTRIBUCI\u00d3N DE ASPIRANTES A PREGRADO EN SITUACI\u00d3N DE DISCAPACIDAD"
-#' Msj  <- "Discapacidad: Deficiencia, limitaci\u00f3n de la actividad y la restricci\u00f3n de la participaci\u00f3n."
+#' Msj  <- paste(
+#'   "Discapacidad: Deficiencia, limitaci\u00f3n de la actividad ",
+#'   "y la restricci\u00f3n de la participaci\u00f3n."
+#' )
 #' Plot.Drilldown(
 #'   datos         = df,
 #'   varPrincipal  = "DISCAPACIDAD",
@@ -59,7 +62,7 @@
 #'   torta         = TRUE, # Pruebe poniendo ambos valores ahora en FALSE
 #'   vertical      = TRUE,
 #'   colores       = c("#FF0040", "#00FF40"),
-#'   colores2      = brewer.pal(n = 6, "Set2"),
+#'   colores2      = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"),
 #'   titulo        = text,
 #'   label         = "Aspirantes",
 #'   textInfo      = "Aspirantes con discapacidades por tipo",

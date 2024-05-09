@@ -31,7 +31,9 @@
 #' set.seed(42)
 #' Blood <- tibble(
 #'   Quarter = sample(c("I", "II", "III", "IV"), size = 200, replace = TRUE),
-#'   Group   = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
+#'   Group   = sample(
+#'     c("O", "A", "B", "AB"), size = 200, prob = c(.5, .3, .16, .4), replace = TRUE
+#'   ),
 #'   Prevalence = round(runif(200)*100)
 #' )
 #' Plot.Apiladas(
@@ -44,7 +46,10 @@
 #' @examplesIf require("dplyr")
 #' # ---------------------------------------------------------------------------
 #' Txt <- "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O"
-#' Msj <- "Se considera \u00fanicamente los valores obtenidos en el primer periodo acad\u00e9mico de cada a\u00f1o."
+#' Msj <- paste(
+#'   "Se considera \u00fanicamente los valores obtenidos en el primer periodo",
+#'   "acad\u00e9mico de cada a\u00f1o."
+#' )
 #' Plot.Apiladas(
 #'   datos     = ejConsolidadoGrad |> filter(YEAR %in% c(2018:2020), SEMESTRE == 1),
 #'   categoria = "NIVEL",      # Pruebe también con alguna de -> unique(ejConsolidadoGrad$Variable)
@@ -55,7 +60,8 @@
 #' Plot.Apiladas(
 #'   datos     = ejConsolidadoGrad |> filter(YEAR %in% c(2018:2020), SEMESTRE == 1),
 #'   categoria = "AREAC_SNIES",
-#'   colores   = c("#D2D4DC", "#FF8ABF", "#945BC2", "#D11879","#FF7F7F", "#FFA568", "#9CFF86", "#89D8FF"),
+#'     colores   = c("#D2D4DC", "#FF8ABF", "#945BC2", "#D11879",
+#'                   "#FF7F7F", "#FFA568", "#9CFF86", "#89D8FF"),
 #'   titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL \u00c1REA DEL SNIES",
 #'   libreria  = "plotly",
 #'   estilo    = list(

@@ -127,48 +127,48 @@ razón, a continuación, se detalla el listado completo de argumentos, usados
 al especificar la librería y en qué función están presentes
 (\emph{marcado con una × si lo posee}).\tabular{clcccccccc}{
    \strong{Librería} \tab \strong{estilo$} \tab \code{\link[=Plot.Series]{Plot.Series()}} \tab \code{\link[=Plot.Barras]{Plot.Barras()}} \tab \code{\link[=Plot.Apiladas]{Plot.Apiladas()}} \tab \code{\link[=Plot.Boxplot]{Plot.Boxplot()}} \tab \code{\link[=Plot.Radar]{Plot.Radar()}} \tab \code{\link[=Plot.Treemap]{Plot.Treemap()}} \tab \code{\link[=Plot.Torta]{Plot.Torta()}} \tab \code{\link[=Plot.Drilldown]{Plot.Drilldown()}} \cr
-   ┌ \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   — \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
    \strong{ggplot2} \tab \emph{gg.plty} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   └ \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   ╔ \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
-   ║ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ǀ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   — \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   » \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ǀ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
    \strong{highcharter} \tab \emph{hc.BoxInfo} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ║ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ╚ \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   ┌ \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
-   │ \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
-   │ \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   » \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   • \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
+   ° \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
+   ° \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
    \strong{plotly} \tab \emph{ply.Interaction} \tab × \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
-   └ \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ° \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ° \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
+   • \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
    \strong{dygraphs} \tab \emph{dyg.LegendWidth} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ╚ \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ┌ \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   » \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   — \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
    \strong{echarts4r} \tab \emph{e.Forma} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   └ \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   — \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
 }
 }
 
@@ -208,7 +208,7 @@ Plot.Barras(
   freqRelativa = TRUE,
   vertical     = TRUE,
   ordinal      = TRUE,
-  colores      = RColorBrewer::brewer.pal(5, "Spectral"),
+  colores      = c("#D7191C", "#FDAE61", "#FFFFBF", "#ABDDA4", "#2B83BA"),
   titulo       = "GRADUADOS DE ACUERDO CON EL NIVEL DE FORMACI\u00d3N (Periodo 2021-1)",
   labelY       = "Frecuencia Relativa<br>(\% de graduados)",
   textInfo     = "Porcentaje de Graduados",
@@ -223,7 +223,7 @@ Plot.Barras(
   categoria = "NIVEL",
   vertical  = FALSE,
   ordinal   = FALSE,
-  colores   = RColorBrewer::brewer.pal(5, "Set2"),
+  colores   = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854"),
   titulo    = Txt,
   labelY    = "N\u00famero de Graduados",
   libreria  = "plotly",
@@ -238,7 +238,7 @@ Plot.Barras(
   categoria = "NIVEL",
   vertical  = FALSE,
   ordinal   = FALSE,
-  colores   = RColorBrewer::brewer.pal(5, "Set1"),
+  colores   = c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00"),
   titulo    = gsub("DE GR", "DE\nGR", Txt),
   labelY    = "N\u00famero de Graduados",
   estatico  = TRUE,

@@ -87,48 +87,48 @@ razón, a continuación, se detalla el listado completo de argumentos, usados
 al especificar la librería y en qué función están presentes
 (\emph{marcado con una × si lo posee}).\tabular{clcccccccc}{
    \strong{Librería} \tab \strong{estilo$} \tab \code{\link[=Plot.Series]{Plot.Series()}} \tab \code{\link[=Plot.Barras]{Plot.Barras()}} \tab \code{\link[=Plot.Apiladas]{Plot.Apiladas()}} \tab \code{\link[=Plot.Boxplot]{Plot.Boxplot()}} \tab \code{\link[=Plot.Radar]{Plot.Radar()}} \tab \code{\link[=Plot.Treemap]{Plot.Treemap()}} \tab \code{\link[=Plot.Torta]{Plot.Torta()}} \tab \code{\link[=Plot.Drilldown]{Plot.Drilldown()}} \cr
-   ┌ \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   — \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
    \strong{ggplot2} \tab \emph{gg.plty} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   └ \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   ╔ \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
-   ║ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ǀ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   — \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   » \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ǀ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
    \strong{highcharter} \tab \emph{hc.BoxInfo} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ║ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ╚ \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   ┌ \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
-   │ \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
-   │ \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   » \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   • \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
+   ° \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
+   ° \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
    \strong{plotly} \tab \emph{ply.Interaction} \tab × \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
-   └ \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ° \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ° \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
+   • \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
    \strong{dygraphs} \tab \emph{dyg.LegendWidth} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ╚ \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ┌ \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   » \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   — \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
    \strong{echarts4r} \tab \emph{e.Forma} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   └ \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   — \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
 }
 }
 
@@ -139,7 +139,9 @@ al especificar la librería y en qué función están presentes
 set.seed(42)
 Blood <- tibble(
   Quarter = sample(c("I", "II", "III", "IV"), size = 200, replace = TRUE),
-  Group   = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
+  Group   = sample(
+    c("O", "A", "B", "AB"), size = 200, prob = c(.5, .3, .16, .4), replace = TRUE
+  ),
   Prevalence = round(runif(200)*100)
 )
 Plot.Apiladas(
@@ -153,7 +155,10 @@ Plot.Apiladas(
 \dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 Txt <- "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O"
-Msj <- "Se considera \u00fanicamente los valores obtenidos en el primer periodo acad\u00e9mico de cada a\u00f1o."
+Msj <- paste(
+  "Se considera \u00fanicamente los valores obtenidos en el primer periodo",
+  "acad\u00e9mico de cada a\u00f1o."
+)
 Plot.Apiladas(
   datos     = ejConsolidadoGrad |> filter(YEAR \%in\% c(2018:2020), SEMESTRE == 1),
   categoria = "NIVEL",      # Pruebe también con alguna de -> unique(ejConsolidadoGrad$Variable)
@@ -164,7 +169,8 @@ Plot.Apiladas(
 Plot.Apiladas(
   datos     = ejConsolidadoGrad |> filter(YEAR \%in\% c(2018:2020), SEMESTRE == 1),
   categoria = "AREAC_SNIES",
-  colores   = c("#D2D4DC", "#FF8ABF", "#945BC2", "#D11879","#FF7F7F", "#FFA568", "#9CFF86", "#89D8FF"),
+    colores   = c("#D2D4DC", "#FF8ABF", "#945BC2", "#D11879",
+                  "#FF7F7F", "#FFA568", "#9CFF86", "#89D8FF"),
   titulo    = "BARRAS APILADAS EN FUNCI\u00d3N DEL \u00c1REA DEL SNIES",
   libreria  = "plotly",
   estilo    = list(

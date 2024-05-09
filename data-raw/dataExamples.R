@@ -56,8 +56,8 @@ ejSaberPro2020 <- UnalData::SaberPro %>% filter(YEAR == 2020) %>% select(!c(ID, 
 
 
 # Create package data ----------------------------------------------------------
-use_data(ejGraduados         , overwrite = TRUE, compress = "xz")
+use_data(ejGraduados         , overwrite = TRUE, compress = "bzip2")
 use_data(ejConsolidadoGrad   , overwrite = TRUE, compress = "xz")
 use_data(ejMiniConsolidadoAsp, overwrite = TRUE, compress = "xz")
 use_data(ejMiniAspirantesPre , overwrite = TRUE, compress = "xz")
-use_data(ejSaberPro2020      , overwrite = TRUE, compress = "xz")
+use_data(ejSaberPro2020      , overwrite = TRUE, compress = "bzip2")

@@ -58,8 +58,13 @@
 #'   summarise(Total = n(), .groups = "drop") |>
 #'   mutate(across(where(is.character), \(x) replace_na(x, replace = "SIN INFO")))
 #'
-#' Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento", "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total")
-#' Titulo  <- "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
+#' Nombres <- c("<em>A\u00f1o</em>", "Semestre", "Departamento",
+#'              "Municipio", "Sexo", "Edad", "Estrato", "Carrera", "Total"
+#'              )
+#' Titulo  <- paste(
+#'   "<b>HIST\u00d3RICO DEL TOTAL DE GRADUADOS DE PREGRADO ",
+#'   "DEPENDIENDO DE LAS VARIABLES SELECCIONADAS</b>"
+#' )
 #' Tabla.General(
 #'   datos          = df,
 #'   colNames       = Nombres,

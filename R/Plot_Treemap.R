@@ -167,7 +167,14 @@
 #'   variables = vars(SEDE_NOMBRE_MAT, FACULTAD, PROGRAMA),
 #'   metodo    = "Sunburst",
 #'   # colores   = misColores,
-#'   estilo    = list(sun.Explanation = "All", sun.Color = list(range = RColorBrewer::brewer.pal(11, "Spectral")))
+#'   estilo    = list(
+#'     sun.Explanation = "All",
+#'     sun.Color = list(range = c("#9E0142", "#D53E4F", "#F46D43", "#FDAE61",
+#'                                "#FEE08B", "#FFFFBF", "#E6F598", "#ABDDA4",
+#'                                "#66C2A5", "#3288BD", "#5E4FA2"
+#'                                )
+#'                      )
+#'   )
 #' )
 #' Plot.Treemap(
 #'   datos     = ejGraduados,

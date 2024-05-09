@@ -75,8 +75,7 @@
 #' @importFrom htmltools withTags tag
 #' @importFrom tidyr pivot_wider
 #' @importFrom methods missingArg
-#' @importFrom RColorBrewer brewer.pal
-#' @importFrom grDevices colorRampPalette
+#' @importFrom grDevices topo.colors
 Tabla.SaberPro <- function(
     datos, variable, encabezado = "Encabezados de los Niveles de la Categor\u00eda",
     leyenda, tituloPdf = NULL, mensajePdf = "", ajustarNiveles = TRUE,
@@ -217,7 +216,7 @@ Tabla.SaberPro <- function(
     TablaFinal <- TablaFinal |>
       formatStyle(
         "YEAR", target = "cell", fontWeight = "bold",
-        backgroundColor = styleEqual( unique(DataFrame$YEAR), colorRampPalette(brewer.pal(12, "Set3"))(nlevels(DataFrame$YEAR)) )
+        backgroundColor = styleEqual( unique(DataFrame$YEAR), topo.colors(nlevels(DataFrame$YEAR)) )
       ) |>
       formatStyle(
         "Clase", target = "cell", fontWeight = "bold",

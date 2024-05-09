@@ -149,23 +149,23 @@ proporcionan para \code{ggplot2}. Por ejemplo, los de \href{https://github.com/h
 \note{
 A continuación, se consolida en una tabla amigable el listado, uso y disposición
 de todas las opciones para el parámetro \code{estilo}, dependiendo del tipo de gráfico
-(\emph{dinámico o estático}) y la librería usada (\emph{en el caso de que sea dinámico}).\tabular{ccccl}{
+(\emph{dinámico o estático}) y la librería usada (\emph{en el caso de que sea dinámico}).\tabular{ccccc}{
    \strong{PARÁMETRO} \tab \strong{VALOR} \tab \strong{PARÁMETRO} \tab \strong{VALOR} \tab \strong{PARÁMETRO} \cr
-   │ \tab ▓ \tab  \tab ╔ \tab gg.Tema \cr
-   │ \tab ▓ \tab  \tab ╠ \tab gg.Legend \cr
-   │ \tab \emph{TRUE} \tab  \tab ╠ \tab gg.Linea \cr
-   │ \tab ▓ \tab  \tab ╠ \tab gg.Punto \cr
-   │ \tab ▓ \tab  \tab ╠ \tab gg.Texto \cr
-   │ \tab ▓ \tab  \tab ╚ \tab gg.Repel \cr
-   │ \tab ░ \tab » \tab \emph{highcharter} \tab hc.Tema \cr
-   \strong{estatico} \tab ░ \tab » \tab ┌ \tab hc.BoxInfo \cr
-   │ \tab ░ \tab » \tab ├ \tab hc.Slider \cr
-   │ \tab ░ \tab » \tab └ \tab hc.Credits \cr
-   │ \tab \emph{FALSE} \tab \strong{libreria} \tab \emph{plotly} \tab ply.LegendPosition \cr
-   │ \tab ░ \tab » \tab ┌ \tab ply.Credits \cr
-   │ \tab ░ \tab » \tab └ \tab ply.Interaction \cr
-   │ \tab ░ \tab » \tab \emph{dygraphs} \tab dyg.LegendWidth \cr
-   │ \tab ░ \tab » \tab └ \tab dyg.Resaltar \cr
+   ǀ \tab Ξ \tab  \tab • \tab gg.Tema \cr
+   ǀ \tab Ξ \tab  \tab • \tab gg.Legend \cr
+   ǀ \tab \emph{TRUE} \tab  \tab • \tab gg.Linea \cr
+   ǀ \tab Ξ \tab  \tab • \tab gg.Punto \cr
+   ǀ \tab Ξ \tab  \tab • \tab gg.Texto \cr
+   ǀ \tab Ξ \tab  \tab • \tab gg.Repel \cr
+   ǀ \tab Ο \tab ˃ \tab \emph{highcharter} \tab hc.Tema \cr
+   \strong{estatico} \tab Ο \tab ˃ \tab ¦ \tab hc.BoxInfo \cr
+   ǀ \tab Ο \tab ˃ \tab ¦ \tab hc.Slider \cr
+   ǀ \tab Ο \tab ˃ \tab ¦ \tab hc.Credits \cr
+   ǀ \tab \emph{FALSE} \tab \strong{libreria} \tab \emph{plotly} \tab ply.LegendPosition \cr
+   ǀ \tab Ο \tab ˃ \tab ° \tab ply.Credits \cr
+   ǀ \tab Ο \tab ˃ \tab ° \tab ply.Interaction \cr
+   ǀ \tab Ο \tab ˃ \tab \emph{dygraphs} \tab dyg.LegendWidth \cr
+   ǀ \tab Ο \tab ˃ \tab ʟ \tab dyg.Resaltar \cr
 }
 }
 \section{Lista de argumentos de estilo}{
@@ -178,48 +178,48 @@ razón, a continuación, se detalla el listado completo de argumentos, usados
 al especificar la librería y en qué función están presentes
 (\emph{marcado con una × si lo posee}).\tabular{clcccccccc}{
    \strong{Librería} \tab \strong{estilo$} \tab \code{\link[=Plot.Series]{Plot.Series()}} \tab \code{\link[=Plot.Barras]{Plot.Barras()}} \tab \code{\link[=Plot.Apiladas]{Plot.Apiladas()}} \tab \code{\link[=Plot.Boxplot]{Plot.Boxplot()}} \tab \code{\link[=Plot.Radar]{Plot.Radar()}} \tab \code{\link[=Plot.Treemap]{Plot.Treemap()}} \tab \code{\link[=Plot.Torta]{Plot.Torta()}} \tab \code{\link[=Plot.Drilldown]{Plot.Drilldown()}} \cr
-   ┌ \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   — \tab \emph{gg.Tema} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Texto} \tab × \tab × \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Legend} \tab × \tab  \tab × \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Linea} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Punto} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Bar} \tab  \tab × \tab × \tab  \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.VarWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.OutShape} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.JitWidth} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.JitSize} \tab  \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.Range} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
    \strong{ggplot2} \tab \emph{gg.plty} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   │ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   └ \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   ╔ \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
-   ║ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ǀ \tab \emph{gg.plwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.cglwd} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.cglcol} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{gg.fontsize.title} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.fontsize.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.fontcolor.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.border.lwds} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.border.col} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.lowerbound.cex.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   ǀ \tab \emph{gg.force.print.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   — \tab \emph{gg.overlap.labels} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   » \tab \emph{hc.Tema} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
+   ǀ \tab \emph{hc.Credits} \tab × \tab × \tab × \tab × \tab  \tab × \tab × \tab × \cr
    \strong{highcharter} \tab \emph{hc.BoxInfo} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ║ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ╚ \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
-   ┌ \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
-   │ \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
-   │ \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{hc.Slider} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   » \tab \emph{hc.borderRadius} \tab  \tab  \tab  \tab  \tab  \tab × \tab  \tab  \cr
+   • \tab \emph{ply.Credits} \tab × \tab × \tab × \tab × \tab × \tab × \tab × \tab  \cr
+   ° \tab \emph{ply.Legend} \tab  \tab × \tab  \tab  \tab  \tab  \tab × \tab  \cr
+   ° \tab \emph{ply.LegendPosition} \tab × \tab  \tab × \tab × \tab × \tab  \tab  \tab  \cr
    \strong{plotly} \tab \emph{ply.Interaction} \tab × \tab  \tab  \tab × \tab  \tab  \tab  \tab  \cr
-   │ \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
-   └ \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ° \tab \emph{ply.Relleno} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ° \tab \emph{ply.Opacidad} \tab  \tab  \tab  \tab  \tab × \tab × \tab  \tab  \cr
+   • \tab \emph{ply.LegendTitle} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
    \strong{dygraphs} \tab \emph{dyg.LegendWidth} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ╚ \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
-   ┌ \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   » \tab \emph{dyg.Resaltar} \tab × \tab  \tab  \tab  \tab  \tab  \tab  \tab  \cr
+   — \tab \emph{e.Tema} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{e.Credits} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
    \strong{echarts4r} \tab \emph{e.Forma} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   │ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
-   └ \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   ǀ \tab \emph{e.LegType} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
+   — \tab \emph{e.LegLoc} \tab  \tab  \tab  \tab  \tab × \tab  \tab  \tab  \cr
 }
 }
 
@@ -231,7 +231,9 @@ Blood <- tibble(
   Year    = rep(2000:2001, each = 100),
   Quarter = sample(c("I", "II", "III", "IV"), size = 200, replace = TRUE),
   Week    = sample(c("1rt", "2nd", "3rd"), size = 200, replace = TRUE),
-  Group   = sample(c("O", "A", "B", "AB"), size = 200, prob = c(0.5, 0.3, 0.16, 0.4), replace = TRUE),
+  Group   = sample(
+    c("O", "A", "B", "AB"), size = 200, prob = c(.5, .3, .16, .4), replace = TRUE
+  ),
   RH      = sample(c("+", "-"), size = 200, replace = TRUE),
   Prevalence = round(runif(200)*100)
 )
@@ -346,7 +348,8 @@ fig1 <- Plot.Series(
 )
 # A continuación, se detalla el caso en el que quiera adicionar un logo a 'fig1'
 # library("ggplot2"); library("magick"); require("cowplot")
-LogoUN <- magick::image_read_svg("https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg")
+URL <- "https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg"
+LogoUN <- magick::image_read_svg(URL)
 ggdraw() +
   draw_image(LogoUN, scale = 0.15, x = 0.15, hjust = 1, halign = 1, valign = 0) +
   draw_plot(fig1 + theme(legend.background = element_blank(),
@@ -358,6 +361,9 @@ ggdraw() +
 \dontshow{if (all(require("ggplot2"), require("ggrepel"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # A continuación, se detalla el caso en el que quiera anotaciones textuales repulsivas
+#   * (1) Espacio vacío que se debe respetar alrededor de la caja delimitadora
+#   * (2) Espacio vacío que se debe respetar alrededor de cada punto
+#   * (3) Entre más bajo más flechas, entre más distancia menos flechas
 Plot.Series(
   datos        = ejConsolidadoGrad,
   categoria    = "SEDE_NOMBRE_ADM",
@@ -373,9 +379,9 @@ Plot.Series(
     gg.Repel = list(
       direction = "both", seed = 42, nudge_y = 0.25,
       arrow = arrow(length = unit(0.01, "npc")), segment.colour = "#4C716B",
-      box.padding   = 0.5 ,     # Espacio vacío que se debe respetar alrededor de la caja delimitadora
-      point.padding = 0.25,     # Espacio vacío que se debe respetar alrededor de cada punto
-      min.segment.length = 0.45 # Entre más bajo más flechas, entre más distancia menos flechas
+      box.padding   = 0.5 ,     # (1)
+      point.padding = 0.25,     # (2)
+      min.segment.length = 0.45 # (3)
     )
   )
 )

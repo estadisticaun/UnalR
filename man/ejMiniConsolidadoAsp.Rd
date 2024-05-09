@@ -6,7 +6,7 @@
 \title{Mini Consolidado de Aspirantes}
 \format{
 Un data frame (\emph{data.frame, tbl_df o tbl}) con
-297
+308
 filas y 5 columnas:
 'Variable', 'YEAR', 'SEMESTRE', 'Clase', 'Total'.
 }

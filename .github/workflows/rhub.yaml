@@ -15,7 +15,7 @@ on:
       config:
         description: 'Lista separada por comas de las plataformas R-hub. Ejecute por consola R, rhub::rhub_check()'
         type: string
-        default: 'linux, macos, macos-arm64, windows, atlas, clang18, donttest, gcc13, ubuntu-next, ubuntu-release (postmodern-bluebottlejellyfish)'
+        default: 'linux, macos, macos-arm64, windows, atlas, clang18, donttest, gcc13, ubuntu-next, ubuntu-release'
       name:
         description: 'Nombre de la ejecución. Puede dejar el valor por defecto o dejarlo vacío.'
         type: string

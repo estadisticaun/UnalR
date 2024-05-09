@@ -13,14 +13,15 @@ on:
   workflow_dispatch:
     inputs:
       config:
-        description: 'A comma separated list of R-hub platforms to use.'
+        description: 'Lista separada por comas de las plataformas R-hub. Ejecute por consola R, rhub::rhub_check()'
         type: string
-        default: 'linux,windows,macos'
+        default: 'linux, macos, macos-arm64, windows, atlas, clang18, donttest, gcc13, ubuntu-next, ubuntu-release (postmodern-bluebottlejellyfish)'
       name:
-        description: 'Run name. You can leave this empty now.'
+        description: 'Nombre de la ejecución. Puede dejar el valor por defecto o dejarlo vacío.'
         type: string
+        default: 'Check a package on R-hub (Virtual Machines & Containers)'
       id:
-        description: 'Unique ID. You can leave this empty now.'
+        description: 'ID único. Puede dejarlo vacío.'
         type: string
 
 jobs:

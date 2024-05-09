@@ -122,12 +122,12 @@
 #'   * `dyg.Resaltar`: Si es `FALSE` (\emph{valor predeterminado}) no se resaltará
 #'     la serie en que se sitúa el cursor.
 #'   * `gg.Tema`: Modifica el tema con el cual se creará la serie. Los posibles
-#'     valores son un número entero entre \eqn{[1, 17]} el cual hace referencia
+#'     valores son un número entero entre \eqn{[1, 14]} el cual hace referencia
 #'     a diferentes temas disponibles para `ggplot2` (`theme_light`, `theme_bw`,
 #'     `theme_classic`, `theme_linedraw`, `theme_gray`, `theme_hc`, `theme_pander`,
 #'     `theme_gdocs`, `theme_fivethirtyeight`, `theme_economist`, `theme_solarized`,
-#'     `theme_ipsum`, `theme_ipsum_ps`, `theme_ft_rc`, `theme_tech(theme = "airbnb")`,
-#'     `theme_tech(theme = "google")` y `theme_tech(theme = "X23andme")` respectivamente).
+#'     `theme_tech(theme = "airbnb")`, `theme_tech(theme = "google")` y
+#'      `theme_tech(theme = "X23andme")` respectivamente).
 #'     El tema por defecto, al no ingresar valor alguno, es el construido por el
 #'     departamento `theme_DNPE`.
 #'   * `gg.Legend`: Lista que especifica la posición y orientación de la leyenda.
@@ -153,6 +153,9 @@
 #' Tenga en cuenta que la librería `"dygraphs"` solo la podrá usar si dentro del
 #' argumento tiempo ingresa las dos variables (`YEAR`, `SEMESTRE`) para asemejar
 #' su estructura a los agregados clásicos. En caso contrario le arrojara un error.
+#'
+#' Recuerde que puede usar más temas (\emph{cualquiera de hecho}) de los que se
+#' proporcionan para `ggplot2`. Por ejemplo, los de \href{https://github.com/hrbrmstr/hrbrthemes}{hrbrthemes}.
 #'
 #' @note
 #' A continuación, se consolida en una tabla amigable el listado, uso y disposición
@@ -345,9 +348,6 @@
 #' @import plotly
 #' @import dygraphs
 #' @rawNamespace import(ggplot2, except = last_plot)
-#' @import ggthemes
-#' @import hrbrthemes
-#' @import ggtech
 #' @import dplyr
 #' @importFrom scales percent label_percent
 #' @importFrom tidyr pivot_wider pivot_longer
@@ -708,12 +708,9 @@ Plot.Series <- function(
         "9"  = ggthemes::theme_fivethirtyeight(),
         "10" = ggthemes::theme_economist(),
         "11" = ggthemes::theme_solarized(),
-        "12" = hrbrthemes::theme_ipsum(),
-        "13" = hrbrthemes::theme_ipsum_ps(),
-        "14" = hrbrthemes::theme_ft_rc(),
-        "15" = ggtech::theme_tech(theme = "airbnb"),
-        "16" = ggtech::theme_tech(theme = "google"),
-        "17" = ggtech::theme_tech(theme = "X23andme")
+        "12" = ggtech::theme_tech(theme = "airbnb"),
+        "13" = ggtech::theme_tech(theme = "google"),
+        "14" = ggtech::theme_tech(theme = "X23andme")
       )
     } else { ThemeGG <- theme_DNPE() }
 

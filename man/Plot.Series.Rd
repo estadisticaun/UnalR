@@ -97,12 +97,12 @@ ocupará la leyenda. El valor por defecto es \code{250}.
 \item \code{dyg.Resaltar}: Si es \code{FALSE} (\emph{valor predeterminado}) no se resaltará
 la serie en que se sitúa el cursor.
 \item \code{gg.Tema}: Modifica el tema con el cual se creará la serie. Los posibles
-valores son un número entero entre \eqn{[1, 17]} el cual hace referencia
+valores son un número entero entre \eqn{[1, 14]} el cual hace referencia
 a diferentes temas disponibles para \code{ggplot2} (\code{theme_light}, \code{theme_bw},
 \code{theme_classic}, \code{theme_linedraw}, \code{theme_gray}, \code{theme_hc}, \code{theme_pander},
 \code{theme_gdocs}, \code{theme_fivethirtyeight}, \code{theme_economist}, \code{theme_solarized},
-\code{theme_ipsum}, \code{theme_ipsum_ps}, \code{theme_ft_rc}, \code{theme_tech(theme = "airbnb")},
-\code{theme_tech(theme = "google")} y \code{theme_tech(theme = "X23andme")} respectivamente).
+\code{theme_tech(theme = "airbnb")}, \code{theme_tech(theme = "google")} y
+\code{theme_tech(theme = "X23andme")} respectivamente).
 El tema por defecto, al no ingresar valor alguno, es el construido por el
 departamento \code{theme_DNPE}.
 \item \code{gg.Legend}: Lista que especifica la posición y orientación de la leyenda.
@@ -142,6 +142,9 @@ nombre será \code{PlotSeries_Sede.png}.
 Tenga en cuenta que la librería \code{"dygraphs"} solo la podrá usar si dentro del
 argumento tiempo ingresa las dos variables (\code{YEAR}, \code{SEMESTRE}) para asemejar
 su estructura a los agregados clásicos. En caso contrario le arrojara un error.
+
+Recuerde que puede usar más temas (\emph{cualquiera de hecho}) de los que se
+proporcionan para \code{ggplot2}. Por ejemplo, los de \href{https://github.com/hrbrmstr/hrbrthemes}{hrbrthemes}.
 }
 \note{
 A continuación, se consolida en una tabla amigable el listado, uso y disposición

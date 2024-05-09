@@ -41,9 +41,6 @@ Imports:
     magrittr,
     scales,
     ggrepel,
-    ggtech,
-    ggthemes,
-    hrbrthemes,
     xts,
     zoo,
     sf,
@@ -70,9 +67,11 @@ Suggests:
     viridis,
     magick,
     rsvg,
-    cowplot
+    cowplot,
+    ggthemes,
+    ggtech
 Depends:
-    R (>= 4.2.0)
+    R (>= 4.3.0)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -81,9 +80,8 @@ Remotes:
     rstudio/DT,
     JohnCoene/echarts4r,
     timelyportfolio/d3treeR,
-    ricardo-bion/ggtech,
     jrnold/ggthemes,
-    hrbrmstr/hrbrthemes,
+    ricardo-bion/ggtech,
     jthomasmock/gtExtras
 Config/testthat/edition: 3
 Config/testthat/parallel: true

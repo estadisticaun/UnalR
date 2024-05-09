@@ -315,12 +315,9 @@ Plot.Apiladas <- function(
         "9"  = ggthemes::theme_fivethirtyeight(),
         "10" = ggthemes::theme_economist(),
         "11" = ggthemes::theme_solarized(),
-        "12" = hrbrthemes::theme_ipsum(),
-        "13" = hrbrthemes::theme_ipsum_ps(),
-        "14" = hrbrthemes::theme_ft_rc(),
-        "15" = ggtech::theme_tech(theme = "airbnb"),
-        "16" = ggtech::theme_tech(theme = "google"),
-        "17" = ggtech::theme_tech(theme = "X23andme")
+        "12" = ggtech::theme_tech(theme = "airbnb"),
+        "13" = ggtech::theme_tech(theme = "google"),
+        "14" = ggtech::theme_tech(theme = "X23andme")
       )
     } else { ThemeGG <- theme_DNPE() }
 

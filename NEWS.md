@@ -30,7 +30,7 @@ v0.1.0 fue lanzada el 28/11/2021
   * Se incorporó a la función `Plot.Barras()` el argumento `freqRelativa`.
   * Se incorporó a la función `Plot.Torta()` el argumento `label`.
   * Se añade en `Plot.Mapa()` los argumento `estadistico` (*para mostrar distintas estadísticas descriptivas*), `naTo0` y `colNA` además de agregar un nuevo estadístico (*coeficiente de variación* **CV**) en el argumento `estadistico`.
-  * Las nuevas funciones incorporan la gramática del tidyverse, la cual permite trabajar los datos como si fueran objetos reales en el espacio de trabajo. Para más información del framework tidy evaluation puede consultar [aquí](https://tidyeval.tidyverse.org).
+  * Las nuevas funciones incorporan la gramática del tidyverse, la cual permite trabajar los datos como si fueran objetos reales en el espacio de trabajo. Para más información del framework tidy evaluation puede consultar [aquí](https://dplyr.tidyverse.org/articles/programming.html).
   * La escritura de todas las funciones (*incluyendo la documentación y los ejemplos*) cumplen con la guía de estilos del tidyverse, la cual puede consultar [aquí](https://style.tidyverse.org).
 
 ## Correcciones (*bug fixes*)

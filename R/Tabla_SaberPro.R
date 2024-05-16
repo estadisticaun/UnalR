@@ -140,7 +140,7 @@ Tabla.SaberPro <- function(
     filter(Variable == variable) |>
     group_by(Componente) |> distinct(Componente)
   # Custom Table Container (Nombre de los Encabezados)
-  sketch = htmltools::withTags(table(
+  sketch <- htmltools::withTags(table(
     class = "display",
     thead(
       tr(

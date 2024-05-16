@@ -129,7 +129,7 @@ Agregar <- function(datos, formula, frecuencia, intervalo, textNA = "Sin Informa
 
   # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
   tibbleAgregado <- tibble()
-  for (i in 1:length(Vars)) {
+  for (i in seq_len(length(Vars))) {
     Var <- Vars[i]
     # Convirtiendo los agentes en factores y haciendo explícitos los valores perdidos
     anyNA <- datos |> select(!!Var) |> is.na() |> sum()

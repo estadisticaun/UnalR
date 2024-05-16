@@ -278,7 +278,7 @@ Plot.Apiladas <- function(
       } else { Margen <- list(l = 50, r = 50, t = 110, b = 0) }
 
       PlotApiladas <- plot_ly(data = df)
-      for (i in 1:length(categorias)) {
+      for (i in seq_len(length(categorias))) {
         df_Temp <- df |> filter(Clase == categorias[i])
         PlotApiladas <- add_trace(
           PlotApiladas, data = df_Temp, x = ~factor(xAxis), y = ~percent_xAxis,
@@ -320,10 +320,7 @@ Plot.Apiladas <- function(
         "8"  = ggthemes::theme_gdocs(),
         "9"  = ggthemes::theme_fivethirtyeight(),
         "10" = ggthemes::theme_economist(),
-        "11" = ggthemes::theme_solarized(),
-        "12" = ggtech::theme_tech(theme = "airbnb"),
-        "13" = ggtech::theme_tech(theme = "google"),
-        "14" = ggtech::theme_tech(theme = "X23andme")
+        "11" = ggthemes::theme_solarized()
       )
     } else { ThemeGG <- theme_DNPE() }
 

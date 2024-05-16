@@ -2,7 +2,6 @@ Type: Package
 Package: UnalR
 Title: Una implementación de funciones de uso interno
 Version: 1.0.0
-Date: 2021-11-28
 Authors@R: c(
   person("Jeison", "Alarcón", email = "jmalarconbe@unal.edu.co", role = c("aut", "cre", "ctr"), comment = c(ORCID = "0000-0002-1517-7840")),
   person("Alberto", "Rodríguez", email = "albrodriguezr@unal.edu.co", role = c("aut", "rev")),
@@ -16,11 +15,10 @@ Description: Una herramienta rápida y consistente para la disposición de micro
     encontramos la visualización de tablas HTML, series, gráficos de barras y
     circulares, mapas, etc. Todo lo anterior apoyado en bibliotecas de JavaScript.
 License: GPL (>= 3) + file LICENSE
-URL: https://unal.edu.co, http://estadisticas.unal.edu.co/home/, https://github.com/estadisticaun/UnalR
+URL: https://unal.edu.co, https://estadisticas.unal.edu.co/home/, https://github.com/estadisticaun/UnalR
 BugReports: https://github.com/estadisticaun/UnalR/issues
 Imports:
     d3r (>= 1.1.0),
-    d3treeR (>= 0.1),
     dplyr (>= 1.1.4),
     DT (>= 0.33),
     dygraphs (>= 1.1.1.6),
@@ -38,10 +36,12 @@ Imports:
     tidyr (>= 1.3.1),
     treemap (>= 2.4.4),
     cli,
+    data.tree,
     ggspatial,
     ggrepel,
     gtExtras,
     htmltools,
+    jsonlite,
     lifecycle,
     magrittr,
     maps,
@@ -57,12 +57,13 @@ Imports:
     htmlwidgets,
     webshot,
     png,
-    grid
+    grid,
+    gridSVG,
+    XML
 Suggests:
     testthat (>= 3.2.1.1),
     cowplot,
     ggthemes,
-    ggtech,
     magick,
     pals,
     readxl,
@@ -72,15 +73,9 @@ Suggests:
 Depends:
     R (>= 4.3.0)
 Encoding: UTF-8
+Language: es-ES
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-Remotes:
-    rstudio/DT,
-    JohnCoene/echarts4r,
-    timelyportfolio/d3treeR,
-    jrnold/ggthemes,
-    ricardo-bion/ggtech,
-    jthomasmock/gtExtras
 Config/testthat/edition: 3
 Config/testthat/parallel: true

@@ -246,10 +246,10 @@
 #' # |:----------:|:----------------------------:|:----:|:-----:|
 #' # | 1:6, 10:11 |          San Andrés          | 0.36 |  0.06 |
 #' # |            | Providencia y Santa Catalina | 0.39 | 0.055 |
-#' # |      9     |             ■ ■ ■            | 0.36 |  0.07 |
-#' # |            |             º º º            | 0.39 | 0.065 |
-#' # |    12:14   |             ■ ■ ■            | 0.33 |  0.11 |
-#' # |            |             º º º            | 0.36 |  0.10 |
+#' # |      9     |             ° ° °            | 0.36 |  0.07 |
+#' # |            |             * * *            | 0.39 | 0.065 |
+#' # |    12:14   |             ° ° °            | 0.33 |  0.11 |
+#' # |            |             * * *            | 0.36 |  0.10 |
 #' ggdraw() +
 #'   draw_plot(listMaps$M_COL) +
 #'   draw_plot(listMaps$M_SanAndres  , x = 0.27, y = 0.36, width = 0.060) +
@@ -627,7 +627,7 @@ Plot.Mapa <- function(
       pal  <- colorBin(Colors, bins = Cortes, na.color = colNA)
 
       Mapa <- leaflet(data = Polygons_Depto) |> addTiles(attribution = Msj)
-      for (i in 1:length(Baldosas)) {
+      for (i in seq_len(length(Baldosas))) {
         Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
       }
 
@@ -697,7 +697,7 @@ Plot.Mapa <- function(
       Pal_Binary <- colorBin(palette = colBinary, bins = c(0, 1, 35000), na.color = colNA)
 
       Mapa <- leaflet(data = Polygons_Mpio) |> addTiles(attribution = Msj)
-      for (i in 1:length(Baldosas)) {
+      for (i in seq_len(length(Baldosas))) {
         Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
       }
 
@@ -757,7 +757,7 @@ Plot.Mapa <- function(
       pal  <- colorBin(Colors, domain = Polygons_Mpio@data$Statistic, bins = Cortes, na.color = colNA)
 
       Mapa <- leaflet(data = Polygons_Mpio) |> addTiles(attribution = Msj)
-      for (i in 1:length(Baldosas)) {
+      for (i in seq_len(length(Baldosas))) {
         Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
       }
 
@@ -822,7 +822,7 @@ Plot.Mapa <- function(
       Pal_Mpios  <- colorBin(palette = Colors_Mpios, domain = Polygons_Mpio@data$Statistic, bins = Cortes_Mpios, na.color = colNA)
 
       Mapa <- leaflet(data = Polygons_Mpio) |> addTiles(attribution = Msj)
-      for (i in 1:length(Baldosas)) {
+      for (i in seq_len(length(Baldosas))) {
         Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
       }
 
@@ -990,10 +990,7 @@ Plot.Mapa <- function(
         "8"  = ggthemes::theme_gdocs(),
         "9"  = ggthemes::theme_fivethirtyeight(),
         "10" = ggthemes::theme_economist(),
-        "11" = ggthemes::theme_solarized(),
-        "12" = ggtech::theme_tech(theme = "airbnb"),
-        "13" = ggtech::theme_tech(theme = "google"),
-        "14" = ggtech::theme_tech(theme = "X23andme")
+        "11" = ggthemes::theme_solarized()
       )
     } else { ThemeGG <- theme_DNPE() }
 

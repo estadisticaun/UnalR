@@ -332,7 +332,7 @@ Plot.Boxplot <- function(
           G1 = datos |> select({{ grupo1 }}) |> distinct() |> pull(),
           G2 = datos |> select({{ grupo2 }}) |> distinct() |> pull()
         )
-        allGrid = allGrid |> rename({{grupo1}} := G1, {{grupo2}} := G2)
+        allGrid <- allGrid |> rename({{grupo1}} := G1, {{grupo2}} := G2)
         dataComplete <- left_join(allGrid, datos, by = join_by({{ grupo1 }}, {{ grupo2 }}))
         varsInput <- datos |> select ( {{ grupo1 }}, {{ grupo2 }} ) |> colnames()
         message({
@@ -600,10 +600,7 @@ Plot.Boxplot <- function(
         "8"  = ggthemes::theme_gdocs(),
         "9"  = ggthemes::theme_fivethirtyeight(),
         "10" = ggthemes::theme_economist(),
-        "11" = ggthemes::theme_solarized(),
-        "12" = ggtech::theme_tech(theme = "airbnb"),
-        "13" = ggtech::theme_tech(theme = "google"),
-        "14" = ggtech::theme_tech(theme = "X23andme")
+        "11" = ggthemes::theme_solarized()
       )
     } else { ThemeGG <- theme_DNPE() }
 

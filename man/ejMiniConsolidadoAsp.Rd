@@ -11,7 +11,7 @@ filas y 5 columnas:
 'Variable', 'YEAR', 'SEMESTRE', 'Clase', 'Total'.
 }
 \source{
-Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.
+Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 }
 \usage{
 ejMiniConsolidadoAsp

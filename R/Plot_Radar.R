@@ -250,9 +250,9 @@ Plot.Radar <- function(
   categorias <- colnames(df)
 
   if (ordinal) {
-    Orden <- nrow(df):1; OrdenLegend <- "reversed"
+    Orden <- rev(seq_len(nrow(df))); OrdenLegend <- "reversed"
   } else {
-    Orden <- 1:nrow(df); OrdenLegend <- "normal"
+    Orden <- seq_len(nrow(df)); OrdenLegend <- "normal"
   }
 
   if (!(missingArg(colores) || length(colores) == nrow(df_Full[, 1]))) {
@@ -353,7 +353,7 @@ Plot.Radar <- function(
       Maximo  <- ifelse(is.nan(rango[2]), max(df_echarts[, -1]), rango[2])
       # https://echarts4r.john-coene.com/articles/get_started.html
       PlotRadar <- df_echarts |> e_charts_("name")
-      for (i in 1:length(Columns)) {
+      for (i in seq_len(length(Columns))) {
         PlotRadar <- PlotRadar |>
           e_radar_(serie = Columns[i], max = Maximo, name = Columns[i], legend = TRUE)
       }
@@ -410,7 +410,7 @@ Plot.Radar <- function(
         plty = plty, plwd = plwd, pfcol = scales::alpha(colores, 0.2),
         cglty = 1, cglwd = cglwd, cglcol = cglcol,
         axistype = 2, axislabcol = "#202020", vlcex = 0.8
-      );
+      )
       legend(
         x = "bottom", horiz = TRUE, legend = namesLegend, bty = "n", pch = 20,
         col = colores, cex = 0.9, text.col = "black", pt.cex = 3

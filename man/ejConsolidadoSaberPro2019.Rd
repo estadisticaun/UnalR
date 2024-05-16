@@ -11,7 +11,7 @@ filas y 7 columnas:
 'Variable', 'YEAR', 'Clase', 'n', 'Componente', 'Total', 'desv'.
 }
 \source{
-Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.
+Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 }
 \usage{
 ejConsolidadoSaberPro2019

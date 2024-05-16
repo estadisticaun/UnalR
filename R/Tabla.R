@@ -468,13 +468,13 @@ Tabla <- function(
     )
     DataFrame <- DataFrame |> mutate_at(rows, factor)
     # Custom Table Container (Nombre de los Encabezados)
-    Txt <- ""; j = 0
+    Txt <- ""; j <- 0
     if (!missingArg(columnNames)) {
-      if (nameFlag) { lastCol <- tail(columnNames, n = 1); j = 1 }
+      if (nameFlag) { lastCol <- tail(columnNames, n = 1); j <- 1 }
       for (i in 1:(length(columnNames)-j)) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "', columnNames[i], '"), ')) }
 
     } else {
-      for (i in 1:length(rows)) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "Col', i, '"), ')) }
+      for (i in seq_len(length(rows))) { Txt <- paste0(Txt, paste0('th(rowspan = 2, "Col', i, '"), ')) }
       if (nameFlag) { lastCol <- "Total" }
     }
 
@@ -562,7 +562,7 @@ Tabla <- function(
     )
 
     if (!missingArg(estilo)) {
-      for (i in 1:length(estilo)) {
+      for (i in seq_len(length(estilo))) {
         Temp <- do.call(formatStyle, append(list(table = TablaFinal), estilo[[i]]))
         TablaFinal <- Temp
       }
@@ -591,10 +591,10 @@ Tabla <- function(
     if (!missingArg(columnNames)) {
       originalCols <- colnames(DataFrame)
       if (nameFlag) {
-        colnames(DataFrame)[1:length(rows)] <- columnNames[1:(length(columnNames)-1)]
+        colnames(DataFrame)[seq_len(length(rows))] <- columnNames[1:(length(columnNames)-1)]
         colnames(DataFrame)[length(colnames(DataFrame))] <- tail(columnNames, n = 1)
       } else {
-        colnames(DataFrame)[1:length(rows)] <- columnNames
+        colnames(DataFrame)[seq_len(length(rows))] <- columnNames
       }
     }
 
@@ -636,7 +636,7 @@ Tabla <- function(
     }
     TablaFinal <- TablaFinal |> tab_options(column_labels.background.color = colorHead)
     if (!(missingArg(estilo) || is.null(estilo$Color))) {
-      for (i in 1:length(estilo$Color)) {
+      for (i in seq_len(length(estilo$Color))) {
         parms <- estilo$Color[[i]]
         TablaFinal <- TablaFinal |> data_color(columns = parms$columns, palette = parms$backgroundColor)
       }

@@ -19,32 +19,32 @@
 #' |   **Librería**  | **estilo$**                | [Plot.Series()] | [Plot.Barras()] | [Plot.Apiladas()] | [Plot.Boxplot()] | [Plot.Radar()] | [Plot.Treemap()] | [Plot.Torta()] | [Plot.Drilldown()] |
 #' |:---------------:|----------------------------|:---------------:|:---------------:|:-----------------:|:----------------:|:--------------:|:----------------:|:--------------:|:------------------:|
 #' |        —        | _gg.Tema_                  |        ×        |        ×        |         ×         |         ×        |                |                  |                |                    |
-#' |        ǀ        | _gg.Texto_                 |        ×        |        ×        |         ×         |         ×        |                |                  |                |                    |
-#' |        ǀ        | _gg.Legend_                |        ×        |                 |         ×         |         ×        |                |                  |                |                    |
-#' |        ǀ        | _gg.Linea_                 |        ×        |                 |                   |                  |                |                  |                |                    |
-#' |        ǀ        | _gg.Punto_                 |        ×        |                 |                   |                  |                |                  |                |                    |
-#' |        ǀ        | _gg.Bar_                   |                 |        ×        |         ×         |                  |                |                  |                |                    |
-#' |        ǀ        | _gg.VarWidth_              |                 |                 |                   |         ×        |                |                  |                |                    |
-#' |        ǀ        | _gg.OutShape_              |                 |                 |                   |         ×        |                |                  |                |                    |
-#' |        ǀ        | _gg.JitWidth_              |                 |                 |                   |         ×        |                |                  |                |                    |
-#' |        ǀ        | _gg.JitSize_               |                 |                 |                   |         ×        |                |                  |                |                    |
-#' |        ǀ        | _gg.Range_                 |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        l        | _gg.Texto_                 |        ×        |        ×        |         ×         |         ×        |                |                  |                |                    |
+#' |        l        | _gg.Legend_                |        ×        |                 |         ×         |         ×        |                |                  |                |                    |
+#' |        l        | _gg.Linea_                 |        ×        |                 |                   |                  |                |                  |                |                    |
+#' |        l        | _gg.Punto_                 |        ×        |                 |                   |                  |                |                  |                |                    |
+#' |        l        | _gg.Bar_                   |                 |        ×        |         ×         |                  |                |                  |                |                    |
+#' |        l        | _gg.VarWidth_              |                 |                 |                   |         ×        |                |                  |                |                    |
+#' |        l        | _gg.OutShape_              |                 |                 |                   |         ×        |                |                  |                |                    |
+#' |        l        | _gg.JitWidth_              |                 |                 |                   |         ×        |                |                  |                |                    |
+#' |        l        | _gg.JitSize_               |                 |                 |                   |         ×        |                |                  |                |                    |
+#' |        l        | _gg.Range_                 |                 |                 |                   |                  |        ×       |                  |                |                    |
 #' |   **ggplot2**   | _gg.plty_                  |                 |                 |                   |                  |        ×       |                  |                |                    |
-#' |        ǀ        | _gg.plwd_                  |                 |                 |                   |                  |        ×       |                  |                |                    |
-#' |        ǀ        | _gg.cglwd_                 |                 |                 |                   |                  |        ×       |                  |                |                    |
-#' |        ǀ        | _gg.cglcol_                |                 |                 |                   |                  |        ×       |                  |                |                    |
-#' |        ǀ        | _gg.fontsize.title_        |                 |                 |                   |                  |                |         ×        |                |                    |
-#' |        ǀ        | _gg.fontsize.labels_       |                 |                 |                   |                  |                |         ×        |                |                    |
-#' |        ǀ        | _gg.fontcolor.labels_      |                 |                 |                   |                  |                |         ×        |                |                    |
-#' |        ǀ        | _gg.border.lwds_           |                 |                 |                   |                  |                |         ×        |                |                    |
-#' |        ǀ        | _gg.border.col_            |                 |                 |                   |                  |                |         ×        |                |                    |
-#' |        ǀ        | _gg.lowerbound.cex.labels_ |                 |                 |                   |                  |                |         ×        |                |                    |
-#' |        ǀ        | _gg.force.print.labels_    |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        l        | _gg.plwd_                  |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        l        | _gg.cglwd_                 |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        l        | _gg.cglcol_                |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        l        | _gg.fontsize.title_        |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        l        | _gg.fontsize.labels_       |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        l        | _gg.fontcolor.labels_      |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        l        | _gg.border.lwds_           |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        l        | _gg.border.col_            |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        l        | _gg.lowerbound.cex.labels_ |                 |                 |                   |                  |                |         ×        |                |                    |
+#' |        l        | _gg.force.print.labels_    |                 |                 |                   |                  |                |         ×        |                |                    |
 #' |        —        | _gg.overlap.labels_        |                 |                 |                   |                  |                |         ×        |                |                    |
 #' |        »        | _hc.Tema_                  |        ×        |        ×        |         ×         |         ×        |                |         ×        |        ×       |          ×         |
-#' |        ǀ        | _hc.Credits_               |        ×        |        ×        |         ×         |         ×        |                |         ×        |        ×       |          ×         |
+#' |        l        | _hc.Credits_               |        ×        |        ×        |         ×         |         ×        |                |         ×        |        ×       |          ×         |
 #' | **highcharter** | _hc.BoxInfo_               |        ×        |                 |                   |                  |                |                  |                |                    |
-#' |        ǀ        | _hc.Slider_                |        ×        |                 |                   |                  |                |                  |                |                    |
+#' |        l        | _hc.Slider_                |        ×        |                 |                   |                  |                |                  |                |                    |
 #' |        »        | _hc.borderRadius_          |                 |                 |                   |                  |                |         ×        |                |                    |
 #' |        •        | _ply.Credits_              |        ×        |        ×        |         ×         |         ×        |        ×       |         ×        |        ×       |                    |
 #' |        °        | _ply.Legend_               |                 |        ×        |                   |                  |                |                  |        ×       |                    |
@@ -56,9 +56,9 @@
 #' |   **dygraphs**  | _dyg.LegendWidth_          |        ×        |                 |                   |                  |                |                  |                |                    |
 #' |        »        | _dyg.Resaltar_             |        ×        |                 |                   |                  |                |                  |                |                    |
 #' |        —        | _e.Tema_                   |                 |                 |                   |                  |        ×       |                  |                |                    |
-#' |        ǀ        | _e.Credits_                |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        l        | _e.Credits_                |                 |                 |                   |                  |        ×       |                  |                |                    |
 #' |  **echarts4r**  | _e.Forma_                  |                 |                 |                   |                  |        ×       |                  |                |                    |
-#' |        ǀ        | _e.LegType_                |                 |                 |                   |                  |        ×       |                  |                |                    |
+#' |        l        | _e.LegType_                |                 |                 |                   |                  |        ×       |                  |                |                    |
 #' |        —        | _e.LegLoc_                 |                 |                 |                   |                  |        ×       |                  |                |                    |
 #'
 #' @param datos Un data frame, no un objeto clase serie de tiempo o vector numérico.
@@ -122,12 +122,11 @@
 #'   * `dyg.Resaltar`: Si es `FALSE` (\emph{valor predeterminado}) no se resaltará
 #'     la serie en que se sitúa el cursor.
 #'   * `gg.Tema`: Modifica el tema con el cual se creará la serie. Los posibles
-#'     valores son un número entero entre \eqn{[1, 14]} el cual hace referencia
+#'     valores son un número entero entre \eqn{[1, 11]} el cual hace referencia
 #'     a diferentes temas disponibles para `ggplot2` (`theme_light`, `theme_bw`,
 #'     `theme_classic`, `theme_linedraw`, `theme_gray`, `theme_hc`, `theme_pander`,
-#'     `theme_gdocs`, `theme_fivethirtyeight`, `theme_economist`, `theme_solarized`,
-#'     `theme_tech(theme = "airbnb")`, `theme_tech(theme = "google")` y
-#'      `theme_tech(theme = "X23andme")` respectivamente).
+#'     `theme_gdocs`, `theme_fivethirtyeight`, `theme_economist` y `theme_solarized`
+#'     respectivamente).
 #'     El tema por defecto, al no ingresar valor alguno, es el construido por el
 #'     departamento `theme_DNPE`.
 #'   * `gg.Legend`: Lista que especifica la posición y orientación de la leyenda.
@@ -155,7 +154,8 @@
 #' su estructura a los agregados clásicos. En caso contrario le arrojara un error.
 #'
 #' Recuerde que puede usar más temas (\emph{cualquiera de hecho}) de los que se
-#' proporcionan para `ggplot2`. Por ejemplo, los de \href{https://github.com/hrbrmstr/hrbrthemes}{hrbrthemes}.
+#' proporcionan para `ggplot2`. Por ejemplo, los de \href{https://github.com/hrbrmstr/hrbrthemes}{hrbrthemes}
+#' o \href{https://github.com/ricardo-bion/ggtech}{ggtech}.
 #'
 #' @note
 #' A continuación, se consolida en una tabla amigable el listado, uso y disposición
@@ -164,21 +164,21 @@
 #'
 #' | **PARÁMETRO** | **VALOR** | **PARÁMETRO** |   **VALOR**   |    **PARÁMETRO**   |
 #' |:-------------:|:---------:|:-------------:|:-------------:|:------------------:|
-#' |       ǀ       |     Ξ     |               |       •       |       gg.Tema      |
-#' |       ǀ       |     Ξ     |               |       •       |      gg.Legend     |
-#' |       ǀ       |   _TRUE_  |               |       •       |      gg.Linea      |
-#' |       ǀ       |     Ξ     |               |       •       |      gg.Punto      |
-#' |       ǀ       |     Ξ     |               |       •       |      gg.Texto      |
-#' |       ǀ       |     Ξ     |               |       •       |      gg.Repel      |
-#' |       ǀ       |     Ο     |       ˃       | _highcharter_ |       hc.Tema      |
-#' |  **estatico** |     Ο     |       ˃       |       ¦       |     hc.BoxInfo     |
-#' |       ǀ       |     Ο     |       ˃       |       ¦       |      hc.Slider     |
-#' |       ǀ       |     Ο     |       ˃       |       ¦       |     hc.Credits     |
-#' |       ǀ       |  _FALSE_  |  **libreria** |    _plotly_   | ply.LegendPosition |
-#' |       ǀ       |     Ο     |       ˃       |       °       |     ply.Credits    |
-#' |       ǀ       |     Ο     |       ˃       |       °       |   ply.Interaction  |
-#' |       ǀ       |     Ο     |       ˃       |   _dygraphs_  |   dyg.LegendWidth  |
-#' |       ǀ       |     Ο     |       ˃       |       ʟ       |    dyg.Resaltar    |
+#' |               |     *     |               |       •       |       gg.Tema      |
+#' |               |     *     |               |       •       |      gg.Legend     |
+#' |               |   _TRUE_  |               |       •       |      gg.Linea      |
+#' |               |     *     |               |       •       |      gg.Punto      |
+#' |               |     *     |               |       •       |      gg.Texto      |
+#' |               |     *     |               |       •       |      gg.Repel      |
+#' |               |     O     |       ~       | _highcharter_ |       hc.Tema      |
+#' |  **estatico** |     O     |       _       |       ¦       |     hc.BoxInfo     |
+#' |               |     O     |       _       |       ¦       |      hc.Slider     |
+#' |               |     O     |       _       |       ¦       |     hc.Credits     |
+#' |               |  _FALSE_  |  **libreria** |    _plotly_   | ply.LegendPosition |
+#' |               |     O     |       _       |       °       |     ply.Credits    |
+#' |               |     O     |       _       |       °       |   ply.Interaction  |
+#' |               |     O     |       _       |   _dygraphs_  |   dyg.LegendWidth  |
+#' |               |     O     |       ~       |       L       |    dyg.Resaltar    |
 #'
 #' @returns
 #' Retorna la serie (*objeto widget de HTML*) creada. La clase del objeto retornado
@@ -572,7 +572,7 @@ Plot.Series <- function(
 
       FreqRelativa <- Relativo |> pivot_wider(names_from = {{categoria}}, values_from = Relativo)
       X <- tableHoriz$Fecha; PlotSeries <- plot_ly()
-      for (i in 1:length(categorias)) {
+      for (i in seq_len(length(categorias))) {
         if (freqRelativa) {
           strFormat <- "%{y} (%{text})"; sufijoY <- "%"
           Y    <- FreqRelativa[[categorias[i]]]
@@ -713,10 +713,7 @@ Plot.Series <- function(
         "8"  = ggthemes::theme_gdocs(),
         "9"  = ggthemes::theme_fivethirtyeight(),
         "10" = ggthemes::theme_economist(),
-        "11" = ggthemes::theme_solarized(),
-        "12" = ggtech::theme_tech(theme = "airbnb"),
-        "13" = ggtech::theme_tech(theme = "google"),
-        "14" = ggtech::theme_tech(theme = "X23andme")
+        "11" = ggthemes::theme_solarized()
       )
     } else { ThemeGG <- theme_DNPE() }
 

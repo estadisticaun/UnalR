@@ -378,7 +378,7 @@ Plot.Mundo <- function(
       pal  <- colorBin(Colors, bins = Cortes, na.color = colNA)
 
       Mapa <- leaflet(data = World_Final) |> addTiles(attribution = Msj)
-      for (i in 1:length(Baldosas)) {
+      for (i in seq_len(length(Baldosas))) {
         Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
       }
 
@@ -434,7 +434,7 @@ Plot.Mundo <- function(
       Pal_Binary <- colorBin(palette = colBinary, bins = c(0, 1, Inf), na.color = colNA)
 
       Mapa <- leaflet(data = World_Final) |> addTiles(attribution = Msj)
-      for (i in 1:length(Baldosas)) {
+      for (i in seq_len(length(Baldosas))) {
         Mapa <- Mapa |> addProviderTiles(provider = Baldosas[i], group = Baldosas.names[i])
       }
 
@@ -534,10 +534,7 @@ Plot.Mundo <- function(
         "8"  = ggthemes::theme_gdocs(),
         "9"  = ggthemes::theme_fivethirtyeight(),
         "10" = ggthemes::theme_economist(),
-        "11" = ggthemes::theme_solarized(),
-        "12" = ggtech::theme_tech(theme = "airbnb"),
-        "13" = ggtech::theme_tech(theme = "google"),
-        "14" = ggtech::theme_tech(theme = "X23andme")
+        "11" = ggthemes::theme_solarized()
       )
     } else { ThemeGG <- theme_DNPE() }
 

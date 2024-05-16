@@ -7,7 +7,7 @@
 #' `r format(nrow(ejConsolidadoGrad), big.mark = ".", decimal.mark = ",")` filas
 #' y `r ncol(ejConsolidadoGrad)` columnas:
 #' `r paste0("'", colnames(ejConsolidadoGrad), "'", collapse = ", ")`.
-#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/8qk3y}{aquí}.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 #' @examplesIf require("dplyr")
 #' # library(dplyr)
 #' head(ejConsolidadoGrad)
@@ -24,7 +24,7 @@
 #' `r format(nrow(ejGraduados), big.mark = ".", decimal.mark = ",")` filas y
 #' `r ncol(ejGraduados)` columnas:
 #' `r paste0("'", colnames(ejGraduados), "'", collapse = ", ")`.
-#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/8qk3y}{aquí}.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 #' @examplesIf require("dplyr")
 #' # library(dplyr)
 #' ejGraduados[1:5, 1:10]
@@ -39,7 +39,7 @@
 #' `r format(nrow(ejConsolidadoSaberPro2019), big.mark = ".", decimal.mark = ",")`
 #' filas y `r ncol(ejConsolidadoSaberPro2019)` columnas:
 #' `r paste0("'", colnames(ejConsolidadoSaberPro2019), "'", collapse = ", ")`.
-#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 #' @examplesIf require("dplyr")
 #' # library(dplyr)
 #' head(ejConsolidadoSaberPro2019)
@@ -55,7 +55,7 @@
 #' `r format(nrow(ejSaberPro2020), big.mark = ".", decimal.mark = ",")` filas y
 #' `r ncol(ejSaberPro2020)` columnas:
 #' `r paste0("'", colnames(ejSaberPro2020), "'", collapse = ", ")`.
-#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 #' @examplesIf require("dplyr")
 #' # library(dplyr)
 #' ejSaberPro2020[1:5, 1:10]
@@ -73,7 +73,7 @@
 #' `r format(nrow(ejMiniConsolidadoAsp), big.mark = ".", decimal.mark = ",")`
 #' filas y `r ncol(ejMiniConsolidadoAsp)` columnas:
 #' `r paste0("'", colnames(ejMiniConsolidadoAsp), "'", collapse = ", ")`.
-#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 #' @examplesIf require("dplyr")
 #' # library(dplyr)
 #' head(ejMiniConsolidadoAsp)
@@ -91,7 +91,7 @@
 #' `r format(nrow(ejMiniAspirantesPre), big.mark = ".", decimal.mark = ",")`
 #' filas y `r ncol(ejMiniAspirantesPre)` columnas:
 #' `r paste0("'", colnames(ejMiniAspirantesPre), "'", collapse = ", ")`.
-#' @source Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.
+#' @source Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 #' @examplesIf require("dplyr")
 #' # library(dplyr)
 #' head(ejMiniAspirantesPre)

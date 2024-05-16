@@ -11,7 +11,7 @@ cv <- function(x, na.rm = TRUE) {
 }
 vars2vec <- function(quosure) {
   Abc <- NULL
-  for (i in 1:length(quosure)) { Abc <- c(Abc, rlang::quo_name(quosure[[i]])) }
+  for (i in seq_len(length(quosure))) { Abc <- c(Abc, rlang::quo_name(quosure[[i]])) }
   return(Abc)
 }
 Spanish.Highcharter <- function() {
@@ -37,7 +37,7 @@ Spanish.Highcharter <- function() {
   options(highcharter.lang = lang)
 }
 addMaxMin <- function(df, min, max) {
-  Max_Min <- as.data.frame(matrix(c(max, min), ncol = length(colnames(df)), nrow = 2, byrow = F))
+  Max_Min <- as.data.frame(matrix(c(max, min), ncol = length(colnames(df)), nrow = 2, byrow = FALSE))
   colnames(Max_Min) <- colnames(df)
   rownames(Max_Min) <- c("Max", "Min")
   return(rbind(Max_Min, df))
@@ -94,6 +94,8 @@ theme_DNPE <- function() {
       plot.background   = element_blank()
     )
 }
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #' @importFrom stats na.omit
 .NAmat2xyList <- function(xy) {
   NAs <- unclass(attr(na.omit(xy), "na.action"))
@@ -142,24 +144,24 @@ theme_DNPE <- function() {
       ti <- i
   }
   if ((ti > 1) & (ti < nvx)) {
-    dx0 = a[ti - 1] - a[ti]
-    dx1 = a[ti + 1] - a[ti]
-    dy0 = b[ti - 1] - b[ti]
-    dy1 = b[ti + 1] - b[ti]
+    dx0 <- a[ti - 1] - a[ti]
+    dx1 <- a[ti + 1] - a[ti]
+    dy0 <- b[ti - 1] - b[ti]
+    dy1 <- b[ti + 1] - b[ti]
   }
   else if (ti == nvx) {
-    dx0 = a[ti - 1] - a[ti]
-    dx1 = a[1] - a[ti]
-    dy0 = b[ti - 1] - b[ti]
-    dy1 = b[1] - b[ti]
+    dx0 <- a[ti - 1] - a[ti]
+    dx1 <- a[1] - a[ti]
+    dy0 <- b[ti - 1] - b[ti]
+    dy1 <- b[1] - b[ti]
   }
   else {
-    dx1 = a[2] - a[1]
-    dx0 = a[nvx] - a[1]
-    dy1 = b[2] - b[1]
-    dy0 = b[nvx] - b[1]
+    dx1 <- a[2] - a[1]
+    dx0 <- a[nvx] - a[1]
+    dy1 <- b[2] - b[1]
+    dy0 <- b[nvx] - b[1]
   }
-  v3 = ((dx0 * dy1) - (dx1 * dy0))
+  v3 <- ((dx0 * dy1) - (dx1 * dy0))
   if (v3 > 0) {
     return(as.integer(1))
   } else {
@@ -181,15 +183,15 @@ map2SpatialPolygons <- function(map, IDs, proj4string = CRS(as.character(NA)), c
   # assemble the list of Srings
   Srl <- vector(mode = "list", length = n)
   drop_Polygons <- logical(length = n)
-  for (i in 1:n) {
+  for (i in seq_len(n)) {
     nParts <- length(belongs[[i]])
     srl <- vector(mode = "list", length = nParts)
     ars <- logical(length = nParts)
-    for (j in 1:nParts) {
+    for (j in seq_len(nParts)) {
       crds <- xyList[[belongs[[i]][j]]]
       if (nrow(crds) == 2) { crds <- rbind(crds, crds[1,]) }
       if (nrow(crds) == 3) { crds <- rbind(crds, crds[1,]) }
-      if (.ringDirxy_gpc(crds) == -1) { crds <- crds[nrow(crds):1,] }
+      if (.ringDirxy_gpc(crds) == -1) { crds <- crds[rev(seq_len(nrow(crds))),] }
       srl[[j]] <- sp::Polygon(coords = crds, hole = FALSE)
       ars[j] <- slot(srl[[j]], "area") > 0
     }
@@ -210,4 +212,88 @@ map2SpatialPolygons <- function(map, IDs, proj4string = CRS(as.character(NA)), c
   if (length(Srl) <= 0L) { stop("map2SpatialPolygons: no Polygons output") }
   res <- sp::as.SpatialPolygons.PolygonsList(Srl, proj4string = proj4string)
   res
+}
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#' @importFrom jsonlite fromJSON toJSON
+#' @importFrom gridSVG grid.export
+#' @importFrom data.tree as.Node
+#' @importFrom XML xpathSApply saveXML
+d3tree <- function(data = NULL, rootname = NULL, id = "id", celltext = "name",
+                   valueField = "size", width = NULL, height = NULL)
+{
+  meta   <- NULL
+  legend <- NULL
+  if (inherits(data, "list") && names(data)[1] == "tm") {
+    meta   <- data[-1]
+    data   <- convert_treemap(data$tm, ifelse(!is.null(rootname), rootname, deparse(substitute(data))))
+    legend <- extract_legend()
+  }
+  if (inherits(data, c("character", "connection"))) {
+    data <- jsonlite::toJSON(jsonlite::fromJSON(data), auto_unbox = TRUE, dataframe = "rows")
+  }
+  x <- list(
+    data = data, meta = meta,
+    options = list(id = id, celltext = celltext, valueField = valueField)
+  )
+  htmlwidgets::createWidget(
+    name = "d3tree", x, width = width, height = height, package = "d3treeR"
+  )
+}
+
+d3tree2 <- function(data = NULL, rootname = NULL, celltext = "name", id = "id",
+                    valueField = "size", clickAction = NULL, width = NULL, height = NULL)
+{
+  meta   <- NULL
+  legend <- NULL
+  if (inherits(data, "list") && names(data)[1] == "tm") {
+    meta   <- data[-1]
+    data   <- convert_treemap(data$tm, ifelse(!is.null(rootname), rootname, deparse(substitute(data))))
+    legend <- extract_legend()
+  }
+  if (inherits(data, c("character", "connection"))) {
+    data <- jsonlite::toJSON(jsonlite::fromJSON(data), auto_unbox = TRUE, dataframe = "rows")
+  }
+  if (is.character(clickAction) && !inherits(clickAction, "JS_EVAL")) {
+    clickAction <- htmlwidgets::JS(clickAction)
+  }
+  x <- list(
+    data = data, meta = meta, legend = legend,
+    options = list(celltext = celltext, id = id, valueField = valueField, clickAction = clickAction)
+  )
+  htmlwidgets::createWidget(
+    name = "d3tree2", x, width = width, height = height, package = "d3treeR"
+  )
+}
+
+convert_treemap <- function(treemap, rootname = "root") {
+  attrPos <- match("vSize", names(treemap))
+  treemap <- as.data.frame(lapply(treemap, function(x) {
+    if (is.factor(x)) { as.character(x) } else { x }
+  }), stringsAsFactors = FALSE)
+  if (attrPos > 2) {
+    treemap$pathString <- apply(
+      treemap[, 1:(attrPos - 1)], MARGIN = 1,
+      function(row) {
+        paste0(c(rootname, row[which(!is.na(row))]), sep = "/~>/", collapse = "")
+      }
+    )
+  }
+  else { treemap$pathString <- paste(rootname, treemap[, 1], sep = "/~>/") }
+  dt <- data.tree::as.Node(treemap[, -(1:(attrPos - 1))], pathDelimiter = "/~>/")
+  dt$Set(id = 1:dt$totalCount)
+  dt$Set(size = dt$Get("vSize"))
+  as.list(dt, unname = TRUE, mode = "explicit")
+}
+
+extract_legend <- function() {
+  if (!is.null(grid::grid.grep(".*legend.*", viewports = TRUE, grep = TRUE, no.match = NULL))) {
+    suppressWarnings(
+      XML::xpathSApply(
+        gridSVG::grid.export(name = NULL)$svg,
+        "*/*/*[local-name()='g' and starts-with(@id,'legend')]",
+        XML::saveXML
+      )
+    )
+  }
 }

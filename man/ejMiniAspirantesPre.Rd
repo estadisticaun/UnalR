@@ -11,7 +11,7 @@ filas y 6 columnas:
 'Serie', 'PTOTAL', 'TIPO_INS', 'INS_SEDE_NOMBRE', 'ADM_SEDE_NOMBRE', 'FACULTAD'.
 }
 \source{
-Para obtener más detalle de los metadatos consulte \href{https://n9.cl/4hoq}{aquí}.
+Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 }
 \usage{
 ejMiniAspirantesPre

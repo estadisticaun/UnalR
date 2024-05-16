@@ -24,9 +24,9 @@
 #' @param metodo Cadena de caracteres indicando el diseño con el cual se realizará
 #'   el gráfico (*en el caso de ingresar dos niveles o más*). Los valores permitidos
 #'   son `"Classic"` (*valor predeterminado*), `"Classic2"`, `"Sunburst"` y
-#'   `"Sunburst2"`, así se usará las funciones [d3tree()][d3treeR::d3tree()],
-#'   [d3tree2()][d3treeR::d3tree2()], [sunburst()][sunburstR::sunburst()] y
-#'   [sund2b()][sunburstR::sund2b()] respectivamente.
+#'   `"Sunburst2"`, así se usará las funciones d3treeR::d3tree(), d3treeR::d3tree2(),
+#'   [sunburst()][sunburstR::sunburst()] y [sund2b()][sunburstR::sund2b()]
+#'   respectivamente.
 #' @param estadistico Igual uso que en [Plot.Mapa()]
 #' @param colores Igual uso que en [Plot.Series()], con algunos matices, cuando
 #'   usamos `Highcharter` y nos encontramos en el caso de un nivel y especificamos
@@ -213,7 +213,6 @@
 #'
 #' @import plotly
 #' @import treemap
-#' @import d3treeR
 #' @import d3r
 #' @import sunburstR
 #' @import dplyr
@@ -390,7 +389,7 @@ Plot.Treemap <- function(
       }
 
       Figure <- df |>
-        treemap(index = head(names(df), -1), vSize = "n", type = "index", palette = colores, draw = FALSE)
+        treemap::treemap(index = head(names(df), -1), vSize = "n", type = "index", palette = colores, draw = FALSE)
       grDevices::dev.off()
 
       if (Method %in% c("Classic", "Classic2")) {
@@ -404,7 +403,7 @@ Plot.Treemap <- function(
           }
         )
       } else {
-        tmNest <- d3_nest(data = Figure$tm, value_cols = colnames(Figure$tm)[-(1:length(variables))])
+        tmNest <- d3r::d3_nest(data = Figure$tm, value_cols = colnames(Figure$tm)[-(seq_len(length(variables)))])
         if (Method == "Sunburst") {
           if (!(missingArg(estilo) || is.null(estilo$sun.Color))) {
             Colores <- estilo$sun.Color
@@ -437,9 +436,9 @@ Plot.Treemap <- function(
           Text <- "function(nodedata, size, percent) {
                    return '<span style=\"font-weight: bold;\">' + nodedata.name + ':</span>' + ' ' + size
                 }"
-          PlotTreemap <- sund2b(
+          PlotTreemap <- sunburstR::sund2b(
             data = tmNest, colors = Colores, valueField = "vSize",
-            tooltip = sund2bTooltip(html = htmlwidgets::JS(Text)),
+            tooltip = sunburstR::sund2bTooltip(html = htmlwidgets::JS(Text)),
             showLabels = textNode, width = "100%"
           )
         }
@@ -480,7 +479,7 @@ Plot.Treemap <- function(
       0.5, estilo$gg.overlap.labels
     )
 
-    PlotTreemap <- treemap(
+    PlotTreemap <- treemap::treemap(
       df, index = head(names(df), -1), vSize = "n", type = "index",
       palette = colores, title = titulo, fontsize.title = fontsize.title,
       fontsize.labels = fontsize.labels, fontcolor.labels = fontcolor.labels,

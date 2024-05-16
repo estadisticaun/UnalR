@@ -230,7 +230,7 @@ Tabla.General <- function(
   )
 
   if (!missingArg(estilo)) {
-    for (i in 1:length(estilo)) {
+    for (i in seq_len(length(estilo))) {
       Temp <- do.call(formatStyle, append(list(table = TablaFinal), estilo[[i]]))
       TablaFinal <- Temp
     }

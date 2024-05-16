@@ -11,7 +11,7 @@ Un data frame (\emph{data.frame, tbl_df o tbl}) con
 'YEAR', 'SEMESTRE', 'YEAR_MAT', 'SEMESTRE_MAT', 'TIPO_NIVEL', 'NIVEL', 'DEP_NAC', 'COD_DEP_NAC', 'CIU_NAC', 'COD_CIU_NAC', 'LON_CIU_NAC', 'LAT_CIU_NAC', 'DEP_PROC', 'COD_DEP_PROC', 'CIU_PROC', 'COD_CIU_PROC', 'LON_CIU_PROC', 'LAT_CIU_PROC', 'CODS_NAC', 'CODN_NAC', 'NACIONALIDAD', 'EDAD_MOD', 'CAT_EDAD', 'SEXO', 'ESTRATO_ORIG', 'ESTRATO', 'TIPO_COL', 'PBM_ORIG', 'PBM', 'SNIES_SEDE_ADM', 'SEDE_NOMBRE_ADM', 'SNIES_SEDE_MAT', 'SEDE_NOMBRE_MAT', 'ADM_PEAMA_ANDINA', 'MOD_ADM', 'TIPO_ADM', 'PAES', 'PEAMA', 'FACULTAD', 'FACULTAD_S', 'SNIES_PROGRA', 'PROGRAMA', 'PROGRAMA_S', 'AREAC_SNIES', 'CA_CINE', 'CD_CINE', 'AREA_CINE', 'SNP', 'PUNTAJE_GLOBAL', 'PUNT_COMP_CIUD', 'NIVEL_COMP_CIUD', 'PUNT_COMU_ESCR', 'NIVEL_COMU_ESCR', 'PUNT_INGLES', 'NIVEL_INGLES', 'PUNT_LECT_CRIT', 'NIVEL_LECT_CRIT', 'PUNT_RAZO_CUANT', 'NIVEL_RAZO_CUANT'.
 }
 \source{
-Para obtener más detalle de los metadatos consulte \href{https://n9.cl/c08al}{aquí}.
+Para obtener más detalle de los metadatos consulte \href{https://estadisticaun.github.io/DabiertosUNAL/}{aquí}.
 }
 \usage{
 ejSaberPro2020

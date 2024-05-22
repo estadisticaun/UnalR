@@ -283,9 +283,10 @@
 #'   estilo    = list(hc.Tema = 1, hc.Credits = Msj)
 #' )
 #'
-#' @examplesIf all(require("ggplot2"), require("magick"), require("cowplot"))
+#' @examplesIf all(FALSE)
 #' # ---------------------------------------------------------------------------
 #' # Ejemplo usando el caso estático (ggplot2)
+#' # library("magick"); library("cowplot")
 #' txtA <- "EVOLUCI\u00d3N DEL N.\u00ba DE GRADUADOS \u00d7 SEDE"
 #' txtB <- "\nComportamiento anual (exceptuando el caso del 2021)."
 #' fig1 <- Plot.Series(
@@ -333,7 +334,7 @@
 #'   invertir     = FALSE,
 #'   ylim         = c(100, 2000),
 #'   colores      = misColores,
-#'   titulo       = txtA,
+#'   titulo       = "EVOLUCI\u00d3N DEL N.\u00ba DE GRADUADOS \u00d7 SEDE",
 #'   labelY       = "N\u00famero de Graduados",
 #'   estatico     = TRUE,
 #'   estilo       = list(

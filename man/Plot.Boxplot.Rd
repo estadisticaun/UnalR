@@ -224,6 +224,7 @@ Plot.Boxplot(
   libreria = "highcharter",
   estilo   = list(LegendTitle = "Programa:", hc.Tema = 6, hc.Credits = Msj2)
 )
+\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 Plot.Boxplot(
   datos    = iris,
@@ -257,7 +258,7 @@ Plot.Boxplot(
   )
 ) -> Advertencia
 suppressWarnings(print(Advertencia))
-
+\dontshow{\}) # examplesIf}
 \dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # library(dplyr)
@@ -286,7 +287,7 @@ Plot.Boxplot(
   libreria      = "plotly"
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("pals")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 # library(pals)

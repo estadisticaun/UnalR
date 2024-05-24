@@ -404,6 +404,7 @@ Plot.Radar <- function(
 
     {
       parDefault <- par(no.readonly = TRUE)
+      on.exit(par(parDefault))
       op <- par(mar = c(1, 1, 2.2, 1))
       radarchart(
         dfFinal, maxmin = MaxMin, title = titulo, pcol = colores,

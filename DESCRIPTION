@@ -14,6 +14,14 @@ Description: Una herramienta rápida y consistente para la disposición de micro
     tipos de gráficos con una sintaxis altamente configurable y simple. Entre estos
     encontramos la visualización de tablas HTML, series, gráficos de barras y
     circulares, mapas, etc. Todo lo anterior apoyado en bibliotecas de JavaScript.
+    English: A fast and consistent tool for the arrangement of microdata and the
+    visualization of official figures and statistics from the National University
+    of Colombia <https://unal.edu.co>. It includes a library of graphical functions,
+    both static and interactive, offering numerous types of charts with a highly
+    configurable and simple syntax. Among these, we find the visualization of HTML
+    tables, series, bar and pie charts, maps, etc. It provides the capability to
+    transition from the interactive to the dynamic world and from one library to
+    another without changing function or syntax.
 License: GPL (>= 3)
 URL: https://unal.edu.co, https://estadisticas.unal.edu.co/home/, https://github.com/estadisticaun/UnalR
 BugReports: https://github.com/estadisticaun/UnalR/issues

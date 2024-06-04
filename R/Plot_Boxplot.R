@@ -112,7 +112,6 @@
 #'   libreria = "highcharter",
 #'   estilo   = list(LegendTitle = "Programa:", hc.Tema = 6, hc.Credits = Msj2)
 #' )
-#' @examplesIf all(FALSE)
 #' # ---------------------------------------------------------------------------
 #' Plot.Boxplot(
 #'   datos    = iris,
@@ -175,7 +174,7 @@
 #'   libreria      = "plotly"
 #' )
 #'
-#' @examplesIf all(FALSE)
+#' @examplesIf require("pals")
 #' # ---------------------------------------------------------------------------
 #' # Ejemplo usando el caso estático (ggplot2)
 #' # library(pals)

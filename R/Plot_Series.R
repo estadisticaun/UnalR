@@ -186,7 +186,7 @@
 #' a la clase "highchart", "plotly" o "dygraphs".
 #'
 #' @examplesIf all(require("tibble"), require("dplyr"))
-# Ejemplo generalizado (sin uso de un consolidado como input)
+#  # Ejemplo generalizado (sin uso de un consolidado como input)
 #' # library("tibble"); library("dplyr")
 #' set.seed(42)
 #' Blood <- tibble(
@@ -283,7 +283,7 @@
 #'   estilo    = list(hc.Tema = 1, hc.Credits = Msj)
 #' )
 #'
-#' @examplesIf all(FALSE)
+#' @examplesIf all(require("ggplot2"), require("magick"), require("cowplot"))
 #' # ---------------------------------------------------------------------------
 #' # Ejemplo usando el caso estático (ggplot2)
 #' # library("magick"); library("cowplot")

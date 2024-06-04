@@ -144,7 +144,7 @@
 #' Retorna el mapa (*objeto widget de HTML*) creado mediante `Leaflet`, el cual
 #' pertenece a la clase "leaflet" y "htmlwidget".
 #'
-#' @examplesIf all(FALSE)
+#' @examplesIf require("dplyr")
 #' # library(dplyr)
 #' df <- ejGraduados |> filter(YEAR == 2021) |>
 #'   select(
@@ -220,7 +220,7 @@
 #'     ),
 #'     showSedes     = FALSE
 #'   )
-#' @examplesIf all(FALSE)
+#' @examplesIf require("cowplot")
 #' # ---------------------------------------------------------------------------
 #' # Ejemplo usando el caso estático (ggplot2)
 #' # library(cowplot)
@@ -300,11 +300,10 @@
 #' # ggsave("COL.png", width = 12, height = 10, dpi = 550)
 #' # Caso 2:
 #' #   Conservando todo el departamento y sus distancias reales (no se modifica su polígono espacial)
-#' # ggdraw() +
-#' #   draw_plot(listMaps$M_COL) +
-#' #   draw_plot(listMaps$M_SanAndres, x = 0.27, y = 0.35, width = 0.08)
+#' ggdraw() +
+#'   draw_plot(listMaps$M_COL) +
+#'   draw_plot(listMaps$M_SanAndres, x = 0.27, y = 0.35, width = 0.08)
 #' # ggsave("COL.png", width = 12, height = 10, dpi = 550)
-#' @examplesIf all(FALSE)
 #' # ---------------------------------------------------------------------------
 #' AreaVichada <- tibble(
 #'   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)

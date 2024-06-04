@@ -321,7 +321,7 @@ Plot.Series(
   estilo    = list(hc.Tema = 1, hc.Credits = Msj)
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("ggplot2"), require("magick"), require("cowplot"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 # library("magick"); library("cowplot")

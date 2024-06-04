@@ -3,6 +3,7 @@
 <!-- badges: start -->
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version-ago/UnalR)](https://cran.r-project.org/package=UnalR)
 [![CRAN RStudio Mirror Downloads](https://cranlogs.r-pkg.org/badges/UnalR?color=green)](https://www.r-pkg.org/pkg/UnalR)
+[![CRAN RStudio Mirror Downloads](https://cranlogs.r-pkg.org/badges/grand-total/UnalR)](https://www.r-pkg.org/pkg/UnalR)
 [![R-CMD-check](https://github.com/estadisticaun/UnalR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/estadisticaun/UnalR/actions/workflows/R-CMD-check.yaml)
 [![test-coverage](https://github.com/estadisticaun/UnalR/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/estadisticaun/UnalR/actions/workflows/test-coverage.yaml)
 [![Codecov test coverage](https://codecov.io/gh/estadisticaun/UnalR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/estadisticaun/UnalR?branch=master)
@@ -18,10 +19,10 @@ El paquete `UnalR` permanecerá en su estado actual y se mantendrá solo con cor
 Puede instalar la versión publicada de `UnalR` (*versión menor*) desde [GitHub](https://github.com/) con:
 
 ``` r
-# install.packages("devtools")
+# Versión oficial (estable)
+install.packages("UnalR")
+# Última versión (dev)
 devtools::install_github("estadisticaun/UnalR")
-
-# install.packages("remotes")
 remotes::install_github("estadisticaun/UnalR")
 ```
 
@@ -33,38 +34,61 @@ Es difícil describir de manera sucinta cómo funciona `UnalR` porque encarna un
 
 ``` r
 library(UnalR)
-example(topic = Tabla, package = "UnalR")
+example(topic = Plot.Apiladas, package = "UnalR")
 ```
-![](man/figures/PlotExample1.png)
-
-``` r
-example(topic = Plot.Series, package = "UnalR")
-```
-![](man/figures/PlotExample2.png)
+![](man/figures/ExampleApiladas1.png)
+![](man/figures/ExampleApiladas2.png)
 
 ``` r
 example(topic = Plot.Barras, package = "UnalR")
 ```
-![](man/figures/PlotExample3.png)
-
-``` r
-example(topic = Plot.Mapa, package = "UnalR")
-```
-![](man/figures/PlotExample4.png)
-![](man/figures/PlotExample5.png)
+![](man/figures/ExampleBarras1.png)
+![](man/figures/ExampleBarras2.png)
 
 ``` r
 example(topic = Plot.Boxplot, package = "UnalR")
 ```
-![](man/figures/PlotExample6.PNG)
+![](man/figures/ExampleBoxplot1.png)
+![](man/figures/ExampleBoxplot2.png)
+![](man/figures/ExampleBoxplot3.png)
+
+``` r
+example(topic = PPlot.Histograma, package = "UnalR")
+```
+![](man/figures/ExampleHistograma1.jpeg)
+![](man/figures/ExampleHistograma2.jpeg)
+
+``` r
+example(topic = Plot.Mapa, package = "UnalR")
+```
+![](man/figures/ExampleMapa1.png)
+![](man/figures/ExampleMapa2.png)
+
+``` r
+example(topic = Plot.Mundo, package = "UnalR")
+```
+![](man/figures/ExampleMundo1.jpeg)
+![](man/figures/ExampleMundo2.jpeg)
+![](man/figures/ExampleMundo3.jpeg)
+
+``` r
+example(topic = Plot.Series, package = "UnalR")
+```
+![](man/figures/ExampleSeries1.png)
+![](man/figures/ExampleSeries2.png)
+
+``` r
+example(topic = Tabla, package = "UnalR")
+```
+![](man/figures/ExampleTabla1.png)
 
 ``` r
 example(topic = Plot.Treemap, package = "UnalR")
 ```
-![](man/figures/PlotExample7.PNG)
-![](man/figures/PlotExample8.PNG)
-![](man/figures/PlotExample9.PNG)
-![](man/figures/PlotExample10.PNG)
+![](man/figures/ExampleTreemap1.PNG)
+![](man/figures/ExampleTreemap2.PNG)
+![](man/figures/ExampleTreemap3.PNG)
+![](man/figures/ExampleTreemap4.PNG)
 
 ## Licencia
 

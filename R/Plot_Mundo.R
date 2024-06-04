@@ -46,7 +46,21 @@
 #'   textSize = 4,
 #'   limpio   = FALSE
 #' )
-#' @examplesIf all(FALSE)
+#' # ---------------------------------------------------------------------------
+#' Plot.Mundo(
+#'   datos    = LATAM,
+#'   paises   = Country,
+#'   variable = PIB,
+#'   tipo     = "SiNoPais",
+#'   titulo   = "PIB 2023-Q1",
+#'   centroideMapa = "Senegal",
+#'   colores  = c("#45C9FF", "#FF153F"),
+#'   opacidad = 0.6,
+#'   colBorde = "#3DBC25",
+#'   compacto = FALSE,
+#'   textSize = 10,
+#'   limpio   = FALSE
+#' )
 #' # ---------------------------------------------------------------------------
 #' set.seed(123)
 #' LATAM <- data.frame(
@@ -64,21 +78,6 @@
 #'   naTo0    = FALSE,
 #'   estatico = TRUE,
 #'   estilo   = list(Style = NA, Theme = 2)
-#' )
-#' # ---------------------------------------------------------------------------
-#' Plot.Mundo(
-#'   datos    = LATAM,
-#'   paises   = Country,
-#'   variable = PIB,
-#'   tipo     = "SiNoPais",
-#'   titulo   = "PIB 2023-Q1",
-#'   centroideMapa = "Senegal",
-#'   colores  = c("#45C9FF", "#FF153F"),
-#'   opacidad = 0.6,
-#'   colBorde = "#3DBC25",
-#'   compacto = FALSE,
-#'   textSize = 10,
-#'   limpio   = FALSE
 #' )
 #' # ---------------------------------------------------------------------------
 #' Plot.Mundo(

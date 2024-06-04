@@ -214,7 +214,7 @@ es decir, la pareja formada por \verb{(depto, mpio)} debe corresponder a un indi
 En los argumentos no se acepta la entrada de objetos espaciales o polígonos.
 }
 \examples{
-\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # library(dplyr)
 df <- ejGraduados |> filter(YEAR == 2021) |>
   select(
@@ -292,7 +292,7 @@ ejSaberPro2020 \%>\%
     showSedes     = FALSE
   )
 \dontshow{\}) # examplesIf}
-\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("cowplot")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 # library(cowplot)
@@ -373,12 +373,10 @@ ggdraw() +
 # ggsave("COL.png", width = 12, height = 10, dpi = 550)
 # Caso 2:
 #   Conservando todo el departamento y sus distancias reales (no se modifica su polígono espacial)
-# ggdraw() +
-#   draw_plot(listMaps$M_COL) +
-#   draw_plot(listMaps$M_SanAndres, x = 0.27, y = 0.35, width = 0.08)
+ggdraw() +
+  draw_plot(listMaps$M_COL) +
+  draw_plot(listMaps$M_SanAndres, x = 0.27, y = 0.35, width = 0.08)
 # ggsave("COL.png", width = 12, height = 10, dpi = 550)
-\dontshow{\}) # examplesIf}
-\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 AreaVichada <- tibble(
   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)

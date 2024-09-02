@@ -1,93 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Agregar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ejConsolidadoGrad.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ejConsolidadoSaberPro2019.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ejGraduados.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ejMiniAspirantesPre.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ejMiniConsolidadoAsp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ejSaberPro2020.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Apiladas.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Barras.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Boxplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Drilldown.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Histograma.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Mapa.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Mundo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Radar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Series.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Torta.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Plot.Treemap.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_example.html</loc>
-  </url>
-  <url>
-    <loc>/reference/StaticPlot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Tabla.General.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Tabla.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Tabla.SaberPro.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/Agregar.html</loc></url>
+<url><loc>/reference/ejConsolidadoGrad.html</loc></url>
+<url><loc>/reference/ejConsolidadoSaberPro2019.html</loc></url>
+<url><loc>/reference/ejGraduados.html</loc></url>
+<url><loc>/reference/ejMiniAspirantesPre.html</loc></url>
+<url><loc>/reference/ejMiniConsolidadoAsp.html</loc></url>
+<url><loc>/reference/ejSaberPro2020.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/pipe.html</loc></url>
+<url><loc>/reference/Plot.Apiladas.html</loc></url>
+<url><loc>/reference/Plot.Barras.html</loc></url>
+<url><loc>/reference/Plot.Boxplot.html</loc></url>
+<url><loc>/reference/Plot.Drilldown.html</loc></url>
+<url><loc>/reference/Plot.Histograma.html</loc></url>
+<url><loc>/reference/Plot.Mapa.html</loc></url>
+<url><loc>/reference/Plot.Mundo.html</loc></url>
+<url><loc>/reference/Plot.Radar.html</loc></url>
+<url><loc>/reference/Plot.Series.html</loc></url>
+<url><loc>/reference/Plot.Torta.html</loc></url>
+<url><loc>/reference/Plot.Treemap.html</loc></url>
+<url><loc>/reference/read_example.html</loc></url>
+<url><loc>/reference/StaticPlot.html</loc></url>
+<url><loc>/reference/Tabla.General.html</loc></url>
+<url><loc>/reference/Tabla.html</loc></url>
+<url><loc>/reference/Tabla.SaberPro.html</loc></url>
 </urlset>
+

@@ -33,6 +33,8 @@ Spanish.Highcharter <- function() {
   lang$loading      <- "Cargando..."
   lang$noData       <- "No hay informaci\u00f3n para mostrar"
   lang$drillUpText  <- "<< Volver a {series.name}"
+  lang$decimalPoint <- ','
+  lang$thousandsSep <- '.'
 
   options(highcharter.lang = lang)
 }

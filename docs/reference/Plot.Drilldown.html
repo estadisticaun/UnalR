@@ -14,7 +14,7 @@ internamente JavaScript."><meta property="og:image" content="/logo.png"><!-- mat
 
   gtag('config', 'G-V7GD1HK9WW');
 </script><!-- dependencies from examples --><script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="libs/proj4js-2.3.15/proj4.js"></script><link href="libs/highcharts-9.3.1/css/motion.css" rel="stylesheet"><script src="libs/highcharts-9.3.1/highcharts.js"></script><script src="libs/highcharts-9.3.1/highcharts-3d.js"></script><script src="libs/highcharts-9.3.1/highcharts-more.js"></script><script src="libs/highcharts-9.3.1/modules/stock.js"></script><script src="libs/highcharts-9.3.1/modules/map.js"></script><script src="libs/highcharts-9.3.1/modules/data.js"></script><script src="libs/highcharts-9.3.1/modules/exporting.js"></script><script src="libs/highcharts-9.3.1/modules/offline-exporting.js"></script><script src="libs/highcharts-9.3.1/modules/drilldown.js"></script><script src="libs/highcharts-9.3.1/modules/item-series.js"></script><script src="libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script><script src="libs/highcharts-9.3.1/modules/annotations.js"></script><script src="libs/highcharts-9.3.1/modules/export-data.js"></script><script src="libs/highcharts-9.3.1/modules/funnel.js"></script><script src="libs/highcharts-9.3.1/modules/heatmap.js"></script><script src="libs/highcharts-9.3.1/modules/treemap.js"></script><script src="libs/highcharts-9.3.1/modules/sankey.js"></script><script src="libs/highcharts-9.3.1/modules/dependency-wheel.js"></script><script src="libs/highcharts-9.3.1/modules/organization.js"></script><script src="libs/highcharts-9.3.1/modules/solid-gauge.js"></script><script src="libs/highcharts-9.3.1/modules/streamgraph.js"></script><script src="libs/highcharts-9.3.1/modules/sunburst.js"></script><script src="libs/highcharts-9.3.1/modules/vector.js"></script><script src="libs/highcharts-9.3.1/modules/wordcloud.js"></script><script src="libs/highcharts-9.3.1/modules/xrange.js"></script><script src="libs/highcharts-9.3.1/modules/tilemap.js"></script><script src="libs/highcharts-9.3.1/modules/venn.js"></script><script src="libs/highcharts-9.3.1/modules/gantt.js"></script><script src="libs/highcharts-9.3.1/modules/timeline.js"></script><script src="libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script><script src="libs/highcharts-9.3.1/modules/bullet.js"></script><script src="libs/highcharts-9.3.1/modules/coloraxis.js"></script><script src="libs/highcharts-9.3.1/modules/dumbbell.js"></script><script src="libs/highcharts-9.3.1/modules/lollipop.js"></script><script src="libs/highcharts-9.3.1/modules/series-label.js"></script><script src="libs/highcharts-9.3.1/plugins/motion.js"></script><script src="libs/highcharts-9.3.1/custom/reset.js"></script><script src="libs/highcharts-9.3.1/modules/boost.js"></script><script src="libs/highchart-binding-0.9.4/highchart.js"></script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -42,25 +42,25 @@ internamente JavaScript."><meta property="og:image" content="/logo.png"><!-- mat
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/estadisticaun/UnalR" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Cree un gráfico profundo (<em>drill down</em>) de torta/barras dinámico y flexible</h1>
-    
+
     <div class="hidden name"><code>Plot.Drilldown.Rd</code></div>
     </div>
 
@@ -94,71 +94,73 @@ internamente <code>JavaScript</code>.</p>
 
     <div id="argumentos">
     <h2>Argumentos</h2>
-    <dl><dt>datos</dt>
+
+
+<dl><dt id="arg-datos">datos<a class="anchor" aria-label="anchor" href="#arg-datos"></a></dt>
 <dd><p>Un data frame, no un vector numérico.</p></dd>
 
 
-<dt>varPrincipal</dt>
+<dt id="arg-varprincipal">varPrincipal<a class="anchor" aria-label="anchor" href="#arg-varprincipal"></a></dt>
 <dd><p>Una variable categórica dentro del data frame ingresado
 en <code>datos</code>.</p></dd>
 
 
-<dt>varSecundaria</dt>
+<dt id="arg-varsecundaria">varSecundaria<a class="anchor" aria-label="anchor" href="#arg-varsecundaria"></a></dt>
 <dd><p>Otra variable categórica dentro del data frame ingresado
 en <code>datos</code>, diferente a la principal, pues se segregará a otros niveles.</p></dd>
 
 
-<dt>ano</dt>
+<dt id="arg-ano">ano<a class="anchor" aria-label="anchor" href="#arg-ano"></a></dt>
 <dd><p>Igual uso que en <code><a href="Plot.Torta.html">Plot.Torta()</a></code></p></dd>
 
 
-<dt>periodo</dt>
+<dt id="arg-periodo">periodo<a class="anchor" aria-label="anchor" href="#arg-periodo"></a></dt>
 <dd><p>Igual uso que en <code><a href="Plot.Torta.html">Plot.Torta()</a></code></p></dd>
 
 
-<dt>torta</dt>
+<dt id="arg-torta">torta<a class="anchor" aria-label="anchor" href="#arg-torta"></a></dt>
 <dd><p>Si es <code>TRUE</code> (<em>valor predeterminado</em>) el primer nivel o gráfico
 principal será un diagrama de torta, defínalo en <code>FALSE</code> si desea que éste
 sea un gráfico de barras.</p></dd>
 
 
-<dt>vertical</dt>
+<dt id="arg-vertical">vertical<a class="anchor" aria-label="anchor" href="#arg-vertical"></a></dt>
 <dd><p>Si es <code>TRUE</code> (<em>valor predeterminado</em>) indicará que tanto la
 orientación del gráfico principal como secundario será vertical. Solamente
 aplicará si el argumento <code>torta</code> es <code>FALSE</code>.</p></dd>
 
 
-<dt>colores</dt>
+<dt id="arg-colores">colores<a class="anchor" aria-label="anchor" href="#arg-colores"></a></dt>
 <dd><p>Cadena de caracteres indicando los colores con los cuales se
 deben colorear cada una de las trazas correspondiente a cada nivel del
 argumento <code>varPrincipal</code>. Si no se introduce algún vector se usará la paleta
 <code>rainbow</code> por defecto.</p></dd>
 
 
-<dt>colores2</dt>
+<dt id="arg-colores-">colores2<a class="anchor" aria-label="anchor" href="#arg-colores-"></a></dt>
 <dd><p>Igual que <code>colores</code> pero aplicado al gráfico secundario.</p></dd>
 
 
-<dt>titulo</dt>
+<dt id="arg-titulo">titulo<a class="anchor" aria-label="anchor" href="#arg-titulo"></a></dt>
 <dd><p>Igual uso que en <code><a href="Plot.Series.html">Plot.Series()</a></code></p></dd>
 
 
-<dt>label</dt>
+<dt id="arg-label">label<a class="anchor" aria-label="anchor" href="#arg-label"></a></dt>
 <dd><p>Cadena de caracteres indicando el agregado al que hace referencia
 el gráfico. Por defecto no se emplea ningún rótulo.</p></dd>
 
 
-<dt>textInfo</dt>
+<dt id="arg-textinfo">textInfo<a class="anchor" aria-label="anchor" href="#arg-textinfo"></a></dt>
 <dd><p>Cadena de caracteres indicando el texto que aparecerá dentro
 de la caja de información al pasar el mouse por las diferentes columnas del
 gráfico de barras.</p></dd>
 
 
-<dt>addPeriodo</dt>
+<dt id="arg-addperiodo">addPeriodo<a class="anchor" aria-label="anchor" href="#arg-addperiodo"></a></dt>
 <dd><p>Igual uso que en <code><a href="Plot.Torta.html">Plot.Torta()</a></code></p></dd>
 
 
-<dt>estilo</dt>
+<dt id="arg-estilo">estilo<a class="anchor" aria-label="anchor" href="#arg-estilo"></a></dt>
 <dd><p>Lista compuesta por varios parámetros, los cuales van a ser usados
 para graficar el drill down y cuyo objetivo es personalizar pequeños detalles
 de éste.</p><ul><li><p><code>LegendTitle</code>: Cadena de caracteres indicado un título para la leyenda
@@ -169,9 +171,7 @@ de éste.</p><ul><li><p><code>LegendTitle</code>: Cadena de caracteres indicado 
 </dl></div>
     <div id="valor">
     <h2>Valor</h2>
-    
-
-<p>Retorna el diagrama drill down (<em>objeto widget de HTML</em>) creado. La clase del
+    <p>Retorna el diagrama drill down (<em>objeto widget de HTML</em>) creado. La clase del
 objeto retornado será un "htmlwidget" y adicionalmente pertenecerá a la clase
 "highchart".</p>
     </div>
@@ -203,7 +203,7 @@ objeto retornado será un "htmlwidget" y adicionalmente pertenecerá a la clase
 <span class="r-in"><span>  estilo        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>hc.Tema <span class="op">=</span> <span class="fl">7</span>, hc.Credits <span class="op">=</span> <span class="va">Msj</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <div id="htmlwidget-d11fc4360aa0230696d7" style="width:700px;height:432.632880098888px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d11fc4360aa0230696d7">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"DISTRIBUCIÓN DE ASPIRANTES A PREGRADO EN SITUACIÓN DE DISCAPACIDAD (Periodo 2021-2)","style":{"fontWeight":"bold","fontSize":"22px","color":"#333333","useHTML":true}},"yAxis":{"title":{"text":"Número de Aspirantes","style":{"fontWeight":"bold","color":"black","fontSize":"18px"}},"type":"linear","labels":{"style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}},"credits":{"enabled":true,"text":"DNPE","href":"http://estadisticas.unal.edu.co/home/"},"exporting":{"enabled":true,"filename":"PlotDrilldown_Discapacidad"},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}},"pie":{"allowPointSelect":true,"colorByPoint":true,"colors":["#FF0040","#00FF40"],"dataLabels":{"enabled":true,"format":"<b>{point.name}<\/b>: {point.percentage:.1f} %","style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}},"column":{"colorByPoint":true,"colors":["#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F"],"dataLabels":{"enabled":true,"style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}}},"series":[{"group":"group","data":[{"Clase":"No","Total":23621,"drilldown":null,"y":23621,"name":"No"},{"Clase":"Sí","Total":133,"drilldown":"Sí","y":133,"name":"Sí"}],"type":"pie","name":"Total de Aspirantes","showInLegend":true}],"xAxis":{"type":"category","title":{"text":"Clase"},"labels":{"style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}},"drilldown":{"drillUpButton":{"theme":{"fill":"#00C0FF","states":{"hover":{"fill":"#FFC000"}}}},"activeDataLabelStyle":{"color":"#0080FF","textDecoration":"underline","fontStyle":"italic"},"activeAxisLabelStyle":{"textDecoration":"none"},"allowPointDrilldown":true,"series":[{"id":"Sí","name":"Aspirantes con discapacidades por tipo","data":[["Visual",54],["Motriz",35],["Psicosocial",17],["Auditiva",15],["Cognitiva",12],["Otras",0]],"type":"column"}]},"legend":{"enabled":true,"align":"center","verticalAlign":"bottom","title":{"text":"","style":{"textDecoration":"underline"}},"itemStyle":{"fontWeight":"bold","color":"black","fontSize":"18px"}},"subtitle":{"text":"Discapacidad: Deficiencia, limitación de la actividad  y la restricción de la participación.","align":"left","style":{"color":"#2B908F","fontWeight":"bold"}}},"theme":{"colors":["#F45B5B","#8085E9","#8D4654","#7798BF","#AAEEEE","#FF0066","#EEAAEE","#55BF3B","#DF5353"],"chart":{"backgroundColor":null,"divBackgroundImage":"https://www.highcharts.com/samples/graphics/sand.png","style":{"fontFamily":"Signika, serif"}},"title":{"style":{"color":"black","fontSize":"16px","fontWeight":"bold"}},"subtitle":{"style":{"color":"black"}},"tooltip":{"borderWidth":0},"legend":{"itemStyle":{"fontWeight":"bold","fontSize":"13px"}},"xAxis":{"labels":{"style":{"color":"#6e6e70"}}},"yAxis":{"labels":{"style":{"color":"#6e6e70"}}},"plotOptions":{"series":{"shadow":false},"candlestick":{"lineColor":"#404048"},"map":{"shadow":false}},"navigator":{"xAxis":{"gridLineColor":"#D0D0D8"}},"rangeSelector":{"buttonTheme":{"fill":"white","stroke":"#C0C0C8","stroke-width":1,"states":{"select":{"fill":"#D0D0D8"}}}},"scrollbar":{"trackBorderColor":"#C0C0C8"},"background2":"#E0E0E8"},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Menú Contextual del Gráfico","decimalPoint":".","downloadCSV":"Descargar CSV","downloadJPEG":"Descargar imagen JPEG","downloadPDF":"Descargar documento PDF","downloadPNG":"Descargar imagen PNG","downloadSVG":"Descargar imagen vectorial SVG","downloadXLS":"Descargar XLS","drillUpText":"<< Volver a {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Cargando...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No hay información para mostrar","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Imprimir gráfico","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"Ver tabla de datos","viewFullscreen":"Ver en pantalla completa","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"Signika","debug":false},"evals":[],"jsHooks":[]}</script></code></pre></div>
+<script type="application/json" data-for="htmlwidget-d11fc4360aa0230696d7">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"DISTRIBUCIÓN DE ASPIRANTES A PREGRADO EN SITUACIÓN DE DISCAPACIDAD (Periodo 2021-2)","style":{"fontWeight":"bold","fontSize":"22px","color":"#333333","useHTML":true}},"yAxis":{"title":{"text":"Número de Aspirantes","style":{"fontWeight":"bold","color":"black","fontSize":"18px"}},"type":"linear","labels":{"style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}},"credits":{"enabled":true,"text":"DNPE","href":"http://estadisticas.unal.edu.co/home/"},"exporting":{"enabled":true,"filename":"PlotDrilldown_Discapacidad"},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}},"pie":{"allowPointSelect":true,"colorByPoint":true,"colors":["#FF0040","#00FF40"],"dataLabels":{"enabled":true,"format":"<b>{point.name}<\/b>: {point.percentage:.1f} %","style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}},"column":{"colorByPoint":true,"colors":["#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F"],"dataLabels":{"enabled":true,"style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}}},"series":[{"group":"group","data":[{"Clase":"No","Total":23621,"drilldown":null,"y":23621,"name":"No"},{"Clase":"Sí","Total":133,"drilldown":"Sí","y":133,"name":"Sí"}],"type":"pie","name":"Total de Aspirantes","showInLegend":true}],"xAxis":{"type":"category","title":{"text":"Clase"},"labels":{"style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}},"drilldown":{"drillUpButton":{"theme":{"fill":"#00C0FF","states":{"hover":{"fill":"#FFC000"}}}},"activeDataLabelStyle":{"color":"#0080FF","textDecoration":"underline","fontStyle":"italic"},"activeAxisLabelStyle":{"textDecoration":"none"},"allowPointDrilldown":true,"series":[{"id":"Sí","name":"Aspirantes con discapacidades por tipo","data":[["Visual",54],["Motriz",35],["Psicosocial",17],["Auditiva",15],["Cognitiva",12],["Otras",0]],"type":"column"}]},"legend":{"enabled":true,"align":"center","verticalAlign":"bottom","title":{"text":"","style":{"textDecoration":"underline"}},"itemStyle":{"fontWeight":"bold","color":"black","fontSize":"18px"}},"subtitle":{"text":"Discapacidad: Deficiencia, limitación de la actividad  y la restricción de la participación.","align":"left","style":{"color":"#2B908F","fontWeight":"bold"}}},"theme":{"colors":["#F45B5B","#8085E9","#8D4654","#7798BF","#AAEEEE","#FF0066","#EEAAEE","#55BF3B","#DF5353"],"chart":{"backgroundColor":null,"divBackgroundImage":"https://www.highcharts.com/samples/graphics/sand.png","style":{"fontFamily":"Signika, serif"}},"title":{"style":{"color":"black","fontSize":"16px","fontWeight":"bold"}},"subtitle":{"style":{"color":"black"}},"tooltip":{"borderWidth":0},"legend":{"itemStyle":{"fontWeight":"bold","fontSize":"13px"}},"xAxis":{"labels":{"style":{"color":"#6e6e70"}}},"yAxis":{"labels":{"style":{"color":"#6e6e70"}}},"plotOptions":{"series":{"shadow":false},"candlestick":{"lineColor":"#404048"},"map":{"shadow":false}},"navigator":{"xAxis":{"gridLineColor":"#D0D0D8"}},"rangeSelector":{"buttonTheme":{"fill":"white","stroke":"#C0C0C8","stroke-width":1,"states":{"select":{"fill":"#D0D0D8"}}}},"scrollbar":{"trackBorderColor":"#C0C0C8"},"background2":"#E0E0E8"},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Menú Contextual del Gráfico","decimalPoint":",","downloadCSV":"Descargar CSV","downloadJPEG":"Descargar imagen JPEG","downloadPDF":"Descargar documento PDF","downloadPNG":"Descargar imagen PNG","downloadSVG":"Descargar imagen vectorial SVG","downloadXLS":"Descargar XLS","drillUpText":"<< Volver a {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Cargando...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No hay información para mostrar","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Imprimir gráfico","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":".","viewData":"Ver tabla de datos","viewFullscreen":"Ver en pantalla completa","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"Signika","debug":false},"evals":[],"jsHooks":[]}</script></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -222,11 +222,11 @@ objeto retornado será un "htmlwidget" y adicionalmente pertenecerá a la clase
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '48a86f5ad8f8218ed7191a5492511c14',
     indexName: 'unalR',
     inputSelector: 'input#search-input.form-control',

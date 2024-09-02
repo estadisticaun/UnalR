@@ -346,9 +346,9 @@ Plot.Mapa <- function(
     cortes, colores, showSedes = TRUE, colSedes, opacidad = 0.7, colBorde,
     compacto = TRUE, textSize = 10, limpio = FALSE, estatico = FALSE, estilo, ...) {
 
-  # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
+  # ================== COMANDOS DE VERIFICACIÓN Y VALIDACIÓN ===================
   if (missingArg(datos) && missingArg(df)) {
-    stop('\u00a1Por favor introduzca el dataframe que contiene la informaci\u00f3n necesaria!', call. = FALSE)
+    stop('[\u00d7] Por favor, introduzca el dataframe que contiene la informaci\u00f3n necesaria.', call. = FALSE)
   }
   # Adición temporal (para dar un periodo de adaptación antes de la eliminación del argumento)
   if (missingArg(datos) && !missingArg(df)) {
@@ -360,14 +360,48 @@ Plot.Mapa <- function(
     )
     datos <- df
   }
+
+  tipo <- tolower(tipo)
+  if (tipo %NotIN% c("deptos", "sinompios", "mpios", "deptompio")) {
+    stop('[\u00d7] Por favor, introduzca un tipo de mapa v\u00e1lido. Las opciones son: "Deptos", "SiNoMpios", "Mpios" y "DeptoMpio".', call. = FALSE)
+  }
+  if (tipo == "sinompios") {
+    if (!missingArg(SiNoLegend)) {
+      if (length(SiNoLegend) != 2L) {
+        stop('[\u00d7] La longitud del argumento "SiNoLegend" debe ser un vector con 2 elementos.', call. = FALSE)
+      }
+      YN_Legend <- SiNoLegend
+    } else {
+      YN_Legend <- c("0 ", "1 o m\u00e1s ")
+    }
+  }
+
   if (agregado) {
     if (missingArg(depto) && missingArg(mpio)) {
-      stop('\u00a1Por favor introduzca tanto el nombre de la columna "depto" como el "mpio"!', call. = FALSE)
+      stop('[\u00d7] Por favor, introduzca tanto el nombre de la columna "depto" como el nombre de la columna "mpio".', call. = FALSE)
     }
     Statistic <- match.arg(estadistico)
   } else {
     if (missingArg(depto) && missingArg(mpio)) {
-      stop('\u00a1Por favor introduzca el nombre de la columna "depto" o "mpio"!', call. = FALSE)
+      stop('[\u00d7] Por favor, introduzca el nombre de la columna "depto" o "mpio".', call. = FALSE)
+    }
+    if (missingArg(depto) && tipo == "deptos") {
+      stop('[\u00d7] Por favor, introduzca el nombre de la columna "depto" para su mapa estilo "Deptos".', call. = FALSE)
+    }
+    if (missingArg(mpio) && tipo == "mpios") {
+      stop('[\u00d7] Por favor, introduzca el nombre de la columna "mpio" para su mapa estilo "Mpios".', call. = FALSE)
+    }
+    if (missingArg(mpio) && tipo == "sinompios") {
+      stop('[\u00d7] Por favor, introduzca el nombre de la columna "mpio" para su mapa estilo "SiNoMpios".', call. = FALSE)
+    }
+    if (tipo == "deptompio") {
+      stop('[\u00d7] No tiene sentido utilizar este tipo de mapa con datos agregados, ya que se necesita el microdato para que el estad\u00edstico sea preciso.', call. = FALSE)
+    }
+    if (!missingArg(estadistico) && (missingArg(estilo) || is.null(estilo$labelCursor))) {
+      warning(
+        '\u25ba \u00a1El valor ingresado en "estadistico" ser\u00e1 omitido! Puede especificar el significado de la variable ingresada en el argumento "estilo$labelCursor".',
+        call. = FALSE
+      )
     }
     Statistic <- "Max"
   }
@@ -377,15 +411,15 @@ Plot.Mapa <- function(
       filter(!is.na(codeDept))
     if (!missingArg(variable)) {
       warning(paste0(
-        '\u00a1Para el estad\u00edstico "Conteo" no es necesario especificar una variable con la cual calcularse. Se omitir\u00e1 la variable',
-        ' "', deparse(substitute(variable)), '" ingresada!'
+        '\u25ba \u00a1Para el estad\u00edstico "Conteo" no es necesario especificar una variable para el c\u00e1lculo! La variable',
+        ' "', deparse(substitute(variable)), '" ingresada ser\u00e1 omitida.'
       ), call. = FALSE)
     }
   } else {
     if (missingArg(variable)) {
-      stop(paste0('\u00a1Por favor ingrese una variable auxiliar con la cual se calcular\u00e1 el/la ', tolower(Statistic), '!'), call. = FALSE)
+      stop(paste0('[\u00d7] Por favor, ingrese una variable auxiliar para calcular el/la ', tolower(Statistic), '.'), call. = FALSE)
     } else if (!is.numeric(datos |> select({{variable}}) |> pull())) {
-      stop('\u00a1La variable auxiliar ingresada contiene valores no num\u00e9ricos!', call. = FALSE)
+      stop('[\u00d7] La variable auxiliar ingresada contiene valores no num\u00e9ricos.', call. = FALSE)
     }
     if (agregado) {
       dataframe <- datos |>
@@ -396,22 +430,22 @@ Plot.Mapa <- function(
         dataframe <- datos |>
           select(codeDept := {{mpio}}, codeMun := {{mpio}}, Variable := {{variable}}) |>
           filter(!is.na(codeMun))
-      }
-      if (missingArg(mpio)) {
+      } else if (missingArg(mpio)) {
         dataframe <- datos |>
           select(codeDept := {{depto}}, codeMun := {{depto}}, Variable := {{variable}}) |>
           filter(!is.na(codeDept))
+      } else {
+        warning('\u25ba \u00a1Se han proporcionado ambos valores ("depto" y "mpio"), pero solo se utilizar\u00e1 uno de ellos!', call. = FALSE)
+        dataframe <- datos |>
+          select(codeDept := {{depto}}, codeMun := {{mpio}}, Variable := {{variable}}) |>
+          filter(!is.na(codeDept), !is.na(codeMun))
       }
     }
   }
 
-  tipo <- tolower(tipo)
-  if (tipo %NotIN% c("deptos", "sinompios", "mpios", "deptompio")) {
-    stop('\u00a1Por favor introduzca un tipo de mapa correcto! Las opciones son: "Deptos", "SiNoMpios", "Mpios" y "DeptoMpio"', call. = FALSE)
-  }
   if (!missingArg(titulo)) {
     if (!is.character(titulo)) {
-      stop('\u00a1El argumento "titulo" debe ser una cadena de texto!', call. = FALSE)
+      stop('[\u00d7] El argumento "titulo" debe ser una cadena de texto.', call. = FALSE)
     }
   } else { titulo <- "\u00bf ?" }
   if (missingArg(baldosas)) {
@@ -422,7 +456,7 @@ Plot.Mapa <- function(
     if (length(colSedes) != 9L) {
       stop(
         paste0(
-          '\u00a1El n\u00famero de colores ingresados en el vector "colSedes" no corresponde con el n\u00famero de sedes presentes!',
+          '[\u00d7] La cantidad de colores en el vector "colSedes" no corresponde con la cantidad de sedes presentes.',
           '\n\t - Ingrese un vector con 9 colores correspondientes a las sedes:',
           '\n\t -- Medell\u00edn, Bogot\u00e1, Manizales, De La Paz, Tumaco, Palmira, Orinoqu\u00eda, Caribe y Amazonas, respectivamente.'
         ), call. = FALSE
@@ -430,21 +464,21 @@ Plot.Mapa <- function(
     } else { Icons_Col <- colSedes }
   } else { Icons_Col <- c("orange", "green", "darkblue", "purple", "gray", "darkpurple", "lightred", "red", "blue") }
   if (!(is.numeric(zoomMapa) && is.numeric(opacidad) && is.numeric(textSize))) {
-    stop('\u00a1Los argumentos "zoomMapa", "opacidad" y "textSize" deben ser un valor num\u00e9rico!', call. = FALSE)
+    stop('[\u00d7] Los argumentos "zoomMapa", "opacidad" y "textSize" deben ser valores num\u00e9ricos.', call. = FALSE)
   }
   opacidadClic <- ifelse(opacidad != 1, opacidad+0.2, opacidad)
   textDeptos   <- paste0(textSize+2, "px"); textMpios <- paste0(textSize, "px")
   if (!missing(colBorde)) {
     if (!is.character(colBorde)) {
-      stop('\u00a1El argumento "colBorde" debe ser un car\u00e1cter que indique un color con el nombre ("red"), c\u00f3digo hexadecimal ("#FF0000") o RGB (rgb(255, 0, 0))!', call. = FALSE)
+      stop('[\u00d7] El argumento "colBorde" debe ser un car\u00e1cter que indique un color con el nombre ("red"), c\u00f3digo hexadecimal ("#FF0000") o RGB (rgb(255, 0, 0)).', call. = FALSE)
     }
   }
   if (!(is.logical(naTo0) && is.logical(showSedes) && is.logical(compacto) && is.logical(limpio))) {
-    stop('\u00a1Los argumentos "naTo0", "showSedes", "compacto" y "limpio" deben ser un booleano (TRUE o FALSE)!', call. = FALSE)
+    stop('[\u00d7] Los argumentos "naTo0", "showSedes", "compacto" y "limpio" deben ser booleanos (TRUE o FALSE).', call. = FALSE)
   }
 
   Mensaje <- paste0(
-    '\u00a1El argumento "colores" no tiene la longitud correcta respecto al argumento "cortes" ingresado, o viceversa!',
+    '[\u00d7] El argumento "colores" no tiene la longitud correcta en relaci\u00f3n con el argumento "cortes" ingresado, o viceversa.',
     '\n\t - Recuerde que si realiza (n) cortes necesita (n-1) colores para cada intervalo creado.',
     '\n\t -- Por ejemplo, si los cortes son c(0, 50, Inf) necesitar\u00e1 2 colores para dichos intervalos.'
   )
@@ -522,16 +556,12 @@ Plot.Mapa <- function(
 
     Polygons_Mpio@data$Statistic <- Poly_Mpio_ShowStatistic <- Polygons_Mpio@data$Statistic %>% replace(., is.na(.), 0)
     Polygons_Mpio@data$n <- Poly_Mpio_ShowN <- Polygons_Mpio@data$n %>% replace(., is.na(.), 0)
-
-    Comodin <- "%3g"
   } else {
     Poly_Dept_ShowStatistic <- Polygons_Depto@data$Statistic %>% replace(., is.na(.), "Sin Informaci\u00f3n")
     Poly_Dept_ShowN <- Polygons_Depto@data$n %>% replace(., is.na(.), "Sin Informaci\u00f3n")
 
     Poly_Mpio_ShowStatistic <- Polygons_Mpio@data$Statistic %>% replace(., is.na(.), "Sin Informaci\u00f3n")
     Poly_Mpio_ShowN <- Polygons_Mpio@data$n %>% replace(., is.na(.), "Sin Informaci\u00f3n")
-
-    Comodin <- "%s"
   }
 
   # Corrección de algunos municipios cuyo nombre es homónimo de otro.
@@ -543,19 +573,9 @@ Plot.Mapa <- function(
       condition = Municipio %in% Homonimos$Municipio,
       true  = paste(Municipio, substring(Departamento, 1, 3)),
       false = Municipio
+      )
     )
-    )
-  # ----------------------------------------------------------------------------
-  if (tipo == "sinompios") {
-    if (!missingArg(SiNoLegend)) {
-      if (length(SiNoLegend) != 2L) {
-        stop('\u00a1La longitud del argumento "SiNoLegend" debe ser un vector con 2 componentes!', call. = FALSE)
-      }
-      YN_Legend <- SiNoLegend
-    } else {
-      YN_Legend <- c("0 ", "1 o m\u00e1s ")
-    }
-  }
+
   # ============================================================================
   if (!estatico) {
 
@@ -582,35 +602,84 @@ Plot.Mapa <- function(
     Icons_Sedes <- makeAwesomeIcon(markerColor = Icons_Col, iconColor = "white", fontFamily = "Leonardian", text = "un")
 
     # Extracción de la segregación y el periodo en cuestión del título ingresado
-    TitleSplit <- strsplit(titulo, "\\s+"); Segregacion <- TitleSplit[[1]][1]; Periodo <- TitleSplit[[1]][2]
+    TitleSplit  <- strsplit(titulo, "\\s+"); Periodo <- TitleSplit[[1]][2]
+    if (agregado) { Segregacion <- TitleSplit[[1]][1] } else { Segregacion <- NULL }
     TitleDepto <- paste0("<center>", Segregacion, " por<br/>departamento<br/>", Periodo, "</center>")
     TitleMpio  <- paste0("<center>", Segregacion, " por<br/>municipio<br/>"   , Periodo, "</center>")
 
     # Labels
     Labels_Sedes <- sprintf("<strong>%s %s</strong>", "Sede", Sedes$Sede) |> lapply(htmltools::HTML)
-    if (Statistic != "Conteo") {
-      Labels_Deptos <- sprintf(
-        paste0("<strong> %s </strong> <br>", Statistic, ": ", Comodin, " <br> n: ", Comodin),
-        Polygons_Depto@data$Departamento, Poly_Dept_ShowStatistic, Poly_Dept_ShowN
-      ) |>
-        lapply(htmltools::HTML)
-      Labels_Mpios <- sprintf(
-        paste0("<strong> %s </strong> (%s) <br>", Statistic, ": ", Comodin, " <br> n: ", Comodin),
-        Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento,
-        Poly_Mpio_ShowStatistic, Poly_Mpio_ShowN
-      ) |>
-        lapply(htmltools::HTML)
+    if (!agregado || is.null(Statistic)) {
+      if (missingArg(estilo) || is.null(estilo$labelCursor)) { labelCursor <- NULL }
+      else { labelCursor <- estilo$labelCursor }
+      Statistic <- labelCursor
+      rawLabels_Deptos <- paste0("<strong> %s </strong> <br>", Statistic, ": %s")
+      rawLabels_Mpios  <- paste0("<strong> %s </strong> (%s) <br> %s ", Statistic)
+      if (any(is.character(Poly_Dept_ShowStatistic), is.character(Poly_Mpio_ShowStatistic))) {
+        Labels_Deptos <- sprintf(
+          rawLabels_Deptos, Polygons_Depto@data$Departamento, Poly_Dept_ShowStatistic
+        ) |> lapply(htmltools::HTML)
+        Labels_Mpios  <- sprintf(
+          rawLabels_Mpios, Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento, Poly_Mpio_ShowStatistic
+        ) |> lapply(htmltools::HTML)
+      } else {
+        Labels_Deptos <- sprintf(
+          rawLabels_Deptos, Polygons_Depto@data$Departamento,
+          scales::number_format(accuracy = 0.02, big.mark = ".", decimal.mark = ",", scale_cut = c(B = 10^9, T = 10^12))(Poly_Dept_ShowStatistic)
+        ) |> lapply(htmltools::HTML)
+        Labels_Mpios  <- sprintf(
+          rawLabels_Mpios, Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento,
+          scales::number_format(accuracy = 0.02, big.mark = ".", decimal.mark = ",", scale_cut = c(B = 10^9, T = 10^12))(Poly_Mpio_ShowStatistic)
+        ) |> lapply(htmltools::HTML)
+      }
     } else {
-      Labels_Deptos <- sprintf(
-        paste0("<strong> %s </strong> <br>", Comodin, " ", tolower(Segregacion)),
-        Polygons_Depto@data$Departamento, Poly_Dept_ShowStatistic
-      ) |>
-        lapply(htmltools::HTML)
-      Labels_Mpios <- sprintf(
-        paste0("<strong> %s </strong> (%s) <br>", Comodin, " ", tolower(Segregacion)),
-        Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento, Poly_Mpio_ShowStatistic
-      ) |>
-        lapply(htmltools::HTML)
+      if (any(is.character(Poly_Dept_ShowStatistic), is.character(Poly_Mpio_ShowStatistic))) {
+        if (Statistic != "Conteo") {
+          Labels_Deptos <- sprintf(
+            paste0("<strong> %s </strong> <br>", Statistic, ": %s <br> n: %s"),
+            Polygons_Depto@data$Departamento, Poly_Dept_ShowStatistic, Poly_Dept_ShowN
+          ) |> lapply(htmltools::HTML)
+          Labels_Mpios <- sprintf(
+            paste0("<strong> %s </strong> (%s) <br>", Statistic, ": %s <br> n: %s"),
+            Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento, Poly_Mpio_ShowStatistic, Poly_Mpio_ShowN
+          ) |> lapply(htmltools::HTML)
+        } else {
+          Labels_Deptos <- sprintf(
+            paste0("<strong> %s </strong> <br> %s ", tolower(Segregacion)),
+            Polygons_Depto@data$Departamento, Poly_Dept_ShowStatistic
+          ) |> lapply(htmltools::HTML)
+          Labels_Mpios <- sprintf(
+            paste0("<strong> %s </strong> (%s) <br> %s ", tolower(Segregacion)),
+            Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento, Poly_Mpio_ShowStatistic
+          ) |> lapply(htmltools::HTML)
+        }
+      } else {
+        if (Statistic != "Conteo") {
+          Labels_Deptos <- sprintf(
+            paste0("<strong> %s </strong> <br>", Statistic, ": %s <br> n: %s"),
+            Polygons_Depto@data$Departamento,
+            scales::number_format(accuracy = 0.02, big.mark = ".", decimal.mark = ",", scale_cut = c(B = 10^9, T = 10^12))(Poly_Dept_ShowStatistic),
+            Poly_Dept_ShowN
+          ) |> lapply(htmltools::HTML)
+          Labels_Mpios <- sprintf(
+            paste0("<strong> %s </strong> (%s) <br>", Statistic, ": %s <br> n: %s"),
+            Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento,
+            scales::number_format(accuracy = 0.02, big.mark = ".", decimal.mark = ",", scale_cut = c(B = 10^9, T = 10^12))(Poly_Mpio_ShowStatistic),
+            Poly_Mpio_ShowN
+          ) |> lapply(htmltools::HTML)
+        } else {
+          Labels_Deptos <- sprintf(
+            paste0("<strong> %s </strong> <br> %s ", tolower(Segregacion)),
+            Polygons_Depto@data$Departamento,
+            scales::number_format(big.mark = ".", decimal.mark = ",", scale_cut = c(B = 10^9, T = 10^12))(Poly_Dept_ShowStatistic)
+          ) |> lapply(htmltools::HTML)
+          Labels_Mpios <- sprintf(
+            paste0("<strong> %s </strong> (%s) <br> %s ", tolower(Segregacion)),
+            Polygons_Mpio@data$Municipio, Polygons_Mpio@data$Departamento, 
+            scales::number_format(big.mark = ".", decimal.mark = ",", scale_cut = c(B = 10^9, T = 10^12))(Poly_Mpio_ShowStatistic)
+          ) |> lapply(htmltools::HTML)
+        }
+      }
     }
 
     if (tipo == "deptos") {
@@ -685,17 +754,17 @@ Plot.Mapa <- function(
       if (!missingArg(cortes)) {
         warning(
           paste0(
-            '\u00a1Usted ha ingresado alg\u00fan valor en el argumento "cortes" y ha seleccionado el tipo de mapa "SiNoMpios"!',
-            '\n\t Por lo cual se omitir\u00e1 el valor ingresado, pues este tipo de mapa no permite un cambio en los cortes, pues es un intervalo binario.'
+            '\u25ba \u00a1Se ha proporcionado un valor para el argumento "cortes" y se ha seleccionado el tipo de mapa "SiNoMpios"!',
+            '\n\t El valor ingresado ser\u00e1 omitido, ya que este tipo de mapa no permite un cambio en los cortes debido a que utiliza un intervalo binario.'
           ), call. = FALSE
         )
       }
       if (!missingArg(colores)) {
         if (length(colores) != 2L) {
-          stop('\u00a1La longitud del argumento "colores" es diferente a 2! Este mapa es binario por lo cual necesita especificar solamente 2 colores.', call. = FALSE)
+          stop('[\u00d7] La longitud del argumento "colores" es diferente a 2. Este mapa es binario, por lo cual necesita especificar exactamente 2 colores.', call. = FALSE)
         } else { colBinary <- colores }
       } else { colBinary <- c("#FDAE61", "#A6D96A") }
-      Pal_Binary <- colorBin(palette = colBinary, bins = c(0, 1, 35000), na.color = colNA)
+      Pal_Binary <- colorBin(palette = colBinary, bins = c(0, 1, Inf), na.color = colNA)
 
       Mapa <- leaflet(data = Polygons_Mpio) |> addTiles(attribution = Msj)
       for (i in seq_len(length(Baldosas))) {
@@ -898,8 +967,9 @@ Plot.Mapa <- function(
       if (tipo %in% c("deptos", "sinompios", "mpios")) {
         Mapa <- Mapa |>
           # Adición de grupos de control de capas.
-          addLayersControl(baseGroups = Baldosas.names, overlayGroups = "Mostrar<br/>sedes UNAL",
-                           options = layersControlOptions(collapsed = compacto)
+          addLayersControl(
+            baseGroups = Baldosas.names, overlayGroups = "Mostrar<br/>sedes UNAL",
+            options = layersControlOptions(collapsed = compacto)
           ) |>
           # Adición de los marcadores de iconos para las distintas sedes de presencia nacional de la UNAL, y deseleccionándola por defecto.
           addAwesomeMarkers(
@@ -1023,14 +1093,14 @@ Plot.Mapa <- function(
         if (!missingArg(cortes)) {
           warning(
             paste0(
-              '\u00a1Usted ha ingresado alg\u00fan valor en el argumento "cortes" y ha seleccionado el tipo de mapa "SiNo"!',
-              '\n\t Por lo cual se omitir\u00e1 el valor ingresado, pues este tipo de mapa no permite un cambio en los cortes, pues es un intervalo binario.'
+            '\u25ba \u00a1Se ha proporcionado un valor para el argumento "cortes" y se ha seleccionado el tipo de mapa "SiNo"!',
+            '\n\t El valor ingresado ser\u00e1 omitido, ya que este tipo de mapa no permite un cambio en los cortes debido a que utiliza un intervalo binario.'
             ), call. = FALSE
           )
         }
         if (!missingArg(colores)) {
           if (length(colores) != 2L) {
-            stop('\u00a1La longitud del argumento "colores" es diferente a 2! Este mapa es binario por lo cual necesita especificar solamente 2 colores.', call. = FALSE)
+            stop('[\u00d7] La longitud del argumento "colores" es diferente a 2. Este mapa es binario, por lo cual necesita especificar exactamente 2 colores.', call. = FALSE)
           }
         } else { colores <- c("#FDAE61", "#A6D96A") }
 

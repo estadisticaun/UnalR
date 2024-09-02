@@ -11,7 +11,7 @@ disponibles en UnalR."><meta property="og:image" content="/logo.png"><!-- mathja
 
   gtag('config', 'G-V7GD1HK9WW');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -39,25 +39,25 @@ disponibles en UnalR."><meta property="og:image" content="/logo.png"><!-- mathja
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/estadisticaun/UnalR" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Cree el consolidado a partir de los microdatos con los que dispone, agrupando por las variables temporales que considere necesarias</h1>
-    
+
     <div class="hidden name"><code>Agregar.Rd</code></div>
     </div>
 
@@ -80,11 +80,13 @@ disponibles en <code>UnalR</code>.</p>
 
     <div id="argumentos">
     <h2>Argumentos</h2>
-    <dl><dt>datos</dt>
+
+
+<dl><dt id="arg-datos">datos<a class="anchor" aria-label="anchor" href="#arg-datos"></a></dt>
 <dd><p>Un data frame con los microdatos.</p></dd>
 
 
-<dt>formula</dt>
+<dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
 <dd><p>Fórmula en la que el primer componente especificado (<em>antes
 del \(\sim\)</em>) hace referencia a la(s) variable(s) de interés, y el segundo
 componente (<em>luego del \(\sim\)</em>) a la(s) variable(s) temporales por las
@@ -92,26 +94,26 @@ cuales se quiere agrupar (<em>separadas por cualquier operador como
 <code>+</code>, <code>*</code>, <code>:</code>, etc.</em>).</p></dd>
 
 
-<dt>frecuencia</dt>
+<dt id="arg-frecuencia">frecuencia<a class="anchor" aria-label="anchor" href="#arg-frecuencia"></a></dt>
 <dd><p>Vector o lista (<em>dependiendo de la cantidad de variables
 temporales especificadas</em>) numérica con los periodos que debería tener cada
 una de éstas.</p></dd>
 
 
-<dt>intervalo</dt>
+<dt id="arg-intervalo">intervalo<a class="anchor" aria-label="anchor" href="#arg-intervalo"></a></dt>
 <dd><p>Vector o lista (<em>dependiendo de la cantidad de variables
 temporales especificadas</em>) numérica que contiene los períodos de inicio y
 fin con los cuales se quiere realizar el filtro.</p></dd>
 
 
-<dt>textNA</dt>
+<dt id="arg-textna">textNA<a class="anchor" aria-label="anchor" href="#arg-textna"></a></dt>
 <dd><p>Cadena de caracteres indicando el nombre que se dará a los registros
 cuando éstos presenten algún dato faltante (<em>en la variable seleccionada más
 no en las variables temporales especificadas</em>). El valor por defecto es
 "Sin Información".</p></dd>
 
 
-<dt>ask</dt>
+<dt id="arg-ask">ask<a class="anchor" aria-label="anchor" href="#arg-ask"></a></dt>
 <dd><p>Si es <code>TRUE</code> (<em>valor predeterminado</em>) mostrará un mensaje por consola
 preguntándole al usuario cuál periodo desea que sea el último por considerar
 (<em>esperando una respuesta por consola</em>). Si previamente se ha introducido el
@@ -120,9 +122,7 @@ argumento <code>intervalo</code> éste quedará inhabilitado y no se ejecutará.
 </dl></div>
     <div id="valor">
     <h2>Valor</h2>
-    
-
-<p>Un data frame o tibble perteneciente a las clases "tbl_df", "tbl" y "data.frame".</p>
+    <p>Un data frame o tibble perteneciente a las clases "tbl_df", "tbl" y "data.frame".</p>
     </div>
 
     <div id="ref-examples">
@@ -218,11 +218,11 @@ argumento <code>intervalo</code> éste quedará inhabilitado y no se ejecutará.
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '48a86f5ad8f8218ed7191a5492511c14',
     indexName: 'unalR',
     inputSelector: 'input#search-input.form-control',

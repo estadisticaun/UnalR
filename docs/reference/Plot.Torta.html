@@ -12,7 +12,7 @@ Plotly, las cuales usan internamente JavaScript."><meta property="og:image" cont
 
   gtag('config', 'G-V7GD1HK9WW');
 </script><!-- dependencies from examples --><script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="libs/proj4js-2.3.15/proj4.js"></script><link href="libs/highcharts-9.3.1/css/motion.css" rel="stylesheet"><script src="libs/highcharts-9.3.1/highcharts.js"></script><script src="libs/highcharts-9.3.1/highcharts-3d.js"></script><script src="libs/highcharts-9.3.1/highcharts-more.js"></script><script src="libs/highcharts-9.3.1/modules/stock.js"></script><script src="libs/highcharts-9.3.1/modules/map.js"></script><script src="libs/highcharts-9.3.1/modules/data.js"></script><script src="libs/highcharts-9.3.1/modules/exporting.js"></script><script src="libs/highcharts-9.3.1/modules/offline-exporting.js"></script><script src="libs/highcharts-9.3.1/modules/drilldown.js"></script><script src="libs/highcharts-9.3.1/modules/item-series.js"></script><script src="libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script><script src="libs/highcharts-9.3.1/modules/annotations.js"></script><script src="libs/highcharts-9.3.1/modules/export-data.js"></script><script src="libs/highcharts-9.3.1/modules/funnel.js"></script><script src="libs/highcharts-9.3.1/modules/heatmap.js"></script><script src="libs/highcharts-9.3.1/modules/treemap.js"></script><script src="libs/highcharts-9.3.1/modules/sankey.js"></script><script src="libs/highcharts-9.3.1/modules/dependency-wheel.js"></script><script src="libs/highcharts-9.3.1/modules/organization.js"></script><script src="libs/highcharts-9.3.1/modules/solid-gauge.js"></script><script src="libs/highcharts-9.3.1/modules/streamgraph.js"></script><script src="libs/highcharts-9.3.1/modules/sunburst.js"></script><script src="libs/highcharts-9.3.1/modules/vector.js"></script><script src="libs/highcharts-9.3.1/modules/wordcloud.js"></script><script src="libs/highcharts-9.3.1/modules/xrange.js"></script><script src="libs/highcharts-9.3.1/modules/tilemap.js"></script><script src="libs/highcharts-9.3.1/modules/venn.js"></script><script src="libs/highcharts-9.3.1/modules/gantt.js"></script><script src="libs/highcharts-9.3.1/modules/timeline.js"></script><script src="libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script><script src="libs/highcharts-9.3.1/modules/bullet.js"></script><script src="libs/highcharts-9.3.1/modules/coloraxis.js"></script><script src="libs/highcharts-9.3.1/modules/dumbbell.js"></script><script src="libs/highcharts-9.3.1/modules/lollipop.js"></script><script src="libs/highcharts-9.3.1/modules/series-label.js"></script><script src="libs/highcharts-9.3.1/plugins/motion.js"></script><script src="libs/highcharts-9.3.1/custom/reset.js"></script><script src="libs/highcharts-9.3.1/modules/boost.js"></script><script src="libs/highchart-binding-0.9.4/highchart.js"></script><script src="libs/plotly-binding-4.10.4/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet"><script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet"><script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script><script src="libs/plotly-locale-es-2.11.1/es.js"></script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -40,25 +40,25 @@ Plotly, las cuales usan internamente JavaScript."><meta property="og:image" cont
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/estadisticaun/UnalR" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Cree un gráfico circular/torta/pie dinámico/estático y flexible con dos diferentes paquetes</h1>
-    
+
     <div class="hidden name"><code>Plot.Torta.Rd</code></div>
     </div>
 
@@ -88,56 +88,58 @@ se puede representar usando dos diferentes librerías que son <code>Highcharter<
 
     <div id="argumentos">
     <h2>Argumentos</h2>
-    <dl><dt>datos</dt>
+
+
+<dl><dt id="arg-datos">datos<a class="anchor" aria-label="anchor" href="#arg-datos"></a></dt>
 <dd><p>Un data frame, no un vector numérico.</p></dd>
 
 
-<dt>valores</dt>
+<dt id="arg-valores">valores<a class="anchor" aria-label="anchor" href="#arg-valores"></a></dt>
 <dd><p>Variable numérica que contiene los valores que desea graficar.</p></dd>
 
 
-<dt>categoria</dt>
+<dt id="arg-categoria">categoria<a class="anchor" aria-label="anchor" href="#arg-categoria"></a></dt>
 <dd><p>Una variable categórica dentro del data frame ingresado en <code>datos</code>.</p></dd>
 
 
-<dt>ano</dt>
+<dt id="arg-ano">ano<a class="anchor" aria-label="anchor" href="#arg-ano"></a></dt>
 <dd><p>Argument deprecated. This Argument still exist but will be removed
 in the next version.</p></dd>
 
 
-<dt>periodo</dt>
+<dt id="arg-periodo">periodo<a class="anchor" aria-label="anchor" href="#arg-periodo"></a></dt>
 <dd><p>Argument deprecated. This Argument still exist but will be removed
 in the next version.</p></dd>
 
 
-<dt>colores</dt>
+<dt id="arg-colores">colores<a class="anchor" aria-label="anchor" href="#arg-colores"></a></dt>
 <dd><p>Cadena de caracteres indicando los colores con los cuales se
 deben colorear cada una de las series correspondiente a cada nivel del
 argumento <code>categoria</code>. Si no se introduce algún vector se usará la paleta
 <code>rainbow</code> por defecto.</p></dd>
 
 
-<dt>titulo</dt>
+<dt id="arg-titulo">titulo<a class="anchor" aria-label="anchor" href="#arg-titulo"></a></dt>
 <dd><p>Cadena de caracteres indicando el título principal del plot.</p></dd>
 
 
-<dt>label</dt>
+<dt id="arg-label">label<a class="anchor" aria-label="anchor" href="#arg-label"></a></dt>
 <dd><p>Cadena de caracteres indicando la etiqueta a la que hace referencia
 el plot.</p></dd>
 
 
-<dt>addPeriodo</dt>
+<dt id="arg-addperiodo">addPeriodo<a class="anchor" aria-label="anchor" href="#arg-addperiodo"></a></dt>
 <dd><p>Argument deprecated. This Argument still exist but will be
 removed in the next version.</p></dd>
 
 
-<dt>libreria</dt>
+<dt id="arg-libreria">libreria<a class="anchor" aria-label="anchor" href="#arg-libreria"></a></dt>
 <dd><p>Cadena de caracteres que indica el paquete con el cual se realizará
 el plot. Los valores permitidos son <code>"highcharter"</code> (<em>valor predeterminado</em>)
 y <code>"plotly"</code>. Los valores se emparejarán parcialmente.</p></dd>
 
 
-<dt>estilo</dt>
+<dt id="arg-estilo">estilo<a class="anchor" aria-label="anchor" href="#arg-estilo"></a></dt>
 <dd><p>Lista compuesta por varios parámetros, los cuales van a ser usados
 de acuerdo con la librería especificada para graficar la torta y cuyo objetivo
 es personalizar pequeños detalles de ésta.</p><ul><li><p><code>LegendTitle</code>, <code>hc.Tema</code>, <code>hc.Credits</code> y <code>ply.Credits</code>: Igual uso que en
@@ -146,7 +148,7 @@ es personalizar pequeños detalles de ésta.</p><ul><li><p><code>LegendTitle</co
 </ul></dd>
 
 
-<dt>estatico</dt>
+<dt id="arg-estatico">estatico<a class="anchor" aria-label="anchor" href="#arg-estatico"></a></dt>
 <dd><p>Si es <code>FALSE</code> (<em>valor predeterminado</em>) el gráfico a retornar
 será dinámico (<em>dependiendo de la librería seleccionada</em>), en caso contrario
 se retornará un gráfico estático construido con <code>ggplot2</code>.</p></dd>
@@ -154,9 +156,7 @@ se retornará un gráfico estático construido con <code>ggplot2</code>.</p></dd
 </dl></div>
     <div id="valor">
     <h2>Valor</h2>
-    
-
-<p>Retorna el diagrama circular (<em>objeto widget de HTML</em>) creado. La clase del
+    <p>Retorna el diagrama circular (<em>objeto widget de HTML</em>) creado. La clase del
 objeto retornado será un "htmlwidget" y dependiendo de la librería usada
 pertenecerá adicionalmente a la clase "highchart" o "plotly".</p>
     </div>
@@ -176,7 +176,7 @@ este tipo de datos.</p>
     </div>
     <div id="lista-de-argumentos-de-estilo">
     <h2>Lista de argumentos de estilo</h2>
-    
+
 
 
 <p>Sabemos que puede ser abrumador el número de argumentos dentro del parámetro
@@ -204,7 +204,7 @@ al especificar la librería y en qué función están presentes
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>¡Se usará la librería 'highcharter' por defecto para realizar el plot!</span>
 <div id="htmlwidget-4211ee8e5b9f7bea17a6" style="width:700px;height:432.632880098888px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4211ee8e5b9f7bea17a6">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"","style":{"fontWeight":"bold","fontSize":"22px","color":"#333333","useHTML":true}},"yAxis":{"title":{"text":"Total"},"type":"linear"},"credits":{"enabled":true,"text":"DNPE","href":"http://estadisticas.unal.edu.co/home/"},"exporting":{"enabled":true,"filename":"PlotTorta_Group"},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}},"pie":{"allowPointSelect":true,"colorByPoint":true,"colors":["#FF553D","#A5FF67","#40D2FF","#FFDB5C"],"dataLabels":{"enabled":true,"format":"<b>{point.name}<\/b>: {point.percentage:.1f} %","style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}}},"series":[{"group":"group","data":[{"Clase":"A","Total":2395,"y":2395,"name":"A"},{"Clase":"AB","Total":2473,"y":2473,"name":"AB"},{"Clase":"B","Total":1402,"y":1402,"name":"B"},{"Clase":"O","Total":3173,"y":3173,"name":"O"}],"type":"pie","name":"No. of Prevalence","showInLegend":true}],"xAxis":{"type":"category","title":{"text":"Clase"},"categories":null},"legend":{"enabled":true,"align":"center","verticalAlign":"bottom","title":{"text":"","style":{"textDecoration":"underline"}},"itemStyle":{"fontWeight":"bold","color":"black","fontSize":"18px"}}},"theme":{"colors":["#f1c40f","#2ecc71","#9b59b6","#e74c3c","#34495e","#3498db","#1abc9c","#f39c12","#d35400"],"chart":{"backgroundColor":"#ECF0F1"},"xAxis":{"gridLineDashStyle":"Dash","gridLineWidth":1,"gridLineColor":"#BDC3C7","lineColor":"#BDC3C7","minorGridLineColor":"#BDC3C7","tickColor":"#BDC3C7","tickWidth":1},"yAxis":{"gridLineDashStyle":"Dash","gridLineColor":"#BDC3C7","lineColor":"#BDC3C7","minorGridLineColor":"#BDC3C7","tickColor":"#BDC3C7","tickWidth":1},"legendBackgroundColor":"rgba(0, 0, 0, 0.5)","background2":"#505053","dataLabelsColor":"#B0B0B3","textColor":"#34495e","contrastTextColor":"#F0F0F3","maskColor":"rgba(255,255,255,0.3)"},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Menú Contextual del Gráfico","decimalPoint":".","downloadCSV":"Descargar CSV","downloadJPEG":"Descargar imagen JPEG","downloadPDF":"Descargar documento PDF","downloadPNG":"Descargar imagen PNG","downloadSVG":"Descargar imagen vectorial SVG","downloadXLS":"Descargar XLS","drillUpText":"<< Volver a {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Cargando...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No hay información para mostrar","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Imprimir gráfico","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"Ver tabla de datos","viewFullscreen":"Ver en pantalla completa","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script><span class="r-in"><span><span class="fu">Plot.Torta</span><span class="op">(</span></span></span>
+<script type="application/json" data-for="htmlwidget-4211ee8e5b9f7bea17a6">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"","style":{"fontWeight":"bold","fontSize":"22px","color":"#333333","useHTML":true}},"yAxis":{"title":{"text":"Total"},"type":"linear"},"credits":{"enabled":true,"text":"DNPE","href":"http://estadisticas.unal.edu.co/home/"},"exporting":{"enabled":true,"filename":"PlotTorta_Group"},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}},"pie":{"allowPointSelect":true,"colorByPoint":true,"colors":["#FF553D","#A5FF67","#40D2FF","#FFDB5C"],"dataLabels":{"enabled":true,"format":"<b>{point.name}<\/b>: {point.percentage:.1f} %","style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}}},"series":[{"group":"group","data":[{"Clase":"A","Total":2395,"y":2395,"name":"A"},{"Clase":"AB","Total":2473,"y":2473,"name":"AB"},{"Clase":"B","Total":1402,"y":1402,"name":"B"},{"Clase":"O","Total":3173,"y":3173,"name":"O"}],"type":"pie","name":"No. of Prevalence","showInLegend":true}],"xAxis":{"type":"category","title":{"text":"Clase"},"categories":null},"legend":{"enabled":true,"align":"center","verticalAlign":"bottom","title":{"text":"","style":{"textDecoration":"underline"}},"itemStyle":{"fontWeight":"bold","color":"black","fontSize":"18px"}}},"theme":{"colors":["#f1c40f","#2ecc71","#9b59b6","#e74c3c","#34495e","#3498db","#1abc9c","#f39c12","#d35400"],"chart":{"backgroundColor":"#ECF0F1"},"xAxis":{"gridLineDashStyle":"Dash","gridLineWidth":1,"gridLineColor":"#BDC3C7","lineColor":"#BDC3C7","minorGridLineColor":"#BDC3C7","tickColor":"#BDC3C7","tickWidth":1},"yAxis":{"gridLineDashStyle":"Dash","gridLineColor":"#BDC3C7","lineColor":"#BDC3C7","minorGridLineColor":"#BDC3C7","tickColor":"#BDC3C7","tickWidth":1},"legendBackgroundColor":"rgba(0, 0, 0, 0.5)","background2":"#505053","dataLabelsColor":"#B0B0B3","textColor":"#34495e","contrastTextColor":"#F0F0F3","maskColor":"rgba(255,255,255,0.3)"},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Menú Contextual del Gráfico","decimalPoint":",","downloadCSV":"Descargar CSV","downloadJPEG":"Descargar imagen JPEG","downloadPDF":"Descargar documento PDF","downloadPNG":"Descargar imagen PNG","downloadSVG":"Descargar imagen vectorial SVG","downloadXLS":"Descargar XLS","drillUpText":"<< Volver a {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Cargando...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No hay información para mostrar","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Imprimir gráfico","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":".","viewData":"Ver tabla de datos","viewFullscreen":"Ver en pantalla completa","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script><span class="r-in"><span><span class="fu">Plot.Torta</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  datos     <span class="op">=</span> <span class="va">Blood</span>     ,</span></span>
 <span class="r-in"><span>  valores   <span class="op">=</span> <span class="va">Prevalence</span>,</span></span>
 <span class="r-in"><span>  categoria <span class="op">=</span> <span class="va">Group</span>     ,</span></span>
@@ -248,7 +248,7 @@ al especificar la librería y en qué función están presentes
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <div id="htmlwidget-59344719eea48f3263a0" style="width:700px;height:432.632880098888px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-59344719eea48f3263a0">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"DISTRIBUCIÓN DE GRADUADOS POR MODALIDAD DE FORMACIÓN (Periodo 2021-1)","style":{"fontWeight":"bold","fontSize":"22px","color":"#333333","useHTML":true}},"yAxis":{"title":{"text":"Total"},"type":"linear"},"credits":{"enabled":true,"text":"DNPE","href":"http://estadisticas.unal.edu.co/home/"},"exporting":{"enabled":true,"filename":"PlotTorta_Clase"},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}},"pie":{"allowPointSelect":true,"colorByPoint":true,"colors":["#F15A24","#8CC63F"],"dataLabels":{"enabled":true,"format":"<b>{point.name}<\/b>: {point.percentage:.1f} %","style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}}},"series":[{"group":"group","data":[{"Clase":"Postgrado","Total":1581,"y":1581,"name":"Postgrado"},{"Clase":"Pregrado","Total":2819,"y":2819,"name":"Pregrado"}],"type":"pie","name":"Número de Graduados","showInLegend":true}],"xAxis":{"type":"category","title":{"text":"Clase"},"categories":null},"legend":{"enabled":true,"align":"center","verticalAlign":"bottom","title":{"text":"Ésta es una descripción para la leyenda:","style":{"textDecoration":"underline"}},"itemStyle":{"fontWeight":"bold","color":"black","fontSize":"18px"}},"subtitle":{"text":"Distribución de estudiantes graduados en el primer periodo académico del 2021.","align":"left","style":{"color":"#2B908F","fontWeight":"bold"}}},"theme":{"colors":["#F45B5B","#8085E9","#8D4654","#7798BF","#AAEEEE","#FF0066","#EEAAEE","#55BF3B","#DF5353"],"chart":{"backgroundColor":null,"divBackgroundImage":"https://www.highcharts.com/samples/graphics/sand.png","style":{"fontFamily":"Signika, serif"}},"title":{"style":{"color":"black","fontSize":"16px","fontWeight":"bold"}},"subtitle":{"style":{"color":"black"}},"tooltip":{"borderWidth":0},"legend":{"itemStyle":{"fontWeight":"bold","fontSize":"13px"}},"xAxis":{"labels":{"style":{"color":"#6e6e70"}}},"yAxis":{"labels":{"style":{"color":"#6e6e70"}}},"plotOptions":{"series":{"shadow":false},"candlestick":{"lineColor":"#404048"},"map":{"shadow":false}},"navigator":{"xAxis":{"gridLineColor":"#D0D0D8"}},"rangeSelector":{"buttonTheme":{"fill":"white","stroke":"#C0C0C8","stroke-width":1,"states":{"select":{"fill":"#D0D0D8"}}}},"scrollbar":{"trackBorderColor":"#C0C0C8"},"background2":"#E0E0E8"},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Menú Contextual del Gráfico","decimalPoint":".","downloadCSV":"Descargar CSV","downloadJPEG":"Descargar imagen JPEG","downloadPDF":"Descargar documento PDF","downloadPNG":"Descargar imagen PNG","downloadSVG":"Descargar imagen vectorial SVG","downloadXLS":"Descargar XLS","drillUpText":"<< Volver a {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Cargando...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No hay información para mostrar","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Imprimir gráfico","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"Ver tabla de datos","viewFullscreen":"Ver en pantalla completa","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"Signika","debug":false},"evals":[],"jsHooks":[]}</script><span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<script type="application/json" data-for="htmlwidget-59344719eea48f3263a0">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"DISTRIBUCIÓN DE GRADUADOS POR MODALIDAD DE FORMACIÓN (Periodo 2021-1)","style":{"fontWeight":"bold","fontSize":"22px","color":"#333333","useHTML":true}},"yAxis":{"title":{"text":"Total"},"type":"linear"},"credits":{"enabled":true,"text":"DNPE","href":"http://estadisticas.unal.edu.co/home/"},"exporting":{"enabled":true,"filename":"PlotTorta_Clase"},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}},"pie":{"allowPointSelect":true,"colorByPoint":true,"colors":["#F15A24","#8CC63F"],"dataLabels":{"enabled":true,"format":"<b>{point.name}<\/b>: {point.percentage:.1f} %","style":{"fontWeight":"bold","color":"black","fontSize":"18px"}}}},"series":[{"group":"group","data":[{"Clase":"Postgrado","Total":1581,"y":1581,"name":"Postgrado"},{"Clase":"Pregrado","Total":2819,"y":2819,"name":"Pregrado"}],"type":"pie","name":"Número de Graduados","showInLegend":true}],"xAxis":{"type":"category","title":{"text":"Clase"},"categories":null},"legend":{"enabled":true,"align":"center","verticalAlign":"bottom","title":{"text":"Ésta es una descripción para la leyenda:","style":{"textDecoration":"underline"}},"itemStyle":{"fontWeight":"bold","color":"black","fontSize":"18px"}},"subtitle":{"text":"Distribución de estudiantes graduados en el primer periodo académico del 2021.","align":"left","style":{"color":"#2B908F","fontWeight":"bold"}}},"theme":{"colors":["#F45B5B","#8085E9","#8D4654","#7798BF","#AAEEEE","#FF0066","#EEAAEE","#55BF3B","#DF5353"],"chart":{"backgroundColor":null,"divBackgroundImage":"https://www.highcharts.com/samples/graphics/sand.png","style":{"fontFamily":"Signika, serif"}},"title":{"style":{"color":"black","fontSize":"16px","fontWeight":"bold"}},"subtitle":{"style":{"color":"black"}},"tooltip":{"borderWidth":0},"legend":{"itemStyle":{"fontWeight":"bold","fontSize":"13px"}},"xAxis":{"labels":{"style":{"color":"#6e6e70"}}},"yAxis":{"labels":{"style":{"color":"#6e6e70"}}},"plotOptions":{"series":{"shadow":false},"candlestick":{"lineColor":"#404048"},"map":{"shadow":false}},"navigator":{"xAxis":{"gridLineColor":"#D0D0D8"}},"rangeSelector":{"buttonTheme":{"fill":"white","stroke":"#C0C0C8","stroke-width":1,"states":{"select":{"fill":"#D0D0D8"}}}},"scrollbar":{"trackBorderColor":"#C0C0C8"},"background2":"#E0E0E8"},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Menú Contextual del Gráfico","decimalPoint":",","downloadCSV":"Descargar CSV","downloadJPEG":"Descargar imagen JPEG","downloadPDF":"Descargar documento PDF","downloadPNG":"Descargar imagen PNG","downloadSVG":"Descargar imagen vectorial SVG","downloadXLS":"Descargar XLS","drillUpText":"<< Volver a {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Cargando...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No hay información para mostrar","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Imprimir gráfico","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":".","viewData":"Ver tabla de datos","viewFullscreen":"Ver en pantalla completa","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"Signika","debug":false},"evals":[],"jsHooks":[]}</script><span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="va">Msj</span> <span class="op">&lt;-</span> <span class="st">"Distribuci\u00f3n hist\u00f3rica de estudiantes graduados (desde el 2009-I al 2021-I)."</span></span></span>
 <span class="r-in"><span><span class="fu">Plot.Torta</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  datos     <span class="op">=</span> <span class="va">ejConsolidadoGrad</span>,</span></span>
@@ -263,7 +263,7 @@ al especificar la librería y en qué función están presentes
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <div id="htmlwidget-1c18eca156cc321e99f7" style="width:700px;height:432.632880098888px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1c18eca156cc321e99f7">{"x":{"visdat":{"505c28072d8d":["function () ","plotlyVisDat"]},"cur_data":"505c28072d8d","attrs":{"505c28072d8d":{"labels":["Postgrado","Pregrado"],"values":[41821,68232],"textposition":"inside","textinfo":"label+value+percent","insidetextfont":{"color":"#FFFFFF","size":20},"hoverinfo":"label+value","insidetextorientation":"radial","marker":{"colors":["#F15A24","#8CC63F"],"line":{"color":"#000000","width":1.5}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":0,"l":50,"t":110,"r":50},"title":{"text":"<b>DISTRIBUCIÓN DE GRADUADOS<br />POR MODALIDAD DE FORMACIÓN<\/b>","font":{"family":"Open Sans","size":24,"color":"#333333"},"y":0.94999999999999996},"showlegend":false,"autosize":true,"annotations":[{"x":0.80000000000000004,"y":1.1000000000000001,"text":"<b>Distribución histórica de estudiantes graduados (desde el 2009-I al 2021-I).<\/b>","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"auto","xshift":0,"yshift":0,"font":{"size":12,"color":"#2B908F"}},{"x":0.80000000000000004,"y":1.1000000000000001,"text":"<b>Distribución histórica de estudiantes graduados (desde el 2009-I al 2021-I).<\/b>","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"auto","xshift":0,"yshift":0,"font":{"size":12,"color":"#2B908F"}}],"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"locale":"es"},"data":[{"labels":["Postgrado","Pregrado"],"values":[41821,68232],"textposition":["inside","inside"],"textinfo":"label+value+percent","insidetextfont":{"color":"#FFFFFF","size":20},"hoverinfo":["label+value","label+value"],"insidetextorientation":"radial","marker":{"color":"rgba(31,119,180,1)","colors":["#F15A24","#8CC63F"],"line":{"color":"#000000","width":1.5}},"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script></code></pre></div>
+<script type="application/json" data-for="htmlwidget-1c18eca156cc321e99f7">{"x":{"visdat":{"52d847657e58":["function () ","plotlyVisDat"]},"cur_data":"52d847657e58","attrs":{"52d847657e58":{"labels":["Postgrado","Pregrado"],"values":[41821,68232],"textposition":"inside","textinfo":"label+value+percent","insidetextfont":{"color":"#FFFFFF","size":20},"hoverinfo":"label+value","insidetextorientation":"radial","marker":{"colors":["#F15A24","#8CC63F"],"line":{"color":"#000000","width":1.5}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":0,"l":50,"t":110,"r":50},"title":{"text":"<b>DISTRIBUCIÓN DE GRADUADOS<br />POR MODALIDAD DE FORMACIÓN<\/b>","font":{"family":"Open Sans","size":24,"color":"#333333"},"y":0.94999999999999996},"showlegend":false,"autosize":true,"annotations":[{"x":0.80000000000000004,"y":1.1000000000000001,"text":"<b>Distribución histórica de estudiantes graduados (desde el 2009-I al 2021-I).<\/b>","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"auto","xshift":0,"yshift":0,"font":{"size":12,"color":"#2B908F"}},{"x":0.80000000000000004,"y":1.1000000000000001,"text":"<b>Distribución histórica de estudiantes graduados (desde el 2009-I al 2021-I).<\/b>","showarrow":false,"xref":"paper","yref":"paper","xanchor":"right","yanchor":"auto","xshift":0,"yshift":0,"font":{"size":12,"color":"#2B908F"}}],"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"locale":"es"},"data":[{"labels":["Postgrado","Pregrado"],"values":[41821,68232],"textposition":["inside","inside"],"textinfo":"label+value+percent","insidetextfont":{"color":"#FFFFFF","size":20},"hoverinfo":["label+value","label+value"],"insidetextorientation":"radial","marker":{"color":"rgba(31,119,180,1)","colors":["#F15A24","#8CC63F"],"line":{"color":"#000000","width":1.5}},"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -282,11 +282,11 @@ al especificar la librería y en qué función están presentes
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '48a86f5ad8f8218ed7191a5492511c14',
     indexName: 'unalR',
     inputSelector: 'input#search-input.form-control',

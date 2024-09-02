@@ -13,7 +13,7 @@ para obtener un resultado impresionante y listo para usar."><meta property="og:i
 
   gtag('config', 'G-V7GD1HK9WW');
 </script><!-- dependencies from examples --><script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet"><script src="libs/datatables-binding-0.33/datatables.js"></script><link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"><link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet"><script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><script src="libs/jszip-1.13.6/jszip.min.js"></script><script src="libs/pdfmake-1.13.6/pdfmake.js"></script><script src="libs/pdfmake-1.13.6/vfs_fonts.js"></script><link href="libs/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css" rel="stylesheet"><script src="libs/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js"></script><script src="libs/dt-ext-buttons-1.13.6/js/buttons.html5.min.js"></script><script src="libs/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js"></script><script src="libs/dt-ext-buttons-1.13.6/js/buttons.print.min.js"></script><link href="libs/dt-ext-keytable-1.13.6/css/keyTable.dataTables.min.css" rel="stylesheet"><script src="libs/dt-ext-keytable-1.13.6/js/dataTables.keyTable.min.js"></script><link href="libs/dt-plugin-searchhighlight-1.13.6/source.css" rel="stylesheet"><script src="libs/dt-plugin-searchhighlight-1.13.6/jquery.highlight.js"></script><script src="libs/dt-plugin-searchhighlight-1.13.6/source.min.js"></script><link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet"><script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script><link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet"><script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script><link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet"><script src="libs/selectize-0.12.0/selectize.min.js"></script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -41,25 +41,25 @@ para obtener un resultado impresionante y listo para usar."><meta property="og:i
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/estadisticaun/UnalR" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Cree fácilmente un widget para visualización de tablas HTML usando el paquete <code>DT</code></h1>
-    
+
     <div class="hidden name"><code>Tabla.Rd</code></div>
     </div>
 
@@ -97,82 +97,84 @@ para obtener un resultado impresionante y listo para usar.</p>
 
     <div id="argumentos">
     <h2>Argumentos</h2>
-    <dl><dt>datos</dt>
+
+
+<dl><dt id="arg-datos">datos<a class="anchor" aria-label="anchor" href="#arg-datos"></a></dt>
 <dd><p>Un data frame.</p></dd>
 
 
-<dt>df</dt>
+<dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a></dt>
 <dd><p>Argument deprecated, use <code>datos</code> instead.</p></dd>
 
 
-<dt>rows</dt>
+<dt id="arg-rows">rows<a class="anchor" aria-label="anchor" href="#arg-rows"></a></dt>
 <dd><p>Una variable categórica dentro del data frame ingresado en <code>datos</code>.</p></dd>
 
 
-<dt>pivotCat</dt>
+<dt id="arg-pivotcat">pivotCat<a class="anchor" aria-label="anchor" href="#arg-pivotcat"></a></dt>
 <dd><p>Variable categórica que contiene los niveles/factores que desea
 pivotear como columnas. Si omite este parámetro se da por hecho que no desea
 pivotear nada sino graficar tal cual su data frame</p></dd>
 
 
-<dt>pivotVar</dt>
+<dt id="arg-pivotvar">pivotVar<a class="anchor" aria-label="anchor" href="#arg-pivotvar"></a></dt>
 <dd><p>Variable numérica que contiene los valores que desea colocar
 en cada celda al realizar el pivotaje.</p></dd>
 
 
-<dt>columnNames</dt>
+<dt id="arg-columnnames">columnNames<a class="anchor" aria-label="anchor" href="#arg-columnnames"></a></dt>
 <dd><p>Vector de caracteres que especifica los nombres de las columnas
 de la tabla a retornar. Si no se introduce algún valor se tomará el mismo
 nombre de las columnas presentes en <code>datos</code>.</p></dd>
 
 
-<dt>filtros</dt>
+<dt id="arg-filtros">filtros<a class="anchor" aria-label="anchor" href="#arg-filtros"></a></dt>
 <dd><p>Si es <code>FALSE</code> (<em>valor predeterminado</em>) no se habilitará/aplicará
 los filtros por columna. Establézcalo en <code>TRUE</code> si desea generar filtros de
 columna automáticamente.</p></dd>
 
 
-<dt>colFilters</dt>
+<dt id="arg-colfilters">colFilters<a class="anchor" aria-label="anchor" href="#arg-colfilters"></a></dt>
 <dd><p>Vector numérico que especifica las columnas a las cuales les
 desea agregar la opción de poder filtrar. Si no se introduce algún valor todas
 las columnas tendrán habilitada la opción de poder filtrar.</p></dd>
 
 
-<dt>estadistico</dt>
+<dt id="arg-estadistico">estadistico<a class="anchor" aria-label="anchor" href="#arg-estadistico"></a></dt>
 <dd><p>X.</p></dd>
 
 
-<dt>encabezado</dt>
+<dt id="arg-encabezado">encabezado<a class="anchor" aria-label="anchor" href="#arg-encabezado"></a></dt>
 <dd><p>Cadena de caracteres que describe los distintos niveles de
 la variable <code>categoria</code>.</p></dd>
 
 
-<dt>leyenda</dt>
+<dt id="arg-leyenda">leyenda<a class="anchor" aria-label="anchor" href="#arg-leyenda"></a></dt>
 <dd><p>Cadena de caracteres que describe información adicional de la
 tabla, ésta se sitúa en la parte inferior de la tabla de manera centrada,
 dicho texto se visualizará en todas las opciones de descarga. Su valor por
 defecto es <code>NULL</code>.</p></dd>
 
 
-<dt>tituloPdf</dt>
+<dt id="arg-titulopdf">tituloPdf<a class="anchor" aria-label="anchor" href="#arg-titulopdf"></a></dt>
 <dd><p>Cadena de caracteres que proporciona un título a la tabla al
 momento de generar el <code>.pdf</code> como al hacer clic al botón de imprimir. Su valor
 por defecto es el introducido en el argumento <code>encabezado</code>.</p></dd>
 
 
-<dt>mensajePdf</dt>
+<dt id="arg-mensajepdf">mensajePdf<a class="anchor" aria-label="anchor" href="#arg-mensajepdf"></a></dt>
 <dd><p>Cadena de caracteres que proporciona un mensaje situado entre
 el título y la tabla. Se visualizará tanto al generar el <code>.pdf</code> como al
 hacer clic al botón de imprimir.</p></dd>
 
 
-<dt>ajustarNiveles</dt>
+<dt id="arg-ajustarniveles">ajustarNiveles<a class="anchor" aria-label="anchor" href="#arg-ajustarniveles"></a></dt>
 <dd><p>Si es <code>TRUE</code> (<em>valor predeterminado</em>) se buscará optimizar
 el espacio entre las columnas, colocando todos los nombres de las columnas de
 forma horizontal y eliminando al máximo el espacio entre éstas.</p></dd>
 
 
-<dt>scrollX</dt>
+<dt id="arg-scrollx">scrollX<a class="anchor" aria-label="anchor" href="#arg-scrollx"></a></dt>
 <dd><p>Si es <code>TRUE</code> (<em>valor predeterminado</em>) se habilitará la propiedad
 Scroller para el eje X. Tenga presente que cuando su df contiene muchas columnas
 es de utilidad (<em>pues no permite que se salga la tabla por ancho</em>), sin embargo,
@@ -180,18 +182,18 @@ asegúrese de desactivarlo cuando presente pocas columnas, pues se verá un
 desplazamiento de los encabezados debido a un conflicto interno.</p></dd>
 
 
-<dt>fillContainer</dt>
+<dt id="arg-fillcontainer">fillContainer<a class="anchor" aria-label="anchor" href="#arg-fillcontainer"></a></dt>
 <dd><p>Valor booleano para indicar si desea que la tabla rellene
 automáticamente el elemento que lo contiene.</p></dd>
 
 
-<dt>colorHead</dt>
+<dt id="arg-colorhead">colorHead<a class="anchor" aria-label="anchor" href="#arg-colorhead"></a></dt>
 <dd><p>Cadena de caracteres que indica el color de fondo de la cabecera
 de la tabla. Puede indicar el color con el nombre (<code>"red"</code>), código hexadecimal
 (<code>"#FF0000"</code>) o RGB (<code>rgb(1, 0, 0)</code>). El valor por defecto es "blanco" (<code>"#FFFFFF"</code>).</p></dd>
 
 
-<dt>estilo</dt>
+<dt id="arg-estilo">estilo<a class="anchor" aria-label="anchor" href="#arg-estilo"></a></dt>
 <dd><p>Una lista compuesta por listas las cuales en su interior contiene
 argumentos válidos de la función <a href="https://rdrr.io/pkg/DT/man/formatCurrency.html" class="external-link">formatStyle()</a>, esto
 con la finalidad de que pueda aplicar estilos CSS a la tabla, tales como color
@@ -212,7 +214,7 @@ qué columna se va a afectar y con qué colores de relleno, es decir,
 </ul></dd>
 
 
-<dt>estatico</dt>
+<dt id="arg-estatico">estatico<a class="anchor" aria-label="anchor" href="#arg-estatico"></a></dt>
 <dd><p>Si es <code>FALSE</code> (<em>valor predeterminado</em>) la tabla a retornar será
 dinámica (<em>usando la librería</em> <code>DT</code>), en caso contrario se retornará una tabla
 estática construida con <code>gt</code> y <code>gtExtras</code>.</p></dd>
@@ -220,9 +222,7 @@ estática construida con <code>gt</code> y <code>gtExtras</code>.</p></dd>
 </dl></div>
     <div id="valor">
     <h2>Valor</h2>
-    
-
-<p>Retorna la tabla creada mediante <code>DT</code> la cual pertenece a la clase "datatables"
+    <p>Retorna la tabla creada mediante <code>DT</code> la cual pertenece a la clase "datatables"
 y "htmlwidget".</p>
     </div>
     <div id="detalles">
@@ -509,11 +509,11 @@ la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesiva
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: '48a86f5ad8f8218ed7191a5492511c14',
     indexName: 'unalR',
     inputSelector: 'input#search-input.form-control',

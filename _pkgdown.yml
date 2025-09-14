@@ -1,4 +1,5 @@
 title: UnalR
+url: https://estadisticaun.github.io/UnalR/
 
 repo:
   url:
@@ -19,49 +20,47 @@ development:
 lang: es
 
 template:
+  bootstrap: 5
+  bootswatch: flatly
   params:
-    bootswatch: flatly
     ganalytics: G-V7GD1HK9WW
-    docsearch:
-      api_key: 48a86f5ad8f8218ed7191a5492511c14
-      index_name: unalR
 
 footer:
   structure:
     left: developed_by
     right: [package, legal]
   components:
-    legal: '| Provided without **any warranty**.'
+    legal: "| Provided without **any warranty**."
 
 reference:
-    - title: Tablas
-      contents:
-        - Tabla
-        - Tabla.General
-        - Tabla.SaberPro
-    - title: Gráficos
-      contents:
-        - Plot.Apiladas
-        - Plot.Barras
-        - Plot.Boxplot
-        - Plot.Drilldown
-        - Plot.Histograma
-        - Plot.Mapa
-        - Plot.Mundo
-        - Plot.Radar
-        - Plot.Series
-        - Plot.Torta
-        - Plot.Treemap
-    - title: Auxiliares
-      contents:
-        - Agregar
-        - StaticPlot
-        - read_example
-    - title: Data
-      contents:
-        - ejConsolidadoGrad
-        - ejConsolidadoSaberPro2019
-        - ejGraduados
-        - ejMiniAspirantesPre
-        - ejMiniConsolidadoAsp
-        - ejSaberPro2020
+  - title: Tablas
+    contents:
+      - Tabla
+      - Tabla.General
+      - Tabla.SaberPro
+  - title: Gráficos
+    contents:
+      - Plot.Apiladas
+      - Plot.Barras
+      - Plot.Boxplot
+      - Plot.Drilldown
+      - Plot.Histograma
+      - Plot.Mapa
+      - Plot.Mundo
+      - Plot.Radar
+      - Plot.Series
+      - Plot.Torta
+      - Plot.Treemap
+  - title: Auxiliares
+    contents:
+      - Agregar
+      - StaticPlot
+      - read_example
+  - title: Data
+    contents:
+      - ejConsolidadoGrad
+      - ejConsolidadoSaberPro2019
+      - ejGraduados
+      - ejMiniAspirantesPre
+      - ejMiniConsolidadoAsp
+      - ejSaberPro2020

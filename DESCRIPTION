@@ -1,7 +1,7 @@
 Type: Package
 Package: UnalR
 Title: Una implementación de funciones de uso interno
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Jeison", "Alarcón", , "jmalarconbe@unal.edu.co", role = c("aut", "cre", "ctr"),
            comment = c(ORCID = "0000-0002-1517-7840")),
@@ -26,8 +26,7 @@ Description: Una herramienta rápida y consistente para la disposición de
     the interactive to the dynamic world and from one library to another
     without changing function or syntax.
 License: GPL (>= 3)
-URL: https://unal.edu.co, https://estadisticas.unal.edu.co/home/,
-    https://github.com/estadisticaun/UnalR
+URL: https://unal.edu.co, https://estadisticas.unal.edu.co/home/, https://github.com/estadisticaun/UnalR
 BugReports: https://github.com/estadisticaun/UnalR/issues
 Depends:
     R (>= 4.3.0)

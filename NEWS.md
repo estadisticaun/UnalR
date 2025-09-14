@@ -1,3 +1,12 @@
+# UnalR 1.0.1
+
+v1.0.1 fue lanzada el 15/09/2025
+
+## Correcciones (*bug fixes*)
+  * Se ajustó la implementación para garantizar compatibilidad con `ggplot2` `v4`, actualizando las pruebas afectadas en `test-Plot_Series.R` según los nuevos requisitos de clase y tipo de objeto. Estos cambios resuelven el problema reportado por el equipo de `ggplot2` ([tidyverse/ggplot2#6498](https://github.com/tidyverse/ggplot2/issues/6498)) y aseguran que el paquete pase las validaciones con la próxima versión mayor de `ggplot2`.
+
+___
+
 # UnalR 1.0.0
 
 v1.0.0 fue lanzada el 03/06/2023

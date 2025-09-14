@@ -1,7 +1,11 @@
+## UnalR 1.0.1 (2025-09-15)
+
+Updated tests/testthat/test-Plot_Series.R to ensure compatibility with ggplot2 v4.0.0, addressing the object class and type expectations. This change ensures the package passes validation checks with the upcoming ggplot2 major release.
+
 ## Test environments
 
--   local Windows 10 install, R 4.3.0
--   local Windows 11 install, R 4.3.0
+-   local Windows 10 install, R 4.5.1
+-   local Windows 11 install, R 4.5.1
 -   winbuilder (devel & release)
 -   rhub check_for_cran
 

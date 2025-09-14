@@ -22,7 +22,7 @@ desde la página del ICFES, los cuales serán usados para los ejemplos de las
 funciones \code{Plot.Boxplot()} y \code{Plot.Radar()}.
 }
 \examples{
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # library(dplyr)
 ejSaberPro2020[1:5, 1:10]
 \dontshow{\}) # examplesIf}

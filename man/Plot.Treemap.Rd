@@ -194,7 +194,7 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
-\dontshow{if (require("viridis")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("viridis")) withAutoprint(\{ # examplesIf}
 library(viridis)
 Msj <- "Acompa\u00f1ado del Estad\u00edstico seleccionado para la Variable Edad."
 Plot.Treemap(
@@ -221,7 +221,7 @@ Plot.Treemap(
   estilo      = list(ply.Credits = list(x = 0.6, y = 1, text = Msj))
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(FALSE)) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # library(dplyr)
 misColores <- c(
@@ -280,7 +280,7 @@ Plot.Treemap(
   estilo    = list(sun.showLabels = TRUE, sun.colorRoot = "#EF0055")
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (treemap)
 # library(dplyr)

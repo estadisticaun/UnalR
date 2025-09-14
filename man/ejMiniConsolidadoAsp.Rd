@@ -24,7 +24,7 @@ especial existentes -\emph{sólo pregrado}-. Dicho dataset será usado en los ej
 de la función \code{Plot.Drilldown()}.
 }
 \examples{
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # library(dplyr)
 head(ejMiniConsolidadoAsp)
 \dontshow{\}) # examplesIf}

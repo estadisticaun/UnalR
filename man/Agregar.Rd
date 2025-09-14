@@ -50,7 +50,7 @@ consolidado final con el cual trabaja la mayoría de las funciones gráficas
 disponibles en \code{UnalR}.
 }
 \examples{
-\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(FALSE)) withAutoprint(\{ # examplesIf}
 # library(readxl)
 df1 <- read_excel(read_example("TestConsolidado1.xlsx"))
 df2 <- read_excel(read_example("TestConsolidado2.xlsx"))

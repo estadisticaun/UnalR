@@ -23,7 +23,7 @@ disponible (\emph{del 2019-I al 2021-I}). Dicho dataset será usado en los ejemp
 de las funciones \code{Tabla.General()} y \code{Plot.Treemap()}.
 }
 \examples{
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # library(dplyr)
 ejGraduados[1:5, 1:10]
 \dontshow{\}) # examplesIf}

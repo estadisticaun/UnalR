@@ -107,8 +107,7 @@ test_that("Plot.Series() captura de algunos valores claves a retornar", {
       estilo    = list(LegendTitle = "Group:", gg.Tema = 1)
     ), NULL
   )
-  expect_type(output_PlotSeries, "list")
-  expect_s3_class(output_PlotSeries, c("gg", "ggplot"))
+  expect_true(is_ggplot(output_PlotSeries))
   expect_equal(nrow(output_PlotSeries$data), 6)
   expect_equal(output_PlotSeries[["labels"]][["x"]], "Time")
   expect_equal(output_PlotSeries[["labels"]][["y"]], "Count")

@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^unalr\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$

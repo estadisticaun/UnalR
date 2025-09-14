@@ -224,7 +224,7 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
-\dontshow{if (all(require("tibble"), require("dplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("tibble"), require("dplyr"))) withAutoprint(\{ # examplesIf}
 # library("tibble"); library("dplyr")
 set.seed(42)
 Blood <- tibble(
@@ -301,7 +301,7 @@ Plot.Series(
   estilo    = list(dyg.LegendWidth = 650, dyg.Resaltar = TRUE)
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Agrupando para eliminar el semestre
 # library("dplyr")
@@ -321,7 +321,7 @@ Plot.Series(
   estilo    = list(hc.Tema = 1, hc.Credits = Msj)
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (all(require("ggplot2"), require("magick"), require("cowplot"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("ggplot2"), require("magick"), require("cowplot"))) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 # library("magick"); library("cowplot")
@@ -359,7 +359,7 @@ ggdraw() +
                          )
   )
 \dontshow{\}) # examplesIf}
-\dontshow{if (all(require("ggplot2"), require("ggrepel"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("ggplot2"), require("ggrepel"))) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # A continuación, se detalla el caso en el que quiera anotaciones textuales repulsivas
 #   * (1) Espacio vacío que se debe respetar alrededor de la caja delimitadora

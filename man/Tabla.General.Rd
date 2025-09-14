@@ -79,10 +79,10 @@ Para el argumento \code{colFilters} recuerde que la numeración inicia en 0, es 
 la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesivamente.
 }
 \examples{
-\dontshow{if (require("datasets")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("datasets")) withAutoprint(\{ # examplesIf}
 Tabla.General(datos = datasets::mtcars)
 \dontshow{\}) # examplesIf}
-\dontshow{if (all(require("dplyr"), require("tidyr"), require("DT"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("dplyr"), require("tidyr"), require("DT"))) withAutoprint(\{ # examplesIf}
 # library("dplyr"); library("tidyr"); library("DT")
 df <- ejGraduados |>
   filter(TIPO_NIVEL == "Pregrado") |>

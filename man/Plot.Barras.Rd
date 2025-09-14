@@ -173,7 +173,7 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
-\dontshow{if (all(require("tibble"), require("dplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("tibble"), require("dplyr"))) withAutoprint(\{ # examplesIf}
 # Ejemplo generalizado (sin uso de un consolidado como input)
 # library("tibble"); library("dplyr")
 set.seed(42)
@@ -199,7 +199,7 @@ Plot.Barras(
   libreria  = "plotly"
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 Msj <- "Ac\u00e1 puede ir m\u00e1s informaci\u00f3n acerca del gr\u00e1fico."
 Plot.Barras(

@@ -142,7 +142,7 @@ Para el argumento \code{colFilters} recuerde que la numeración inicia en 0, es 
 la primera columna tiene asociado el índice 0, la segunda el 1, y así sucesivamente.
 }
 \examples{
-\dontshow{if (all(require("DT"), require("dplyr"), require("tidyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("DT"), require("dplyr"), require("tidyr"))) withAutoprint(\{ # examplesIf}
 # library(DT); library(dplyr); library(tidyr)
 # Example of R Combinations with Dot (".") and Pipe (\%>\%) Operator
 # UnalR::Agregar(
@@ -249,7 +249,7 @@ Tabla(
   )
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (all(require("tibble"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("tibble"))) withAutoprint(\{ # examplesIf}
 # library(tibble)
 # ---------------------------------------------------------------------------
 # Ejemplo Usando Directamente un Consolidado de Microdatos (Compose functions with Agregar)
@@ -272,7 +272,7 @@ Agregar(
         encabezado = "LOCATION OF CEREMONIES", scrollX = FALSE
   )
 \dontshow{\}) # examplesIf}
-\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(FALSE)) withAutoprint(\{ # examplesIf}
 # library(gt); library(gtExtras)
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (gt)

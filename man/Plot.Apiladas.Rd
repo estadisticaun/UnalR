@@ -133,7 +133,7 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
-\dontshow{if (all(require("tibble"), require("dplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("tibble"), require("dplyr"))) withAutoprint(\{ # examplesIf}
 # Ejemplo generalizado (sin uso de un consolidado como input)
 # library("tibble"); library("dplyr")
 set.seed(42)
@@ -152,7 +152,7 @@ Plot.Apiladas(
   colores   = c("#FF553D", "#A5FF67", "#40D2FF", "#FFDB5C")
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 Txt <- "BARRAS APILADAS EN FUNCI\u00d3N DEL NIVEL ACAD\u00c9MICO Y EL A\u00d1O"
 Msj <- paste(

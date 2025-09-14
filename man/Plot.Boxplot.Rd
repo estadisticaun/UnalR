@@ -187,7 +187,7 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
-\dontshow{if (require("pals")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("pals")) withAutoprint(\{ # examplesIf}
 Txt <- "EVOLUCI\u00d3N DEL PUNTAJE EN EL EXAMEN DE ADMISI\u00d3N"
 Msj <- "Aspirantes a pregrado (<i>no se incluye los datos at\u00edpicos</i>)"
 Plot.Boxplot(
@@ -207,6 +207,7 @@ Plot.Boxplot(
 )
 \dontshow{\}) # examplesIf}
 # ---------------------------------------------------------------------------
+Txt <- "EVOLUCI\u00d3N DEL PUNTAJE EN EL EXAMEN DE ADMISI\u00d3N"
 Msj2 <- paste(
   "Aspirantes a pregrado",
   "(<i>cada periodo se encuentra segregado por el tipo de admisi\u00f3n</i>)"
@@ -258,7 +259,7 @@ Plot.Boxplot(
 ) -> Advertencia
 suppressWarnings(print(Advertencia))
 
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # library(dplyr)
 df <- ejSaberPro2020 |>
@@ -286,7 +287,7 @@ Plot.Boxplot(
   libreria      = "plotly"
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("pals")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("pals")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 # library(pals)

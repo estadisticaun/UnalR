@@ -22,7 +22,7 @@ Universidad Nacional de Colombia, cuenta con la información histórica desde
 el 2009-I al 2021-I.
 }
 \examples{
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # library(dplyr)
 head(ejConsolidadoGrad)
 \dontshow{\}) # examplesIf}

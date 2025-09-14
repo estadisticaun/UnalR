@@ -83,7 +83,7 @@ gráfica se va a representar usando la librería \code{Highcharter}, la cual usa
 internamente \code{JavaScript}.
 }
 \examples{
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # library(dplyr)
 df <- ejMiniConsolidadoAsp |>
   filter(Clase != "Sin Información", tolower(Clase) != "no aplica")

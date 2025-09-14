@@ -20,7 +20,7 @@ UnalR viene con algunos archivos de ejemplo en su directorio \code{inst/extdata}
 Esta función facilita el acceso a ellos.
 }
 \examples{
-\dontshow{if (all(FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(FALSE)) withAutoprint(\{ # examplesIf}
 read_example("TestConsolidado1.xlsx")
 \dontshow{\}) # examplesIf}
 }

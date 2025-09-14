@@ -170,7 +170,7 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # library(dplyr)
 Plot.Radar(
   datos     = ejSaberPro2020,

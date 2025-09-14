@@ -24,7 +24,7 @@ o por medio de los programas de admisión especial existentes. Dicho dataset
 será usado en los ejemplos de la función \code{Plot.Boxplot()}.
 }
 \examples{
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # library(dplyr)
 head(ejMiniAspirantesPre)
 \dontshow{\}) # examplesIf}

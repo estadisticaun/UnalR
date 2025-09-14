@@ -21,7 +21,7 @@ Consolidado de ejemplo de la prueba Saber Pro (\emph{antes llamada ECAES}) del a
 2019. El cual se utiliza para los ejemplos de la función \code{Tabla.SaberPro()}.
 }
 \examples{
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # library(dplyr)
 head(ejConsolidadoSaberPro2019)
 \dontshow{\}) # examplesIf}

@@ -214,7 +214,7 @@ es decir, la pareja formada por \verb{(depto, mpio)} debe corresponder a un indi
 En los argumentos no se acepta la entrada de objetos espaciales o polígonos.
 }
 \examples{
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # library(dplyr)
 df <- ejGraduados |> filter(YEAR == 2021) |>
   select(
@@ -254,7 +254,7 @@ Plot.Mapa(
   )
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("dplyr") && require("magrittr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr") && require("magrittr")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # library(dplyr); library(magrittr)
 ejSaberPro2020 \%>\%
@@ -292,7 +292,7 @@ ejSaberPro2020 \%>\%
     showSedes     = FALSE
   )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("cowplot")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("cowplot")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 # library(cowplot)
@@ -329,7 +329,7 @@ ggdraw() +
   draw_plot(listMaps$M_Providencia, x = 0.33, y = 0.39, width = 0.055)
 # ggplot2::ggsave("COL.png", width = 12, height = 10, dpi = 550)
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("tibble") && require("cowplot")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("tibble") && require("cowplot")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # library(tibble)
 PIB <- tibble(

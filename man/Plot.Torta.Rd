@@ -142,7 +142,7 @@ al especificar la librería y en qué función están presentes
 }
 
 \examples{
-\dontshow{if (all(require("tibble"), require("dplyr"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(require("tibble"), require("dplyr"))) withAutoprint(\{ # examplesIf}
 # Ejemplo generalizado (sin uso de un consolidado como input)
 # library("tibble"); library("dplyr")
 set.seed(42)
@@ -183,7 +183,7 @@ Plot.Torta(
   )
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("dplyr")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("dplyr")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 col <- c("#F15A24", "#8CC63F")
 Msj <- "Distribuci\u00f3n de estudiantes graduados en el primer periodo acad\u00e9mico del 2021."

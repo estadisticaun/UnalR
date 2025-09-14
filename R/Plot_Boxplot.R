@@ -95,6 +95,7 @@
 #'
 #' @examples
 #' # ---------------------------------------------------------------------------
+#' Txt <- "EVOLUCI\u00d3N DEL PUNTAJE EN EL EXAMEN DE ADMISI\u00d3N"
 #' Msj2 <- paste(
 #'   "Aspirantes a pregrado",
 #'   "(<i>cada periodo se encuentra segregado por el tipo de admisi\u00f3n</i>)"
@@ -235,153 +236,281 @@
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
 Plot.Boxplot <- function(
-    datos, variable, grupo1, grupo2, vertical = TRUE, outliers = TRUE,
-    jitter = FALSE, violin = FALSE, numericalVars, ylim, colores, sizeOutlier = 0,
-    colOutlier = "#08306B", titulo = "", labelX = "Periodo", labelY = "",
-    textBox = "", libreria = c("highcharter", "plotly"), estilo = NULL, estatico = FALSE) {
-
+  datos,
+  variable,
+  grupo1,
+  grupo2,
+  vertical = TRUE,
+  outliers = TRUE,
+  jitter = FALSE,
+  violin = FALSE,
+  numericalVars,
+  ylim,
+  colores,
+  sizeOutlier = 0,
+  colOutlier = "#08306B",
+  titulo = "",
+  labelX = "Periodo",
+  labelY = "",
+  textBox = "",
+  libreria = c("highcharter", "plotly"),
+  estilo = NULL,
+  estatico = FALSE
+) {
   # COMANDOS DE VERIFICACIÓN Y VALIDACIÓN
   if (missingArg(datos) || missingArg(variable) || missingArg(grupo1)) {
-    stop("\u00a1Por favor introduzca un conjunto de datos, una variable num\u00e9rica y un grupo con los cuales se graficar\u00e1!", call. = FALSE)
+    stop(
+      "\u00a1Por favor introduzca un conjunto de datos, una variable num\u00e9rica y un grupo con los cuales se graficar\u00e1!",
+      call. = FALSE
+    )
   }
-  if (!all(is.logical(vertical), is.logical(outliers), is.logical(jitter), is.logical(violin), is.logical(estatico))) {
-    stop("\u00a1Los argumentos 'vertical', 'outliers', 'jitter', 'violin' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!", call. = FALSE)
+  if (
+    !all(
+      is.logical(vertical),
+      is.logical(outliers),
+      is.logical(jitter),
+      is.logical(violin),
+      is.logical(estatico)
+    )
+  ) {
+    stop(
+      "\u00a1Los argumentos 'vertical', 'outliers', 'jitter', 'violin' y 'estatico' deben ser un valor booleano (TRUE o FALSE)!",
+      call. = FALSE
+    )
   }
-  if (!all(is.character(titulo), is.character(labelX), is.character(labelY), is.character(textBox))) {
-    stop("\u00a1Los argumentos 'titulo', 'labelX', 'labelY' y 'textBox' deben ser una cadena de texto!", call. = FALSE)
+  if (
+    !all(
+      is.character(titulo),
+      is.character(labelX),
+      is.character(labelY),
+      is.character(textBox)
+    )
+  ) {
+    stop(
+      "\u00a1Los argumentos 'titulo', 'labelX', 'labelY' y 'textBox' deben ser una cadena de texto!",
+      call. = FALSE
+    )
   }
   if (!estatico) {
     if (missingArg(libreria)) {
-      warning("\u00a1Se usar\u00e1 la librer\u00eda 'highcharter' por defecto para realizar el plot!", call. = FALSE)
+      warning(
+        "\u00a1Se usar\u00e1 la librer\u00eda 'highcharter' por defecto para realizar el plot!",
+        call. = FALSE
+      )
       libreria <- "highcharter"
     } else {
       libreria <- tolower(libreria)
       if (libreria %NotIN% c("highcharter", "plotly")) {
-        stop("\u00a1Por favor introduzca el nombre de una librer\u00eda valida (paquete usado para realizar la gr\u00e1fica)!", call. = FALSE)
+        stop(
+          "\u00a1Por favor introduzca el nombre de una librer\u00eda valida (paquete usado para realizar la gr\u00e1fica)!",
+          call. = FALSE
+        )
       }
     }
   }
   if (!missingArg(ylim)) {
     if (!(is.numeric(ylim) && length(ylim) == 2)) {
-      stop("\u00a1Por favor introduzca un vector de longitud dos que definen los l\u00edmites del eje Y!", call. = FALSE)
+      stop(
+        "\u00a1Por favor introduzca un vector de longitud dos que definen los l\u00edmites del eje Y!",
+        call. = FALSE
+      )
     }
     yLim <- ylim
-  } else { yLim <- NULL }
+  } else {
+    yLim <- NULL
+  }
 
   # AJUSTES Y CONDICIONALES PRELIMINARES POR CONSIDERAR
   LegendTitle <- ifelse(is.null(estilo$LegendTitle), "", estilo$LegendTitle)
-  Puntos      <- ifelse(jitter, "all", ifelse(outliers, "outliers", FALSE))
+  Puntos <- ifelse(jitter, "all", ifelse(outliers, "outliers", FALSE))
 
   if (outliers) {
-    OutShape <- ifelse(!(missingArg(estilo) || is.null(estilo$gg.OutShape)), estilo$gg.OutShape, 19)
-    atipicos <- list(outlier.color = colOutlier, outlier.size = sizeOutlier, outlier.shape = OutShape)
+    OutShape <- ifelse(
+      !(missingArg(estilo) || is.null(estilo$gg.OutShape)),
+      estilo$gg.OutShape,
+      19
+    )
+    atipicos <- list(
+      outlier.color = colOutlier,
+      outlier.size = sizeOutlier,
+      outlier.shape = OutShape
+    )
   } else {
     atipicos <- list(outlier.shape = NA)
   }
-  VarWidth <- ifelse(!(missingArg(estilo) || is.null(estilo$gg.VarWidth)), estilo$gg.VarWidth, FALSE)
+  VarWidth <- ifelse(
+    !(missingArg(estilo) || is.null(estilo$gg.VarWidth)),
+    estilo$gg.VarWidth,
+    FALSE
+  )
 
-  datos  <- datos |> mutate({{ grupo1 }} := factor({{ grupo1 }}))
+  datos <- datos |> mutate({{ grupo1 }} := factor({{ grupo1 }}))
   if (vertical) {
-    miniDots <- list( data = datos, x = rlang::enquo(grupo1), y = rlang::enquo(variable) )
+    miniDots <- list(
+      data = datos,
+      x = rlang::enquo(grupo1),
+      y = rlang::enquo(variable)
+    )
   } else {
-    miniDots <- list( data = datos, y = rlang::enquo(grupo1), x = rlang::enquo(variable) )
+    miniDots <- list(
+      data = datos,
+      y = rlang::enquo(grupo1),
+      x = rlang::enquo(variable)
+    )
   }
 
   # BUG: Ordenando los niveles del eje X, para permitir que sean factores con niveles personalizados
-  if (is.null(levels(datos |> select({{grupo1}}) |> pull()))) {
-    datos <- datos |> mutate({{grupo1}} := forcats::as_factor({{grupo1}}))
-    datos <- datos |> mutate({{grupo1}} := forcats::fct_relevel({{grupo1}}, sort))
+  if (is.null(levels(datos |> select({{ grupo1 }}) |> pull()))) {
+    datos <- datos |> mutate({{ grupo1 }} := forcats::as_factor({{ grupo1 }}))
+    datos <- datos |>
+      mutate({{ grupo1 }} := forcats::fct_relevel({{ grupo1 }}, sort))
   } else {
     datos <- datos |>
-      mutate({{grupo1}} := forcats::fct_relevel({{grupo1}}, levels(datos |> select({{grupo1}}) |> pull())))
+      mutate(
+        {{ grupo1 }} := forcats::fct_relevel(
+          {{ grupo1 }},
+          levels(datos |> select({{ grupo1 }}) |> pull())
+        )
+      )
   }
 
   if (!missingArg(grupo2)) {
-    datos  <- datos |> select({{ variable }}, {{ grupo1 }}, {{ grupo2 }})
+    datos <- datos |> select({{ variable }}, {{ grupo1 }}, {{ grupo2 }})
     Levels <- datos |> select({{ grupo2 }}) |> distinct() |> pull()
     if (!(missingArg(colores) || length(colores) == length(Levels))) {
-      stop(paste0(
-        "\u00a1El n\u00famero de colores ingresados en el vector 'colores' no corresponde con el n\u00famero de categor\u00edas a colorear!",
-        "\n\tNo. colores ingresados = ", length(colores), " != ", "No. de categor\u00edas = ", length(Levels)
-        ), call. = FALSE
+      stop(
+        paste0(
+          "\u00a1El n\u00famero de colores ingresados en el vector 'colores' no corresponde con el n\u00famero de categor\u00edas a colorear!",
+          "\n\tNo. colores ingresados = ",
+          length(colores),
+          " != ",
+          "No. de categor\u00edas = ",
+          length(Levels)
+        ),
+        call. = FALSE
       )
     }
-    if (missingArg(colores)) { colores <- rainbow(length(Levels), alpha = 0.7) }
+    if (missingArg(colores)) {
+      colores <- rainbow(length(Levels), alpha = 0.7)
+    }
 
-    ColxPunto  <- FALSE
+    ColxPunto <- FALSE
     ShowLegend <- TRUE
-    Intento <- try(data_to_boxplot(
-      data = datos, variable = {{ variable }},
-      group_var = {{ grupo1 }}, group_var2 = {{ grupo2 }},
-      add_outliers = outliers, color = colores
+    Intento <- try(
+      data_to_boxplot(
+        data = datos,
+        variable = {{ variable }},
+        group_var = {{ grupo1 }},
+        group_var2 = {{ grupo2 }},
+        add_outliers = outliers,
+        color = colores
       ),
       silent = TRUE
     )
     if (any(class(Intento) == "try-error")) {
       dfBoxPlot <- data_to_boxplot(
-        data = datos, variable = {{ variable }},
-        group_var = {{ grupo1 }}, group_var2 = {{ grupo2 }},
-        add_outliers = FALSE, color = colores
+        data = datos,
+        variable = {{ variable }},
+        group_var = {{ grupo1 }},
+        group_var2 = {{ grupo2 }},
+        add_outliers = FALSE,
+        color = colores
       )
-    } else { dfBoxPlot <- Intento }
+    } else {
+      dfBoxPlot <- Intento
+    }
 
     if (all(!estatico, libreria == "highcharter")) {
       rm <- dfBoxPlot |> mutate(l = lengths(data))
-      if(length(unique(rm$l)) != 1) {
+      if (length(unique(rm$l)) != 1) {
         allGrid <- expand_grid(
           G1 = datos |> select({{ grupo1 }}) |> distinct() |> pull(),
           G2 = datos |> select({{ grupo2 }}) |> distinct() |> pull()
         )
-        allGrid <- allGrid |> rename({{grupo1}} := G1, {{grupo2}} := G2)
-        dataComplete <- left_join(allGrid, datos, by = join_by({{ grupo1 }}, {{ grupo2 }}))
-        varsInput <- datos |> select ( {{ grupo1 }}, {{ grupo2 }} ) |> colnames()
+        allGrid <- allGrid |> rename({{ grupo1 }} := G1, {{ grupo2 }} := G2)
+        dataComplete <- left_join(
+          allGrid,
+          datos,
+          by = join_by({{ grupo1 }}, {{ grupo2 }})
+        )
+        varsInput <- datos |> select({{ grupo1 }}, {{ grupo2 }}) |> colnames()
         message({
           cli::cli_h1(cli::bg_yellow(cli::col_black("PRECAUCI\u00d3N")))
-          cli::cli_alert_info("Alerta: Inconsistencias encontradas en el dataframe ingresado.", wrap = TRUE)
-          cli::cli_alert("Su df no contiene informaci\u00f3n para todas las posibles combinaciones entre: {.val {varsInput}}.", wrap = TRUE)
-          cli::cli_text("{cli::symbol$star} Para que todo funcione correctamente con el paquete {.pkg highcharter} es necesario agregar:")
+          cli::cli_alert_info(
+            "Alerta: Inconsistencias encontradas en el dataframe ingresado.",
+            wrap = TRUE
+          )
+          cli::cli_alert(
+            "Su df no contiene informaci\u00f3n para todas las posibles combinaciones entre: {.val {varsInput}}.",
+            wrap = TRUE
+          )
+          cli::cli_text(
+            "{cli::symbol$star} Para que todo funcione correctamente con el paquete {.pkg highcharter} es necesario agregar:"
+          )
           rowsAdd <- setdiff(dataComplete, datos)
-          cli::cli_alert_success("Se tuvo que agregar {nrow(rowsAdd)} fil{?a/as}.")
+          cli::cli_alert_success(
+            "Se tuvo que agregar {nrow(rowsAdd)} fil{?a/as}."
+          )
           # print(rowsAdd)
         })
-        Intento <- try(data_to_boxplot(
-          data = dataComplete, variable = {{ variable }},
-          group_var = {{ grupo1 }}, group_var2 = {{ grupo2 }},
-          add_outliers = outliers, color = colores
-        ),
-        silent = TRUE
+        Intento <- try(
+          data_to_boxplot(
+            data = dataComplete,
+            variable = {{ variable }},
+            group_var = {{ grupo1 }},
+            group_var2 = {{ grupo2 }},
+            add_outliers = outliers,
+            color = colores
+          ),
+          silent = TRUE
         )
         if (any(class(Intento) == "try-error")) {
           dfBoxPlot <- data_to_boxplot(
-            data = dataComplete, variable = {{ variable }},
-            group_var = {{ grupo1 }}, group_var2 = {{ grupo2 }},
-            add_outliers = FALSE, color = colores
+            data = dataComplete,
+            variable = {{ variable }},
+            group_var = {{ grupo1 }},
+            group_var2 = {{ grupo2 }},
+            add_outliers = FALSE,
+            color = colores
           )
-        } else { dfBoxPlot <- Intento }
-
+        } else {
+          dfBoxPlot <- Intento
+        }
       }
       rm(allGrid, dataComplete, rm, rowsAdd)
     }
 
-    datos  <- datos |> mutate({{ grupo2 }} := factor({{ grupo2 }}))
+    datos <- datos |> mutate({{ grupo2 }} := factor({{ grupo2 }}))
     ggBase <- list(
-      datos, aes(x = {{ grupo1 }}, y = {{ variable }}, fill = {{ grupo2 }})
+      datos,
+      aes(x = {{ grupo1 }}, y = {{ variable }}, fill = {{ grupo2 }})
     )
     ggShow <- "right"
     # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
     TypeGroup <- "group"
     if (!violin) {
       Dots <- list(
-        type = "box", color = rlang::enquo(grupo2), colors = colores, boxpoints = Puntos,
-        pointpos = 0, jitter = 0.4, marker = list(color = colOutlier, size = 2 + sizeOutlier)
+        type = "box",
+        color = rlang::enquo(grupo2),
+        colors = colores,
+        boxpoints = Puntos,
+        pointpos = 0,
+        jitter = 0.4,
+        marker = list(color = colOutlier, size = 2 + sizeOutlier)
       )
       Dots <- append(miniDots, Dots)
       tempBoxPlot <- do.call(ggplot, ggBase) +
-        do.call(geom_boxplot, append(list(na.rm = TRUE, varwidth = VarWidth), atipicos))
+        do.call(
+          geom_boxplot,
+          append(list(na.rm = TRUE, varwidth = VarWidth), atipicos)
+        )
     } else {
       Dots <- list(
-        type = "violin", color = rlang::enquo(grupo2), colors = colores,
-        box = list(visible = FALSE), meanline = list(visible = TRUE)
+        type = "violin",
+        color = rlang::enquo(grupo2),
+        colors = colores,
+        box = list(visible = FALSE),
+        meanline = list(visible = TRUE)
       )
       Dots <- append(miniDots, Dots)
       tempBoxPlot <- do.call(ggplot, ggBase) + geom_violin(na.rm = TRUE)
@@ -389,39 +518,65 @@ Plot.Boxplot <- function(
   } else {
     Levels <- datos |> select({{ grupo1 }}) |> distinct() |> pull()
     if (!(missingArg(colores) || length(colores) == length(Levels))) {
-      stop(paste0(
-        "\u00a1El n\u00famero de colores ingresados en el vector 'colores' no corresponde con el n\u00famero de categor\u00edas a colorear!",
-        "\n\tNo. colores ingresados = ", length(colores), " != ", "No. de categor\u00edas = ", length(Levels)
-        ), call. = FALSE
+      stop(
+        paste0(
+          "\u00a1El n\u00famero de colores ingresados en el vector 'colores' no corresponde con el n\u00famero de categor\u00edas a colorear!",
+          "\n\tNo. colores ingresados = ",
+          length(colores),
+          " != ",
+          "No. de categor\u00edas = ",
+          length(Levels)
+        ),
+        call. = FALSE
       )
     }
-    if (missingArg(colores)) { colores <- rainbow(length(Levels), alpha = 0.7) }
+    if (missingArg(colores)) {
+      colores <- rainbow(length(Levels), alpha = 0.7)
+    }
 
-    ColxPunto  <- TRUE
+    ColxPunto <- TRUE
     ShowLegend <- FALSE
-    dfBoxPlot  <- data_to_boxplot(
-      data = datos, variable = {{ variable }}, group_var = {{ grupo1 }},
-      add_outliers = outliers, name = textBox
+    dfBoxPlot <- data_to_boxplot(
+      data = datos,
+      variable = {{ variable }},
+      group_var = {{ grupo1 }},
+      add_outliers = outliers,
+      name = textBox
     )
     ggBase <- list(
-      datos, aes(x = {{ grupo1 }}, y = {{ variable }}, fill = {{ grupo1 }})
+      datos,
+      aes(x = {{ grupo1 }}, y = {{ variable }}, fill = {{ grupo1 }})
     )
     ggShow <- "none"
     # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
     TypeGroup <- NULL
     if (!violin) {
       Dots <- list(
-        type = "box", color = rlang::enquo(grupo1), colors = colores,
-        name = textBox, showlegend = FALSE, boxpoints = Puntos, pointpos = 0, jitter = 0.4,
+        type = "box",
+        color = rlang::enquo(grupo1),
+        colors = colores,
+        name = textBox,
+        showlegend = FALSE,
+        boxpoints = Puntos,
+        pointpos = 0,
+        jitter = 0.4,
         marker = list(color = colOutlier, size = 2 + sizeOutlier)
       )
       Dots <- append(miniDots, Dots)
       tempBoxPlot <- do.call(ggplot, ggBase) +
-        do.call(geom_boxplot, append(list(na.rm = TRUE, varwidth = VarWidth), atipicos))
+        do.call(
+          geom_boxplot,
+          append(list(na.rm = TRUE, varwidth = VarWidth), atipicos)
+        )
     } else {
       Dots <- list(
-        type = "violin", color = rlang::enquo(grupo1), colors = colores, name = textBox,
-        showlegend = FALSE, box = list(visible = FALSE), meanline = list(visible = TRUE)
+        type = "violin",
+        color = rlang::enquo(grupo1),
+        colors = colores,
+        name = textBox,
+        showlegend = FALSE,
+        box = list(visible = FALSE),
+        meanline = list(visible = TRUE)
       )
       Dots <- append(miniDots, Dots)
       tempBoxPlot <- do.call(ggplot, ggBase) + geom_violin(na.rm = TRUE)
@@ -435,64 +590,121 @@ Plot.Boxplot <- function(
       if (!(missingArg(estilo) || is.null(estilo$hc.Tema))) {
         ThemeHC <- switch(
           estilo$hc.Tema,
-          "1"  = hc_theme_ffx(),
-          "2"  = hc_theme_google(),
-          "3"  = hc_theme_tufte(),
-          "4"  = hc_theme_538(),
-          "5"  = hc_theme_ggplot2(),
-          "6"  = hc_theme_economist(),
-          "7"  = hc_theme_sandsignika(),
-          "8"  = hc_theme_ft(),
-          "9"  = hc_theme_superheroes(),
+          "1" = hc_theme_ffx(),
+          "2" = hc_theme_google(),
+          "3" = hc_theme_tufte(),
+          "4" = hc_theme_538(),
+          "5" = hc_theme_ggplot2(),
+          "6" = hc_theme_economist(),
+          "7" = hc_theme_sandsignika(),
+          "8" = hc_theme_ft(),
+          "9" = hc_theme_superheroes(),
           "10" = hc_theme_flatdark()
         )
-      } else { ThemeHC <- hc_theme_flat() }
+      } else {
+        ThemeHC <- hc_theme_flat()
+      }
 
       Orientacion <- ifelse(vertical, "column", "bar")
-      PlotBoxPlot <- highchart()     |>
+      PlotBoxPlot <- highchart() |>
         hc_chart(type = Orientacion) |>
         hc_xAxis(
-          type = "category", title = list(
-            text = labelX, offset = 70, style = list(
-              fontWeight = "bold", fontSize = "18px", color = "black"
+          type = "category",
+          title = list(
+            text = labelX,
+            offset = 70,
+            style = list(
+              fontWeight = "bold",
+              fontSize = "18px",
+              color = "black"
             )
           ),
-          align = "center", lineColor = "#787878", opposite = FALSE,
-          labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
+          align = "center",
+          lineColor = "#787878",
+          opposite = FALSE,
+          labels = list(
+            style = list(
+              fontWeight = "bold",
+              color = "black",
+              fontSize = "18px"
+            )
+          )
         ) |>
         hc_add_series_list(dfBoxPlot) |>
         hc_plotOptions(
           boxplot = list(colorByPoint = ColxPunto, colors = colores),
-          series = list(marker = list(fillColor = colOutlier, radius = 1.5 + sizeOutlier))
+          series = list(
+            marker = list(fillColor = colOutlier, radius = 1.5 + sizeOutlier)
+          )
         ) |>
-        hc_title(text = titulo, style = list(
-          fontWeight = "bold", fontSize = "22px", color = "#333333", useHTML = TRUE
+        hc_title(
+          text = titulo,
+          style = list(
+            fontWeight = "bold",
+            fontSize = "22px",
+            color = "#333333",
+            useHTML = TRUE
           )
         ) |>
         hc_yAxis(
           title = list(
-            text = labelY, offset = 70, style = list(
-              fontWeight = "bold", fontSize = "18px", color = "black"
+            text = labelY,
+            offset = 70,
+            style = list(
+              fontWeight = "bold",
+              fontSize = "18px",
+              color = "black"
             )
           ),
-          lineColor = "#787878", opposite = FALSE, lineWidth = 1, min = yLim[1], max = yLim[2],
-          labels = list(style = list(fontWeight = "bold", color = "black", fontSize = "18px"))
+          lineColor = "#787878",
+          opposite = FALSE,
+          lineWidth = 1,
+          min = yLim[1],
+          max = yLim[2],
+          labels = list(
+            style = list(
+              fontWeight = "bold",
+              color = "black",
+              fontSize = "18px"
+            )
+          )
         ) |>
-        hc_credits(enabled = TRUE, text = "DNPE", href = "http://estadisticas.unal.edu.co/home/") |>
+        hc_credits(
+          enabled = TRUE,
+          text = "DNPE",
+          href = "http://estadisticas.unal.edu.co/home/"
+        ) |>
         # https://github.com/jbkunst/highcharter/issues/331
-        hc_exporting(enabled = TRUE, filename = paste0("PlotBoxPlot_", as_label(enquo(grupo1)))) |>
+        hc_exporting(
+          enabled = TRUE,
+          filename = paste0("PlotBoxPlot_", as_label(enquo(grupo1)))
+        ) |>
         hc_legend(
-          enabled = ShowLegend, align = "center", verticalAlign = "bottom", layout = "horizontal",
-          title = list(text = LegendTitle, style = list(textDecoration = "underline")),
-          x = 42, y = 0, itemStyle = list(
-            fontWeight = "bold", color = "black", fontSize = "18px"
+          enabled = ShowLegend,
+          align = "center",
+          verticalAlign = "bottom",
+          layout = "horizontal",
+          title = list(
+            text = LegendTitle,
+            style = list(textDecoration = "underline")
+          ),
+          x = 42,
+          y = 0,
+          itemStyle = list(
+            fontWeight = "bold",
+            color = "black",
+            fontSize = "18px"
           )
         ) |>
         hc_add_theme(ThemeHC)
 
       if (!(missingArg(estilo) || is.null(estilo$hc.Credits))) {
         PlotBoxPlot <- PlotBoxPlot |>
-          hc_subtitle(text = estilo$hc.Credits, align = "left", style = list(color = "#2B908F", fontWeight = "bold"))
+          hc_subtitle(
+            text = estilo$hc.Credits,
+            align = "left",
+            style = list(color = "#2B908F", fontWeight = "bold")
+          )
       }
     } else if (libreria == "plotly") {
       if (!missingArg(numericalVars)) {
@@ -502,7 +714,8 @@ Plot.Boxplot <- function(
             listVars,
             FUN = function(varName, df) {
               boton <- list(
-                method = "restyle", args = list("y", list(df[, varName])),
+                method = "restyle",
+                args = list("y", list(df[, varName])),
                 label = sprintf("Mostrar: %s", varName)
               )
             },
@@ -510,9 +723,14 @@ Plot.Boxplot <- function(
           )
         }
         Dots <- list(
-          data = df, x = rlang::enquo(grupo1), y = rlang::enquo(variable),
-          type = "violin", color = rlang::enquo(grupo1), colors = colores,
-          box = list(visible = TRUE), meanline = list(visible = TRUE)
+          data = df,
+          x = rlang::enquo(grupo1),
+          y = rlang::enquo(variable),
+          type = "violin",
+          color = rlang::enquo(grupo1),
+          colors = colores,
+          box = list(visible = TRUE),
+          meanline = list(visible = TRUE)
         )
       }
       # -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
@@ -528,54 +746,86 @@ Plot.Boxplot <- function(
       }
       Hovermode <- ifelse(
         !(missingArg(estilo) || is.null(estilo$ply.Interaction)),
-        estilo$ply.Interaction, ifelse(missingArg(grupo2), "x", "closest")
+        estilo$ply.Interaction,
+        ifelse(missingArg(grupo2), "x", "closest")
       )
 
       # Arial | Open Sans | Courier New, monospace
-      FamilyAxis  <- list(family = "Old Standard TT, serif", size = 16, color = "#525252")
+      FamilyAxis <- list(
+        family = "Old Standard TT, serif",
+        size = 16,
+        color = "#525252"
+      )
       FamilyTitle <- list(family = "Open Sans", size = 24, color = "#333333")
 
-      Title <- list(text = paste0("<b>", titulo, "</b>"), font = FamilyTitle, y = 0.96)
+      Title <- list(
+        text = paste0("<b>", titulo, "</b>"),
+        font = FamilyTitle,
+        y = 0.96
+      )
       Xaxis <- list(
-        title     = paste0("<i>", labelX, "</i>"),
-        zeroline  = FALSE,
-        showline  = TRUE,
-        showgrid  = FALSE,
+        title = paste0("<i>", labelX, "</i>"),
+        zeroline = FALSE,
+        showline = TRUE,
+        showgrid = FALSE,
         linecolor = "#787878",
         linewidth = 2.5,
-        autotick  = FALSE,
-        ticks     = "outside",
+        autotick = FALSE,
+        ticks = "outside",
         tickwidth = 2.5,
-        ticklen   = 10,
+        ticklen = 10,
         tickcolor = "#CCCCCC",
         tickangle = -45,
-        tickfont  = FamilyAxis,
+        tickfont = FamilyAxis,
         showticklabels = TRUE
       )
       Yaxis <- list(
-        title     = labelY,
-        zeroline  = TRUE,
-        showline  = TRUE,
-        showgrid  = TRUE,
+        title = labelY,
+        zeroline = TRUE,
+        showline = TRUE,
+        showgrid = TRUE,
         linecolor = "#787878",
         linewidth = 3,
-        range     = yLim,
-        tickfont  = FamilyAxis,
+        range = yLim,
+        tickfont = FamilyAxis,
         showticklabels = TRUE,
         separatethousands = TRUE
       )
 
-      if (!vertical) { c <- Xaxis; Xaxis <- Yaxis; Yaxis <- c }
+      if (!vertical) {
+        c <- Xaxis
+        Xaxis <- Yaxis
+        Yaxis <- c
+      }
 
       PlotBoxPlot <- do.call(plot_ly, Dots) |>
         layout(
-          boxmode = TypeGroup, violinmode = TypeGroup, title = Title,
-          xaxis = Xaxis, yaxis = Yaxis, autosize = TRUE, showlegend = TRUE,
-          legend = append(ParmsLegend, list(traceorder = "normal", title = list(text = paste0("<b>", LegendTitle, "</b>")))),
-          hovermode = Hovermode, annotations = append(ParmsCredits, list(
-            showarrow = FALSE, xref = "paper", yref = "paper",
-            xanchor = "right", yanchor = "auto", xshift = 0, yshift = 0,
-            font = list(size = 12, color = "#CCCCCC")
+          boxmode = TypeGroup,
+          violinmode = TypeGroup,
+          title = Title,
+          xaxis = Xaxis,
+          yaxis = Yaxis,
+          autosize = TRUE,
+          showlegend = TRUE,
+          legend = append(
+            ParmsLegend,
+            list(
+              traceorder = "normal",
+              title = list(text = paste0("<b>", LegendTitle, "</b>"))
+            )
+          ),
+          hovermode = Hovermode,
+          annotations = append(
+            ParmsCredits,
+            list(
+              showarrow = FALSE,
+              xref = "paper",
+              yref = "paper",
+              xanchor = "right",
+              yanchor = "auto",
+              xshift = 0,
+              yshift = 0,
+              font = list(size = 12, color = "#CCCCCC")
             )
           )
         ) |>
@@ -583,55 +833,81 @@ Plot.Boxplot <- function(
 
       if (!missingArg(numericalVars)) {
         PlotBoxPlot <- PlotBoxPlot |>
-          layout(updatemenus = list(list(buttons = CrearBotones(df, vars2vec(numericalVars)))))
+          layout(
+            updatemenus = list(list(
+              buttons = CrearBotones(df, vars2vec(numericalVars))
+            ))
+          )
       }
     }
   } else {
     if (!(missingArg(estilo) || is.null(estilo$gg.Tema))) {
       ThemeGG <- switch(
         estilo$gg.Tema,
-        "1"  = theme_light(),
-        "2"  = theme_bw(),
-        "3"  = theme_classic(),
-        "4"  = theme_linedraw(),
-        "5"  = theme_gray(),
-        "6"  = ggthemes::theme_hc(),
-        "7"  = ggthemes::theme_pander(),
-        "8"  = ggthemes::theme_gdocs(),
-        "9"  = ggthemes::theme_fivethirtyeight(),
+        "1" = theme_light(),
+        "2" = theme_bw(),
+        "3" = theme_classic(),
+        "4" = theme_linedraw(),
+        "5" = theme_gray(),
+        "6" = ggthemes::theme_hc(),
+        "7" = ggthemes::theme_pander(),
+        "8" = ggthemes::theme_gdocs(),
+        "9" = ggthemes::theme_fivethirtyeight(),
         "10" = ggthemes::theme_economist(),
         "11" = ggthemes::theme_solarized()
       )
-    } else { ThemeGG <- theme_DNPE() }
+    } else {
+      ThemeGG <- theme_DNPE()
+    }
 
     if (!(missingArg(estilo) || is.null(estilo$gg.Legend))) {
       ParmsLegend <- estilo$gg.Legend
     } else {
-      ParmsLegend <- list(legend.position = ggShow, legend.direction = "vertical")
+      ParmsLegend <- list(
+        legend.position = ggShow,
+        legend.direction = "vertical"
+      )
     }
     if (!(missingArg(estilo) || is.null(estilo$gg.Texto))) {
-      ParmsLabs  <- estilo$gg.Texto
+      ParmsLabs <- estilo$gg.Texto
     } else {
-      ParmsLabs  <- list(subtitle = NULL, caption = NULL, tag = NULL)
+      ParmsLabs <- list(subtitle = NULL, caption = NULL, tag = NULL)
     }
 
     PlotBoxPlot <- tempBoxPlot +
       scale_fill_manual(values = colores) +
       labs(
-        title = titulo, subtitle = ParmsLabs$subtitle, x = labelX, y = labelY,
-        caption = ParmsLabs$caption, tag = ParmsLabs$tag, fill = LegendTitle
+        title = titulo,
+        subtitle = ParmsLabs$subtitle,
+        x = labelX,
+        y = labelY,
+        caption = ParmsLabs$caption,
+        tag = ParmsLabs$tag,
+        fill = LegendTitle
       ) +
       scale_x_discrete(guide = guide_axis(angle = 45)) +
       scale_y_continuous(limits = yLim) +
-      ThemeGG + do.call(theme, ParmsLegend)
+      ThemeGG +
+      do.call(theme, ParmsLegend)
 
     if (jitter) {
-      JitWidth <- ifelse(!(missingArg(estilo) || is.null(estilo$gg.JitWidth)), estilo$gg.JitWidth, 0.25)
-      JitSize  <- ifelse(!(missingArg(estilo) || is.null(estilo$gg.JitSize)) , estilo$gg.JitSize, 0.4)
-      PlotBoxPlot <- PlotBoxPlot + geom_jitter(width = JitWidth, size = JitSize, color = colOutlier)
+      JitWidth <- ifelse(
+        !(missingArg(estilo) || is.null(estilo$gg.JitWidth)),
+        estilo$gg.JitWidth,
+        0.25
+      )
+      JitSize <- ifelse(
+        !(missingArg(estilo) || is.null(estilo$gg.JitSize)),
+        estilo$gg.JitSize,
+        0.4
+      )
+      PlotBoxPlot <- PlotBoxPlot +
+        geom_jitter(width = JitWidth, size = JitSize, color = colOutlier)
     }
 
-    if (!vertical) { PlotBoxPlot <- PlotBoxPlot + coord_flip() }
+    if (!vertical) {
+      PlotBoxPlot <- PlotBoxPlot + coord_flip()
+    }
   }
 
   return(PlotBoxPlot)

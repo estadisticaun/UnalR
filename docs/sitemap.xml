@@ -1,14 +1,9 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>https://estadisticaun.github.io/UnalR/LICENSE-text.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/authors.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/index.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/404.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/index.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/Agregar.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/reference/ejConsolidadoGrad.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/reference/ejConsolidadoSaberPro2019.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/reference/ejGraduados.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/reference/ejMiniAspirantesPre.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/reference/ejMiniConsolidadoAsp.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/reference/ejSaberPro2020.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/reference/pipe.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/Plot.Apiladas.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/Plot.Barras.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/Plot.Boxplot.html</loc></url>
@@ -20,14 +15,18 @@
 <url><loc>https://estadisticaun.github.io/UnalR/reference/Plot.Series.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/Plot.Torta.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/Plot.Treemap.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/reference/read_example.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/StaticPlot.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/reference/Tabla.General.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/Tabla.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/reference/Tabla.General.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/reference/Tabla.SaberPro.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/reference/ejConsolidadoGrad.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/reference/ejGraduados.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/reference/ejConsolidadoSaberPro2019.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/reference/ejSaberPro2020.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/reference/ejMiniConsolidadoAsp.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/reference/ejMiniAspirantesPre.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/reference/read_example.html</loc></url>
+<url><loc>https://estadisticaun.github.io/UnalR/reference/pipe.html</loc></url>
 <url><loc>https://estadisticaun.github.io/UnalR/news/index.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/authors.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/index.html</loc></url>
-<url><loc>https://estadisticaun.github.io/UnalR/404.html</loc></url>
 </urlset>
 

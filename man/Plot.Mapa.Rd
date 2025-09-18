@@ -254,7 +254,7 @@ Plot.Mapa(
   )
 )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("dplyr") && require("magrittr")) withAutoprint(\{ # examplesIf}
+\dontshow{if (all(FALSE) && require("dplyr") && require("magrittr")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # library(dplyr); library(magrittr)
 ejSaberPro2020 \%>\%
@@ -292,7 +292,7 @@ ejSaberPro2020 \%>\%
     showSedes     = FALSE
   )
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("cowplot")) withAutoprint(\{ # examplesIf}
+\dontshow{if (all(FALSE) && require("cowplot")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # Ejemplo usando el caso estático (ggplot2)
 # library(cowplot)
@@ -329,7 +329,7 @@ ggdraw() +
   draw_plot(listMaps$M_Providencia, x = 0.33, y = 0.39, width = 0.055)
 # ggplot2::ggsave("COL.png", width = 12, height = 10, dpi = 550)
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("tibble") && require("cowplot")) withAutoprint(\{ # examplesIf}
+\dontshow{if (all(FALSE) && require("tibble") && require("cowplot")) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 # library(tibble)
 PIB <- tibble(
@@ -377,6 +377,8 @@ ggdraw() +
   draw_plot(listMaps$M_COL) +
   draw_plot(listMaps$M_SanAndres, x = 0.27, y = 0.35, width = 0.08)
 # ggsave("COL.png", width = 12, height = 10, dpi = 550)
+\dontshow{\}) # examplesIf}
+\dontshow{if (all(FALSE)) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 AreaVichada <- tibble(
   MunCode = c(99001, 99524, 99624, 99773), Area = c(12409, 20141, 2018, 65674)

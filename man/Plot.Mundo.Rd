@@ -195,6 +195,7 @@ Plot.Mundo(
   textSize = 10,
   limpio   = FALSE
 )
+\dontshow{if (all(FALSE)) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 set.seed(123)
 LATAM <- data.frame(
@@ -275,5 +276,5 @@ Plot.Mundo(
   estatico = TRUE,
   estilo   = list(Style = "SiNo", Theme = 3)
 )
-
+\dontshow{\}) # examplesIf}
 }

@@ -31,6 +31,14 @@ We hope for your understanding and support in publishing this package, which wil
 
 Additional comments by reviewer:
 
+```
+Examples with CPU (user + system) or elapsed time > 10s
+            user system elapsed
+Plot.Mundo 17.50   0.64   18.15
+Plot.Mapa  11.97   0.56   12.56
+```
++ **Solved** The reason for the return was identified as execution times exceeding 5 seconds in some specific function examples. This issue has been resolved, and no example executions now trigger the note.
+
 + **Solved**
 
 Please make sure that you do not change the user's options, par or working directory. If you really have to do so within functions, please ensure with an *immediate* call of on.exit() that the settings are reset when the function is exited. e.g.: -> R/Plot_Radar.R

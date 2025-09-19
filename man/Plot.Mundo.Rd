@@ -180,6 +180,7 @@ Plot.Mundo(
   textSize = 4,
   limpio   = FALSE
 )
+\dontshow{if (all(FALSE)) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 Plot.Mundo(
   datos    = LATAM,
@@ -195,7 +196,6 @@ Plot.Mundo(
   textSize = 10,
   limpio   = FALSE
 )
-\dontshow{if (all(FALSE)) withAutoprint(\{ # examplesIf}
 # ---------------------------------------------------------------------------
 set.seed(123)
 LATAM <- data.frame(

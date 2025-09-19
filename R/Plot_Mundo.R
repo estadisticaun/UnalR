@@ -46,6 +46,7 @@
 #'   textSize = 4,
 #'   limpio   = FALSE
 #' )
+#' @examplesIf all(FALSE)
 #' # ---------------------------------------------------------------------------
 #' Plot.Mundo(
 #'   datos    = LATAM,
@@ -61,7 +62,6 @@
 #'   textSize = 10,
 #'   limpio   = FALSE
 #' )
-#' @examplesIf all(FALSE)
 #' # ---------------------------------------------------------------------------
 #' set.seed(123)
 #' LATAM <- data.frame(

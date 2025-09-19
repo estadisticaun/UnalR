@@ -26,7 +26,7 @@ Description: Una herramienta rápida y consistente para la disposición de
     the interactive to the dynamic world and from one library to another
     without changing function or syntax.
 License: GPL (>= 3)
-URL: https://unal.edu.co, https://estadisticas.unal.edu.co/home/, https://github.com/estadisticaun/UnalR, https://estadisticaun.github.io/UnalR
+URL: https://unal.edu.co, https://estadisticas.unal.edu.co/home/, https://github.com/estadisticaun/UnalR, https://estadisticaun.github.io/UnalR/
 BugReports: https://github.com/estadisticaun/UnalR/issues
 Depends:
     R (>= 4.3.0)

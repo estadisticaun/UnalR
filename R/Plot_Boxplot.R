@@ -62,7 +62,7 @@
 #'     `0.25`. Para más información, consulte la función [geom_jitter()][ggplot2::geom_jitter()]).
 #'   * `gg.JitSize`: Valor numérico que indica el tamaño de los jittered points.
 #'     El valor por defecto es `0.4`. Para más información, consulte la función
-#'     [geom_jitter()][ggplot2:: geom_jitter()]).
+#'     [geom_jitter()][ggplot2::geom_jitter()]).
 #'
 #' @details
 #' El argumento `numericalVars` funciona solamente con la librería `"plotly"`,

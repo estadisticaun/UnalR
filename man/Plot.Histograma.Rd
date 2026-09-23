@@ -64,7 +64,7 @@ es personalizar pequeños detalles de ésta.
 \item \code{hc.Tema}, \code{ply.Credits}, \code{gg.Tema} y \code{gg.Texto}: Igual uso
 que en \code{\link[=Plot.Series]{Plot.Series()}}
 \item \code{ply.Density}: Una lista de parámetros admitidos por el argumento \code{line}
-de la función \link[plotly:add_trace]{add_lines()}.
+de la función \link[plotly:add_lines]{add_lines()}.
 \item \code{gg.Hist}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_histogram]{geom_histogram()}.
 \item \code{gg.Density}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_density]{geom_density()}.
 }}

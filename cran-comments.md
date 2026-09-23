@@ -1,3 +1,8 @@
+## UnalR 1.0.2 (2026-10-01)
+
+### CRAN Notes
+* The URL https://unal.edu.co triggered a timeout during the automated checks. This is a valid, active institutional URL, but its firewall sometimes blocks automated server pings.
+
 ## UnalR 1.0.1 (2025-09-15)
 
 Updated tests/testthat/test-Plot_Series.R to ensure compatibility with ggplot2 v4.0.0, addressing the object class and type expectations. This change ensures the package passes validation checks with the upcoming ggplot2 major release.

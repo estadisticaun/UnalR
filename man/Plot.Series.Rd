@@ -109,7 +109,7 @@ Los valores por defecto la ubican verticalmente a la derecha del plot.
 Algunos valores aceptados para \code{legend.position} son \code{"none"}, \code{"left"},
 \code{"top"}, \code{"right"}, \code{"bottom"} y \code{c(CoordX, CoordY)}. Para \code{legend.direction}
 solo se acepta \code{"vertical"} u \code{"horizontal"}.
-\item \code{gg.Linea}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_path]{geom_line()}).
+\item \code{gg.Linea}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_line]{geom_line()}).
 \item \code{gg.Punto}: Una lista de parámetros admitidos por la función \link[ggplot2:geom_point]{geom_point()})
 \item \code{gg.Texto}: Una lista cuyos valores admitidos y usados son \code{subtitle},
 \code{caption} y \code{tag}.

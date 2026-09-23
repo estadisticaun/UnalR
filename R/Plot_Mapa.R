@@ -63,10 +63,9 @@
 #'   realizará el mapa, sean los popularizados por Google Maps o por terceros.
 #'   Los valores aceptados son los admitidos por la función
 #'   [addProviderTiles()][leaflet::addProviderTiles()], así mismo los valores por
-#'   defecto son `c("CartoDB.Positron", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")`,
+#'   defecto son `c("Esri.WorldGrayCanvas", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")`,
 #'   algunos otros valores pueden ser:
 #'
-#'   * "Esri.DeLorme"
 #'   * "Esri.WorldTerrain"
 #'   * "Esri.WorldShadedRelief"
 #'   * "Esri.WorldPhysical"
@@ -157,8 +156,8 @@
 #'   tipo     = "SiNoMpios",
 #'   titulo   = "Graduados 2021-I",
 #'   baldosas = c(
-#'     "Esri.WorldPhysical", "Esri.DeLorme", "Esri.WorldShadedRelief",
-#'     "Esri.WorldTerrain", "Esri.OceanBasemap"
+#'     "Esri.WorldPhysical", "Esri.WorldTopoMap", "Esri.WorldShadedRelief",
+#'     "Esri.WorldTerrain", "Esri.OceanBasemap", "Stadia.AlidadeSmoothDark"
 #'   ),
 #'   colores  = c("#10F235", "#00BCB5"),
 #'   colSedes = rep("green", 9),
@@ -330,7 +329,6 @@
 #'
 #' @import leaflet
 #' @import dplyr
-#' @importFrom leaflet.extras addFullscreenControl addSearchFeatures searchFeaturesOptions
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_to_title
 #' @importFrom htmltools HTML
@@ -552,9 +550,9 @@ Plot.Mapa <- function(
   }
   if (missingArg(baldosas)) {
     Baldosas <- c(
-      "CartoDB.Positron",
+      "OpenStreetMap.Mapnik",
       "Esri.WorldStreetMap",
-      "Esri.NatGeoWorldMap"
+      "OpenStreetMap.HOT"
     )
     Baldosas.names <- c(
       "Ligero",
@@ -1079,9 +1077,9 @@ Plot.Mapa <- function(
           )
         ) |>
         # Adición del botón de control de búsqueda (lupa).
-        addSearchFeatures(
+        .unalr_add_search_features(
           targetGroups = "lupa",
-          options = searchFeaturesOptions(
+          options = .unalr_search_features_options(
             zoom = 8,
             openPopup = TRUE,
             textErr = "Ubicaci\u00f3n No Encontrada",
@@ -1210,9 +1208,9 @@ Plot.Mapa <- function(
           group = "lupa",
           labelOptions = labelOptions(noHide = FALSE)
         ) |>
-        addSearchFeatures(
+        .unalr_add_search_features(
           targetGroups = "lupa",
-          options = searchFeaturesOptions(
+          options = .unalr_search_features_options(
             zoom = 10,
             openPopup = TRUE,
             textErr = "Ubicaci\u00f3n No Encontrada",
@@ -1327,9 +1325,9 @@ Plot.Mapa <- function(
           group = "lupa",
           labelOptions = labelOptions(noHide = FALSE)
         ) |>
-        addSearchFeatures(
+        .unalr_add_search_features(
           targetGroups = "lupa",
-          options = searchFeaturesOptions(
+          options = .unalr_search_features_options(
             zoom = 10,
             openPopup = TRUE,
             textErr = "Ubicaci\u00f3n No Encontrada",
@@ -1512,9 +1510,9 @@ Plot.Mapa <- function(
           group = "lupa",
           labelOptions = labelOptions(noHide = FALSE)
         ) |>
-        addSearchFeatures(
+        .unalr_add_search_features(
           targetGroups = "lupa",
-          options = searchFeaturesOptions(
+          options = .unalr_search_features_options(
             zoom = 10,
             openPopup = TRUE,
             textErr = "Ubicaci\u00f3n No Encontrada",
@@ -1655,7 +1653,10 @@ Plot.Mapa <- function(
           autoToggleDisplay = TRUE
         ) |>
         # Adición de botones simples para ver en pantalla completa, restablecer el zoom y localización.
-        addFullscreenControl(position = "topleft", pseudoFullscreen = FALSE) |>
+        .unalr_add_fullscreen_control(
+          position = "topleft",
+          pseudoFullscreen = FALSE
+        ) |>
         addEasyButton(easyButton(
           icon = "fa-globe",
           title = "Retornar",

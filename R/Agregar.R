@@ -138,7 +138,7 @@ Agregar <- function(datos, formula, frecuencia, intervalo, textNA = "Sin Informa
     } else {
       datos <- datos |> mutate_if(is.character, as.factor)
     }
-    Step1 <- datos |> mutate_at(all_of(Tiempo), list(~ as.factor(.)))
+    Step1 <- datos |> mutate(across(all_of(Tiempo), as.factor))
 
     # Almacenamos los valores únicos que contiene el factor de la variable de interés
     UniqueFactor <- Step1 |> select(!!Var) |> pull() |> fct_unique()
@@ -152,7 +152,7 @@ Agregar <- function(datos, formula, frecuencia, intervalo, textNA = "Sin Informa
       rename("Clase" = all_of(Var)) |> mutate("Variable" = Var) |>
       relocate(Variable) |>
       # ■ Volviendo a la clase original del tiempo en cuestión
-      mutate_at(all_of(Tiempo), list(~ as.numeric(as.character(.))))
+      mutate(across(all_of(Tiempo), ~ as.numeric(as.character(.))))
 
     # Realizando el join con el dataframe que reúne todos los posibles periodos especificados
     is.listNumeric <- function(list) { return(sum(sapply(list, is.numeric)) == 2) }

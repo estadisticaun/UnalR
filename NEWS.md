@@ -1,3 +1,19 @@
+# UnalR 1.0.2
+
+v1.0.2 fue lanzada el 01/10/2026
+
+## Correcciones (*bug fixes*)
+  * Se retiró la dependencia archivada `leaflet.extras`. `Plot.Mapa()` y
+    `Plot.Mundo()` conservan la búsqueda de lugares y el control de pantalla
+    completa mediante una integración interna y limitada de Leaflet-search y
+    Leaflet.fullscreen.
+  * Se reemplazó `"CartoDB.Positron"` por `"Esri.WorldGrayCanvas"` en la
+    baldosa por defecto de `Plot.Mapa()` y `Plot.Mundo()`, ya que CARTO ahora
+    exige una API key y mostraba una marca de agua en los mapas que no
+    especificaban el argumento `baldosas`.
+
+___
+
 # UnalR 1.0.1
 
 v1.0.1 fue lanzada el 15/09/2025

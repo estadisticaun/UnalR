@@ -26,7 +26,7 @@
 #' @param scrollX Igual uso que en [Tabla()]
 #' @param colorHead Igual uso que en [Tabla()]
 #' @param estilo Una lista compuesta por listas las cuales en su interior contiene
-#'   argumentos válidos de la función [formatStyle()][DT:: formatStyle()], esto
+#'   argumentos válidos de la función [formatStyle()][DT::formatStyle()], esto
 #'   con la finalidad de que pueda aplicar estilos CSS a la tabla, tales como color
 #'   de la fuente, color de fondo, tamaño de fuente, etc. Puede encontrar mayor
 #'   información de los argumentos disponibles \href{https://rstudio.github.io/DT/functions.html}{aquí}.

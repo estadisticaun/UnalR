@@ -9,11 +9,11 @@
     <a href="#main" class="visually-hidden-focusable">Ir al contenido</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Navegación del sitio"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">UnalR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Versión publicada">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Versión publicada">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Cambiar la navegación">
@@ -24,7 +24,7 @@
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Índice</a></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Registro de cambios</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
- <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Buscar" data-search-index="../search.json"></form></li>
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Buscar en el sitio" placeholder="Buscar" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/estadisticaun/UnalR" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
@@ -38,7 +38,16 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.1" id="unalr-101">UnalR 1.0.1<a class="anchor" aria-label="anchor" href="#unalr-101"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.2" id="unalr-102">UnalR 1.0.2<a class="anchor" aria-label="anchor" href="#unalr-102"></a></h2>
+<p>v1.0.2 fue lanzada el 01/10/2026</p>
+<div class="section level3">
+<h3 id="correcciones-bug-fixes-1-0-2">Correcciones (<em>bug fixes</em>)<a class="anchor" aria-label="anchor" href="#correcciones-bug-fixes-1-0-2"></a></h3>
+<ul><li>Se retiró la dependencia archivada <code>leaflet.extras</code>. <code><a href="../reference/Plot.Mapa.html">Plot.Mapa()</a></code> y <code><a href="../reference/Plot.Mundo.html">Plot.Mundo()</a></code> conservan la búsqueda de lugares y el control de pantalla completa mediante una integración interna y limitada de Leaflet-search y Leaflet.fullscreen.</li>
+<li>Se reemplazó <code>"CartoDB.Positron"</code> por <code>"Esri.WorldGrayCanvas"</code> en la baldosa por defecto de <code><a href="../reference/Plot.Mapa.html">Plot.Mapa()</a></code> y <code><a href="../reference/Plot.Mundo.html">Plot.Mundo()</a></code>, ya que CARTO ahora exige una API key y mostraba una marca de agua en los mapas que no especificaban el argumento <code>baldosas</code>.</li>
+</ul><hr></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.1" id="unalr-101">UnalR 1.0.1<a class="anchor" aria-label="anchor" href="#unalr-101"></a></h2><p class="text-muted">Versión CRAN: 2025-09-19</p>
 <p>v1.0.1 fue lanzada el 15/09/2025</p>
 <div class="section level3">
 <h3 id="correcciones-bug-fixes-1-0-1">Correcciones (<em>bug fixes</em>)<a class="anchor" aria-label="anchor" href="#correcciones-bug-fixes-1-0-1"></a></h3>
@@ -102,7 +111,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Desarrollado por <a href="https://github.com/JeisonAlarcon" class="external-link">Jeison Alarcón</a>, <a href="https://albertor.netlify.app" class="external-link">Alberto Rodríguez</a>, Dirección Nacional de Planeación y Estadística Universidad Nacional de Colombia.</p>
+  <p>Desarrollado por <a href="https://jeisonalarcon.site" class="external-link">Jeison Alarcón</a>, <a href="https://albertor.netlify.app" class="external-link">Alberto Rodríguez</a>, Dirección Nacional de Planeación y Estadística Universidad Nacional de Colombia.</p>
 </div>
 
 <div class="pkgdown-footer-right">

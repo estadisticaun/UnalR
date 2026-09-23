@@ -243,8 +243,7 @@
       "Description": "Provides color schemes for maps (and other graphics) designed by Cynthia Brewer as described at http://colorbrewer2.org.",
       "License": "Apache License 2.0",
       "NeedsCompilation": "no",
-      "Repository": "CRAN",
-      "Encoding": "UTF-8"
+      "Repository": "CRAN"
     },
     "Rcpp": {
       "Package": "Rcpp",
@@ -342,8 +341,7 @@
       "NeedsCompilation": "yes",
       "Author": "Joshua Ulrich [cre, aut], Ethan B. Smith [ctb]",
       "Maintainer": "Joshua Ulrich <josh.m.ulrich@gmail.com>",
-      "Repository": "CRAN",
-      "Encoding": "UTF-8"
+      "Repository": "CRAN"
     },
     "V8": {
       "Package": "V8",
@@ -474,8 +472,7 @@
       "NeedsCompilation": "no",
       "Author": "Hadley Wickham [aut, cre]",
       "Maintainer": "Hadley Wickham <hadley@rstudio.com>",
-      "Repository": "CRAN",
-      "Encoding": "UTF-8"
+      "Repository": "CRAN"
     },
     "backports": {
       "Package": "backports",
@@ -560,8 +557,7 @@
       "NeedsCompilation": "yes",
       "Author": "Steve Dutky [aut] (S original; then (after MM's port) revised and modified), Martin Maechler [cre, aut] (Initial R port; tweaks, <https://orcid.org/0000-0002-8685-9910>)",
       "Maintainer": "Martin Maechler <maechler@stat.math.ethz.ch>",
-      "Repository": "CRAN",
-      "Encoding": "UTF-8"
+      "Repository": "CRAN"
     },
     "broom": {
       "Package": "broom",
@@ -873,10 +869,10 @@
     },
     "cli": {
       "Package": "cli",
-      "Version": "3.6.5",
+      "Version": "3.6.6",
       "Source": "Repository",
       "Title": "Helpers for Developing Command Line Interfaces",
-      "Authors@R": "c( person(\"Gábor\", \"Csárdi\", , \"gabor@posit.co\", role = c(\"aut\", \"cre\")), person(\"Hadley\", \"Wickham\", role = \"ctb\"), person(\"Kirill\", \"Müller\", role = \"ctb\"), person(\"Salim\", \"Brüggemann\", , \"salim-b@pm.me\", role = \"ctb\", comment = c(ORCID = \"0000-0002-5329-5987\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Authors@R": "c( person(\"Gábor\", \"Csárdi\", , \"gabor@posit.co\", role = c(\"aut\", \"cre\")), person(\"Hadley\", \"Wickham\", role = \"ctb\"), person(\"Kirill\", \"Müller\", role = \"ctb\"), person(\"Salim\", \"Brüggemann\", , \"salim-b@pm.me\", role = \"ctb\", comment = c(ORCID = \"0000-0002-5329-5987\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"), comment = c(ROR = \"03wc8by49\")) )",
       "Description": "A suite of tools to build attractive command line interfaces ('CLIs'), from semantic elements: headings, lists, alerts, paragraphs, etc. Supports custom themes via a 'CSS'-like language. It also contains a number of lower level 'CLI' elements: rules, boxes, trees, and 'Unicode' symbols with 'ASCII' alternatives. It support ANSI colors and text styles as well.",
       "License": "MIT + file LICENSE",
       "URL": "https://cli.r-lib.org, https://github.com/r-lib/cli",
@@ -911,10 +907,11 @@
       ],
       "Config/Needs/website": "r-lib/asciicast, bench, brio, cpp11, decor, desc, fansi, prettyunits, sessioninfo, tidyverse/tidytemplate, usethis, vctrs",
       "Config/testthat/edition": "3",
+      "Config/usethis/last-upkeep": "2025-04-25",
       "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
+      "RoxygenNote": "7.3.2.9000",
       "NeedsCompilation": "yes",
-      "Author": "Gábor Csárdi [aut, cre], Hadley Wickham [ctb], Kirill Müller [ctb], Salim Brüggemann [ctb] (<https://orcid.org/0000-0002-5329-5987>), Posit Software, PBC [cph, fnd]",
+      "Author": "Gábor Csárdi [aut, cre], Hadley Wickham [ctb], Kirill Müller [ctb], Salim Brüggemann [ctb] (ORCID: <https://orcid.org/0000-0002-5329-5987>), Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
       "Maintainer": "Gábor Csárdi <gabor@posit.co>",
       "Repository": "CRAN"
     },
@@ -1058,7 +1055,7 @@
     },
     "cpp11": {
       "Package": "cpp11",
-      "Version": "0.5.2",
+      "Version": "0.5.5",
       "Source": "Repository",
       "Title": "A C++11 Interface for R's C Interface",
       "Authors@R": "c( person(\"Davis\", \"Vaughan\", email = \"davis@posit.co\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0003-4777-038X\")), person(\"Jim\",\"Hester\", role = \"aut\", comment = c(ORCID = \"0000-0002-2739-7082\")), person(\"Romain\", \"François\", role = \"aut\", comment = c(ORCID = \"0000-0002-2444-4226\")), person(\"Benjamin\", \"Kietzman\", role = \"ctb\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
@@ -1097,9 +1094,9 @@
       "Config/testthat/edition": "3",
       "Config/Needs/cpp11/cpp_register": "brio, cli, decor, desc, glue, tibble, vctrs",
       "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
+      "RoxygenNote": "7.3.3",
       "NeedsCompilation": "no",
-      "Author": "Davis Vaughan [aut, cre] (<https://orcid.org/0000-0003-4777-038X>), Jim Hester [aut] (<https://orcid.org/0000-0002-2739-7082>), Romain François [aut] (<https://orcid.org/0000-0002-2444-4226>), Benjamin Kietzman [ctb], Posit Software, PBC [cph, fnd]",
+      "Author": "Davis Vaughan [aut, cre] (ORCID: <https://orcid.org/0000-0003-4777-038X>), Jim Hester [aut] (ORCID: <https://orcid.org/0000-0002-2739-7082>), Romain François [aut] (ORCID: <https://orcid.org/0000-0002-2444-4226>), Benjamin Kietzman [ctb], Posit Software, PBC [cph, fnd]",
       "Maintainer": "Davis Vaughan <davis@posit.co>",
       "Repository": "CRAN"
     },
@@ -1709,16 +1706,16 @@
     },
     "fs": {
       "Package": "fs",
-      "Version": "1.6.6",
+      "Version": "2.1.0",
       "Source": "Repository",
       "Title": "Cross-Platform File System Operations Based on 'libuv'",
-      "Authors@R": "c( person(\"Jim\", \"Hester\", role = \"aut\"), person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"), person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\")), person(\"libuv project contributors\", role = \"cph\", comment = \"libuv library\"), person(\"Joyent, Inc. and other Node contributors\", role = \"cph\", comment = \"libuv library\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Authors@R": "c( person(\"Jim\", \"Hester\", role = \"aut\"), person(\"Hadley\", \"Wickham\", role = \"aut\"), person(\"Gábor\", \"Csárdi\", role = \"aut\"), person(\"Jeroen\", \"Ooms\", , \"jeroenooms@gmail.com\", role = \"cre\"), person(\"libuv project contributors\", role = \"cph\", comment = \"libuv library\"), person(\"Joyent, Inc. and other Node contributors\", role = \"cph\", comment = \"libuv library\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"), comment = c(ROR = \"03wc8by49\")) )",
       "Description": "A cross-platform interface to file system operations, built on top of the 'libuv' C library.",
       "License": "MIT + file LICENSE",
       "URL": "https://fs.r-lib.org, https://github.com/r-lib/fs",
       "BugReports": "https://github.com/r-lib/fs/issues",
       "Depends": [
-        "R (>= 3.6)"
+        "R (>= 4.1)"
       ],
       "Imports": [
         "methods"
@@ -1736,17 +1733,17 @@
         "withr"
       ],
       "VignetteBuilder": "knitr",
-      "ByteCompile": "true",
+      "SystemRequirements": "libuv: libuv-devel (rpm) or libuv1-dev (deb). Alternatively to build the vendored libuv 'cmake' is required. GNU make.",
       "Config/Needs/website": "tidyverse/tidytemplate",
       "Config/testthat/edition": "3",
+      "Config/usethis/last-upkeep": "2025-04-23",
       "Copyright": "file COPYRIGHTS",
       "Encoding": "UTF-8",
       "Language": "en-US",
-      "RoxygenNote": "7.2.3",
-      "SystemRequirements": "GNU make",
+      "RoxygenNote": "7.3.3",
       "NeedsCompilation": "yes",
-      "Author": "Jim Hester [aut], Hadley Wickham [aut], Gábor Csárdi [aut, cre], libuv project contributors [cph] (libuv library), Joyent, Inc. and other Node contributors [cph] (libuv library), Posit Software, PBC [cph, fnd]",
-      "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+      "Author": "Jim Hester [aut], Hadley Wickham [aut], Gábor Csárdi [aut], Jeroen Ooms [cre], libuv project contributors [cph] (libuv library), Joyent, Inc. and other Node contributors [cph] (libuv library), Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
+      "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
       "Repository": "CRAN"
     },
     "generics": {
@@ -2768,8 +2765,7 @@
         "stats",
         "graphics"
       ],
-      "Repository": "CRAN",
-      "Encoding": "UTF-8"
+      "Repository": "CRAN"
     },
     "later": {
       "Package": "later",
@@ -2868,8 +2864,7 @@
       "NeedsCompilation": "yes",
       "Author": "Hadley Wickham [aut, cre], RStudio [cph]",
       "Maintainer": "Hadley Wickham <hadley@rstudio.com>",
-      "Repository": "CRAN",
-      "Encoding": "UTF-8"
+      "Repository": "CRAN"
     },
     "leaflet": {
       "Package": "leaflet",
@@ -2926,42 +2921,6 @@
       "Maintainer": "Garrick Aden-Buie <garrick@posit.co>",
       "Repository": "CRAN"
     },
-    "leaflet.extras": {
-      "Package": "leaflet.extras",
-      "Version": "2.0.1",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Extra Functionality for 'leaflet' Package",
-      "Authors@R": "c( person(\"Sebastian\", \"Gatscha\", email = \"sebastian_gatscha@gmx.at\", role = c(\"aut\", \"cre\")), person(\"Bhaskar\", \"Karambelkar\", email = \"bhaskarvk@gmail.com\", role = c(\"aut\")), person(\"Barret\", \"Schloerke\", email = \"barret@rstudio.com\", role = c(\"aut\")), person(\"Bangyou\", \"Zheng\", email= \"Bangyou.Zheng@csiro.au\", role = c(\"ctb\"), comment = \"Leaflet-search and Leaflet-GPS plugin integration\"), person(\"Robin\", \"Cura\", email= \"robin@cura.info\", role = c(\"ctb\"), comment = \"Fixes for Draw Options\"), person(\"Markus\", \"Voge\", email= \"markus.voge@ea-aw.de\", role = c(\"ctb\"), comment = \"Enhancements for Draw Options\"), person(\"Markus\", \"Dumke\", role = c(\"ctb\"), comment = \"Bounce Marker addition\"), person(family = \"Mapbox\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-omnivore, csv2geojson, and togeojson libraries\"), person(\"Henry\", \"Thasler\", role = c(\"ctb\", \"cph\"), comment = \"Leaflet.Geodesic library\"), person(\"Dennis\", \"Wilhelm\", role = c(\"ctb\", \"cph\"), comment = \"Leaflet.StyleEditor library\"), person(\"Kirollos\", \"Risk\", role = c(\"ctb\", \"cph\"), comment = \"fuse.js library\"), person(\"Tim\", \"Wisniewski\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-choropleth library\"), person(family = \"Leaflet\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-draw library\"), person(\"Alexander\", \"Milevski\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-draw-drag library\"), person(\"John\", \"Firebaugh\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-fullscreen library\"), person(\"Stefano\", \"Cudini\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-gps library\"), person(\"Johannes\", \"Rudolph\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-hash library\"), person(\"Per\", \"Liedman\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-measure-path library\"), person(\"Pavel\", \"Shramov\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-plugins library\"), person(\"Filip\", \"Zavadil\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-pulse-icon library\"), person(\"Stefano\", \"Cudini\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-search library\"), person(family = \"CliffCloud\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-sleep library\"), person(family = \"Ursudio\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-webgl-heatmap library\"), person(\"Maxime\", \"Hadjinlian\", role = c(\"ctb\", \"cph\"), comment = \"leaflet.BounceMarker library\"), person(\"Vladimir\", \"Agafonkin\", role = c(\"ctb\", \"cph\"), comment = \"leaflet.heat library\"), person(\"Iván Sánchez\", \"Ortega\", role = c(\"ctb\", \"cph\"), comment = \"leaflet.tilelayer.pouchdbcached library\"), person(\"Dale\", \"Harvey\", role = c(\"ctb\", \"cph\"), comment = \"pouchdb-browser library\"), person(\"Mike\", \"Bostock\", role = c(\"ctb\", \"cph\"), comment = \"topojson library\") )",
-      "Description": "The 'leaflet' JavaScript library provides many plugins some of which are available in the core 'leaflet' package, but there are many more. It is not possible to support them all in the core 'leaflet' package. This package serves as an add-on to the 'leaflet' package by providing extra functionality via 'leaflet' plugins.",
-      "License": "GPL-3 | file LICENSE",
-      "Encoding": "UTF-8",
-      "Depends": [
-        "R (>= 3.1.0)",
-        "leaflet (>= 2.0.0)"
-      ],
-      "Imports": [
-        "htmlwidgets",
-        "htmltools",
-        "stringr",
-        "magrittr"
-      ],
-      "Suggests": [
-        "jsonlite",
-        "readr",
-        "sf",
-        "xfun",
-        "testthat (>= 3.0.0)"
-      ],
-      "URL": "https://github.com/trafficonese/leaflet.extras, https://trafficonese.github.io/leaflet.extras/",
-      "BugReports": "https://github.com/trafficonese/leaflet.extras/issues",
-      "RoxygenNote": "7.3.1",
-      "Config/testthat/edition": "3",
-      "NeedsCompilation": "no",
-      "Author": "Sebastian Gatscha [aut, cre], Bhaskar Karambelkar [aut], Barret Schloerke [aut], Bangyou Zheng [ctb] (Leaflet-search and Leaflet-GPS plugin integration), Robin Cura [ctb] (Fixes for Draw Options), Markus Voge [ctb] (Enhancements for Draw Options), Markus Dumke [ctb] (Bounce Marker addition), Mapbox [ctb, cph] (leaflet-omnivore, csv2geojson, and togeojson libraries), Henry Thasler [ctb, cph] (Leaflet.Geodesic library), Dennis Wilhelm [ctb, cph] (Leaflet.StyleEditor library), Kirollos Risk [ctb, cph] (fuse.js library), Tim Wisniewski [ctb, cph] (leaflet-choropleth library), Leaflet [ctb, cph] (leaflet-draw library), Alexander Milevski [ctb, cph] (leaflet-draw-drag library), John Firebaugh [ctb, cph] (leaflet-fullscreen library), Stefano Cudini [ctb, cph] (leaflet-gps library), Johannes Rudolph [ctb, cph] (leaflet-hash library), Per Liedman [ctb, cph] (leaflet-measure-path library), Pavel Shramov [ctb, cph] (leaflet-plugins library), Filip Zavadil [ctb, cph] (leaflet-pulse-icon library), Stefano Cudini [ctb, cph] (leaflet-search library), CliffCloud [ctb, cph] (leaflet-sleep library), Ursudio [ctb, cph] (leaflet-webgl-heatmap library), Maxime Hadjinlian [ctb, cph] (leaflet.BounceMarker library), Vladimir Agafonkin [ctb, cph] (leaflet.heat library), Iván Sánchez Ortega [ctb, cph] (leaflet.tilelayer.pouchdbcached library), Dale Harvey [ctb, cph] (pouchdb-browser library), Mike Bostock [ctb, cph] (topojson library)",
-      "Maintainer": "Sebastian Gatscha <sebastian_gatscha@gmx.at>",
-      "Repository": "CRAN"
-    },
     "leaflet.providers": {
       "Package": "leaflet.providers",
       "Version": "2.0.0",
@@ -2997,7 +2956,7 @@
     },
     "lifecycle": {
       "Package": "lifecycle",
-      "Version": "1.0.4",
+      "Version": "1.0.5",
       "Source": "Repository",
       "Title": "Manage the Life Cycle of your Package Functions",
       "Authors@R": "c( person(\"Lionel\", \"Henry\", , \"lionel@posit.co\", role = c(\"aut\", \"cre\")), person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\", comment = c(ORCID = \"0000-0003-4757-117X\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
@@ -3010,29 +2969,28 @@
       ],
       "Imports": [
         "cli (>= 3.4.0)",
-        "glue",
         "rlang (>= 1.1.0)"
       ],
       "Suggests": [
         "covr",
-        "crayon",
         "knitr",
-        "lintr",
+        "lintr (>= 3.1.0)",
         "rmarkdown",
         "testthat (>= 3.0.1)",
         "tibble",
         "tidyverse",
         "tools",
         "vctrs",
-        "withr"
+        "withr",
+        "xml2"
       ],
       "VignetteBuilder": "knitr",
       "Config/Needs/website": "tidyverse/tidytemplate, usethis",
       "Config/testthat/edition": "3",
       "Encoding": "UTF-8",
-      "RoxygenNote": "7.2.1",
+      "RoxygenNote": "7.3.3",
       "NeedsCompilation": "no",
-      "Author": "Lionel Henry [aut, cre], Hadley Wickham [aut] (<https://orcid.org/0000-0003-4757-117X>), Posit Software, PBC [cph, fnd]",
+      "Author": "Lionel Henry [aut, cre], Hadley Wickham [aut] (ORCID: <https://orcid.org/0000-0003-4757-117X>), Posit Software, PBC [cph, fnd]",
       "Maintainer": "Lionel Henry <lionel@posit.co>",
       "Repository": "CRAN"
     },
@@ -3834,8 +3792,7 @@
       "NeedsCompilation": "no",
       "Author": "Jeffrey A. Ryan [aut, cph], Joshua M. Ulrich [cre, aut], Ethan B. Smith [ctb], Wouter Thielen [ctb], Paul Teetor [ctb], Steve Bronder [ctb]",
       "Maintainer": "Joshua M. Ulrich <josh.m.ulrich@gmail.com>",
-      "Repository": "CRAN",
-      "Encoding": "UTF-8"
+      "Repository": "CRAN"
     },
     "rappdirs": {
       "Package": "rappdirs",
@@ -4079,21 +4036,20 @@
       "URL": "https://github.com/alexcb/rjson",
       "License": "GPL-2",
       "Repository": "CRAN",
-      "NeedsCompilation": "yes",
-      "Encoding": "UTF-8"
+      "NeedsCompilation": "yes"
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "1.1.6",
+      "Version": "1.3.0",
       "Source": "Repository",
       "Title": "Functions for Base Types and Core R and 'Tidyverse' Features",
+      "Authors@R": "c( person(\"Lionel\", \"Henry\", , \"lionel@posit.co\", role = c(\"aut\", \"cre\")), person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"), person(\"mikefc\", , , \"mikefc@coolbutuseless.com\", role = \"cph\", comment = \"Hash implementation based on Mike's xxhashlite\"), person(\"Yann\", \"Collet\", role = \"cph\", comment = \"Author of the embedded xxHash library\"), person(\"Posit, PBC\", role = c(\"cph\", \"fnd\")) )",
       "Description": "A toolbox for working with base types, core R features like the condition system, and core 'Tidyverse' features like tidy evaluation.",
-      "Authors@R": "c( person(\"Lionel\", \"Henry\", ,\"lionel@posit.co\", c(\"aut\", \"cre\")), person(\"Hadley\", \"Wickham\", ,\"hadley@posit.co\", \"aut\"), person(given = \"mikefc\", email = \"mikefc@coolbutuseless.com\", role = \"cph\", comment = \"Hash implementation based on Mike's xxhashlite\"), person(given = \"Yann\", family = \"Collet\", role = \"cph\", comment = \"Author of the embedded xxHash library\"), person(given = \"Posit, PBC\", role = c(\"cph\", \"fnd\")) )",
       "License": "MIT + file LICENSE",
-      "ByteCompile": "true",
-      "Biarch": "true",
+      "URL": "https://rlang.r-lib.org, https://github.com/r-lib/rlang",
+      "BugReports": "https://github.com/r-lib/rlang/issues",
       "Depends": [
-        "R (>= 3.5.0)"
+        "R (>= 4.0.0)"
       ],
       "Imports": [
         "utils"
@@ -4112,7 +4068,7 @@
         "pkgload",
         "rmarkdown",
         "stats",
-        "testthat (>= 3.2.0)",
+        "testthat (>= 3.3.2)",
         "tibble",
         "usethis",
         "vctrs (>= 0.2.3)",
@@ -4121,13 +4077,14 @@
       "Enhances": [
         "winch"
       ],
-      "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
-      "URL": "https://rlang.r-lib.org, https://github.com/r-lib/rlang",
-      "BugReports": "https://github.com/r-lib/rlang/issues",
+      "Biarch": "true",
+      "ByteCompile": "true",
       "Config/build/compilation-database": "true",
-      "Config/testthat/edition": "3",
       "Config/Needs/website": "dplyr, tidyverse/tidytemplate",
+      "Config/roxygen2/version": "8.0.0",
+      "Config/testthat/edition": "3",
+      "Config/testthat/parallel": "true",
+      "Encoding": "UTF-8",
       "NeedsCompilation": "yes",
       "Author": "Lionel Henry [aut, cre], Hadley Wickham [aut], mikefc [cph] (Hash implementation based on Mike's xxhashlite), Yann Collet [cph] (Author of the embedded xxHash library), Posit, PBC [cph, fnd]",
       "Maintainer": "Lionel Henry <lionel@posit.co>",
@@ -5410,8 +5367,7 @@
       "License": "GPL (>= 2)",
       "Repository": "CRAN",
       "NeedsCompilation": "no",
-      "Author": "David B. Dahl [aut], David Scott [aut, cre], Charles Roosen [aut], Arni Magnusson [aut], Jonathan Swinton [aut], Ajay Shah [ctb], Arne Henningsen [ctb], Benno Puetz [ctb], Bernhard Pfaff [ctb], Claudio Agostinelli [ctb], Claudius Loehnert [ctb], David Mitchell [ctb], David Whiting [ctb], Fernando da Rosa [ctb], Guido Gay [ctb], Guido Schulz [ctb], Ian Fellows [ctb], Jeff Laake [ctb], John Walker [ctb], Jun Yan [ctb], Liviu Andronic [ctb], Markus Loecher [ctb], Martin Gubri [ctb], Matthieu Stigler [ctb], Robert Castelo [ctb], Seth Falcon [ctb], Stefan Edwards [ctb], Sven Garbade [ctb], Uwe Ligges [ctb]",
-      "Encoding": "UTF-8"
+      "Author": "David B. Dahl [aut], David Scott [aut, cre], Charles Roosen [aut], Arni Magnusson [aut], Jonathan Swinton [aut], Ajay Shah [ctb], Arne Henningsen [ctb], Benno Puetz [ctb], Bernhard Pfaff [ctb], Claudio Agostinelli [ctb], Claudius Loehnert [ctb], David Mitchell [ctb], David Whiting [ctb], Fernando da Rosa [ctb], Guido Gay [ctb], Guido Schulz [ctb], Ian Fellows [ctb], Jeff Laake [ctb], John Walker [ctb], Jun Yan [ctb], Liviu Andronic [ctb], Markus Loecher [ctb], Martin Gubri [ctb], Matthieu Stigler [ctb], Robert Castelo [ctb], Seth Falcon [ctb], Stefan Edwards [ctb], Sven Garbade [ctb], Uwe Ligges [ctb]"
     },
     "xts": {
       "Package": "xts",

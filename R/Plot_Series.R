@@ -364,6 +364,7 @@
 #' @importFrom forcats as_factor fct_relevel
 #' @importFrom methods missingArg
 #' @importFrom grDevices rainbow
+#' @importFrom tidyselect all_of
 Plot.Series <- function(
     datos, tiempo, valores, categoria, freqRelativa = FALSE, invertir = FALSE,
     ylim, colores, titulo = "", labelX = "Periodo", labelY = "",
@@ -446,7 +447,7 @@ Plot.Series <- function(
   } else {
     Relativo <- tableHoriz |> select(!Fecha) |> PocentRelativo() |>
       as_tibble() |> mutate(Fecha = tableHoriz$Fecha) |>
-      pivot_longer(cols = categorias, names_to = quo_name(enquo(categoria)), values_to = "Relativo")
+      pivot_longer(cols = all_of(categorias), names_to = quo_name(enquo(categoria)), values_to = "Relativo")
   }
   TablaFinal <- DataFrame |> inner_join(Relativo, by = join_by(Fecha, {{categoria}}))
   TablaFinal <- TablaFinal |> rename(Clase := {{categoria}}, Total := {{valores}})

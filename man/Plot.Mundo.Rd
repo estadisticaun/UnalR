@@ -62,17 +62,16 @@ centroide al momento de graficar el mapa. El valor por defecto es "MEXICO".
 Se emparejará parcialmente.}
 
 \item{zoomMapa}{Valor numérico que indica el nivel de zoom del mapa
-(\emph{usado por la función} \link[leaflet:map-methods]{setView()}). El valor por
+(\emph{usado por la función} \link[leaflet:setView]{setView()}). El valor por
 defecto es \code{6}, entre mayor sea su valor más zoom se aplicará al mapa.}
 
 \item{baldosas}{Vector de caracteres indicando los mapas base con los que se
 realizará el mapa, sean los popularizados por Google Maps o por terceros.
 Los valores aceptados son los admitidos por la función
 \link[leaflet:addProviderTiles]{addProviderTiles()}, así mismo los valores por
-defecto son \code{c("CartoDB.Positron", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")},
+defecto son \code{c("Esri.WorldGrayCanvas", "Esri.WorldStreetMap", "Esri.NatGeoWorldMap")},
 algunos otros valores pueden ser:
 \itemize{
-\item "Esri.DeLorme"
 \item "Esri.WorldTerrain"
 \item "Esri.WorldShadedRelief"
 \item "Esri.WorldPhysical"
@@ -138,9 +137,9 @@ defecto es \code{"Statistic"}. Si es \code{NULL}, se omitirá dicho título.
 Los valores permitidos son \code{"Intervalo"}, \code{"SiNo"}, \code{"Calor"} y \code{NA}
 (\emph{valor predeterminado}). Se emparejará parcialmente.
 \item \code{Text}: Lista que especifica aspectos como el color y tamaño de los títulos
-de los polígonos. Para más información, consulte la función \link[ggplot2:ggsf]{geom_sf_text()}.
+de los polígonos. Para más información, consulte la función \link[ggplot2:geom_sf_text]{geom_sf_text()}.
 \item \code{scaleX}, \code{scaleY}: Vector numérico que especifica los puntos o cortes a
-graficar en dicho eje. Sacado de la función \link[ggplot2:scale_continuous]{scale_x_continuous()}.
+graficar en dicho eje. Sacado de la función \link[ggplot2:scale_x_continuous]{scale_x_continuous()}.
 }}
 }
 \value{

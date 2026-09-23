@@ -147,7 +147,6 @@
 #'
 #' @import leaflet
 #' @import dplyr
-#' @importFrom leaflet.extras addFullscreenControl addSearchFeatures searchFeaturesOptions
 #' @importFrom tidyr replace_na
 #' @importFrom stringr str_to_title str_length
 #' @importFrom htmltools HTML
@@ -459,7 +458,7 @@ Plot.Mundo <- function(
   if (!estatico) {
     if (missingArg(baldosas)) {
       Baldosas <- c(
-        "CartoDB.Positron",
+        "Esri.WorldGrayCanvas",
         "Esri.WorldStreetMap",
         "Esri.NatGeoWorldMap"
       )
@@ -632,9 +631,9 @@ Plot.Mundo <- function(
           )
         ) |>
         # Adición del botón de control de búsqueda (lupa).
-        addSearchFeatures(
+        .unalr_add_search_features(
           targetGroups = "lupa",
-          options = searchFeaturesOptions(
+          options = .unalr_search_features_options(
             zoom = 8,
             openPopup = TRUE,
             textErr = "Ubicaci\u00f3n No Encontrada",
@@ -745,9 +744,9 @@ Plot.Mundo <- function(
             textsize = textPaises
           )
         ) |>
-        addSearchFeatures(
+        .unalr_add_search_features(
           targetGroups = "lupa",
-          options = searchFeaturesOptions(
+          options = .unalr_search_features_options(
             zoom = 10,
             openPopup = TRUE,
             textErr = "Ubicaci\u00f3n No Encontrada",
@@ -778,7 +777,7 @@ Plot.Mundo <- function(
           autoToggleDisplay = TRUE
         ) |>
         # Adición de botones simples para ver en pantalla completa, restablecer el zoom y localización.
-        addFullscreenControl(position = "topleft", pseudoFullscreen = FALSE) |>
+        .unalr_add_fullscreen_control(position = "topleft", pseudoFullscreen = FALSE) |>
         addEasyButton(easyButton(
           icon = "fa-globe",
           title = "Retornar",

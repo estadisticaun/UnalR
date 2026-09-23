@@ -311,10 +311,10 @@
 #' )
 #' # A continuación, se detalla el caso en el que quiera adicionar un logo a 'fig1'
 #' # library("ggplot2"); library("magick"); require("cowplot")
-#' URL <- "https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg"
-#' LogoUN <- magick::image_read_svg(URL)
+#' # URL    <- "https://upload.wikimedia.org/wikipedia/commons/1/1e/UNAL_Logosimbolo.svg"
+#' # LogoUN <- magick::image_read_svg(URL)
 #' ggdraw() +
-#'   draw_image(LogoUN, scale = 0.15, x = 0.15, hjust = 1, halign = 1, valign = 0) +
+#'   # draw_image(LogoUN, scale = 0.15, x = 0.15, hjust = 1, halign = 1, valign = 0) +
 #'   draw_plot(fig1 + theme(legend.background = element_blank(),
 #'                          panel.background = element_blank(),
 #'                          plot.background = element_blank()

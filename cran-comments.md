@@ -1,13 +1,16 @@
 ## Resubmission
 
-This is a resubmission. The package was previously archived on 2026-02-19 because it required the archived package 'leaflet.extras'. This dependency issue has been completely resolved. 
+This is a resubmission. The package was previously archived on 2026-02-19 because it required the archived package 'leaflet.extras'. This dependency issue has been completely resolved.
 
-In this version, we have also addressed all previous comments from the CRAN reviewers:
+In this version, we have also addressed all recent comments from Uwe Ligges and previous reviewers:
 
-* **Execution time > 10s:** Solved. The examples for `Plot.Mundo` and `Plot.Mapa` have been optimized and now execute well under the 5-second limit.
-* **Modifying user's `par` options:** Solved. We now use an immediate call to `on.exit(par(oldpar))` in functions like `Plot_Radar()` to ensure settings are properly reset.
-* **English translation in DESCRIPTION:** Solved. An English translation of the description has been added after the Spanish version.
-* **Omit "+ file LICENSE":** Solved. We have removed it from the DESCRIPTION file as requested.
+* **Title formatting and translation:** Solved. The Title is now entirely in English and in Title Case.
+* **Removed redundancies:** Solved. We removed phrasing such as "An implementation of..." from both the Title and Description. The Description now starts directly with active verbs.
+* **Removed "internal use" implication:** Solved. We have completely removed the phrase "de uso interno". The package is designed for public transparency of the University's official statistics, not for private internal use.
+* **Execution time > 10s:** Solved. The examples for `Plot.Mundo` and `Plot.Mapa` have been optimized and execute well under the 5-second limit.
+* **Modifying user's `par` options:** Solved. We now use an immediate call to `on.exit(par(oldpar))` in functions like `Plot_Radar()`.
+* **English translation in DESCRIPTION:** Solved. The primary Description is now in English, followed by the Spanish translation.
+* **Omit "+ file LICENSE":** Solved.
 
 ## Test environments
 

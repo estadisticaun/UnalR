@@ -1,26 +1,28 @@
 Type: Package
 Package: UnalR
-Title: Visualization Tools for the National University of Colombia
+Title: Wrapper for Interactive and Static Data Visualization
 Version: 1.0.2
 Authors@R: c(
     person("Jeison", "Alarcón", , "jmalarconbe@unal.edu.co", role = c("aut", "cre", "ctr"),
-           comment = c(ORCID = "0000-0002-1517-7840")),
+    comment = c(ORCID = "0000-0002-1517-7840")),
     person("Alberto", "Rodríguez", , "albrodriguezr@unal.edu.co", role = c("aut", "rev")),
     person("Dirección Nacional de Planeación y Estadística", "Universidad Nacional de Colombia", , "estadistica_nal@unal.edu.co", role = c("cph", "fnd"))
-  )
-Description: Provides fast and consistent functions for arranging microdata
-    and visualizing official statistics from the National University of
-    Colombia <https://unal.edu.co>. Offers a library of static and interactive
-    graphical functions with a highly configurable and simple syntax. Features
-    include HTML tables, time series, bar and pie charts, and maps supported
-    by various JavaScript libraries. Allows seamless transitions between
-    interactive and static graphics. Spanish: Proporciona funciones rápidas y
-    consistentes para la disposición de microdatos y la visualización de
-    estadísticas oficiales de la Universidad Nacional de Colombia
-    <https://unal.edu.co>. Ofrece una biblioteca de funciones gráficas estáticas
-    e interactivas con una sintaxis simple y altamente configurable. Incluye
-    tablas HTML, series de tiempo, gráficos de barras y circulares, y mapas
-    apoyados en bibliotecas de JavaScript.
+    )
+Description: Provides a fast and consistent general-purpose wrapper for arranging
+    microdata and generating interactive and static visualizations. Offers a
+    library of graphical functions with a highly configurable and simple syntax.
+    Features include HTML tables, time series, bar and pie charts, and maps
+    supported by various JavaScript libraries. Allows seamless transitions
+    between interactive and static graphics without changing the core syntax.
+    Originally developed to standardize the publication of official statistics
+    at the National University of Colombia <https://unal.edu.co>. Spanish:
+    Proporciona una herramienta de propósito general rápida y consistente para
+    organizar microdatos y generar visualizaciones interactivas y estáticas.
+    Ofrece una biblioteca de funciones gráficas con una sintaxis simple y
+    altamente configurable. Permite transiciones fluidas entre gráficos
+    interactivos y estáticos sin cambiar la sintaxis base. Desarrollado
+    originalmente para estandarizar la publicación de estadísticas oficiales
+    en la Universidad Nacional de Colombia <https://unal.edu.co>.
 License: GPL (>= 3)
 URL: https://unal.edu.co, https://estadisticas.unal.edu.co/home/, https://github.com/estadisticaun/UnalR, https://estadisticaun.github.io/UnalR/
 BugReports: https://github.com/estadisticaun/UnalR/issues

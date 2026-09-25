@@ -2,14 +2,15 @@
 
 This is a resubmission. The package was previously archived on 2026-02-19 because it required the archived package 'leaflet.extras'. This dependency issue has been completely resolved.
 
-In this version, we have also addressed all recent comments from Uwe Ligges and previous reviewers:
+In this version, we have addressed the latest feedback from Uwe Ligges regarding the package's scope:
 
-* **Title formatting and translation:** Solved. The Title is now entirely in English and in Title Case.
-* **Removed redundancies:** Solved. We removed phrasing such as "An implementation of..." from both the Title and Description. The Description now starts directly with active verbs.
-* **Removed "internal use" implication:** Solved. We have completely removed the phrase "de uso interno". The package is designed for public transparency of the University's official statistics, not for private internal use.
-* **Execution time > 10s:** Solved. The examples for `Plot.Mundo` and `Plot.Mapa` have been optimized and execute well under the 5-second limit.
-* **Modifying user's `par` options:** Solved. We now use an immediate call to `on.exit(par(oldpar))` in functions like `Plot_Radar()`.
-* **English translation in DESCRIPTION:** Solved. The primary Description is now in English, followed by the Spanish translation.
+* **Scope and Applicability:** Solved. As discussed via email, the package is a general-purpose wrapper with broad applicability (having accrued over 3,000 downloads previously). We have updated the `Title` and `Description` to explicitly reflect its universal utility for data visualization, clarifying that it was only *originally* developed at the National University of Colombia, but is not limited to it.
+
+All previous reviewer comments have also been successfully addressed in this version:
+* **Execution time > 10s:** Solved. Examples optimized under 5 seconds.
+* **Modifying user's `par` options:** Solved with immediate `on.exit(par(oldpar))`.
+* **Title in English and Title Case:** Solved.
+* **English translation in DESCRIPTION:** Solved.
 * **Omit "+ file LICENSE":** Solved.
 
 ## Test environments
